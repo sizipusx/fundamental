@@ -1,0 +1,4 @@
+pip install opendartreader
+pip install -U finance-datareader
+pip install alphaj-krx-crawler
+pip install pykrx
