@@ -38,7 +38,7 @@ def main():
     st.write(options)
     option = options.iloc[0,2]
     code = options.iloc[0,1]
-    st.write(code)
+    # st.write(code)
     ## make PER/PBR
     #회사명이 다른 경우 어찌해야 하나?
     fun_df = Get_Fundamental_Data(code,2015,2019)
@@ -110,8 +110,8 @@ def Get_Fundamental_Data(company, From, To):
     assets_last = equity_last + liability_last #전기 자산
     revenue = fs_nm('매출액|영업수익') #당기 매출액
     revenue_last = fs_nm_last('매출액|영업수익') #전기 매출액
-    income = fs_nm('영업이익') #당기 영업이익
-    income_last = fs_nm_last('영업이익') #전기 영업이익
+    income = fs_nm('영업이익|영업이익(손실)') #당기 영업이익
+    income_last = fs_nm_last('영업이익|영업이익(손실)') #전기 영업이익
     profit = fs_nm('당기순이익|반기순이익|기순이익') #당기 순이익
     profit_last = fs_nm_last('당기순이익|반기순이익|기순이익') #전기 순이익
     try:
@@ -120,7 +120,7 @@ def Get_Fundamental_Data(company, From, To):
       GPM = round((revenue - CostOfSales)/revenue*100,1) #매출총이익률
     except:
       CostOfSales = 0
-      CostOfMgnt = abs(fs_nm('판매비와관리비|영업비용'))
+      CostOfMgnt = 0
       GPM = 0
     
     EPS = int(dv_eps[['thstrm']].iloc[0,0].replace(',','').strip()) #주당 순이익
