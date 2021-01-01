@@ -5,7 +5,6 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-# import plotly_express as px
 import requests
 from pandas.io.json import json_normalize
 from plotly.subplots import make_subplots
@@ -14,11 +13,12 @@ import streamlit as st
 from alpha_vantage.fundamentaldata import FundamentalData as FD
 import FinanceDataReader as fdr
 
-pd.set_option('display.float_format', '{:.0f}'.format)
+pd.set_option('display.float_format', '{:.2f}'.format)
 
 #API key
 # fd = FD(key='XA7Y92OE6LDOTLLE')
 fd = FD(key='CBALDIGECB3UFF5R')
+key='CBALDIGECB3UFF5R'
 #sizipusx2@gmail.com = XA7Y92OE6LDOTLLE
 #indiesoul2@gmail.com = CBALDIGECB3UFF5R
 
@@ -49,17 +49,18 @@ def main():
     st.write(com_name_df)
     com_name = com_name_df.iloc[0,1]   
     st.header(com_name + " Fundamental Chart")
-
-    
+    ##주가 받아보자!!!
+    price_df = fdr.DataReader(input_ticker,income_df.index[0], income_df.index[-1])['Close'].to_frame()
+    income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
 
     #챠트 기본 설정
     # colors 
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,255,255)', 'rgb(237,234,255)']
     x_data = income_df.index # x축
     
-    # 기본 챠트 보기
-    st.subheader('<b>Income Chart')
-    title = com_name + '('  + input_ticker + ') Profit'
+    # Profit and Cost
+    st.subheader('Income Chart')
+    title = com_name + '('  + input_ticker + ') Profit & Cost'
     titles = dict(text= title, x=0.3, y = 1.0) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar = ['totalRevenue', 'costOfRevenue', 'totalOperatingExpense']
@@ -73,7 +74,6 @@ def main():
                                     name = y_data, x =  x_data, y= income_df.loc[:,y_data],
                                     text= income_df[y_data], textposition = 'top center', marker_color = color),
                                     secondary_y = True)
-
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
     fig.update_yaxes(range=[-max(income_df.loc[:,y_data_line[0]]), max(income_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
@@ -104,6 +104,50 @@ def main():
     fig.update_layout(title = titles, titlefont_size=15)
     st.plotly_chart(fig)
 
+    #가격과 이익 비교해 보기
+    title =com_name + '('  + input_ticker + ') Price & Profit'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar3 = ['totalRevenue', 'operatingIncome', 'ebit', 'netIncome']
+
+    for y_data, color in zip(y_data_bar3, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data],marker_color= color), secondary_y = False) 
+    
+    fig.add_trace(go.Scatter(mode='lines+markers', 
+                            name = 'Close', x =  x_data, y= income_df['Close'], # marker_color = color),
+                            text= income_df['Close'], textposition = 'top center', marker_color = 'rgb(0,0,0)'),
+                            secondary_y = True)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    # fig.update_yaxes(range=[0, max(income_df.loc[:,y_data_bar[0]].astype(int))], secondary_y = False)
+    # fig.update_yaxes(range=[-max(income_df.loc[:,y_data_line[0]].astype(int)), max(income_df.loc[:,y_data_line[0]].astype(int))* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_layout(title = titles, titlefont_size=15)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    st.plotly_chart(fig)
+
+    #가격과 EPS 비교해 보기
+    title =com_name + '('  + input_ticker + ') Price & EPS'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar4 = ['reportedEPS', 'estimatedEPS']
+    y_data_line4 = ['Close']
+
+    for y_data, color in zip(y_data_bar4, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data],marker_color= color), secondary_y = False) 
+    
+    for y_data, color in zip(y_data_line4, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data, x = x_data, y=income_df[y_data],
+        text = income_df[y_data], textposition = 'top center', marker_color = color),
+        secondary_y = True)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(range=[-max(income_df.loc[:,y_data_bar[0]]), max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+    fig.update_yaxes(range=[-max(income_df.loc[:,y_data_line[0]]), max(income_df.loc[:,y_data_line[0]].astype(int))* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_layout(title = titles, titlefont_size=15)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    st.plotly_chart(fig)
 
     #안정성 챠트 보기
     # st.subheader('안정성 챠트')
@@ -146,8 +190,6 @@ def load_data():
     return ticker_list
 
 def make_data(ticker):
-    pd.options.display.float_format = '{:.1f}'.format
-    #get db connection
     income, meta_data = fd.get_income_statement_quarterly(ticker) #get income statement quarterly data
     # cashflow, meta_data = fd.get_cash_flow_quarterly(ticker) #get cash flow quarterly data
     # balance, meta_data = fd.get_balance_sheet_quarterly(ticker) #get balance sheet quarterly data
@@ -156,8 +198,9 @@ def make_data(ticker):
     
     income= income.iloc[::-1]
     income.set_index('fiscalDateEnding', inplace=True)
+    income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
     sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'totalOperatingExpense', 'operatingIncome', 'ebit', 'netIncome']
-    income_df = income[sub].replace('None','0').astype(float).round(1)
+    income_df = income[sub].replace('None','0').astype(float).round(2)
     #연매출액 증가율
     gp_cagr = (income_df['totalRevenue'].iloc[-1]/income_df['totalRevenue'].iloc[0])**(1/5) -1
 
@@ -169,7 +212,26 @@ def make_data(ticker):
     income_df['OI Change'] = income_df['operatingIncome'].pct_change()*100
     income_df['NI Change'] = income_df['netIncome'].pct_change()*100
 
+    #earnings
+    API_URL = "https://www.alphavantage.co/query" 
+    func = "EARNINGS"
+    data = { 
+        "function": func, 
+        "symbol": ticker,
+        "outputsize" : "compact",
+        "datatype": "json", 
+        "apikey": key} 
 
+    response = requests.get(API_URL, data) 
+    response_json = response.json() 
+    edf = pd.DataFrame(response_json['quarterlyEarnings'])
+    edf.set_index('fiscalDateEnding', inplace=True)
+    edf.index =  pd.to_datetime(edf.index, format='%Y-%m-%d')
+    edf = edf.iloc[::-1]
+    edf.drop(columns="reportedDate", axis=1, inplace=True)    
+    edf = edf.replace('None','0').astype(float)
+
+    income_df = pd.merge(left=income_df, right=edf, how='inner', right_index=True, left_index=True)
     # cashflow = cashflow.iloc[::-1]
     # cashflow.set_index('fiscalDateEnding', inplace=True)
     # balance = balance.iloc[::-1]
