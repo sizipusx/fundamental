@@ -1,5 +1,6 @@
 alpha-vantage==2.3.1
 alphaj-krxcralwer==0.3.2
+base58==2.0.1
 beautifulsoup4==4.7.1
 DateTime==4.3
 finance-datareader==0.9.12
