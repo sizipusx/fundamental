@@ -30,8 +30,8 @@ def main():
         # st.dataframe(tickers)
     data_load_state.text("Done! (using st.cache)")
 
-    input_ticker = st.sidebar.text_input("ticker","AAPL")
-
+    input_ticker = st.sidebar.text_input("ticker","AAPL").upper()
+    
     if input_ticker == "":
         input_ticker = st.sidebar.selectbox(
             'Ticker',ticker_list
@@ -43,14 +43,11 @@ def main():
     # income_df, cashflow_df, balance_df, summary_df = make_data(input_ticker)
     # income_df = make_data(input_ticker)
     
-    #company overview
     OV = fd.get_company_overview(input_ticker)
     split_OV=OV[0]
     df = pd.json_normalize(split_OV)
     df = df.T
-    if  st.checkbox('Show raw data'):
-        st.subheader('Company Over View') 
-        st.dataframe(df.style.highlight_max(axis=0))
+    st.dataframe(df.style.highlight_max(axis=1))
 
     com_name_df = tickers[tickers['Symbol'] == input_ticker ]
     # st.write(com_name_df)
