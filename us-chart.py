@@ -1,5 +1,6 @@
 import json
 import sqlite3
+import time
 from datetime import datetime
 
 import numpy as np
@@ -29,6 +30,15 @@ def main():
     ticker_list = tickers['Symbol'].values.tolist()
         # st.dataframe(tickers)
     data_load_state.text("Done! (using st.cache)")
+    
+    # my_bar = st.progress(0)
+    # for percent_complete in range(60):
+    #     time.sleep(1)
+    #     my_bar.progress(percent_complete + 1)
+    
+    # with st.spinner('Wait for One Minuate00...'):
+    #     time.sleep(60)
+    #     st.success('Done!')
 
     input_ticker = st.sidebar.text_input("ticker","AAPL").upper()
     
@@ -132,7 +142,12 @@ def main():
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
-    
+    #조회시 1분 기다려야 함
+    st.warning('Please Wait One minute Befor Searching Next Company!!!')
+    my_bar = st.progress(0)
+    for percent_complete in range(60):
+        time.sleep(1)
+        my_bar.progress(percent_complete + 1)
 
     #안정성 챠트 보기
     # st.subheader('안정성 챠트')
