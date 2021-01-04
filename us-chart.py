@@ -208,7 +208,9 @@ def run():
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar4 = ['IAR', 'CAR']
     y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
-    fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], marker_color= marker_colors[0]), secondary_y = False) 
+    fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], 
+                         text = balance_df[y_data_bar4[1]], textposition = 'outside', 
+                         marker_color= marker_colors[0]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
                                     text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[3]),
