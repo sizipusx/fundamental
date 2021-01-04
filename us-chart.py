@@ -179,7 +179,8 @@ def run():
     title = com_name + '('  + input_ticker + ') <b>Asset & Liabilities</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
+    #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
+    y_data_bar3 = ['totalLiabilities', 'totalShareholderEquity']
     y_data_line3 = ['DER', 'CALR', 'QR','CDR']
     #y_data_line3_name = ['Debt/Equity', 'CurrentRatio', 'QuickRatio','CurrentDebt/Equity']
 
@@ -195,7 +196,7 @@ def run():
     fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
     fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    ig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(barmode='stack')
     st.plotly_chart(fig)
