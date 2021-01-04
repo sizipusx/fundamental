@@ -194,8 +194,10 @@ def run():
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
     fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    ig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(barmode='stack')
     st.plotly_chart(fig)
 
     #무형자산총자금비율, 현금자산비율
