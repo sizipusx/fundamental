@@ -181,6 +181,7 @@ def run():
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
     y_data_line3 = ['DER', 'CALR', 'QR','CDR']
+    #y_data_line3_name = ['Debt/Equity', 'CurrentRatio', 'QuickRatio','CurrentDebt/Equity']
 
     for y_data, color in zip(y_data_bar3, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], marker_color= color), secondary_y = False) 
@@ -193,7 +194,7 @@ def run():
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
     fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
@@ -203,13 +204,14 @@ def run():
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar4 = ['IAR', 'CAR']
-    fig.add_trace(go.Bar(name = y_data_bar4[1], x = x_data, y = balance_df[y_data_bar4[1]], marker_color= marker_colors[0]), secondary_y = False) 
+    y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
+    fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], marker_color= marker_colors[0]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                    name = y_data_bar4[0], x =  x_data, y= balance_df[y_data_bar4[0]],
+                                    name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
                                     text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[3]),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksurfix="%")
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
