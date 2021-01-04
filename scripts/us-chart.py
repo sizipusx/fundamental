@@ -46,7 +46,7 @@ def run():
     df = pd.json_normalize(split_OV)
     df = df.T
     st.dataframe(df.style.highlight_null(null_color='red').format(None, na_rep="-"))
-    st.write('Descrption:', df.loc['Descrition'])
+    st.write('Description:', df.loc['Descrition'])
 
     com_name_df = tickers[tickers['Symbol'] == input_ticker ]
     # st.write(com_name_df)
