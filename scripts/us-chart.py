@@ -30,15 +30,6 @@ def run():
     ticker_list = tickers['Symbol'].values.tolist()
         # st.dataframe(tickers)
     data_load_state.text("Done! (using st.cache)")
-    
-    # my_bar = st.progress(0)
-    # for percent_complete in range(60):
-    #     time.sleep(1)
-    #     my_bar.progress(percent_complete + 1)
-    
-    # with st.spinner('Wait for One Minuate00...'):
-    #     time.sleep(60)
-    #     st.success('Done!')
 
     input_ticker = st.sidebar.text_input("ticker","AAPL").upper()
     
@@ -48,16 +39,14 @@ def run():
         )
     
     #Income 데이터 가져오기
-    income_df, earning_df = make_data(input_ticker)
-    income_df = income_df.round(0)
-    # income_df, cashflow_df, balance_df, summary_df = make_data(input_ticker)
-    # income_df = make_data(input_ticker)
-    
+    earning_df, income_df, balance_df, cashflow_df = make_data(input_ticker)
+    #Summary 데이터 가져오기    
     OV = fd.get_company_overview(input_ticker)
     split_OV=OV[0]
     df = pd.json_normalize(split_OV)
     df = df.T
-    st.dataframe(df.style.highlight_max(axis=1))
+    st.dataframe(df.style.highlight_null(null_color='red').format(None, na_rep="-"))
+    st.write('Descrption:', df.loc['Descrition'])
 
     com_name_df = tickers[tickers['Symbol'] == input_ticker ]
     # st.write(com_name_df)
@@ -183,6 +172,64 @@ def run():
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
+    #안정성
+    #부채비율, 유동비율, 당좌비율
+    st.subheader('Asset, Liabilities, ShareholderEquity')
+    x_data = balance_df.index
+    title = com_name + '('  + input_ticker + ') <b>Asset & Liabilities</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
+    y_data_line3 = ['DER', 'CALR', 'QR','CDR']
+
+    for y_data, color in zip(y_data_bar3, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], marker_color= color), secondary_y = False) 
+    
+    for y_data, color in zip(y_data_line3, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data, x =  x_data, y= balance_df.loc[:,y_data],
+                                    text= balance_df[y_data], textposition = 'top center', marker_color = color),
+                                    secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
+    fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+    #무형자산총자금비율, 현금자산비율
+    x_data = balance_df.index
+    title = com_name + '('  + input_ticker + ') <b>intangibleAssets & cash And ShortTermInvestments</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar4 = ['IAR', 'CAR']
+    fig.add_trace(go.Bar(name = y_data_bar4[1], x = x_data, y = balance_df[y_data_bar4[1]], marker_color= marker_colors[0]), secondary_y = False) 
+    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data_bar4[0], x =  x_data, y= balance_df[y_data_bar4[0]],
+                                    text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[3]),
+                                    secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksurfix="%")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+    #현금흐름
+    #영업활동현금흐름, 순이익, 투자활동현금흐름, 재무활동현금흐름
+    st.subheader('Cash Flow')
+    x_data = cashflow_df.index
+    title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar5 = ['operatingCashflow', 'netIncome', 'FCF']
+
+    for y_data, color in zip(y_data_bar5, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], marker_color= color), secondary_y = False) 
+    
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
     #조회시 1분 기다려야 함
     st.warning('Please Wait One minute Befor Searching Next Company!!!')
     my_bar = st.progress(0)
@@ -230,16 +277,64 @@ def load_data():
 
     return ticker_list
 
-def make_data(ticker):
-    income, meta_data = fd.get_income_statement_quarterly(ticker) #get income statement quarterly data
-    # cashflow, meta_data = fd.get_cash_flow_quarterly(ticker) #get cash flow quarterly data
-    # balance, meta_data = fd.get_balance_sheet_quarterly(ticker) #get balance sheet quarterly data
-    # ov = fd.get_company_overview(symbol=ticker)  #get overview data
-    # summary = pd.json_normalize(ov[0])
+def make_df(funct, ticker):
+    API_URL = "https://www.alphavantage.co/query" 
+    choice = "quarterlyReports" #annualReports : quarterlyReports 둘다 5년치 데이터
+    func = funct
+    data = { 
+        "function": func, 
+        "symbol": ticker,
+        "outputsize" : "compact",
+        "datatype": "json", 
+        "apikey": key} 
+    response = requests.get(API_URL, data) 
+    response_json = response.json() # maybe redundant
+
+    if func == 'TIME_SERIES_DAILY' :
+        df = pd.DataFrame.from_dict(response_json['Time Series (Daily)'], orient= 'index')
+        df.index =  pd.to_datetime(df.index, format='%Y-%m-%d')
+        df = df.rename(columns={ '1. open': 'Open', '2. high': 'High', '3. low': 'Low', '4. close': 'Close', '5. volume': 'Volume'})
+        df = df.astype({'Open': 'float64', 'High': 'float64', 'Low': 'float64','Close': 'float64','Volume': 'float64',})
+        df = df[[ 'Open', 'High', 'Low', 'Close', 'Volume']]
+    elif func == 'INCOME_STATEMENT':
+        df = pd.DataFrame(response_json[choice])
+        df = df.iloc[::-1]
+        df.set_index('fiscalDateEnding', inplace=True)
+        df = pd.to_datetime(df.index, format='%Y-%m-%d')
+        # print(df)
+    elif func == 'BALANCE_SHEET':
+        df = pd.DataFrame(response_json[choice])
+        df = df.iloc[::-1]
+        df.set_index('fiscalDateEnding', inplace=True)
+        df = pd.to_datetime(df.index, format='%Y-%m-%d')
+    elif func == 'CASH_FLOW':
+        df = pd.DataFrame(response_json[choice])
+        df = df.iloc[::-1]
+        df.set_index('fiscalDateEnding', inplace=True)
+        df = pd.to_datetime(df.index, format='%Y-%m-%d')
+    elif func == 'EARNINGS':
+        df = pd.DataFrame(response_json['quarterlyEarnings'])
+        df = df.iloc[::-1]
+        df.set_index('fiscalDateEnding', inplace=True)
+        df.index =  pd.to_datetime(df.index, format='%Y-%m-%d')
+        df['reportedEPS'] = df['reportedEPS'].replace('None','0').astype(float).round(3)
+        df['estimatedEPS'] = df['estimatedEPS'].replace('None','0').astype(float).round(4)
+        df['surprise'] = df['surprise'].replace('None','0').astype(float).round(4)
+        df['surprisePercentage'] = df['surprisePercentage'].replace('None','0').astype(float).round(2)
+
+    return df
+
+def make_data(ticker):   
+    edf = make_df('EARNINGS',ticker) #get earning sheet quarterly data
+    # income = make_df('INCOME_STATEMENT',ticker) #get income statement quarterly data
+    # cashflow = make_df('BALANCE_SHEET',ticker) #get cash flow quarterly data
+    # balance = make_df('CASH_FLOW',ticker) #get balance sheet quarterly data
     
-    income= income.iloc[::-1]
+    #income_statement
+    income, meta_data = fd.get_income_statement_quarterly(ticker)
     income.set_index('fiscalDateEnding', inplace=True)
     income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
+    income = income.iloc[::-1]
     sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'totalOperatingExpense', 'operatingIncome', 'ebit', 'netIncome']
     income_df = income[sub].replace('None','0').astype(float).round(0)
     #연매출액 증가율
@@ -253,37 +348,39 @@ def make_data(ticker):
     income_df['OI Change'] = income_df['operatingIncome'].pct_change()*100
     income_df['NI Change'] = income_df['netIncome'].pct_change()*100
 
-    #earnings
-    API_URL = "https://www.alphavantage.co/query" 
-    func = "EARNINGS"
-    data = { 
-        "function": func, 
-        "symbol": ticker,
-        "outputsize" : "compact",
-        "datatype": "json", 
-        "apikey": key} 
-
-    response = requests.get(API_URL, data) 
-    response_json = response.json() 
-    edf = pd.DataFrame(response_json['quarterlyEarnings'])
-    edf.set_index('fiscalDateEnding', inplace=True)
-    edf.index =  pd.to_datetime(edf.index, format='%Y-%m-%d')
-    edf = edf.iloc[::-1]
-    edf['reportedEPS'] = edf['reportedEPS'].replace('None','0').astype(float).round(3)
-    edf['estimatedEPS'] = edf['estimatedEPS'].replace('None','0').astype(float).round(4)
-    edf['surprise'] = edf['surprise'].replace('None','0').astype(float).round(4)
-    edf['surprisePercentage'] = edf['surprisePercentage'].replace('None','0').astype(float).round(2)
-
+    #balance sheet 
+    balance, meta_data = fd.get_balance_sheet_quarterly(ticker)
+    balance.set_index('fiscalDateEnding', inplace=True)
+    balance.index =  pd.to_datetime(balance.index, format='%Y-%m-%d')
+    balance = balance.iloc[::-1]
+    sub = ['totalAssets', 'intangibleAssets', 'totalLiabilities', 'totalShareholderEquity', 'retainedEarnings', 'totalCurrentLiabilities', \
+         'totalCurrentAssets', 'netTangibleAssets', 'netReceivables', 'inventory', 'accountsPayable', 'accumulatedAmortization', \
+         'totalNonCurrentAssets', 'accumulatedDepreciation', 'cashAndShortTermInvestments']
+    balance_df = balance[sub].replace('None','0').astype(float).round(0)
+    #부채비율
+    balance_df['DER'] = balance_df['totalLiabilities'] / balance_df['totalShareholderEquity']*100
+    #유동비율
+    balance_df['CALR'] = balance_df['totalCurrentAssets'] / balance_df['totalCurrentLiabilities']*100
+    #당좌비율(당좌자산(유동자산-재고자산)/유동부채)
+    balance_df['QR'] = (balance_df['totalCurrentAssets'] - balance_df['inventory'])/ balance_df['totalCurrentLiabilities']*100
+    #유동부채비율
+    balance_df['CDR'] = balance_df['totalCurrentLiabilities'] / balance_df['totalShareholderEquity']*100
+    #무형자산총자산비율 15%미만
+    balance_df['IAR'] = balance_df['intangibleAssets'] / balance_df['totalAssets']*100
+    #현금자산비율
+    balance_df['CAR'] = balance_df['cashAndShortTermInvestments'] / balance_df['totalAssets']*100
     
-    # cashflow = cashflow.iloc[::-1]
-    # cashflow.set_index('fiscalDateEnding', inplace=True)
-    # balance = balance.iloc[::-1]
-    # balance.set_index('fiscalDateEnding', inplace=True)
+    #cash-flow 
+    cashflow, meta_data = fd.get_cash_flow_quarterly(ticker)
+    cashflow.set_index('fiscalDateEnding', inplace=True)
+    cashflow.index =  pd.to_datetime(cashflow.index, format='%Y-%m-%d')
+    cashflow = cashflow.iloc[::-1]
+    sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'depreciation', 'dividendPayout', \
+         'stockSaleAndPurchase', 'capitalExpenditures', 'changeInCashAndCashEquivalents']
+    cashflow_df = cashflow[sub].replace('None','0').astype(float).round(0)
+    cashflow_df["FCF"] = cashflow_df['operatingCashflow'] - cashflow_df['capitalExpenditures']
 
-    # return income, cashflow, balance, summary 
-    return income_df, edf
-
-
+    return edf, income_df, balance_df, cashflow_df
 
 
 def visualize_PER_band(com_name, df):
