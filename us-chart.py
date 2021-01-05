@@ -54,7 +54,7 @@ def run():
     st.header(com_name + " Fundamental Chart")
     ##주가 EPS
     price_df = fdr.DataReader(input_ticker,earning_df.index[0], earning_df.index[-1])['Close'].to_frame()
-    income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
+    # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
     earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
     band_df = pd.merge(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, left_index=True)
 
@@ -174,7 +174,6 @@ def run():
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
-    #안정성
     #부채비율, 유동비율, 당좌비율
     st.subheader('Asset, Liabilities, ShareholderEquity')
     x_data = balance_df.index
@@ -228,30 +227,26 @@ def run():
     title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    y_data_bar5 = ['operatingCashflow', 'netIncome', 'FCF']
+    y_data_bar5 = ['operatingCashflow', 'FCF']
 
     for y_data, color in zip(y_data_bar5, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], marker_color= color), secondary_y = False) 
-    
+    fig.add_trace(go.Bar(name = 'NetIncome', x = x_data, y = income_df['netIncome'], marker_color= 'rgb(22,108,150)'), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
     #PER 밴드 챠트
-    st.subheader('밴드 챠트')
     visualize_PER_band(input_ticker, com_name, band_df)
+    # visualize_PBR_band(input_ticker, com_name, band_df)
 
     #조회시 1분 기다려야 함
     st.warning('Please Wait One minute Before Searching Next Company!!!')
     my_bar = st.progress(0)
-    for percent_complete in range(60):
-        time.sleep(1)
+    for percent_complete in range(100):
+        time.sleep(0.6)
         my_bar.progress(percent_complete + 1)
-
-    #PBR 밴드 챠트
-    # visualize_PBR_band(tic, df)
-
 
 @st.cache
 def load_data():
@@ -423,8 +418,8 @@ def visualize_PER_band(ticker, com_name, fun_df):
     df['PER'] = round((df['Close'] / df['reportedEPS']),2)
     #PER Max/Min/half/3/1
     e_max = round(df['PER'].max(),1)
-    if(e_max >= 30.00):
-        e_max = 30.00
+    if(e_max >= 50.00):
+        e_max = 50.00
     e_min = round(df['PER'].min(),1)
     e_half = round((e_max + e_min)/2,1)
     e_3 = round((e_max-e_half)/2 + e_half,1)
@@ -440,7 +435,7 @@ def visualize_PER_band(ticker, com_name, fun_df):
     st.subheader('Band Chart')
     title = com_name + '('  + ticker + ') <b>PER Band/b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
-    st.dataframe(df)
+    # st.dataframe(df)
 
     fig = make_subplots(specs=[[{"secondary_y": False}]])
     fig.add_trace(go.Scatter(x=df.index, y=df.iloc[:,4], name=df.columns[4],
