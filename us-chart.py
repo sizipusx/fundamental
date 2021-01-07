@@ -456,15 +456,15 @@ def visualize_PBR_band(ticker, com_name, fun_df):
     titles = dict(text= title, x=0.5, y = 0.85) 
 
     fig = make_subplots(specs=[[{"secondary_y": False}]])
-    fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,4], name=fun_df.columns[4],
-                            line=dict(color='firebrick', width=2)))
     fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,5], name=fun_df.columns[5],
-                            line = dict(color='purple', width=2, dash='dash')))
+                            line=dict(color='firebrick', width=2)))
     fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,6], name=fun_df.columns[6],
-                            line=dict(color='royalblue', width=2)))
+                            line = dict(color='purple', width=2, dash='dash')))
     fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,7], name=fun_df.columns[7],
-                            line = dict(color='green', width=2, dash='dash')))
+                            line=dict(color='royalblue', width=2)))
     fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,8], name=fun_df.columns[8],
+                            line = dict(color='green', width=2, dash='dash')))
+    fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,9], name=fun_df.columns[9],
                             line=dict(color='red', width=2))) # dash options include 'dash', 'dot', and 'dashdot'
      
     fig.add_trace(
