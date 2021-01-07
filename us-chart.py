@@ -25,23 +25,12 @@ key='XA7Y92OE6LDOTLLE'
 #indiesoul2@gmail.com = CBALDIGECB3UFF5R
 
 def run():
-    data_load_state = st.text('Loading data...')
+    data_load_state = st.text('Loading All Company data...')
     tickers = load_data()
     # ticker_list = tickers['Symbol'].values.tolist()
         # st.dataframe(tickers)
     data_load_state.text("Done! (using st.cache)")
 
-    # input_ticker = st.sidebar.text_input("ticker").upper()
-    # # port_list = [""]
-    
-    # if input_ticker == "":
-    #     input_ticker = st.sidebar.selectbox(
-    #         'Ticker',ticker_list
-    #     )
-    
-    # submit = st.sidebar.button('Run selected app')
-    # if submit:
-    # import_module(apps[run_app]).run()
     #Income 데이터 가져오기
     earning_df, income_df, balance_df, cashflow_df = make_data(input_ticker)
     #Summary 데이터 가져오기    
@@ -57,7 +46,7 @@ def run():
     com_name = com_name_df.iloc[0,1]   
     st.header(com_name + " Fundamental Chart")
     ##주가 EPS
-    price_df = fdr.DataReader(input_ticker,earning_df.index[0], earning_df.index[-1])['Close'].to_frame()
+    price_df = fdr.DataReader(input_ticker, earning_df.loc[0,'reportedDate'], earning_df.iloc[-1,1])['Close'].to_frame()
     # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
     earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
     band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
