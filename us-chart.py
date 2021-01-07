@@ -482,13 +482,14 @@ if __name__ == "__main__":
 
     input_ticker = st.sidebar.text_input("ticker").upper()
     
-    ticker_list = ["BIIB", "Big", "CI", "CPRX", "CHRS", "CSCO","CVS", "HRB", "PRDO", "MO", "T", "O", "OMC", "SBUX", \
+    ticker_list = ["BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS", "HRB", "PRDO", "MO", "T", "O", "OMC", "SBUX", \
                     "MSFT", "MMM", "INVA", "SIGA"]
     if input_ticker == "":
         input_ticker = st.sidebar.selectbox(
             'Ticker',ticker_list
         )
     
+    input_ticker = input_ticker.upper()
     submit = st.sidebar.button('Run app')
     if submit:
         run()
