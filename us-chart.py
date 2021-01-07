@@ -46,7 +46,7 @@ def run():
     com_name = com_name_df.iloc[0,1]   
     st.header(com_name + " Fundamental Chart")
     ##주가 EPS
-    price_df = fdr.DataReader(input_ticker, earning_df.loc[0,'reportedDate'], earning_df.iloc[-1,1])['Close'].to_frame()
+    price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
     # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
     earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
     band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
