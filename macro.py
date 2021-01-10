@@ -46,7 +46,8 @@ def run() :
     list_index = macro_list.index(selected_macro)
     column_list_name = column_list[list_index]
     # 챠트 기본 설정 
-    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    #marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     titles = dict(text= macro_list[1] + ' & '+ selected_macro, x=0.5, y = 0.9) 
