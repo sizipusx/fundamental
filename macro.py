@@ -64,7 +64,7 @@ def run() :
                                 text= df['SP500'], textposition = 'top center', marker_color = marker_colors[0]),# marker_colorscale='RdBu'),
                                 secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', name = selected_macro, x =  df.index, y= df.iloc[:,list_index],
-                                text= df.iloc[:,list_index], textposition = 'top center', marker_color = marker_colors[3]),# marker_colorscale='RdBu'),
+                                text= df.iloc[:,list_index], textposition = 'top center', marker_color = marker_colors[2]),# marker_colorscale='RdBu'),
                                 secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text=column_list_name, showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = True) #ticksuffix="%"
