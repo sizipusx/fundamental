@@ -215,7 +215,7 @@ def run():
                          marker_color= marker_colors[0]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
-                                    text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[3]),
+                                    text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[2]),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
