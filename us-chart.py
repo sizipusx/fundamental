@@ -187,7 +187,8 @@ def run():
     y_data_line3 = ['Debt/Equity', 'QuickRatio', '유동부채/자기자본']
 
     for y_data, color in zip(y_data_bar3, marker_colors) :
-        fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], marker_color= color), secondary_y = False) 
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], 
+                            text = balance_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
     
     for y_data, color in zip(y_data_line3, marker_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
