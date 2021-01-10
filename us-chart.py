@@ -1,13 +1,12 @@
-import json
-import sqlite3
 import time
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import requests
+import json
 from pandas.io.json import json_normalize
+import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 import streamlit as st
@@ -62,7 +61,8 @@ def run():
 
     #챠트 기본 설정
     # colors 
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+    marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473', 'rgb(237,234,255)']
+    # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
     #주가와 EPS
@@ -87,13 +87,13 @@ def run():
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
     fig.update_layout(
             showlegend=True,
-            # legend=dict(
-            # orientation="h",
-            # yanchor="bottom",
-            # y=1.02,
-            # xanchor="right",
-            # x=1
-        # ),
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
             xaxis=go.layout.XAxis(
             rangeselector=dict(
                 buttons=list([
@@ -120,9 +120,9 @@ def run():
                     dict(step="all")
                 ])
             ),
-            # rangeslider=dict(
-            #     visible=True
-            # ),
+            rangeslider=dict(
+                visible=True
+            ),
             type="date"
             )      
         )
@@ -146,8 +146,8 @@ def run():
                                     text= income_df[y_data], textposition = 'top center', marker_color = color),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
-    fig.update_yaxes(range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(title_text='Revenue', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='Income', range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
@@ -170,8 +170,8 @@ def run():
                             text = income_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
-    fig.update_yaxes(range=[-max(income_df.loc[:,y_data_line2[0]]), max(income_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(title_text='Growth Rate', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='Margin Rate', range=[-max(income_df.loc[:,y_data_line2[0]]), max(income_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
@@ -197,8 +197,8 @@ def run():
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
     fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(barmode='stack')
     st.plotly_chart(fig)
@@ -218,7 +218,8 @@ def run():
                                     text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[3]),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
+    fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
+    fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
@@ -235,7 +236,7 @@ def run():
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], marker_color= color), secondary_y = False) 
     fig.add_trace(go.Bar(name = 'NetIncome', x = x_data, y = income_df['netIncome'], marker_color= 'rgb(22,108,150)'), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
+    fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
@@ -416,7 +417,7 @@ def visualize_PER_band(ticker, com_name, fun_df):
         secondary_y=False
     )
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
+    fig.update_yaxes(title_text="Price", showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
     st.plotly_chart(fig)
 
@@ -462,7 +463,7 @@ def visualize_PBR_band(ticker, com_name, fun_df):
     )
 
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
+    fig.update_yaxes(title_text="Price", showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
     st.plotly_chart(fig)
         
@@ -471,8 +472,9 @@ if __name__ == "__main__":
 
     input_ticker = st.sidebar.text_input("ticker").upper()
     
-    ticker_list = ["BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS", "HRB", "PRDO", "MO", "T", "O", "OMC", "SBUX", \
-                    "MSFT", "MMM", "INVA", "SIGA"]
+    ticker_list = ["APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN" "HRB", "PRDO", \
+                    "MO", "T", "O", "OMC", "SBUX", \
+                    "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
     if input_ticker == "":
         input_ticker = st.sidebar.selectbox(
             'Ticker',ticker_list
