@@ -234,7 +234,7 @@ def run():
 
     for y_data, color in zip(y_data_bar5, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], marker_color= color), secondary_y = False) 
-    fig.add_trace(go.Bar(name = 'NetIncome', x = x_data, y = income_df['netIncome'], marker_color= 'rgb(22,108,150)'), secondary_y = False)
+    fig.add_trace(go.Bar(name = 'NetIncome', x = x_data, y = income_df['netIncome'], marker_color= '#ff7473'), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
