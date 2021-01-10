@@ -472,7 +472,7 @@ if __name__ == "__main__":
 
     input_ticker = st.sidebar.text_input("ticker").upper()
     
-    ticker_list = ["APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN" "HRB", "PRDO", \
+    ticker_list = ["APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
                     "MO", "T", "O", "OMC", "SBUX", \
                     "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
     if input_ticker == "":
