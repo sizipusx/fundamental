@@ -41,6 +41,8 @@ def run() :
     data_load_state = st.text('Loading All Macro Data...')
     df = load_data()
     data_load_state.text("Done! (using st.cache)")
+    
+    st.title("미국 주요 경제 지표와 S&P500")
 
     column_list = df.columns.to_list()
     list_index = macro_list.index(selected_macro)
@@ -121,7 +123,7 @@ if __name__ == "__main__":
                             'M2 Money Stock', '주간 실업수당 청구 건수', '연속 실업수당청구 건수']
             
     selected_macro = st.sidebar.selectbox(
-            'Ticker',macro_list
+            '미국 주요 경제 지표',macro_list
         )
     submit = st.sidebar.button('Draw Macro')
     if submit:
