@@ -61,7 +61,7 @@ def run():
 
     #챠트 기본 설정
     # colors 
-    marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473', 'rgb(237,234,255)']
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
     # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
