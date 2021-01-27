@@ -45,7 +45,7 @@ def load_index_data():
 
 @st.cache
 def load_senti_data():
-    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/데이터/WeeklySeriesTables(시계열)_20210118.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel('./data/WeeklySeriesTables(시계열).xlsx', sheet_name=None, header=1)
 
     js = kb_dict['매수매도']
     js = js.set_index("Unnamed: 0")
