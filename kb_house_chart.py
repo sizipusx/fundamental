@@ -24,7 +24,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 @st.cache
 def load_index_data():
-    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/데이터/WeeklySeriesTables(시계열)_20210118.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel('./WeeklySeriesTables(시계열).xlsx', sheet_name=None, header=1)
 
     mdf = kb_dict['매매지수']
     jdf = kb_dict['전세지수']
