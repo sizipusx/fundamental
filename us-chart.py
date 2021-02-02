@@ -14,6 +14,8 @@ from alpha_vantage.fundamentaldata import FundamentalData as FD
 import FinanceDataReader as fdr
 
 pd.set_option('display.float_format', '{:.2f}'.format)
+now = datetime.now() +pd.DateOffset(days=-1)
+today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 #API key
 fd = FD(key='XA7Y92OE6LDOTLLE')
@@ -37,13 +39,30 @@ def run():
     split_OV=OV[0]
     df = pd.json_normalize(split_OV)
     df = df.T
-    st.dataframe(df.style.highlight_null(null_color='red').format(None, na_rep="-"))
-    st.write('Description:', df.loc['Description',0])
+    
+    ## 특정 위치의 배경색 바꾸기
+    def draw_color_cell(x,color):
+        color = f'background-color:{color}'
+        return color
+
+    #Rim 즉석 계산
+    df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
+    df.loc['RIM'] = df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08)
+    close_price = fdr.DataReader(input_ticker, today)
+    df.loc['Price'] = close_price.iloc[0,0]
+    df.loc['Margin Of Safety'] = (df.loc['RIM']/df.loc['Price'] -1)*100
+    last_value = df.iloc[-1,0]
+    last_value= str(round(last_value,2)) + '%'
+    df.iloc[-1,0] = last_value
+    df.style.applymap(draw_color_cell,color='#ff9090',subset=pd.IndexSlice[-1,0])
+    st.table(df)
+    # st.write('Description:', df.loc['Description',0])
 
     com_name_df = tickers[tickers['Symbol'] == input_ticker ]
     # st.write(com_name_df)
     com_name = com_name_df.iloc[0,1]   
     st.header(com_name + " Fundamental Chart")
+    
     ##주가 EPS
     price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
     # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
@@ -51,6 +70,22 @@ def run():
     band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
     band_df['ttmEPS'] = band_df['reportedEPS'].rolling(4).sum()
     band_df.set_index('reportedDate', inplace=True)
+    st.dataframe(band_df)
+    #EPS 증감률
+    eps_10 = band_df.iloc[-41:, -1]
+    eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
+    eps_5 = band_df.iloc[-21:, -1]
+    eps_5_growth = (eps_5.iloc[-1]/eps_10.iloc[0])**1/5 -1
+    eps_3 = band_df.iloc[-13:, -1]
+    eps_3_growth = (eps_3.iloc[-1]/eps_10.iloc[0])**1/3 -1
+    eps_1 = band_df.iloc[-5:, -1]
+    eps_1_growth = (eps_1.iloc[-1]/eps_10.iloc[0])**1/1 -1
+    st.write(eps_10)
+    st.write(eps_10_growth)
+    st.write(eps_5_growth)
+    st.write(eps_3_growth)
+    st.write(eps_1_growth)
+
     #PBR 밴드 위해
     pbr_df = pd.DataFrame()
     pbr_df.loc[:,'shares'] = balance_df['commonStockSharesOutstanding']
