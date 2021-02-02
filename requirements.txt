@@ -9,7 +9,7 @@ Flask-Compress==1.4.0
 folium==0.10.0
 nodejs==0.1.1
 numpy==1.16.4
-OpenDartReader==0.0.8
+OpenDartReader==0.1.1
 openpyxl==2.6.2
 pandas==1.0.3
 plotly==4.2.0
