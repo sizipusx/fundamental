@@ -6,6 +6,7 @@ import pandas as pd
 import requests
 import json
 from pandas.io.json import json_normalize
+import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -20,10 +21,26 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 #API key
 fd = FD(key='XA7Y92OE6LDOTLLE')
 # fd = FD(key='CBALDIGECB3UFF5R')
-# key='CBALDIGECB3UFF5R'
-key='XA7Y92OE6LDOTLLE'
+key='CBALDIGECB3UFF5R'
+# key='XA7Y92OE6LDOTLLE'
 #sizipusx2@gmail.com = XA7Y92OE6LDOTLLE
 #indiesoul2@gmail.com = CBALDIGECB3UFF5R
+
+## 특정 위치의 배경색 바꾸기
+@st.cache
+def draw_color_cell(x,color):
+    color = f'background-color:{color}'
+    return color
+# PER 값 변경    
+@st.cache
+def change_per_value(x):
+    if x >= 100 :
+        x = 100
+    elif x <= 0 :
+        x = 0
+    else:
+        pass
+    return x
 
 def run():
     data_load_state = st.text('Loading All Company data...')
@@ -39,22 +56,22 @@ def run():
     split_OV=OV[0]
     df = pd.json_normalize(split_OV)
     df = df.T
-    
-    ## 특정 위치의 배경색 바꾸기
-    def draw_color_cell(x,color):
-        color = f'background-color:{color}'
-        return color
 
     #Rim 즉석 계산
     df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
-    df.loc['RIM'] = df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08)
+    df.loc['RIM'] = round(df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08),2)
     close_price = fdr.DataReader(input_ticker, today)
     df.loc['Price'] = close_price.iloc[0,0]
+    earningY = df.loc['Earnings Yield'][0]
+    if earningY < 15.0 :
+        df.loc['Target Price'] = round(df.loc['DilutedEPSTTM'].astype(float)/0.15,2)
     df.loc['Margin Of Safety'] = (df.loc['RIM']/df.loc['Price'] -1)*100
     last_value = df.iloc[-1,0]
     last_value= str(round(last_value,2)) + '%'
     df.iloc[-1,0] = last_value
     df.style.applymap(draw_color_cell,color='#ff9090',subset=pd.IndexSlice[-1,0])
+    df.columns = ['Description']
+    df.update(df.select_dtypes(include=np.number).applymap('{:,}'.format))
     st.table(df)
     # st.write('Description:', df.loc['Description',0])
 
@@ -69,8 +86,15 @@ def run():
     earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
     band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
     band_df['ttmEPS'] = band_df['reportedEPS'].rolling(4).sum()
+    earning_df['ttmEPS'] = earning_df['reportedEPS'].rolling(4).sum()
+    earning_df['EPS Change'] = round(earning_df['ttmEPS'].pct_change(5)*100,2)
+    earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
+    earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
     band_df.set_index('reportedDate', inplace=True)
-    st.dataframe(band_df)
+    if  st.checkbox('See Earning Data'):
+        st.subheader('Earning Raw Data') 
+        st.dataframe(earning_df.style.highlight_max(axis=0))
+
     #EPS 증감률
     eps_10 = band_df.iloc[-41:, -1]
     eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
@@ -80,10 +104,13 @@ def run():
     eps_3_growth = (eps_3.iloc[-1]/eps_10.iloc[0])**1/3 -1
     eps_1 = band_df.iloc[-5:, -1]
     eps_1_growth = (eps_1.iloc[-1]/eps_10.iloc[0])**1/1 -1
-    st.write(eps_10)
+    st.write("10Y EPS Growth")
     st.write(eps_10_growth)
+    st.write("5Y EPS Growth")
     st.write(eps_5_growth)
+    st.write("3Y EPS Growth")
     st.write(eps_3_growth)
+    st.write("1Y EPS Growth")
     st.write(eps_1_growth)
 
     #PBR 밴드 위해
@@ -162,6 +189,19 @@ def run():
             )      
         )
     st.plotly_chart(fig)
+
+    fig2 = go.Figure()
+    title = com_name +'('  + input_ticker + ') ttmEPS Statistics'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    fig2.add_trace(go.Box(x=earning_df.loc[:,'ttmEPS'], name='ttmEPS', boxpoints='all', marker_color = 'indianred',
+                    boxmean='sd', jitter=0.3, pointpos=-1.8 ))
+    fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    # fig2.add_trace(go.Box(x=earning_df.loc[:,'EPS Change'], name='EPS Change'))
+    st.plotly_chart(fig2)
+
+    #PER 밴드 챠트
+    visualize_PER_band(input_ticker, com_name, band_df)
+    visualize_PBR_band(input_ticker, com_name, pbr_df)
 
     # Profit and Cost
     st.subheader('Profit, Cost, Growth')
@@ -278,9 +318,6 @@ def run():
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
-    #PER 밴드 챠트
-    visualize_PER_band(input_ticker, com_name, band_df)
-    visualize_PBR_band(input_ticker, com_name, pbr_df)
 
     #조회시 1분 기다려야 함
     st.warning('Please Wait One minute Before Searching Next Company!!!')
@@ -416,7 +453,8 @@ def visualize_PER_band(ticker, com_name, fun_df):
     # st.write(option)
     fun_df.dropna(inplace=True)
     df = fun_df[['Close', 'ttmEPS']]
-    df['PER'] = round((df['Close'] / df['ttmEPS']),2)
+    df.loc[:,'PER'] = round((df['Close'] / df['ttmEPS']),2)
+    df.loc[:,'PER'] = df['PER'].map(lambda x: change_per_value(x))
     #PER Max/Min/half/3/1
     e_max = round(df['PER'].max(),1)
     if(e_max >= 50.00):
@@ -427,16 +465,86 @@ def visualize_PER_band(ticker, com_name, fun_df):
     e_1 = round((e_half-e_min)/2 + e_min,1)
 
     #가격 데이터 만들기
-    df[str(e_max)+"X"] = (df['ttmEPS']*e_max).round(2)
-    df[str(e_3)+"X"] = (df['ttmEPS']*e_3).round(2)
-    df[str(e_half)+"X"] = (df['ttmEPS']*e_half).round(2)
-    df[str(e_1)+"X"] = (df['ttmEPS']*e_1).round(2)
-    df[str(e_min)+"X"] = (df['ttmEPS']*e_min).round(2)
+    df.loc[:,str(e_max)+"X"] = (df['ttmEPS']*e_max).round(2)
+    df.loc[:,str(e_3)+"X"] = (df['ttmEPS']*e_3).round(2)
+    df.loc[:,str(e_half)+"X"] = (df['ttmEPS']*e_half).round(2)
+    df.loc[:,str(e_1)+"X"] = (df['ttmEPS']*e_1).round(2)
+    df.loc[:,str(e_min)+"X"] = (df['ttmEPS']*e_min).round(2)
+
+    #ttmEPS, PER, 가격 변동
+    # if  st.checkbox('See PER Band Data'):
+    #     st.subheader('PER Band Data') 
+    st.dataframe(df.style.highlight_max(axis=0))
+
+    title = com_name +'('  + input_ticker + ') ttmEPS & Price & PER'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    x_data = df.index # EPS발표 날짜로 
+    marker_colors = ['#ff7473', '#47b8e0', '#34314c', '#ffc952', '#3ac569']
+    # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar = ['PER', 'ttmEPS']
+    
+    for y_data, color in zip(y_data_bar, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x =x_data, y = df[y_data], marker_color= color, 
+                        text= df[y_data], textposition = 'auto'),
+                        secondary_y = False) 
+
+    fig.add_trace(go.Scatter(mode='lines', 
+                            name = 'Close', x =df.index, y= df['Close'],
+                            text= df['Close'], textposition = 'top center', marker_color = '#34314c'),# marker_colorscale='RdBu'),
+                            secondary_y = True)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = True)
+    fig.update_yaxes(title_text='ttmEPS/PER',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
+    st.plotly_chart(fig)
 
     st.subheader('Band Chart')
     title = com_name + '('  + ticker + ') <b>PER Band</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
-    st.dataframe(df)
 
     fig = make_subplots(specs=[[{"secondary_y": False}]])
     fig.add_trace(go.Scatter(x=df.index, y=df.iloc[:,3], name=df.columns[3],
@@ -473,12 +581,15 @@ def visualize_PBR_band(ticker, com_name, fun_df):
     b_1 = round((b_half-b_min)/2 + b_min,1)
 
     #가격 데이터 만들기
-    fun_df[str(b_max)+"X"] = fun_df['BPS']*b_max
-    fun_df[str(b_3)+"X"] = (fun_df['BPS']*b_3).round(2)
-    fun_df[str(b_half)+"X"] = (fun_df['BPS']*b_half).round(2)
-    fun_df[str(b_1)+"X"] = (fun_df['BPS']*b_1).round(2)
-    fun_df[str(b_min)+"bX"] = (fun_df['BPS']*b_min).round(2)
-    st.dataframe(fun_df)
+    fun_df.loc[:,str(b_max)+"X"] = fun_df['BPS']*b_max
+    fun_df.loc[:,str(b_3)+"X"] = (fun_df['BPS']*b_3).round(2)
+    fun_df.loc[:,str(b_half)+"X"] = (fun_df['BPS']*b_half).round(2)
+    fun_df.loc[:,str(b_1)+"X"] = (fun_df['BPS']*b_1).round(2)
+    fun_df.loc[:,str(b_min)+"bX"] = (fun_df['BPS']*b_min).round(2)
+    
+    if  st.checkbox('See PBR Band Data'):
+        st.subheader('PBR Band Data') 
+        st.dataframe(fun_df.style.highlight_max(axis=0))
     
     title = com_name + '('  + ticker + ') <b>PBR Band</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
@@ -510,7 +621,8 @@ if __name__ == "__main__":
 
     input_ticker = st.sidebar.text_input("ticker").upper()
     
-    ticker_list = ["APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
+    ticker_list = [ "SENEA", "IMKTA", "KBAL", "CMC", \
+                    "APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
                     "MO", "T", "O", "OMC", "SBUX", \
                     "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
     if input_ticker == "":
