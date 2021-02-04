@@ -74,6 +74,38 @@ def run():
     df.update(df.select_dtypes(include=np.number).applymap('{:,}'.format))
     st.table(df)
     # st.write('Description:', df.loc['Description',0])
+    #gauge chart
+    fig = go.Figure(go.Indicator(
+        mode = "gauge+number+delta",
+        value = df.iloc[-3,0],
+        delta = {'reference': df.iloc[-4,0], 'relative': True},
+        title = {'text': "RIM-Price"},
+        domain = {'x': [0, 1], 'y': [0, 0.5]}
+    ))
+    fig.add_trace(go.Indicator(
+        mode = "number+delta",
+        value = df.iloc[-5,0],
+        title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+        domain = {'x': [0, 1], 'y': [0.6, 1]},
+        delta = {'reference': 15}))
+    st.plotly_chart(fig)
+
+    fig = go.Figure()
+    fig.add_trace(go.Indicator(
+        mode = "number+delta",
+        value = 200,
+        title = {"text": "RIM<br><span style='font-size:0.8em;color:gray'>Current Price</span>"},
+        domain = {'x': [0, 1], 'y': [0, 0.5]},
+        delta = {'reference': 400, 'relative': True, 'position' : "top"}))
+
+    fig.add_trace(go.Indicator(
+        mode = "number+delta",
+        value = 350,
+        title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Subtitle</span><br><span style='font-size:0.8em;color:gray'>Subsubtitle</span>"},
+        delta = {'reference': 400, 'relative': True},
+        domain = {'x': [0, 1], 'y': [0.5, 1]}))
+
+    
 
     com_name_df = tickers[tickers['Symbol'] == input_ticker ]
     # st.write(com_name_df)
@@ -95,23 +127,23 @@ def run():
         st.subheader('Earning Raw Data') 
         st.dataframe(earning_df.style.highlight_max(axis=0))
 
-    #EPS 증감률
-    eps_10 = band_df.iloc[-41:, -1]
-    eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
-    eps_5 = band_df.iloc[-21:, -1]
-    eps_5_growth = (eps_5.iloc[-1]/eps_10.iloc[0])**1/5 -1
-    eps_3 = band_df.iloc[-13:, -1]
-    eps_3_growth = (eps_3.iloc[-1]/eps_10.iloc[0])**1/3 -1
-    eps_1 = band_df.iloc[-5:, -1]
-    eps_1_growth = (eps_1.iloc[-1]/eps_10.iloc[0])**1/1 -1
-    st.write("10Y EPS Growth")
-    st.write(eps_10_growth)
-    st.write("5Y EPS Growth")
-    st.write(eps_5_growth)
-    st.write("3Y EPS Growth")
-    st.write(eps_3_growth)
-    st.write("1Y EPS Growth")
-    st.write(eps_1_growth)
+    # #EPS 증감률
+    # eps_10 = band_df.iloc[-41:, -1]
+    # eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
+    # eps_5 = band_df.iloc[-21:, -1]
+    # eps_5_growth = (eps_5.iloc[-1]/eps_10.iloc[0])**1/5 -1
+    # eps_3 = band_df.iloc[-13:, -1]
+    # eps_3_growth = (eps_3.iloc[-1]/eps_10.iloc[0])**1/3 -1
+    # eps_1 = band_df.iloc[-5:, -1]
+    # eps_1_growth = (eps_1.iloc[-1]/eps_10.iloc[0])**1/1 -1
+    # st.write("10Y EPS Growth")
+    # st.write(eps_10_growth)
+    # st.write("5Y EPS Growth")
+    # st.write(eps_5_growth)
+    # st.write("3Y EPS Growth")
+    # st.write(eps_3_growth)
+    # st.write("1Y EPS Growth")
+    # st.write(eps_1_growth)
 
     #PBR 밴드 위해
     pbr_df = pd.DataFrame()
