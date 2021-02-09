@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -31,19 +33,27 @@ def change_per_value(x):
 
 def run():
     #Fundamental 데이터 가져오기
-    # earning_q, earning_a = getData.get_fundamental_data_by_Json(input_ticker,"EARNINGS")
-    # income_q, income_a = getData.get_fundamental_data_by_Json(input_ticker,"INCOME_STATEMENT")
-    # balance_q, balance_a = getData.get_fundamental_data_by_Json(input_ticker,"BALANCE_SHEET")
-    # cash_q, cash_a = getData.get_fundamental_data_by_Json(input_ticker,"CASH_FLOW")
+    earning_q, earning_a = getData.get_fundamental_data_by_Json(input_ticker,"EARNINGS")
+    income_q, income_a = getData.get_fundamental_data_by_Json(input_ticker,"INCOME_STATEMENT")
+    balance_q, balance_a = getData.get_fundamental_data_by_Json(input_ticker,"BALANCE_SHEET")
+    cash_q, cash_a = getData.get_fundamental_data_by_Json(input_ticker,"CASH_FLOW")
     #Summary 데이터 가져오기    
     description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_data, valuation_df = getData.get_overview(input_ticker)
     st.table(description_df)
-    st.table(ratio_df)
-    st.table(return_df)
-    st.table(dividend_df)
     st.table(price_data)
     st.table(volume_df)
+    st.table(return_df)
+    st.table(dividend_df)
+    st.table(ratio_df)
     st.table(valuation_df)
+    
+    st.dataframe(balance_a)
+    st.dataframe(cash_a)
+    #Growth Ratio 
+    growth_df = makeData.make_growthRatio(earning_a, income_a, cash_a, balance_a)
+    st.table(growth_df)
+    
+
     
     fig = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
@@ -56,11 +66,18 @@ def run():
 
     fig = go.Figure(go.Indicator(
         mode = "number+delta",
-        value = valuation_df.at['Earnings Yield','Valuation'],
+        value = float(valuation_df.at['Earnings Yield','Valuation'].replace("%","")),
         title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
         domain = {'x': [0, 1], 'y': [0, 1]},
         delta = {'reference': 15}))
     st.plotly_chart(fig)
+
+    #조회시 1분 기다려야 함
+    st.warning('Please Wait One minute Before Searching Next Company!!!')
+    my_bar = st.progress(0)
+    for percent_complete in range(100):
+        time.sleep(0.6)
+        my_bar.progress(percent_complete + 1)
 
 
 if __name__ == "__main__":
@@ -77,7 +94,6 @@ if __name__ == "__main__":
         )
     
     input_ticker = input_ticker.upper()
-    run()
-    # submit = st.sidebar.button('Run app')
-    # if submit:
-    #     run()
+    submit = st.sidebar.button('Run app')
+    if submit:
+        run()

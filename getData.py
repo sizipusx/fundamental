@@ -58,11 +58,10 @@ def get_company_overview(ticker):
 
     return overview_df
 
-def get_fundamental_data_by_Json(ticker, funct):
+def get_fundamental_data_by_Json(ticker, func):
     API_URL = "https://www.alphavantage.co/query" 
     choice1 = "quarterlyReports" #annualReports : quarterlyReports 둘다 5년치 데이터
     choice2 = "annualReports"
-    func = funct
     data = { 
         "function": func, 
         "symbol": ticker,
@@ -106,28 +105,32 @@ def get_fundamental_data_by_Json(ticker, funct):
         df = df.iloc[::-1]
         df.set_index('fiscalDateEnding', inplace=True)
         df.index = pd.to_datetime(df.index, format='%Y-%m-%d')
+        df["FCF"] = df['operatingCashflow'].astype(float) - df['capitalExpenditures'].astype(float)
          #annual data
         adf = pd.DataFrame(response_json[choice2])
         adf = adf.iloc[::-1]
         adf.set_index('fiscalDateEnding', inplace=True)
         adf.index = pd.to_datetime(adf.index, format='%Y-%m-%d')
+        adf["FCF"] = adf['operatingCashflow'].astype(float) - adf['capitalExpenditures'].astype(float)
     elif func == 'EARNINGS':
         df = pd.DataFrame(response_json['quarterlyEarnings'])
         df = df.iloc[::-1]
         df.set_index('fiscalDateEnding', inplace=True)
         df.index =  pd.to_datetime(df.index, format='%Y-%m-%d')
+        df['ttmEPS'] = round(df['reportedEPS'].astype(float).rolling(4).sum(),2)
         df['reportedEPS'] = df['reportedEPS'].replace('None','0').astype(float).round(3)
         df['estimatedEPS'] = df['estimatedEPS'].replace('None','0').astype(float).round(4)
         df['surprise'] = df['surprise'].replace('None','0').astype(float).round(4)
         df['surprisePercentage'] = df['surprisePercentage'].replace('None','0').astype(float).round(2)
-        #분기 데이터
+        #년간 데이터
         adf = pd.DataFrame(response_json['annualEarnings'])
         adf = adf.iloc[::-1]
         adf.set_index('fiscalDateEnding', inplace=True)
         adf.index =  pd.to_datetime(adf.index, format='%Y-%m-%d')
-        adf['ttmEPS'] = adf['reportedEPS'].rolling(4).sum()
+        adf['reportedEPS'] = adf['reportedEPS'].replace('None','0').astype(float).round(3)
+        adf['EPS_YoY'] = round(adf['reportedEPS'].pct_change()*100,2)       
 
-        return df, adf
+    return df, adf
 
 def get_overview(ticker):
     API_URL = "https://www.alphavantage.co/query" 
@@ -157,10 +160,16 @@ def get_overview(ticker):
     valuation_data = ['AnalystTargetPrice']
 
     description_df = df[description_data].T
-    description_df.columns = ['description']
+    description_df.columns = ['Description']
+    change_cap = format(round(float(description_df.loc['MarketCapitalization','Description']) / 1000000,2),',')
+    description_df.loc['MarketCapitalization'] = str(change_cap) + "M"
     ratio_df = df[ratio_data].T
     ratio_df.columns = ['Ratio']
-    return_df = df[return_data].T
+    #PERR, PBRR 추가 해보자
+    ratio_df.loc['PERR'] = round(float(df.loc[0, 'TrailingPE'])/(float(df.loc[0, 'ReturnOnEquityTTM'])*100),2)
+    ratio_df.loc['PBRR'] = round(float(df.loc[0, 'PriceToBookRatio'])/(float(df.loc[0, 'ReturnOnEquityTTM'])*100/10),2)
+    return_df = df[return_data].T.astype(float)*100
+    return_df = return_df.round(2).astype(str) + "%"
     return_df.columns = ['Return']
     profit_df = df[profit_data].T
     profit_df.columns = ['Profitability']
