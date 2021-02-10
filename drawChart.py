@@ -58,10 +58,7 @@ def run():
     #close data
     price_data = getData.get_close_data(input_ticker, earning_q.iloc[0,0], earning_q.iloc[-1,0] )
 
-    #company name
-    com_name_df = company_info[company_info['Symbol'] == input_ticker ]
-    # st.write(com_name_df)
-    com_name = com_name_df.iloc[0,1]   
+    #draw chart
     chart.earning_chart(input_ticker, earning_q, earning_a, price_data)
 
     
