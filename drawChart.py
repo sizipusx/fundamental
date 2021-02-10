@@ -10,6 +10,7 @@ from datetime import datetime
 
 import getData
 import makeData
+import chart
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now() +pd.DateOffset(days=-1)
@@ -32,6 +33,7 @@ def change_per_value(x):
     return x
 
 def run():
+
     #Fundamental 데이터 가져오기
     earning_q, earning_a = getData.get_fundamental_data_by_Json(input_ticker,"EARNINGS")
     income_q, income_a = getData.get_fundamental_data_by_Json(input_ticker,"INCOME_STATEMENT")
@@ -49,9 +51,17 @@ def run():
     
     st.dataframe(balance_a)
     st.dataframe(cash_a)
+    st.dataframe(earning_q)
     #Growth Ratio 
-    growth_df = makeData.make_growthRatio(earning_a, income_a, cash_a, balance_a)
+    growth_df = makeData.make_growthRatio(earning_a, earning_q, income_a, cash_a, balance_a)
     st.table(growth_df)
+
+    #company name
+    com_name_df = company_info[company_info['Symbol'] == input_ticker ]
+    # st.write(com_name_df)
+    com_name = com_name_df.iloc[0,1]   
+    # chart.earning_chart(com_name, input_ticker, earning_q, earning_a)
+
     
 
     
@@ -72,6 +82,9 @@ def run():
         delta = {'reference': 15}))
     st.plotly_chart(fig)
 
+    #Draw Chart
+
+
     #조회시 1분 기다려야 함
     st.warning('Please Wait One minute Before Searching Next Company!!!')
     my_bar = st.progress(0)
@@ -82,8 +95,8 @@ def run():
 
 if __name__ == "__main__":
 
-    input_ticker = st.sidebar.text_input("ticker").upper()
-    
+    company_info = getData.load_data()
+    input_ticker = st.sidebar.text_input("ticker").upper()   
     ticker_list = [ "SENEA", "IMKTA", "KBAL", "CMC", \
                     "APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
                     "MO", "T", "O", "OMC", "SBUX", \

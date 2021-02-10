@@ -16,6 +16,23 @@ fd = FundamentalData(key, output_format='pandas')
 now = datetime.now() +pd.DateOffset(days=-5)
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
+@st.cache
+def load_data():
+    # 나스닥거래소 상장종목 전체
+    df_q= fdr.StockListing('NASDAQ')
+    # NewYork 증권거래소 상장종목 전체
+    df_n= fdr.StockListing('NYSE')
+    # American 증권거래소 상장종목 전체
+    df_a= fdr.StockListing('AMEX')
+    # 각 거래소 이름 추가
+    df_q.iloc[:,-1] = "NASDAQ"
+    df_n.iloc[:,-1] = "NYSE"
+    df_a.iloc[:,-1] = "AMEX"
+    #세 데이터 모두 합치자
+    ticker_list = df_q.append(df_n).append(df_a)
+
+    return ticker_list
+
 def get_close_data(ticker):
     close_price = fdr.DataReader(ticker, today)
     latest_price = close_price.iloc[-1,0]
@@ -117,8 +134,11 @@ def get_fundamental_data_by_Json(ticker, func):
         df = df.iloc[::-1]
         df.set_index('fiscalDateEnding', inplace=True)
         df.index =  pd.to_datetime(df.index, format='%Y-%m-%d')
-        df['ttmEPS'] = round(df['reportedEPS'].astype(float).rolling(4).sum(),2)
         df['reportedEPS'] = df['reportedEPS'].replace('None','0').astype(float).round(3)
+        df['ttmEPS'] = round(df['reportedEPS'].astype(float).rolling(4).sum(),2)
+        df['EPS_YoY'] = round(df['ttmEPS'].pct_change(5)*100,2)
+        df['EPS_5y'] = round(df['ttmEPS'].pct_change(21)*100,2)
+        df['EPS_10y'] = round(df['ttmEPS'].pct_change(41)*100,2)
         df['estimatedEPS'] = df['estimatedEPS'].replace('None','0').astype(float).round(4)
         df['surprise'] = df['surprise'].replace('None','0').astype(float).round(4)
         df['surprisePercentage'] = df['surprisePercentage'].replace('None','0').astype(float).round(2)

@@ -33,8 +33,7 @@ def valuation(df, input_ticker):
 
     return valuation_df
 
-def make_growthRatio(year_earning, year_income, year_cash, year_balance):
-    st.dataframe(year_earning)
+def make_growthRatio(year_earning, q_earning, year_income, year_cash, year_balance):
     growth_index = ['EPS '+ str(len(year_earning.index)-1)+'Y', 'EPS 1Y', 'EPS 5Y', 'EPS 10Y', \
                     'revenue', 'ebit', 'operatingIncome','netIncome', 'FCF', 'totalShareholderEquity']
     growth_data = []
@@ -49,7 +48,18 @@ def make_growthRatio(year_earning, year_income, year_cash, year_balance):
     growth_data.append(round(CAGR(year_cash['FCF'].to_frame()),2))
     growth_data.append(round(CAGR(year_balance['totalShareholderEquity'].astype(float).to_frame()),2))
 
-    data = {'Growth Rate 5y': growth_data}
+    ttm_data = []
+    ttm_data.append(round(CAGR(q_earning.iloc[:,5].to_frame()),2))
+    ttm_data.append(round(CAGR(q_earning.iloc[-5:,5].to_frame()),2))
+    ttm_data.append(round(CAGR(q_earning.iloc[-21:,5].to_frame()),2))
+    ttm_data.append(round(CAGR(q_earning.iloc[-41:,5].to_frame()),2))
+    ttm_data.append(round(q_earning.iloc[-1,6],2))
+    ttm_data.append(round((1+q_earning.iloc[-1,7]/100)**(1/5)-1,2))
+    ttm_data.append(round((1+q_earning.iloc[-1,8]/100)**(1/10)-1,2))
+    ttm_data.append(0)
+    ttm_data.append(0)
+    ttm_data.append(0)
+    data = {'Annual Growth 5Y': growth_data, 'ttm Growth': ttm_data}
     growth_df = pd.DataFrame(index=growth_index, data=data)  
 
     return growth_df
