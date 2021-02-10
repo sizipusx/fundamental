@@ -4,20 +4,19 @@ from plotly.subplots import make_subplots
 
 import streamlit as st
 
-#챠트 기본 설정
-# colors 
-marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-# marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-
-def earning_chart(com_name, ticker, earning_df, ea_df):
+def earning_chart(input_ticker, earning_df, ea_df, price_df):
+    #챠트 기본 설정
+    # colors 
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     #주가와 EPS
-    title = cocom_name_info +'('  + input_ticker + ') EPS & Price'
+    title = '('  + input_ticker + ') EPS & Price'
     titles = dict(text= title, x=0.5, y = 0.9) 
     x_data = earning_df['reportedDate'] # EPS발표 날짜로 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    y_data_bar = ['reportedEPS','estimatedEPS', 'surprise']
+    y_data_bar = ['reportedEPS','estimatedEPS', 'surprise', 'ttmEPS']
    
     for y_data, color in zip(y_data_bar, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = False) 
@@ -75,9 +74,9 @@ def earning_chart(com_name, ticker, earning_df, ea_df):
     st.plotly_chart(fig)
 
     fig2 = go.Figure()
-    title = com_name +'('  + input_ticker + ') ttmEPS Statistics'
+    title = '('  + input_ticker + ') reportedEPS Statistics'
     titles = dict(text= title, x=0.5, y = 0.9) 
-    fig2.add_trace(go.Box(x=earning_df.loc[:,'ttmEPS'], name='ttmEPS', boxpoints='all', marker_color = 'indianred',
+    fig2.add_trace(go.Box(x=earning_df.loc[:,'reportedEPS'], name='reportedEPS', boxpoints='all', marker_color = 'indianred',
                     boxmean='sd', jitter=0.3, pointpos=-1.8 ))
     fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     # fig2.add_trace(go.Box(x=earning_df.loc[:,'EPS Change'], name='EPS Change'))

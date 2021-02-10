@@ -33,11 +33,10 @@ def load_data():
 
     return ticker_list
 
-def get_close_data(ticker):
-    close_price = fdr.DataReader(ticker, today)
-    latest_price = close_price.iloc[-1,0]
+def get_close_data(ticker, from_date, to_date):
+    close_price = fdr.DataReader(ticker, from_date, to_date)
 
-    return latest_price
+    return close_price
 
 def get_annual_fundamental_data(ticker) :
     income_df, meta_data = fd.get_income_statement_annual(symbol=ticker)
@@ -201,8 +200,13 @@ def get_overview(ticker):
     price_df.columns = ['Price']
 
     #최근 종목 close 값
-    last_price = get_close_data(ticker)
-    df['Price'] = last_price
+    now = datetime.now() 
+    before = datetime.now() +pd.DateOffset(days=-5)
+    last_week = '%s-%s-%s' % ( before.year, before.month, before.day)
+    today = '%s-%s-%s' % ( now.year, now.month, now.day)
+    last_price = get_close_data(ticker, last_week, today)
+    latest_price = last_price.iloc[-1,0]
+    df['Price'] = latest_price
     valuation_df = makeData.valuation(df.T, ticker)
     
     return description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_df, valuation_df

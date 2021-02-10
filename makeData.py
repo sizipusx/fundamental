@@ -63,4 +63,3 @@ def make_growthRatio(year_earning, q_earning, year_income, year_cash, year_balan
     growth_df = pd.DataFrame(index=growth_index, data=data)  
 
     return growth_df
-    

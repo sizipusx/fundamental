@@ -49,18 +49,20 @@ def run():
     st.table(ratio_df)
     st.table(valuation_df)
     
-    st.dataframe(balance_a)
-    st.dataframe(cash_a)
+    # st.dataframe(balance_a)
+    # st.dataframe(cash_a)
     st.dataframe(earning_q)
     #Growth Ratio 
     growth_df = makeData.make_growthRatio(earning_a, earning_q, income_a, cash_a, balance_a)
     st.table(growth_df)
+    #close data
+    price_data = getData.get_close_data(input_ticker, earning_q.iloc[0,0], earning_q.iloc[-1,0] )
 
     #company name
     com_name_df = company_info[company_info['Symbol'] == input_ticker ]
     # st.write(com_name_df)
     com_name = com_name_df.iloc[0,1]   
-    # chart.earning_chart(com_name, input_ticker, earning_q, earning_a)
+    chart.earning_chart(input_ticker, earning_q, earning_a, price_data)
 
     
 
@@ -69,7 +71,7 @@ def run():
         mode = "gauge+number+delta",
         value = valuation_df.at['RIM','Valuation'],
         delta = {'reference': valuation_df.at['Price','Valuation'], 'relative': True},
-        title = {'text': "RIM-Price"},
+        title = {'text': "RIM-Price(r=12%)"},
         domain = {'x': [0, 1], 'y': [0, 1]}
     ))
     st.plotly_chart(fig)
