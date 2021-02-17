@@ -14,12 +14,18 @@ template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seabo
 def price_chart(input_ticker, price_df):   
     title = '('  + input_ticker + ') Price'
     titles = dict(text= title, x=0.5, y = 0.9) 
-    fig = go.Figure(data=[go.Candlestick(x=price_df.index,
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Candlestick(x=price_df.index,
                 open=price_df['Open'],
                 high=price_df['High'],
                 low=price_df['Low'],
                 close=price_df['Close'],
-                increasing_line_color= 'red', decreasing_line_color= 'blue')])
+                increasing_line_color= 'red', decreasing_line_color= 'blue'), secondary_y = False)
+    fig.add_trace(go.Bar(name = 'Volume', x = price_df.index, y = price_df['Volume'], marker_color= '#34314c'), secondary_y = True)
+    # fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='Volume',showticklabels= True, showgrid = False, zeroline=False, secondary_y = True)
+    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(
             showlegend=True,
             legend=dict(
