@@ -13,7 +13,10 @@ import makeData
 import chart
 
 pd.set_option('display.float_format', '{:.2f}'.format)
-now = datetime.now() +pd.DateOffset(days=-1)
+
+before_time = datetime.now() +pd.DateOffset(years=-10)
+now = datetime.now()
+before = '%s-%s-%s' % ( before_time.year, before_time.month, before_time.day)
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 ## 특정 위치의 배경색 바꾸기
@@ -49,21 +52,21 @@ def run():
     st.table(ratio_df)
     st.table(valuation_df)
     
+    # st.dataframe(income_q)
     # st.dataframe(balance_a)
     # st.dataframe(cash_a)
-    st.dataframe(earning_q)
+    # st.dataframe(earning_q)
     #Growth Ratio 
     growth_df = makeData.make_growthRatio(earning_a, earning_q, income_a, cash_a, balance_a)
     st.table(growth_df)
     #close data
-    price_data = getData.get_close_data(input_ticker, earning_q.iloc[0,0], earning_q.iloc[-1,0] )
+    price_data = getData.get_close_data(input_ticker, earning_q.iloc[0,0], earning_q.iloc[-1,0])
+    price_df = getData.get_close_data(input_ticker, before, today)
+    st.dataframe(price_df)
 
     #draw chart
     chart.earning_chart(input_ticker, earning_q, earning_a, price_data)
 
-    
-
-    
     fig = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
         value = valuation_df.at['RIM','Valuation'],
@@ -82,6 +85,9 @@ def run():
     st.plotly_chart(fig)
 
     #Draw Chart
+    chart.price_chart(input_ticker, price_df)
+    chart.income_chart(input_ticker, income_q, income_a)
+    chart.income_margin_chart(input_ticker, income_q)
 
 
     #조회시 1분 기다려야 함

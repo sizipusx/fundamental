@@ -100,6 +100,15 @@ def get_fundamental_data_by_Json(ticker, func):
         df = df.iloc[::-1]
         df.set_index('fiscalDateEnding', inplace=True)
         df.index = pd.to_datetime(df.index, format='%Y-%m-%d')
+        sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'totalOperatingExpense', 'operatingIncome', 'ebit', 'netIncome']
+        df = df[sub].replace('None','0').astype(float).round(0)
+        df['GPM'] = round(df['grossProfit'] / df['totalRevenue']*100, 2)
+        df['OPM'] = round(df['operatingIncome'] / df['totalRevenue']*100, 2)
+        df['NPM'] = round(df['netIncome'] / df['totalRevenue']*100,2)
+
+        df['TR Change'] = round(df['totalRevenue'].pct_change()*100, 2)
+        df['OI Change'] = round(df['operatingIncome'].pct_change()*100, 2)
+        df['NI Change'] = round(df['netIncome'].pct_change()*100, 2)
         #annual
         adf = pd.DataFrame(response_json[choice2])
         adf = adf.iloc[::-1]

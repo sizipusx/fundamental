@@ -41,12 +41,12 @@ def make_growthRatio(year_earning, q_earning, year_income, year_cash, year_balan
     growth_data.append(round(year_earning.iloc[-1,1],2)) #1 year eps growth
     growth_data.append(round(CAGR(year_earning.iloc[-6:]),2)) #5 year eps growth
     growth_data.append(round(CAGR(year_earning.iloc[-11:]),2)) #10 year eps growth
-    growth_data.append(round(CAGR(year_income['totalRevenue'].astype(float).to_frame()),2))
-    growth_data.append(round(CAGR(year_income['ebit'].astype(float).to_frame()),2))
-    growth_data.append(round(CAGR(year_income['operatingIncome'].astype(float).to_frame()),2))
-    growth_data.append(round(CAGR(year_income['netIncome'].astype(float).to_frame()),2))
-    growth_data.append(round(CAGR(year_cash['FCF'].to_frame()),2))
-    growth_data.append(round(CAGR(year_balance['totalShareholderEquity'].astype(float).to_frame()),2))
+    growth_data.append(round(CAGR(year_income['totalRevenue'].replace('None','0').astype(float).to_frame()),2))
+    growth_data.append(round(CAGR(year_income['ebit'].replace('None','0').astype(float).to_frame()),2))
+    growth_data.append(round(CAGR(year_income['operatingIncome'].replace('None','0').astype(float).to_frame()),2))
+    growth_data.append(round(CAGR(year_income['netIncome'].replace('None','0').astype(float).to_frame()),2))
+    growth_data.append(round(CAGR(year_cash['FCF'].replace('None','0').to_frame()),2))
+    growth_data.append(round(CAGR(year_balance['totalShareholderEquity'].replace('None','0').astype(float).to_frame()),2))
 
     ttm_data = []
     ttm_data.append(round(CAGR(q_earning.iloc[:,5].to_frame()),2))
