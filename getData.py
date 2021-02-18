@@ -116,21 +116,42 @@ def get_fundamental_data_by_Json(ticker, func):
         adf.index = pd.to_datetime(adf.index, format='%Y-%m-%d')
         # print(df)
     elif func == 'BALANCE_SHEET':
-        df = pd.DataFrame(response_json[choice1])
-        df = df.iloc[::-1]
-        df.set_index('fiscalDateEnding', inplace=True)
-        df.index = pd.to_datetime(df.index, format='%Y-%m-%d')
+        balance = pd.DataFrame(response_json[choice1])
+        balance = balance.iloc[::-1]
+        balance.set_index('fiscalDateEnding', inplace=True)
+        balance.index = pd.to_datetime(balance.index, format='%Y-%m-%d')
+        sub = ['totalAssets', 'intangibleAssets', 'totalLiabilities', 'totalShareholderEquity', 'retainedEarnings', 'totalCurrentLiabilities', \
+         'totalCurrentAssets', 'netTangibleAssets', 'netReceivables', 'inventory', 'accountsPayable', 'accumulatedAmortization', \
+         'totalNonCurrentAssets', 'accumulatedDepreciation', 'cashAndShortTermInvestments', 'commonStockSharesOutstanding']
+        df = balance[sub].replace('None','0').astype(float).round(0)
+        #부채비율
+        df['Debt/Equity'] = round(df['totalLiabilities'] / df['totalShareholderEquity']*100, 2)
+        #유동비율
+        df['CurrentRatio'] = round(df['totalCurrentAssets'] / df['totalCurrentLiabilities']*100, 2)
+        #당좌비율(당좌자산(유동자산-재고자산)/유동부채)
+        df['QuickRatio'] = round((df['totalCurrentAssets'] - df['inventory'])/ df['totalCurrentLiabilities']*100, 2)
+        #유동부채비율
+        df['유동부채/자기자본'] = round(df['totalCurrentLiabilities'] / df['totalShareholderEquity']*100, 2)
+        #무형자산총자산비율 15%미만
+        df['무형자산비율'] = round(df['intangibleAssets'] / df['totalAssets']*100, 2)
+        #현금자산비율
+        df['현금성자산비율'] = round(df['cashAndShortTermInvestments'] / df['totalAssets']*100, 2)
+    
         #annual data
         adf = pd.DataFrame(response_json[choice2])
         adf = adf.iloc[::-1]
         adf.set_index('fiscalDateEnding', inplace=True)
         adf.index = pd.to_datetime(adf.index, format='%Y-%m-%d')
     elif func == 'CASH_FLOW':
-        df = pd.DataFrame(response_json[choice1])
-        df = df.iloc[::-1]
-        df.set_index('fiscalDateEnding', inplace=True)
-        df.index = pd.to_datetime(df.index, format='%Y-%m-%d')
-        df["FCF"] = df['operatingCashflow'].astype(float) - df['capitalExpenditures'].astype(float)
+        cashflow_df = pd.DataFrame(response_json[choice1])
+        cashflow_df = cashflow_df.iloc[::-1]
+        cashflow_df.set_index('fiscalDateEnding', inplace=True)
+        cashflow_df.index = pd.to_datetime(cashflow_df.index, format='%Y-%m-%d')
+        #cash-flow 
+        sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'depreciation', 'dividendPayout', \
+            'stockSaleAndPurchase', 'capitalExpenditures', 'changeInCashAndCashEquivalents']
+        df = cashflow_df[sub].replace('None','0').astype(float).round(0)
+        df["FCF"] = round(df['operatingCashflow'] - df['capitalExpenditures'], 2)
          #annual data
         adf = pd.DataFrame(response_json[choice2])
         adf = adf.iloc[::-1]

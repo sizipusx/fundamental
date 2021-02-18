@@ -53,7 +53,7 @@ def run():
     st.table(valuation_df)
     
     # st.dataframe(income_q)
-    # st.dataframe(balance_a)
+    st.dataframe(balance_q)
     # st.dataframe(cash_a)
     # st.dataframe(earning_q)
     #Growth Ratio 
@@ -62,7 +62,7 @@ def run():
     #close data
     price_data = getData.get_close_data(input_ticker, earning_q.iloc[0,0], earning_q.iloc[-1,0])
     price_df = getData.get_close_data(input_ticker, before, today)
-    st.dataframe(price_df)
+    # st.dataframe(price_df)
 
     #draw chart
     chart.earning_chart(input_ticker, earning_q, earning_a, price_data)
@@ -88,6 +88,8 @@ def run():
     chart.price_chart(input_ticker, price_df)
     chart.income_chart(input_ticker, income_q, income_a)
     chart.income_margin_chart(input_ticker, income_q)
+    chart.balance_chart(input_ticker, balance_q)
+    chart.cashflow_chart(input_ticker, cash_q, income_q)
 
 
     #조회시 1분 기다려야 함

@@ -192,3 +192,71 @@ def income_margin_chart(input_ticker, income_df):
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
+
+def balance_chart(input_ticker, balance_df):
+    #부채비율, 유동비율, 당좌비율
+    st.subheader('Asset, Liabilities, ShareholderEquity')
+    x_data = balance_df.index
+    title = '('  + input_ticker + ') <b>Asset & Liabilities</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
+    y_data_bar3 = ['totalLiabilities', 'totalShareholderEquity']
+    y_data_line3 = ['Debt/Equity', 'QuickRatio', '유동부채/자기자본']
+
+    for y_data, color in zip(y_data_bar3, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], 
+                            text = balance_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+    
+    for y_data, color in zip(y_data_line3, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data, x =  x_data, y= balance_df.loc[:,y_data],
+                                    text= balance_df[y_data], textposition = 'top center', marker_color = color),
+                                    secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
+    fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(barmode='stack')
+    st.plotly_chart(fig)
+
+    #무형자산총자금비율, 현금자산비율
+    x_data = balance_df.index
+    title = '('  + input_ticker + ') <b>IntangibleAssets & Cash And ShortTermInvestments</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar4 = ['무형자산비율', '현금성자산비율']
+    y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
+    fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], 
+                         text = balance_df[y_data_bar4[1]], textposition = 'outside', 
+                         marker_color= marker_colors[0]), secondary_y = False) 
+    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
+                                    text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
+    fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+def cashflow_chart(input_ticker, cashflow_df, income_df):
+    #영업활동현금흐름, 순이익, 투자활동현금흐름, 재무활동현금흐름
+    st.subheader('Cash Flow')
+    x_data = cashflow_df.index
+    title = '('  + input_ticker + ') <b>Cash Flow Statement</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar5 = ['operatingCashflow', 'FCF']
+
+    for y_data, color in zip(y_data_bar5, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], 
+                            text= cashflow_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+    fig.add_trace(go.Bar(name = 'NetIncome', x = x_data, y = income_df['netIncome'], 
+                        text= income_df['netIncome'], textposition = 'outside', marker_color= '#ff7473'), secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
