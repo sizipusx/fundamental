@@ -6,7 +6,6 @@ import pandas as pd
 import requests
 import json
 from pandas.io.json import json_normalize
-import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
