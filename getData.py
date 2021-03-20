@@ -9,6 +9,8 @@ import json
 from pandas.io.json import json_normalize
 import streamlit as st
 import makeData
+import requests
+import bs4
 
 # key='XA7Y92OE6LDOTLLE'
 key='CBALDIGECB3UFF5R'
@@ -240,3 +242,67 @@ def get_overview(ticker):
     valuation_df = makeData.valuation(df.T, ticker)
     
     return description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_df, valuation_df
+
+def get_kor_itooza(code):
+    i_url = 'http://search.itooza.com/index.htm?seName='+ code
+    fs_page = requests.get(i_url)
+    fs_tables = pd.read_html(fs_page.text)
+
+    #현재 밸류에이션
+    cur = fs_tables[0]
+
+    #5년 평균
+    avg = fs_tables[1]
+
+    #ttm 
+    ttm = fs_tables[2].T
+    ttm.columns = ['EPS', 'EPS(개별)', 'PER', 'BPS', 'PBR', 'DPS', 'DY', 'ROE', 'NPM', 'OPM', 'Price']
+    ttm = ttm.iloc[1:]
+    ttm = ttm.iloc[::-1]
+    ttm = ttm.reset_index()
+    ttm['index'] = ttm['index'].str.slice(0,5)
+
+    ttm['index'] = ttm['index'].map(lambda x: "20" + x +".01")
+    ttm.set_index('index', inplace=True)
+    ttm.index =  pd.to_datetime(ttm.index, format='%Y-%m-%d')
+    ttm = ttm.astype(float).fillna(0).round(decimals=2)
+
+    #10년 annual data 
+    ann = fs_tables[3].T
+    ann.columns = ['EPS', 'EPS(개별)', 'PER', 'BPS', 'PBR', 'DPS', 'DY', 'ROE', 'NPM', 'OPM', 'Price']
+    ann = ann.iloc[1:]
+    ann = ann.iloc[::-1]
+    ann = ann.reset_index()
+    ann['index'] = ann['index'].str.slice(0,5)
+
+    ann['index'] = ann['index'].map(lambda x: "20" + x +".01")
+    ann.set_index('index', inplace=True)
+    ann.index =  pd.to_datetime(ann.index, format='%Y-%m-%d')
+    ann = ann.astype(float).fillna(0).round(decimals=2)
+
+    #RIM Price
+    rim_price, r_ratio = makeData.kor_rim(ttm)
+    #기업의 최근 price
+    price = fdr.DataReader(code, today).iloc[-1,0]
+
+    #Make valuation dataframe
+    roe_re = cur.iloc[0,2]
+    roe = float(roe_re[0:5].replace("%",""))
+    value_list = []
+    index_list = ['Close', 'RIM', 'PER', 'PBR', 'ROE','PER5', 'PBR5', 'PEG5', 'PERR', 'PBRR']
+    value_list.append(price)
+    value_list.append(rim_price)
+    value_list.append(cur.iloc[0,0])
+    value_list.append(cur.iloc[0,1])
+    value_list.append(roe)
+    value_list.append(avg.iloc[0,0])
+    value_list.append(avg.iloc[0,1])
+    value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
+    value_list.append(round(avg.iloc[0,0]/roe,2))
+    value_list.append(round(avg.iloc[0,1]/(roe*1/10),2))
+
+    data = {'Valuation': value_list}
+    valuation_df = pd.DataFrame(index=index_list, data=data) 
+    valuation_df = valuation_df.round(decimals=2)
+
+    return valuation_df, ttm, ann 

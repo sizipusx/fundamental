@@ -7,8 +7,8 @@ from datetime import datetime
 
 #챠트 기본 설정
 # colors 
-marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-# marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+# marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
 def price_chart(input_ticker, price_df):   
@@ -259,4 +259,134 @@ def cashflow_chart(input_ticker, cashflow_df, income_df):
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
+    
+    #주가와 ttm EPS
+    title = '('  + com_name + ') TTM EPS & Price'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    x_data = ttm_df.index # EPS발표 날짜로 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data = ['EPS','Price']
+   
+    # for y_data, color in zip(y_data_bar, marker_colors) :
+    #     fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = False) 
+    fig.add_trace(go.Bar(name = y_data[0], x = x_data, y = ttm_df[y_data[0]], marker_color= marker_colors[1]), secondary_y = False)
+    
+    fig.add_trace(go.Scatter(mode='lines', 
+                            name = 'Close', x =  ttm_df.index, y= ttm_df['Price'],
+                            text= ttm_df['Price'], textposition = 'top center', marker_color = 'rgb(0,0,0)'),# marker_colorscale='RdBu'),
+                            secondary_y = True)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_yaxes(title_text='TTM EPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    st.plotly_chart(fig)
+
+    #주가와 annual EPS
+    title = '('  + com_name + ') Annual EPS & Price'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    x_data = annual_df.index # EPS발표 날짜로 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data = ['EPS','Price']
+   
+    # for y_data, color in zip(y_data_bar, marker_colors) :
+    #     fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = False) 
+    fig.add_trace(go.Bar(name = y_data[0], x = x_data, y = annual_df[y_data[0]], marker_color= marker_colors[1]), secondary_y = False)
+    
+    fig.add_trace(go.Scatter(mode='lines', 
+                            name = 'Close', x =  annual_df.index, y= annual_df['Price'],
+                            text= annual_df['Price'], textposition = 'top center', marker_color = 'rgb(0,0,0)'),# marker_colorscale='RdBu'),
+                            secondary_y = True)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_yaxes(title_text='Annual EPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    st.plotly_chart(fig)
+
+    fig2 = go.Figure()
+    title = '('  + com_name + ') EPS Statistics'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    fig2.add_trace(go.Box(x=ttm_df.loc[:,'EPS'], name='EPS', boxpoints='all', marker_color = 'indianred',
+                    boxmean='sd', jitter=0.3, pointpos=-1.8 ))
+    fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    # fig2.add_trace(go.Box(x=earning_df.loc[:,'EPS Change'], name='EPS Change'))
+    st.plotly_chart(fig2)
+
+     #PER, PBR, ROE 추이
+    x_data = ttm_df.index
+    title = com_name + '('  + input_ticker + ') TTM PER PBR & ROE' 
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_line2 = ['PER', 'PBR']
+    y_data_bar2 = ['ROE']
+
+    fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data_line2[0], x = x_data, y=ttm_df[y_data_line2[0]],
+                            text = ttm_df[y_data_line2[0]], textposition = 'top center', marker_color = marker_colors[0]),
+                            secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data_line2[1], x = x_data, y=ttm_df[y_data_line2[1]],
+                            text = ttm_df[y_data_line2[1]], textposition = 'top center', marker_color = marker_colors[1]),
+                            secondary_y = True)
+
+    fig.add_trace(go.Bar(name = y_data_bar2[0], x = x_data, y = ttm_df[y_data_bar2[0]], 
+                            text = ttm_df[y_data_bar2[0]], textposition = 'outside', marker_color= marker_colors[2]), secondary_y = False)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='ROE', range=[0, max(ttm_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='PER', range=[-max(ttm_df.loc[:,y_data_line2[0]]), max(ttm_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = False)
+    fig.update_yaxes(title_text='PBR', range=[-max(ttm_df.loc[:,y_data_line2[0]]), max(ttm_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+     # ROE와 마진율
+    x_data = ttm_df.index
+    title = com_name + '('  + input_ticker + ') Margin & ROE' 
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_line2 = ['OPM', 'NPM']
+    y_data_bar2 = ['ROE']
+
+    for y_data, color in zip(y_data_line2, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data, x = x_data, y=ttm_df[y_data],
+        text = ttm_df[y_data], textposition = 'top center', marker_color = color),
+        secondary_y = True)
+
+    for y_data, color in zip(y_data_bar2, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = x_data, y = ttm_df[y_data], 
+                            text = ttm_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='ROE', range=[0, max(ttm_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='Margin Rate', range=[-max(ttm_df.loc[:,y_data_line2[0]]), max(ttm_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+    #배당
+    title = '('  + com_name + ') Annual DPS & DY'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    x_data = annual_df.index # EPS발표 날짜로 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data = ['DPS','DY']
+   
+    # for y_data, color in zip(y_data_bar, marker_colors) :
+    #     fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = False) 
+    fig.add_trace(go.Bar(name = y_data[0], x = x_data, y = annual_df[y_data[0]], marker_color= marker_colors[0]), secondary_y = False)
+    
+    fig.add_trace(go.Scatter(mode='lines', 
+                            name = 'Dividend Yeild', x =  annual_df.index, y= annual_df[y_data[1]],
+                            text=  annual_df[y_data[1]], textposition = 'top center', marker_color =  marker_colors[1]),# marker_colorscale='RdBu'),
+                            secondary_y = True)
+
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_yaxes(title_text='Annual EPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
     st.plotly_chart(fig)

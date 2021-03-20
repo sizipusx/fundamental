@@ -5,6 +5,7 @@ from datetime import datetime
 import FinanceDataReader as fdr
 import streamlit as st
 import getData
+import requests
 
 now = datetime.now() +pd.DateOffset(days=-1)
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
@@ -63,3 +64,13 @@ def make_growthRatio(year_earning, q_earning, year_income, year_cash, year_balan
     growth_df = pd.DataFrame(index=growth_index, data=data)  
 
     return growth_df
+
+def kor_rim(ttm_df):
+    #BBB- 5년물 회사채 수익률 
+    in_url = 'https://www.kisrating.com/ratingsStatistics/statics_spread.do'
+    in_page = requests.get(in_url)
+    in_tables = pd.read_html(in_page.text)
+    yeild = in_tables[0].iloc[-1,-1]
+    #rim = (BPS * ROE/ r) or (EPS / r)
+    rim_price = round(ttm_df.iloc[-1,3]*ttm_df.iloc[-1,7] / yeild,2)
+    return rim_price, yeild
