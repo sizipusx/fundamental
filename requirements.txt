@@ -3,7 +3,7 @@ alphaj-krxcralwer==0.3.2
 base58==2.0.1
 beautifulsoup4==4.7.1
 DateTime==4.3
-finance-datareader==0.9.12
+finance-datareader==0.9.31
 Flask==1.1.1
 Flask-Compress==1.4.0
 folium==0.10.0
