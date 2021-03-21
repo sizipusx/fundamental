@@ -286,18 +286,23 @@ def get_kor_itooza(code):
     price = fdr.DataReader(code, today).iloc[-1,0]
 
     #Make valuation dataframe
-    roe_re = cur.iloc[0,2]
-    roe = float(roe_re[0:5].replace("%",""))
+    roe = ttm.iloc[-1,7]
+    cur_per = cur.iloc[0,0]
     value_list = []
     index_list = ['Close', 'RIM', 'PER', 'PBR', 'ROE','PER5', 'PBR5', 'PEG5', 'PERR', 'PBRR']
     value_list.append(price)
     value_list.append(rim_price)
-    value_list.append(cur.iloc[0,0])
+    if cur_per == "(-)":
+        cur_per = 0
+    value_list.append(cur_per)
     value_list.append(cur.iloc[0,1])
     value_list.append(roe)
     value_list.append(avg.iloc[0,0])
     value_list.append(avg.iloc[0,1])
-    value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
+    if avg.iloc[0,3] == "N/A":
+        value_list.append(0)
+    else:
+        value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
     value_list.append(round(avg.iloc[0,0]/roe,2))
     value_list.append(round(avg.iloc[0,1]/(roe*1/10),2))
 

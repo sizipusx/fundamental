@@ -38,8 +38,9 @@ def run(code, com_name):
     st.table(company_info)
     
     value_df, ttm_df, ann_df = getData.get_kor_itooza(code)
-    st.dataframe(ttm_df.style.highlight_max(axis=0))
-    st.dataframe(ann_df.style.highlight_max(axis=0))
+    if  st.checkbox('Show raw data'):
+        st.dataframe(ttm_df.style.highlight_max(axis=0))
+        st.dataframe(ann_df.style.highlight_max(axis=0))
     
     st.subheader("Valuation")
     st.table(value_df)

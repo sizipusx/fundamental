@@ -337,9 +337,9 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
                             text = ttm_df[y_data_bar2[0]], textposition = 'outside', marker_color= marker_colors[2]), secondary_y = False)
 
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(title_text='ROE', range=[0, max(ttm_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
-    fig.update_yaxes(title_text='PER', range=[-max(ttm_df.loc[:,y_data_line2[0]]), max(ttm_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = False)
-    fig.update_yaxes(title_text='PBR', range=[-max(ttm_df.loc[:,y_data_line2[0]]), max(ttm_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(title_text='ROE', secondary_y = False)
+    fig.update_yaxes(title_text='PER', secondary_y = False)
+    fig.update_yaxes(title_text='PBR', secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
@@ -386,7 +386,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
                             secondary_y = True)
 
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True)
+    fig.update_yaxes(title_text='Dividend Yeild',showticklabels= True, showgrid = False, zeroline=True)
     fig.update_yaxes(title_text='Annual EPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
     st.plotly_chart(fig)
