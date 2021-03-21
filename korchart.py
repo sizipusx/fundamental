@@ -95,6 +95,9 @@ def run(code, com_name):
     delta = {'reference': 2}))
     st.plotly_chart(fig)
 
+    st.subheader("Candlestick Chart")
+    chart.candlestick_chart(code)
+
     st.subheader("Earnings")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
 

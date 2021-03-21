@@ -1,6 +1,8 @@
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import FinanceDataReader as fdr
 
 import streamlit as st
 from datetime import datetime
@@ -389,4 +391,72 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     fig.update_yaxes(title_text='Dividend Yeild',showticklabels= True, showgrid = False, zeroline=True)
     fig.update_yaxes(title_text='Annual DPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    st.plotly_chart(fig)
+
+def candlestick_chart(code):
+    now = datetime.now() +pd.DateOffset(days=-4000)
+    start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
+
+    df = fdr.DataReader(code,start_date)
+
+    fig = go.Figure(data=[go.Candlestick(x=df.index,
+                open=df['Open'],
+                high=df['High'],
+                low=df['Low'],
+                close=df['Close'],
+                increasing_line_color= 'red', decreasing_line_color= 'blue'
+                )])
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=5,
+                        label="1w",
+                        step="day",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="1m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=3,
+                        label="3m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
     st.plotly_chart(fig)
