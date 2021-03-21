@@ -11,6 +11,7 @@ import streamlit as st
 import makeData
 import requests
 import bs4
+import math
 
 # key='XA7Y92OE6LDOTLLE'
 key='CBALDIGECB3UFF5R'
@@ -300,7 +301,7 @@ def get_kor_itooza(code):
     value_list.append(avg.iloc[0,0])
     value_list.append(avg.iloc[0,1])
     epschange = avg.iloc[0,3]
-    if epschange == "N/A" or np.isnan(epschange) :
+    if epschange == "N/A" or math.isnan(epschange) :
         value_list.append(0)
     else:
         value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
