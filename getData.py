@@ -300,11 +300,11 @@ def get_kor_itooza(code):
     value_list.append(roe)
     value_list.append(avg.iloc[0,0])
     value_list.append(avg.iloc[0,1])
-    epschange = avg.iloc[0,3]
-    if epschange == "N/A" or math.isnan(epschange) :
-        value_list.append(0)
-    else:
+    epschange = 
+    if type(avg.iloc[0,3]) is str :
         value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
+    else:
+        value_list.append(0)
     value_list.append(round(avg.iloc[0,0]/roe,2))
     value_list.append(round(avg.iloc[0,1]/(roe*1/10),2))
 
