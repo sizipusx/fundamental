@@ -299,7 +299,8 @@ def get_kor_itooza(code):
     value_list.append(roe)
     value_list.append(avg.iloc[0,0])
     value_list.append(avg.iloc[0,1])
-    if avg.iloc[0,3] == "N/A" or np.isnan(avg.iloc[0,3]) :
+    epschange = avg.iloc[0,3]
+    if epschange == "N/A" or np.isnan(epschange) :
         value_list.append(0)
     else:
         value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
