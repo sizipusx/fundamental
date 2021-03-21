@@ -387,6 +387,6 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
 
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='Dividend Yeild',showticklabels= True, showgrid = False, zeroline=True)
-    fig.update_yaxes(title_text='Annual EPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_yaxes(title_text='Annual DPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
     st.plotly_chart(fig)
