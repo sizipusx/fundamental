@@ -301,7 +301,7 @@ def get_kor_itooza(code):
     value_list.append(avg.iloc[0,0])
     value_list.append(avg.iloc[0,1])
     if type(avg.iloc[0,3]) is str :
-        if avg.iloc[0,3] == "N/A"
+        if avg.iloc[0,3] == "N/A":
             value_list.append(0)
         value_list.append(round(avg.iloc[0,0]/float(avg.iloc[0,3].replace("%","")),2))
     else:
