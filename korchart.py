@@ -36,11 +36,16 @@ def run(code, com_name):
     company_info = info_tables[0]
     company_info.set_index(0, inplace=True)
     st.table(company_info)
-    
+    #아이투자 10년 데이타
     value_df, ttm_df, ann_df = getData.get_kor_itooza(code)
+    #네이버 4년 데이타
+    naver_ann, naver_q = getData.get_naver_finance(code)
+
     if  st.checkbox('Show raw data'):
         st.dataframe(ttm_df.style.highlight_max(axis=0))
         st.dataframe(ann_df.style.highlight_max(axis=0))
+        st.dataframe(naver_ann.style.highlight_max(axis=0))
+        st.dataframe(naver_q.style.highlight_max(axis=0))
     
     st.subheader("Valuation")
     st.table(value_df)
@@ -100,7 +105,7 @@ def run(code, com_name):
 
     st.subheader("Earnings")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
-
+    drawkorchart.income_chart(code, naver_ann, naver_q)
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')

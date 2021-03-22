@@ -11,7 +11,6 @@ import streamlit as st
 import makeData
 import requests
 import bs4
-import math
 
 # key='XA7Y92OE6LDOTLLE'
 key='CBALDIGECB3UFF5R'
@@ -314,3 +313,31 @@ def get_kor_itooza(code):
     valuation_df = valuation_df.round(decimals=2)
 
     return valuation_df, ttm, ann 
+
+def get_naver_finance(code):
+    n_url = 'https://finance.naver.com/item/main.nhn?code=' + code
+    fs_page = requests.get(n_url)
+    navers = pd.read_html(fs_page.text)
+
+    total_df = navers[3]
+    total_df.set_index([(  '주요재무정보',     '주요재무정보', '주요재무정보')], inplace=True)
+    total_df.index.name = '항목'
+
+    #년간만 가져오기
+    a_df = total_df.iloc[:,:4]
+    a_df.columns = a_df.columns.get_level_values(1)
+    a_df.columns = a_df.columns.map(lambda x: x[:7]+'.30')
+    ann_df = a_df.T
+    ann_df.index = pd.to_datetime(ann_df.index, format='%Y-%m-%d')
+    ann_df.fillna(0, inplace=True)
+    
+    #분기만 가져오기
+    q_df = total_df.iloc[:,4:]
+    q_df.columns = q_df.columns.get_level_values(1)
+    q_df.columns = q_df.columns.map(lambda x: x[:7]+'.30')
+    f_df = q_df.T
+    f_df.index = pd.to_datetime(f_df.index, format='%Y-%m-%d')
+    f_df.fillna(0, inplace=True)
+
+    return ann_df, f_df
+
