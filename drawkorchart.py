@@ -89,5 +89,4 @@ def balance_chart(input_ticker, balance_df):
     fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
     fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    fig.update_layout(barmode='stack')
     st.plotly_chart(fig)
