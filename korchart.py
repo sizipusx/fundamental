@@ -106,6 +106,7 @@ def run(code, com_name):
     st.subheader("Earnings")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     drawkorchart.income_chart(code, naver_ann, naver_q)
+    drawkorchart.balance_chart(code, naver_q)
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
