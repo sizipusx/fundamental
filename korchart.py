@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 import streamlit as st
 from pykrx import stock
 import FinanceDataReader as fdr
-import getData, makeData
+import getData, makeData, drawkorchart
 import chart
 
 pd.options.display.float_format = '{:.2f}'.format
