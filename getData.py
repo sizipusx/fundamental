@@ -123,7 +123,7 @@ def get_fundamental_data_by_Json(ticker, func):
         balance.set_index('fiscalDateEnding', inplace=True)
         balance.index = pd.to_datetime(balance.index, format='%Y-%m-%d')
         sub = ['totalAssets', 'intangibleAssets', 'totalLiabilities', 'totalShareholderEquity', 'retainedEarnings', 'totalCurrentLiabilities', \
-         'totalCurrentAssets', 'netTangibleAssets', 'netReceivables', 'inventory', 'accountsPayable', 'accumulatedAmortization', \
+         'totalCurrentAssets', 'propertyPlantEquipment', 'currentNetReceivables', 'inventory', 'currentAccountsPayable', 'accumulatedDepreciationAmortizationPPE', \
          'totalNonCurrentAssets', 'accumulatedDepreciation', 'cashAndShortTermInvestments', 'commonStockSharesOutstanding']
         df = balance[sub].replace('None','0').astype(float).round(0)
         #부채비율
@@ -150,8 +150,8 @@ def get_fundamental_data_by_Json(ticker, func):
         cashflow_df.set_index('fiscalDateEnding', inplace=True)
         cashflow_df.index = pd.to_datetime(cashflow_df.index, format='%Y-%m-%d')
         #cash-flow 
-        sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'depreciation', 'dividendPayout', \
-            'stockSaleAndPurchase', 'capitalExpenditures', 'changeInCashAndCashEquivalents']
+        sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'depreciationDepletionAndAmortization', 'dividendPayout', \
+            'paymentsForRepurchaseOfCommonStock', 'capitalExpenditures', 'changeInCashAndCashEquivalents']
         df = cashflow_df[sub].replace('None','0').astype(float).round(0)
         df["FCF"] = round(df['operatingCashflow'] - df['capitalExpenditures'], 2)
          #annual data
@@ -243,6 +243,7 @@ def get_overview(ticker):
     
     return description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_df, valuation_df
 
+    
 def get_kor_itooza(code):
     i_url = 'http://search.itooza.com/index.htm?seName='+ code
     fs_page = requests.get(i_url)
