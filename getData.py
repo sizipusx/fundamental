@@ -124,7 +124,7 @@ def get_fundamental_data_by_Json(ticker, func):
         balance.index = pd.to_datetime(balance.index, format='%Y-%m-%d')
         sub = ['totalAssets', 'intangibleAssets', 'totalLiabilities', 'totalShareholderEquity', 'retainedEarnings', 'totalCurrentLiabilities', \
          'totalCurrentAssets', 'propertyPlantEquipment', 'currentNetReceivables', 'inventory', 'currentAccountsPayable', 'accumulatedDepreciationAmortizationPPE', \
-         'totalNonCurrentAssets', 'accumulatedDepreciation', 'cashAndShortTermInvestments', 'commonStockSharesOutstanding']
+         'totalNonCurrentAssets', 'cashAndShortTermInvestments', 'commonStockSharesOutstanding']
         df = balance[sub].replace('None','0').astype(float).round(0)
         #부채비율
         df['Debt/Equity'] = round(df['totalLiabilities'] / df['totalShareholderEquity']*100, 2)
