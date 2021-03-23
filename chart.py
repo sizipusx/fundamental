@@ -154,7 +154,7 @@ def income_chart(input_ticker, income_df, ia_df):
     title = '('  + input_ticker + ') <b>Profit & Cost</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    y_data_bar = ['totalRevenue', 'costOfRevenue', 'totalOperatingExpense']
+    y_data_bar = ['totalRevenue', 'costOfRevenue', 'operatingExpenses']
     y_data_line = ['grossProfit', 'ebit', 'operatingIncome', 'netIncome']
 
     for y_data, color in zip(y_data_bar, marker_colors) :
