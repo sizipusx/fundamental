@@ -1,3 +1,11 @@
 1. operatingCashflow or capitalExpenditures가 'None' 일 수 있음. Null 
 File "/app/fundamental/getData.py", line 162, in get_fundamental_data_by_Json
     adf["FCF"] = adf['operatingCashflow'].astype(float) - adf['capitalExpenditures'].astype(float)
+    
+2. could not convert string to float: 'None'
+File "/app/fundamental/drawChart.py", line 46, in run
+    description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_data, valuation_df = getData.get_overview(input_ticker)
+File "/app/fundamental/getData.py", line 242, in get_overview
+    valuation_df = makeData.valuation(df.T, ticker)
+File "/app/fundamental/makeData.py", line 29, in valuation
+    value_list.append(round(float(df.loc['BookValue',0])*(float(df.loc['ReturnOnEquityTTM', 0])/0.12),2))
