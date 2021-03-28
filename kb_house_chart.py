@@ -24,7 +24,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 @st.cache
 def load_index_data():
-    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/데이터/WeeklySeriesTables(시계열)_20210118.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
 
     mdf = kb_dict['매매지수']
     jdf = kb_dict['전세지수']
@@ -45,7 +45,7 @@ def load_index_data():
 
 @st.cache
 def load_senti_data():
-    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/데이터/WeeklySeriesTables(시계열)_20210118.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
 
     js = kb_dict['매수매도']
     js = js.set_index("Unnamed: 0")
@@ -71,7 +71,8 @@ def load_senti_data():
 def run_price_index() :
 
     # 챠트 기본 설정 
-    marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
+    # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
+    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     titles = dict(text= '('+selected_city2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
@@ -235,24 +236,27 @@ if __name__ == "__main__":
     mdf_change = mdf.pct_change()*100
     jdf_change = jdf.pct_change()*100
     #일주일 간 상승률 순위
-    last_df = mdf_change.iloc[-2].T.to_frame()
-    last_df['전세증감'] = jdf_change.iloc[-2].T.to_frame()
+    last_df = mdf_change.iloc[-1].T.to_frame()
+    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
+    last_df = last_df.round(decimals=2)
     
-    fig = go.Figure([go.Bar(x=last_df.index, y=last_df.iloc[:,0])])
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dot", line_color="green", annotation_text="전국 증감률", 
+    # fig = go.Figure([go.Bar(x=last_df.index, y=last_df.iloc[:,0])])
+    fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered',text=last_df.iloc[:,0])
+    # fig.update_traces(marker_colorscale='RdBu', selector=dict(type='bar'))
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dot", line_color="green", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", 
                 annotation_position="bottom right")
-    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    fig.update_traces(texttemplate='%{text:.3s}', textposition='outside')
+    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='show')
     fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
     st.dataframe(last_df.T.style.highlight_max(axis=1))
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
         fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                            text= last_df.index, hover_name=last_df.index)
+                            text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
         fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
 
