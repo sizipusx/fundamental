@@ -1,4 +1,3 @@
-
 import time
 from datetime import datetime
 
@@ -24,28 +23,30 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 @st.cache
 def load_index_data():
-    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel('C:/Users/user/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
 
     mdf = kb_dict['매매지수']
     jdf = kb_dict['전세지수']
     #헤더 변경
-    path = r'D:/code/powerbi/data/KB/KB헤더.xlsx'
+    path = r'C:/Users/user/OneDrive - 호매실고등학교/data/KB헤더.xlsx'
     data_type = 'KB시도구' 
     header = pd.read_excel(path, sheet_name=data_type)
 
     mdf.columns = header.columns
     mdf = mdf.drop([0])
     mdf.set_index("KB주간", inplace=True)
+    mdf = mdf.round(decimals=2)
 
     jdf.columns = header.columns
     jdf = jdf.drop([0])
     jdf.set_index("KB주간", inplace=True)
+    jdf = jdf.round(decimals=2)
    
     return mdf, jdf
 
 @st.cache
 def load_senti_data():
-    kb_dict = pd.read_excel('D:/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel('C:/Users/user/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
 
     js = kb_dict['매수매도']
     js = js.set_index("Unnamed: 0")
@@ -64,6 +65,7 @@ def load_senti_data():
 
     #컬럼 설정
     js.columns = [new_s1,js.iloc[0]]
+    js = js.round(decimals=2)
 
     return js
 
@@ -79,17 +81,15 @@ def run_price_index() :
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
-    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2], marker_color=  marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2], marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
 
     
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2],
-                                text= mdf[selected_city2], textposition = 'top center', marker_color = marker_colors[0]),# marker_colorscale='RdBu'),
-                                secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2],
-                                text= jdf[selected_city2], textposition = 'top center', marker_color = marker_colors[3]),# marker_colorscale='RdBu'),
-                                secondary_y = False)
-    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2].round(decimals=2), marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2].round(decimals=2), marker_color = marker_colors[3]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -146,25 +146,15 @@ def run_sentimental_index():
     titles = dict(text= ' 매수매도 우위 지수('+ selected_dosi + ')', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    
-    # fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2], marker_color=  marker_colors[1]), secondary_y = True)
-    # fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2], marker_color=  marker_colors[2]), secondary_y = True)
-    # fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2], marker_color=  marker_colors[2]), secondary_y = True)
-
-    
-    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi],
-                                text= js_1[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),# marker_colorscale='RdBu'),
-                                secondary_y = False)
-    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='매수자 많음', x =  js_2.index, y= js_2[selected_dosi],
-                                text= js_2[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),# marker_colorscale='RdBu'),
-                                secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi],
-                                text= js_index[selected_dosi], textposition = 'top center', marker_color = marker_colors[1]),# marker_colorscale='RdBu'),
-                                secondary_y = False)
-    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='매수자 많음', x =  js_2.index, y= js_2[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
+    fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
-    # fig.update_yaxes(title_text='매매지수', showticklabels= True, showgrid = False, zeroline=False, secondary_y = False) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
@@ -242,24 +232,27 @@ if __name__ == "__main__":
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
     
-    # fig = go.Figure([go.Bar(x=last_df.index, y=last_df.iloc[:,0])])
-    fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered',text=last_df.iloc[:,0])
-    # fig.update_traces(marker_colorscale='RdBu', selector=dict(type='bar'))
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dot", line_color="green", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", 
+    title = dict(text='주요 시 구 주간 매매지수 증감',  x=0.5, y = 0.9) 
+    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+    fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
+                text=last_df.index)
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dot", line_color="green", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
                 annotation_position="bottom right")
-    fig.update_traces(texttemplate='%{text:.3s}', textposition='outside')
-    fig.update_layout(uniformtext_minsize=8, uniformtext_mode='show')
+    fig.update_traces(texttemplate='%{label}', textposition='outside')
+    fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     st.plotly_chart(fig)
     st.dataframe(last_df.T.style.highlight_max(axis=1))
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
+        title = dict(text='주요 시 구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
         fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
                             text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
         fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-
+        fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
         st.plotly_chart(fig1)
 
 
@@ -308,6 +301,3 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             run_sentimental_index()
-    
-    
-    
