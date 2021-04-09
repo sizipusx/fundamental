@@ -21,9 +21,11 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
+file_path = 'C:/Users/user/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210405.xlsx'
+
 @st.cache
 def load_index_data():
-    kb_dict = pd.read_excel('C:/Users/user/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     mdf = kb_dict['매매지수']
     jdf = kb_dict['전세지수']
@@ -46,7 +48,7 @@ def load_index_data():
 
 @st.cache
 def load_senti_data():
-    kb_dict = pd.read_excel('C:/Users/user/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210322.xlsx', sheet_name=None, header=1)
+    kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     js = kb_dict['매수매도']
     js = js.set_index("Unnamed: 0")
