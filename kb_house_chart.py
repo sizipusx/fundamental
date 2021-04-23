@@ -21,7 +21,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-file_path = 'C:/Users/user/OneDrive - 호매실고등학교/data/WeeklySeriesTables(시계열)_20210405.xlsx'
+file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
 
 @st.cache
 def load_index_data():
@@ -30,7 +30,7 @@ def load_index_data():
     mdf = kb_dict['매매지수']
     jdf = kb_dict['전세지수']
     #헤더 변경
-    path = r'C:/Users/user/OneDrive - 호매실고등학교/data/KB헤더.xlsx'
+    path = r'G:/내 드라이브/code/data/KB헤더.xlsx'
     data_type = 'KB시도구' 
     header = pd.read_excel(path, sheet_name=data_type)
 
@@ -73,7 +73,7 @@ def load_senti_data():
 
 
 def run_price_index() :
-
+   
     # 챠트 기본 설정 
     # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
@@ -83,8 +83,8 @@ def run_price_index() :
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
-    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
 
     
     fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
@@ -136,6 +136,25 @@ def run_price_index() :
             type="date"
             )      
         )
+    st.plotly_chart(fig)
+
+    #bubble index chart
+    titles = dict(text= '('+selected_city2 +') 주간 버블 지수', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    
+    # fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    # fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+
+    
+    fig.add_trace(go.Scatter(mode='lines', name = '버블지수', x =  bubble_df.index, y= bubble_df[selected_city2], marker_color = marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='버블지수2', showticklabels= True, showgrid = False, zeroline=True,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = True) #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
 def run_sentimental_index():
@@ -215,31 +234,13 @@ def run_sentimental_index():
         )
     st.plotly_chart(fig)
 
-
-
-
-if __name__ == "__main__":
-    st.title("KB 부동산 주간 시계열 분석")
-    data_load_state = st.text('Loading 매매/전세 index Data...')
-    mdf, jdf = load_index_data()
-    data_load_state.text("매매/전세 index Data Done! (using st.cache)")
-
-    #주간 증감률
-    mdf_change = mdf.pct_change()*100
-    jdf_change = jdf.pct_change()*100
-    #일주일 간 상승률 순위
-    last_df = mdf_change.iloc[-1].T.to_frame()
-    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
-    last_df.columns = ['매매증감', '전세증감']
-    last_df.dropna(inplace=True)
-    last_df = last_df.round(decimals=2)
-    
+def draw_basic():
     title = dict(text='주요 시 구 주간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df.index)
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dot", line_color="green", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
                 annotation_position="bottom right")
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
@@ -258,11 +259,51 @@ if __name__ == "__main__":
         st.plotly_chart(fig1)
 
 
+
+
+if __name__ == "__main__":
+    st.title("KB 부동산 주간 시계열 분석")
+    data_load_state = st.text('Loading 매매/전세 index Data...')
+    mdf, jdf = load_index_data()
+    data_load_state.text("매매/전세 index Data Done! (using st.cache)")
+
+    #주간 증감률
+    mdf_change = mdf.pct_change()*100
+    mdf_change = mdf_change.astype(float)
+    mdf_change = mdf_change.iloc[1:]
+    jdf_change = jdf.pct_change()*100
+    jdf_change = jdf_change.iloc[1:]
+    jdf_change = jdf_change.astype(float)
+    #일주일 간 상승률 순위
+    last_df = mdf_change.iloc[-1].T.to_frame()
+    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+    last_df.columns = ['매매증감', '전세증감']
+    last_df.dropna(inplace=True)
+    last_df = last_df.round(decimals=2)
+
+    #버블 지수 만들어 보자
+    # st.dataframe(mdf_change)
+    # st.dataframe(jdf_change)
+    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df = bubble_df*100
+    
+    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+    bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df2 = bubble_df2.round(decimals=5)*100
+    st.dataframe(bubble_df2)
+    
+
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "What' are you gonna do?", ('Price Index', 'Sentiment analysis')
+                    "What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis')
                     )
-    if my_choice == 'Price Index':
+    if my_choice == 'Basic':
+        submit = st.sidebar.button('Draw Basic chart')
+        if submit:
+            draw_basic()
+
+    elif my_choice == 'Price Index':
 
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
