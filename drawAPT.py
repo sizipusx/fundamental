@@ -198,6 +198,7 @@ def draw_basic(last_df,df, geo_data):
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'],
                                         colorscale="Magma", zmin=df['매매증감'].min(), zmax=df['매매증감'].max(), marker_line_width=0))
+    fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
