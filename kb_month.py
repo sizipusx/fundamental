@@ -79,11 +79,8 @@ def load_index_data():
     
     #geojson file 변경
     for idx, sigun_dict in enumerate(geo_data['features']):
-        print(idx)
         sigun_id = sigun_dict['properties']['SIG_CD']
-        print(sigun_id)
         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
-        print(sigun_name)
         try:
             sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
             jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
