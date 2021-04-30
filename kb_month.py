@@ -85,15 +85,15 @@ def load_index_data():
         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
         print(sigun_name)
         try:
-        sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
-        jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
+            sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
+            jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
         except:
-        sell_change = 0
-        jeon_change =0
+            sell_change = 0
+            jeon_change =0
         # continue
         
         txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
-        print(txt)
+        # print(txt)
         
         geo_data['features'][idx]['id'] = sigun_id
         geo_data['features'][idx]['properties']['sell_change'] = sell_change
