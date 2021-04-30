@@ -203,7 +203,7 @@ if __name__ == "__main__":
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
-    st.dataframe(last_df)
+    st.dataframe(last_df.style.highlight_max(axis=0))
 
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
