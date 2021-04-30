@@ -8,4 +8,5 @@ plotly-express==0.4.1
 pykrx==1.0.12
 streamlit==0.78.0
 mapboxgl==0.10.2
+openpyxl==2.5.9
 
