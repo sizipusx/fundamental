@@ -23,20 +23,26 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
+# file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
+file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c63261956010df5ec03076143/(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.04)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
 
 @st.cache
 def load_index_data():
-    kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
-
+    # kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+    kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    path = r'G:/내 드라이브/code/data/KB헤더.xlsx'
-    data_type = 'KB시도구' 
-    header = pd.read_excel(path, sheet_name=data_type)
+    # path = r'G:/내 드라이브/code/data/KB헤더.xlsx'
+    # data_type = 'KB시도구' 
+    # header = pd.read_excel(path, sheet_name=data_type)
+    path = 'https://github.com/sizipusx/fundamental/blob/4a8638540e7072bd78f5bbb9aefc365861f5e29a/KB%ED%97%A4%EB%8D%94.xlsx?raw=true'
+    header_excel = pd.ExcelFile(path)
+    header = header_excel.parse('KB시도구')
 
     #주택가격지수
-    mdf = kbm_dict['매매APT']
-    jdf = kbm_dict['전세APT']
+    # mdf = kbm_dict['매매APT']
+    mdf = kbm_dict.parse("매매APT", skiprows=1, convert_float=True)
+    # jdf = kbm_dict['전세APT']
+    jdf = kbm_dict.parse("전세APT", skiprows=1, convert_float=True)
     mdf.columns = header.columns
     mdf = mdf.drop([0,1])
     jdf.columns = header.columns
@@ -166,6 +172,7 @@ if __name__ == "__main__":
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
+    st.dataframe(last_df)
 
     #버블 지수 만들어 보자
     # st.dataframe(mdf_change)

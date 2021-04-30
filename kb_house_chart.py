@@ -21,7 +21,8 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
+# file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
+file_path = r'C:/Users/sizip/Google Drive/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
 
 @st.cache
 def load_index_data():
@@ -30,7 +31,7 @@ def load_index_data():
     mdf = kb_dict['매매지수']
     jdf = kb_dict['전세지수']
     #헤더 변경
-    path = r'G:/내 드라이브/code/data/KB헤더.xlsx'
+    path = r'C:/Users/sizip/Google Drive/code/data/KB헤더.xlsx'
     data_type = 'KB시도구' 
     header = pd.read_excel(path, sheet_name=data_type)
 
@@ -148,11 +149,13 @@ def run_price_index() :
 
     
     fig.add_trace(go.Scatter(mode='lines', name = '버블지수', x =  bubble_df.index, y= bubble_df[selected_city2], marker_color = marker_colors[0]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
+    # fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df3.index, y= bubble_df3[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
+
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='버블지수2', showticklabels= True, showgrid = False, zeroline=True,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='버블지수2', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='pink', secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = True) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
@@ -190,6 +193,9 @@ def run_sentimental_index():
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
               annotation_text="8.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
+              annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
@@ -240,11 +246,11 @@ def draw_basic():
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df.index)
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
-                annotation_position="bottom right")
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+                annotation_position="bottom right")
     st.plotly_chart(fig)
     st.dataframe(last_df.T.style.highlight_max(axis=1))
 
@@ -287,11 +293,13 @@ if __name__ == "__main__":
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
     bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
     bubble_df = bubble_df*100
+    bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df2 = bubble_df2
     
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
-    bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
-    bubble_df2 = bubble_df2.round(decimals=5)*100
-    st.dataframe(bubble_df2)
+    bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df3 = bubble_df3.round(decimals=5)*100
+    # st.dataframe(bubble_df3)
     
 
     #여기서부터는 선택
