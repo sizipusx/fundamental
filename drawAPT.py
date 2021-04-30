@@ -15,6 +15,12 @@ from plotly.subplots import make_subplots
 import streamlit as st
 import FinanceDataReader as fdr
 
+#choroplethViz
+import mapboxgl
+from mapboxgl.viz import *
+from mapboxgl.utils import create_color_stops
+from mapboxgl.utils import create_numeric_stops
+
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
@@ -187,7 +193,16 @@ def run_sentimental_index():
         )
     st.plotly_chart(fig)
 
-def draw_basic(last_df):
+def draw_basic(last_df,df, geo_data):
+    #choroplethmapbax
+    token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
+    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'],
+                                        colorscale="Magma", zmin=-2, zmax=5, marker_line_width=0))
+    fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+                    mapbox_zoom=3, mapbox_center = {"lat": 37.414, "lon": 127.177})
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    st.plotly_chart(fig)
+
     title = dict(text='주요 시 구 주간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \

@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 
 import requests
+from urllib.request import urlopen
 import json
 from pandas.io.json import json_normalize
 
@@ -37,6 +38,8 @@ def load_index_data():
     path = 'https://github.com/sizipusx/fundamental/blob/4a8638540e7072bd78f5bbb9aefc365861f5e29a/KB%ED%97%A4%EB%8D%94.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB시도구')
+    code_df = header_excel.parse('code', index_col=1)
+    code_df.index = code_df.index.str.strip()
 
     #주택가격지수
     # mdf = kbm_dict['매매APT']
@@ -68,8 +71,36 @@ def load_index_data():
     jdf.drop('KB주간', axis=1, inplace=True)
     mdf = mdf.round(decimals=2)
     jdf = jdf.round(decimals=2)
+
+    #geojson file open
+    geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
+    with urlopen(geo_source) as response:
+        geo_data = json.load(response)
+    
+    #geojson file 변경
+    for idx, sigun_dict in enumerate(geo_data['features']):
+        print(idx)
+        sigun_id = sigun_dict['properties']['SIG_CD']
+        print(sigun_id)
+        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+        print(sigun_name)
+        try:
+        sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
+        jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
+        except:
+        sell_change = 0
+        jeon_change =0
+        # continue
+        
+        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+        print(txt)
+        
+        geo_data['features'][idx]['id'] = sigun_id
+        geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return mdf, jdf
+    return mdf, jdf, code_df, geo_data
 
 @st.cache
 def load_senti_data():
@@ -156,7 +187,7 @@ def load_pir_data():
 if __name__ == "__main__":
     st.title("KB 부동산 월간 시계열 분석")
     data_load_state = st.text('Loading 매매/전세 index Data...')
-    mdf, jdf = load_index_data()
+    mdf, jdf, code_df, geo_data = load_index_data()
     data_load_state.text("매매/전세 index Data Done! (using st.cache)")
 
     #월간 증감률
@@ -173,6 +204,12 @@ if __name__ == "__main__":
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
     st.dataframe(last_df)
+
+    #마지막달 dataframe에 지역 코드 넣어 합치기
+    df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+    df.columns = ['매매증감', '전세증감', 'SIG_CD']
+    df['SIG_CD']= df['SIG_CD'].astype(str)
+    df.reset_index(inplace=True)
 
     #버블 지수 만들어 보자
     # st.dataframe(mdf_change)
@@ -199,7 +236,7 @@ if __name__ == "__main__":
     if my_choice == 'Basic':
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            drawAPT.draw_basic(last_df)
+            drawAPT.draw_basic(last_df, df, geo_data)
 
     elif my_choice == 'Price Index':
 
