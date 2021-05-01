@@ -112,7 +112,7 @@ def load_pop_data():
     df = pop.T
     df.index = pd.to_datetime(df.index)
     df_change = df.pct_change()*100
-    df_change = df_change.round(decimal=2)
+    df_change = df_change.round(decimals=2)
     #세대수
     sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/saedae.csv', encoding='euc-kr', skiprows=1)
     sae['행정구역'] = popheader
@@ -122,7 +122,7 @@ def load_pop_data():
     sdf = sae.T
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
-    sdf_change = sdf_change.round(decimal=2)
+    sdf_change = sdf_change.round(decimals=2)
 
     return df, df_change, sdf, sdf_change
 
