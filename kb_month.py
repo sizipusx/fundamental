@@ -100,6 +100,33 @@ def load_index_data():
     return mdf, jdf, code_df, geo_data
 
 @st.cache
+def load_pop_data():
+    popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
+     #인구수 
+    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/pop.csv', skiprows=1)
+    pop['행정구역'] = popheader
+    pop = pop.set_index("행정구역")
+    pop = pop.iloc[:,3:]
+    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    pop.columns = test
+    df = pop.T
+    df.index = pd.to_datetime(df.index)
+    df_change = df.pct_change()*100
+    df_change = df_change.round(decimal=2)
+    #세대수
+    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/saedae.csv', encoding='euc-kr', skiprows=1)
+    sae['행정구역'] = popheader
+    sae = sae.set_index("행정구역")
+    sae = sae.iloc[:,3:]
+    sae.columns = test
+    sdf = sae.T
+    sdf.index = pd.to_datetime(sdf.index)
+    sdf_change = sdf.pct_change()*100
+    sdf_change = sdf_change.round(decimal=2)
+
+    return df, df_change, sdf, sdf_change
+
+@st.cache
 def load_senti_data():
     kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
@@ -183,9 +210,10 @@ def load_pir_data():
 
 if __name__ == "__main__":
     st.title("KB 부동산 월간 시계열 분석")
-    data_load_state = st.text('Loading 매매/전세 index Data...')
+    data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
-    data_load_state.text("매매/전세 index Data Done! (using st.cache)")
+    popdf, popdf_change, saedf, saedf_change = load_pop_data()
+    data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #월간 증감률
     mdf_change = mdf.pct_change()*100
@@ -236,7 +264,6 @@ if __name__ == "__main__":
             drawAPT.draw_basic(last_df, df, geo_data)
 
     elif my_choice == 'Price Index':
-
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
@@ -256,7 +283,9 @@ if __name__ == "__main__":
         #     st.dataframe(mdf.style.highlight_max(axis=0))
         
         submit = st.sidebar.button('Draw Price Index chart')
+
         if submit:
+            drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
