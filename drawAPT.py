@@ -26,7 +26,7 @@ from mapboxgl.utils import create_numeric_stops
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
-def run_pop_index(selected_city2, df, df_change, saedf, saedf_change):
+def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
