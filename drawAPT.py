@@ -226,9 +226,18 @@ def draw_basic(last_df,df, geo_data, last_pop):
 
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
+    df['text'] = '<b>' + df['index'] + '</b> <br>' + \
+                    '매매증감:' + df['매매증감'] + '<br>' + \
+                    '전세증감:' + df['전세증감'] + '<br>' + \
+                    '인구증감:' + last_pop['인구증감'] + '<br>' + \
+                    '세대증감:' + last_pop['세대증감']
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'],
                                         colorscale="Reds", zmin=df['매매증감'].min(), zmax=df['매매증감'].max(), marker_line_width=0))
-    fig.update_traces(hovertext=df['index'])
+    fig.update_traces(autocolorscale=False,
+                        text=df['text'], # hover text
+                        marker_line_color='white', # line markers between states
+                        colorbar_title="매매증감")
+    # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
