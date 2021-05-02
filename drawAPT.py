@@ -237,8 +237,8 @@ def draw_basic(last_df,df, geo_data, last_pop):
     df['text'] = '<b>' + df.index + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감'] + '<br>' + \
-                    '인구증감:' + last_pop['인구증감'] + '<br>' + \
-                    '세대증감:' + last_pop['세대증감']
+                    '인구증감:' + df['인구증감'] + '<br>' + \
+                    '세대증감:' + df['세대증감']
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'].astype(float),
                                         colorscale="Reds", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=False,
