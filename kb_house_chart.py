@@ -339,6 +339,7 @@ if __name__ == "__main__":
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     st.dataframe(df)
+    st.dataframe(code_df)
     st.dataframe(last_df)
     df.columns = ['매매증감', '전세증감', 'SIG_CD']
     df['SIG_CD']= df['SIG_CD'].astype(str)
