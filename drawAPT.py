@@ -219,7 +219,7 @@ def draw_basic(last_df,df, geo_data, last_pop):
     title = dict(text='주요 시 구 월간 인구수-세대수 증감', x=0.5, y = 0.9) 
     fig1 = px.scatter(last_pop, x='인구증감', y='세대증감', color='세대증감', size=abs(last_pop['세대증감']), 
                         text= last_pop.index, hover_name=last_pop.index, color_continuous_scale='Bluered')
-    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
     fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     st.plotly_chart(fig1)
