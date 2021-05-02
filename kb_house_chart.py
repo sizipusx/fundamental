@@ -30,7 +30,7 @@ def load_index_data():
     mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
     jdf = kb_dict.parse("전세지수", skiprows=1, index_col=0, parse_dates=True)
     #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/91d22669773a7dbbfe26f2d651d3805ae4fbc6b2/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/26a603c9a6dac2cfdff29f550d750de49ac5fa93/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB시도구')
     code_df = header_excel.parse('code', index_col=1)
