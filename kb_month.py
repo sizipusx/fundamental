@@ -31,7 +31,7 @@ file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c632619
 def load_index_data():
     kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/865ed2463691180d4f30bc507dcf933067012357/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/e0aa38786b402e1410772d359c74d576e2033479/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
@@ -229,9 +229,6 @@ if __name__ == "__main__":
     last_pop.dropna(inplace=True)
     last_pop = last_pop.round(decimals=2) 
 
-    st.dataframe(last_df)
-    st.dataframe(code_df)
-
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     df.columns = ['매매증감', '전세증감', 'SIG_CD']
@@ -239,9 +236,6 @@ if __name__ == "__main__":
     # df.reset_index(inplace=True)
 
     #버블 지수 만들어 보자
-    st.dataframe(df)
-    st.dataframe(mdf)
-    # st.dataframe(jdf_change)
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
     bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
     bubble_df = bubble_df*100
