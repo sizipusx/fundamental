@@ -240,7 +240,7 @@ if __name__ == "__main__":
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     df.columns = ['매매증감', '전세증감', 'SIG_CD']
     df['SIG_CD']= df['SIG_CD'].astype(str)
-    df.reset_index(inplace=True)
+    # df.reset_index(inplace=True)
 
     #버블 지수 만들어 보자
     # st.dataframe(mdf_change)
