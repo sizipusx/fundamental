@@ -228,7 +228,7 @@ if __name__ == "__main__":
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
-    st.dataframe(last_df.style.highlight_max(axis=0))
+    # st.dataframe(last_df.style.highlight_max(axis=0))
     #인구, 세대수 마지막 데이터
     last_pop = popdf_change.iloc[-1].T.to_frame()
     last_pop['세대증감'] = saedf_change.iloc[-1].T.to_frame()
