@@ -239,7 +239,8 @@ if __name__ == "__main__":
     # df.reset_index(inplace=True)
 
     #버블 지수 만들어 보자
-    # st.dataframe(mdf_change)
+    st.dataframe(df)
+    st.dataframe(mdf)
     # st.dataframe(jdf_change)
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
     bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
