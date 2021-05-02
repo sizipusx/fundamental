@@ -51,6 +51,7 @@ def load_index_data():
     jdf.columns = header.columns
     # jdf = jdf.drop([0,1])
     #index 날짜 변경
+    st.dataframe(mdf)
     index_list = list(mdf.index)
 
     new_index = []
