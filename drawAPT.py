@@ -221,8 +221,8 @@ def draw_basic(last_df,df, geo_data, last_pop):
                         text= last_pop.index, hover_name=last_pop.index, color_continuous_scale='Bluered')
     fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
-    fig1.show()
+    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig1)
 
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
