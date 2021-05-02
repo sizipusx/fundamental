@@ -231,10 +231,10 @@ if __name__ == "__main__":
     st.dataframe(last_df.style.highlight_max(axis=0))
     #인구, 세대수 마지막 데이터
     last_pop = popdf_change.iloc[-1].T.to_frame()
-    last_df['전세증감'] = sae_change.iloc[-1].T.to_frame()
-    last_df.columns = ['매매증감', '전세증감']
-    last_df.dropna(inplace=True)
-    last_df = last_df.round(decimals=2)
+    last_pop['세대증감'] = sae_change.iloc[-1].T.to_frame()
+    last_pop.columns = ['인구증감', '세대증감']
+    last_pop.dropna(inplace=True)
+    last_pop = last_pop.round(decimals=2) 
 
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     if my_choice == 'Basic':
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            drawAPT.draw_basic(last_df, df, geo_data)
+            drawAPT.draw_basic(last_df, df, geo_data, last_pop)
 
     elif my_choice == 'Price Index':
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \

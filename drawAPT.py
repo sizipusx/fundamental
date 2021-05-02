@@ -214,11 +214,20 @@ def run_sentimental_index():
         )
     st.plotly_chart(fig)
 
-def draw_basic(last_df,df, geo_data):
+def draw_basic(last_df,df, geo_data, last_pop):
+    # 월간 인구수 세대수 증감
+    title = dict(text='주요 시 구 월간 인구수-세대수 증감', x=0.5, y = 0.9) 
+    fig1 = px.scatter(last_pop, x='인구증감', y='세대증감', color='세대증감', size=abs(last_pop['세대증감']), 
+                        text= last_pop.index, hover_name=last_pop.index, color_continuous_scale='Bluered')
+    fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig1.show()
+
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'],
-                                        colorscale="Magma", zmin=df['매매증감'].min(), zmax=df['매매증감'].max(), marker_line_width=0))
+                                        colorscale="Reds", zmin=df['매매증감'].min(), zmax=df['매매증감'].max(), marker_line_width=0))
     fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
