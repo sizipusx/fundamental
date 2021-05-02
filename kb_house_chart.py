@@ -287,7 +287,7 @@ def draw_basic():
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-    fig.update_layout(title_text='<b>KB 주요 조사 시-구 월간 매매-전세-인구-세대 증감</b>')
+    fig.update_layout(title_text='<b>KB 주요 조사 시-구 주간 매매-전세 증감</b>')
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
