@@ -7,6 +7,7 @@ import pandas as pd
 import requests
 import json
 from pandas.io.json import json_normalize
+from urllib.request import urlopen
 
 import plotly.express as px
 import plotly.graph_objects as go
