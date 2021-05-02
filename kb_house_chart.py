@@ -22,30 +22,56 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-file_path = r'C:/Users/sizip/Google Drive/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
+file_path = 'https://github.com/sizipusx/fundamental/blob/d98b72c75be0fc35d13ff9a491e25d8325a6d3b5/WeeklySeriesTables.xlsx?raw=true'
 
 @st.cache
 def load_index_data():
-    kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
-
-    mdf = kb_dict['매매지수']
-    jdf = kb_dict['전세지수']
+    kb_dict = pd.ExcelFile(file_path)
+    mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
+    jdf = kb_dict.parse("전세지수", skiprows=1, index_col=0, parse_dates=True)
     #헤더 변경
-    path = r'C:/Users/sizip/Google Drive/code/data/KB헤더.xlsx'
-    data_type = 'KB시도구' 
-    header = pd.read_excel(path, sheet_name=data_type)
+    path = 'https://github.com/sizipusx/fundamental/blob/91d22669773a7dbbfe26f2d651d3805ae4fbc6b2/kbheader.xlsx?raw=true'
+    header_excel = pd.ExcelFile(path)
+    header = header_excel.parse('KB시도구')
+    code_df = header_excel.parse('code', index_col=1)
+    code_df.index = code_df.index.str.strip()
 
     mdf.columns = header.columns
-    mdf = mdf.drop([0])
-    mdf.set_index("KB주간", inplace=True)
+    mdf = mdf.iloc[1:]
+    mdf.index = pd.to_datetime(mdf.index)
     mdf = mdf.round(decimals=2)
 
     jdf.columns = header.columns
-    jdf = jdf.drop([0])
-    jdf.set_index("KB주간", inplace=True)
+    jdf = jdf.iloc[1:]
+    jdf.index = pd.to_datetime(jdf.index)
     jdf = jdf.round(decimals=2)
+
+    #geojson file open
+    geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
+    with urlopen(geo_source) as response:
+        geo_data = json.load(response)
+    
+    #geojson file 변경
+    for idx, sigun_dict in enumerate(geo_data['features']):
+        sigun_id = sigun_dict['properties']['SIG_CD']
+        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+        try:
+            sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
+            jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
+        except:
+            sell_change = 0
+            jeon_change =0
+        # continue
+        
+        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+        # print(txt)
+        
+        geo_data['features'][idx]['id'] = sigun_id
+        geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return mdf, jdf
+    return mdf, jdf, code_df, geo_data
 
 @st.cache
 def load_senti_data():
@@ -241,6 +267,29 @@ def run_sentimental_index():
     st.plotly_chart(fig)
 
 def draw_basic():
+    #choroplethmapbax
+    token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
+
+    for col in df.columns:
+        df[col] = df[col].astype(str)
+    
+    df['text'] = '<b>' + df.index + '</b> <br>' + \
+                    '매매증감:' + df['매매증감'] + '<br>' + \
+                    '전세증감:' + df['전세증감'] 
+                    
+    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'].astype(float),
+                                        colorscale="Reds", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
+    fig.update_traces(autocolorscale=False,
+                        text=df['text'], # hover text
+                        marker_line_color='white', # line markers between states
+                        colorbar_title="매매증감")
+    # fig.update_traces(hovertext=df['index'])
+    fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+                    mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
+    fig.update_layout(title_text='<b>KB 주요 조사 시-구 월간 매매-전세-인구-세대 증감</b>')
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    st.plotly_chart(fig)
+
     title = dict(text='주요 시 구 주간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
@@ -269,9 +318,9 @@ def draw_basic():
 
 if __name__ == "__main__":
     st.title("KB 부동산 주간 시계열 분석")
-    data_load_state = st.text('Loading 매매/전세 index Data...')
-    mdf, jdf = load_index_data()
-    data_load_state.text("매매/전세 index Data Done! (using st.cache)")
+    data_load_state = st.text('Loading index Data...')
+    mdf, jdf, code_df, geo_data = load_index_data()
+    data_load_state.text("index Data Done! (using st.cache)")
 
     #주간 증감률
     mdf_change = mdf.pct_change()*100
@@ -286,10 +335,12 @@ if __name__ == "__main__":
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
+    #마지막달 dataframe에 지역 코드 넣어 합치기
+    df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+    df.columns = ['매매증감', '전세증감', 'SIG_CD']
+    df['SIG_CD']= df['SIG_CD'].astype(str)
 
     #버블 지수 만들어 보자
-    # st.dataframe(mdf_change)
-    # st.dataframe(jdf_change)
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
     bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
     bubble_df = bubble_df*100
