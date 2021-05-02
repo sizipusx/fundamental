@@ -31,7 +31,7 @@ file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c632619
 def load_index_data():
     kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/6a7ffc2cc58367e3792b32c94f3bc4c4db8030ec/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/36d7cf8622721b020fac048866aa02d88509186b/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
