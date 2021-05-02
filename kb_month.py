@@ -35,10 +35,9 @@ def load_index_data():
     # path = r'G:/내 드라이브/code/data/KB헤더.xlsx'
     # data_type = 'KB시도구' 
     # header = pd.read_excel(path, sheet_name=data_type)
-    path = 'https://github.com/sizipusx/fundamental/blob/2a23fe46f78371dbc554462f0181023ea3f10f3a/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/e98c5316ed02d50ee48aecbf56617829306c1712/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB')
-    header = header.columns.str.strip()
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
 
