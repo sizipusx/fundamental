@@ -43,9 +43,9 @@ def load_index_data():
 
     #주택가격지수
     # mdf = kbm_dict['매매APT']
-    mdf = kbm_dict.parse("매매APT", skiprows=1, convert_float=True)
+    mdf = kbm_dict.parse("매매APT", skiprows=1, index_col=0, convert_float=True)
     # jdf = kbm_dict['전세APT']
-    jdf = kbm_dict.parse("전세APT", skiprows=1, convert_float=True)
+    jdf = kbm_dict.parse("전세APT", skiprows=1, index_col=0, convert_float=True)
     mdf.columns = header.columns
     mdf = mdf.drop([0,1])
     jdf.columns = header.columns
