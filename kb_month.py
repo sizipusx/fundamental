@@ -231,7 +231,7 @@ if __name__ == "__main__":
     st.dataframe(last_df.style.highlight_max(axis=0))
     #인구, 세대수 마지막 데이터
     last_pop = popdf_change.iloc[-1].T.to_frame()
-    last_pop['세대증감'] = sae_change.iloc[-1].T.to_frame()
+    last_pop['세대증감'] = saedf_change.iloc[-1].T.to_frame()
     last_pop.columns = ['인구증감', '세대증감']
     last_pop.dropna(inplace=True)
     last_pop = last_pop.round(decimals=2) 
