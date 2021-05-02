@@ -47,7 +47,6 @@ def load_index_data():
     mdf = mdf.iloc[2:]
     jdf = jdf.iloc[2:]
     index_list = list(mdf.index)
-    st.dataframe(mdf)
 
     new_index = []
 
@@ -229,6 +228,9 @@ if __name__ == "__main__":
     last_pop.columns = ['인구증감', '세대증감']
     last_pop.dropna(inplace=True)
     last_pop = last_pop.round(decimals=2) 
+
+    st.dataframe(last_df)
+    st.dataframe(code_df)
 
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
