@@ -29,27 +29,19 @@ file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c632619
 
 @st.cache
 def load_index_data():
-    # kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
     kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    # path = r'G:/내 드라이브/code/data/KB헤더.xlsx'
-    # data_type = 'KB시도구' 
-    # header = pd.read_excel(path, sheet_name=data_type)
-    path = 'https://github.com/sizipusx/fundamental/blob/e98c5316ed02d50ee48aecbf56617829306c1712/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/865ed2463691180d4f30bc507dcf933067012357/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
 
     #주택가격지수
-    # mdf = kbm_dict['매매APT']
     mdf = kbm_dict.parse("매매APT", skiprows=1, index_col=0, convert_float=True)
-    # jdf = kbm_dict['전세APT']
     jdf = kbm_dict.parse("전세APT", skiprows=1, index_col=0, convert_float=True)
     mdf.columns = header.columns
-    # mdf = mdf.drop([0,1])
     jdf.columns = header.columns
-    # jdf = jdf.drop([0,1])
     #index 날짜 변경
     
     mdf = mdf.iloc[2:]
@@ -71,8 +63,6 @@ def load_index_data():
 
     mdf.set_index(pd.to_datetime(new_index), inplace=True)
     jdf.set_index(pd.to_datetime(new_index), inplace=True)
-    # mdf.drop('KB주간', axis=1, inplace=True)
-    # jdf.drop('KB주간', axis=1, inplace=True)
     mdf = mdf.round(decimals=2)
     jdf = jdf.round(decimals=2)
 
