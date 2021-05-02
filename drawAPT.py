@@ -227,10 +227,12 @@ def draw_basic(last_df,df, geo_data, last_pop):
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
 
+    df = pd.merge(df, last_pop, how='inner', left_on=True, right_on=True)
+
     for col in df.columns:
         df[col] = df[col].astype(str)
-    for col in last_pop.columns:
-        last_pop[col] = last_pop[col].astype(str)
+    # for col in last_pop.columns:
+    #     last_pop[col] = last_pop[col].astype(str)
 
     df['text'] = '<b>' + df['index'] + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
@@ -249,7 +251,7 @@ def draw_basic(last_df,df, geo_data, last_pop):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
-    title = dict(text='주요 시 구 주간 매매지수 증감',  x=0.5, y = 0.9) 
+    title = dict(text='주요 시 구 월간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df.index)
