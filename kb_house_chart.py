@@ -32,7 +32,7 @@ def load_index_data():
     #헤더 변경
     path = 'https://github.com/sizipusx/fundamental/blob/26a603c9a6dac2cfdff29f550d750de49ac5fa93/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
-    header = header_excel.parse('KB시도구')
+    header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
 
