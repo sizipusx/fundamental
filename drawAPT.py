@@ -227,7 +227,7 @@ def draw_basic(last_df,df, geo_data, last_pop):
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
 
-    df = pd.merge(df, last_pop, how='inner', left_on=True, right_on=True)
+    df = pd.merge(df, last_pop, how='inner', left_index=True, right_index=True)
 
     for col in df.columns:
         df[col] = df[col].astype(str)
