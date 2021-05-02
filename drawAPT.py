@@ -234,7 +234,7 @@ def draw_basic(last_df,df, geo_data, last_pop):
     # for col in last_pop.columns:
     #     last_pop[col] = last_pop[col].astype(str)
 
-    df['text'] = '<b>' + df['index'] + '</b> <br>' + \
+    df['text'] = '<b>' + df.index + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감'] + '<br>' + \
                     '인구증감:' + last_pop['인구증감'] + '<br>' + \
