@@ -47,11 +47,11 @@ def load_index_data():
     # jdf = kbm_dict['전세APT']
     jdf = kbm_dict.parse("전세APT", skiprows=1, index_col=0, convert_float=True)
     mdf.columns = header.columns
-    mdf = mdf.drop([0,1])
+    # mdf = mdf.drop([0,1])
     jdf.columns = header.columns
-    jdf = jdf.drop([0,1])
+    # jdf = jdf.drop([0,1])
     #index 날짜 변경
-    index_list = list(mdf["KB주간"])
+    index_list = list(mdf.index)
 
     new_index = []
 
