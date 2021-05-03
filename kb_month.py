@@ -24,12 +24,18 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-# file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c63261956010df5ec03076143/(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.04)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
+@st.cache()
+def read_source():
+    # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c63261956010df5ec03076143/(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.04)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
+    kbm_dict = pd.ExcelFile(file_path)
+
+    return kbm_dict
 
 @st.cache
 def load_index_data():
-    kbm_dict = pd.ExcelFile(file_path)
+    kbm_dict = read_source()
+    # kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
     path = 'https://github.com/sizipusx/fundamental/blob/36d7cf8622721b020fac048866aa02d88509186b/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
@@ -199,6 +205,8 @@ def load_pir_data():
 
     return pir_df, income_df, house_df
 
+@st.cache
+def load_hai_data():
 
 
 
@@ -288,6 +296,18 @@ if __name__ == "__main__":
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()
+        data_load_state.text("PIR index Data Done! (using st.cache)")
+
+        city_list = ['서울', '경기', '인천']
+        selected_city = st.sidebar.selectbox(
+                '수도권', city_list
+            )
+        submit = st.sidebar.button('Draw PIR chart')
+        if submit:
+            drawAPT.draw_pir(selected_city, pir_df, income_df, price_df)
+    elif my_choice == 'HAI':
+        data_load_state = st.text('Loading HAI index Data...')
+        pir_df, income_df, price_df = load_hai_data()
         data_load_state.text("PIR index Data Done! (using st.cache)")
 
         city_list = ['서울', '경기', '인천']
