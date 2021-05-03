@@ -21,6 +21,7 @@ from mapboxgl.viz import *
 from mapboxgl.utils import create_color_stops
 from mapboxgl.utils import create_numeric_stops
 
+pd.set_option('display.float_format', '{:.2f}'.format)
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
@@ -309,9 +310,9 @@ def draw_hai(city, hai_df, info_df):
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     #매수우위지수
-    js_index = senti_dfs[0]
-    js_1 = df_as[0]
-    js_2 = df_bs[0]
+    js_index = senti_dfs[0].round(decimals=2)
+    js_1 = df_as[0].round(decimals=2)
+    js_2 = df_bs[0].round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 매수우위지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -381,9 +382,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #매매거래지수
-    js_sell = senti_dfs[1]
-    js_3 = df_as[1]
-    js_4 = df_bs[1]
+    js_sell = senti_dfs[1].round(decimals=2)
+    js_3 = df_as[1].round(decimals=2)
+    js_4 = df_bs[1].round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 매매거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -417,14 +418,14 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #전세수급
-    js_j = senti_dfs[2]
-    js_5 = df_as[2]
-    js_6 = df_bs[2]
+    js_j = senti_dfs[2].round(decimals=2)
+    js_5 = df_as[2].round(decimals=2)
+    js_6 = df_bs[2].round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 전세수급지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_5.index, y= js_5[selected_dosi].round(2), marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='수요<공급', x =  js_6.index, y= js_6[selected_dosi].round(2), marker_color = marker_colors[2]), secondary_y = False)                                             
+    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_5.index, y= js_5[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='수요<공급', x =  js_6.index, y= js_6[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
     fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_j.index, y= js_j[selected_dosi].round(2), marker_color = marker_colors[1]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
@@ -453,9 +454,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #전세거래
-    js_js = senti_dfs[3]
-    js_7 = df_as[3]
-    js_8 = df_bs[3]
+    js_js = senti_dfs[3].round(decimals=2)
+    js_7 = df_as[3].round(decimals=2)
+    js_8 = df_bs[3].round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 전세거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -489,9 +490,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #KB부동산 매매가격 전망지수
-    js_for = senti_dfs[4]
-    js_9 = df_as[4]
-    js_10 = df_bs[4]
+    js_for = senti_dfs[4].round(decimals=2)
+    js_9 = df_as[4].round(decimals=2)
+    js_10 = df_bs[4].round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') KB부동산 매매가격 전망지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -525,9 +526,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #KB부동산 전세가격 전망지수
-    js_for_j = senti_dfs[5]
-    js_11 = df_as[5]
-    js_12 = df_bs[5]
+    js_for_j = senti_dfs[5].round(decimals=2)
+    js_11 = df_as[5].round(decimals=2)
+    js_12 = df_bs[5].round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') KB부동산 전세가격 전망지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
