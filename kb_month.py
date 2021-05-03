@@ -304,7 +304,7 @@ if __name__ == "__main__":
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "What' are you gonna do?", ('Basic','Price Index', 'PIR', 'Sentiment analysis')
+                    "What' are you gonna do?", ('Basic','Price Index', 'PIR','HAI', 'Sentiment analysis')
                     )
     if my_choice == 'Basic':
         submit = st.sidebar.button('Draw Basic chart')
