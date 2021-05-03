@@ -204,9 +204,52 @@ def load_pir_data():
 
     return pir_df, income_df, house_df
 
-# @st.cache
-# def load_hai_data():
+@st.cache
+def load_hai_data():
+    kbm_dict = read_source()
+    hai = kbm_dict.parse('NEW_HAI', skiprows=1)
+    hai_old = hai.iloc[:135,2:]
+    hai_old = hai_old.set_index("지역")
+    hai_old.index.name="날짜"
+    hai_new = hai.iloc[144:hai['전국 Total'].count()-17,2:] ### 159 3월까지::: 달 증가에 따른 +1
+    hai_new = hai_new.set_index("지역")
+    hai_new.index.name="날짜"
+    s1 = hai_new.columns.map(lambda x: x.split(' ')[0])
+    #index 날짜 변경
+    new_s1 = []
+    for num, gu_data in enumerate(s1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(s1[check])
+    new_s1[-1] ='중위월소득'
+    new_s1[-2] ='대출금리'
+    hai_new.columns = [new_s1,hai_old.iloc[0]]
+    hai_index = list(hai_new.index)
+    #인덱스 날짜 변경
+    new_index = []
 
+    for num, raw_index in enumerate(hai_index):
+        temp = str(raw_index).split('.')
+        if len(temp[0]) == 3:
+            if int(temp[0].replace("'","")) >84:
+                new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+            else:
+                new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
+        else:
+            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+    hai_new.set_index(pd.to_datetime(new_index), inplace=True)
+    ###각 지역 HAI만
+    hai_apt = hai_new.xs("아파트", axis=1, level=1)
+    hai_apt.set_index(pd.to_datetime(new_index), inplace=True)
+    ### 금리와 중위 소득만 가져오기
+    info = hai_new.iloc[:,-2:]
+    info.columns = ['주담대금리', '중위월소득']
+    info.index.name="분기"
+    info.loc[:,'중위월소득증감'] = info['중위월소득'].astype(int).pct_change()
+
+    return hai_apt, info
 
 
 if __name__ == "__main__":
@@ -306,16 +349,16 @@ if __name__ == "__main__":
             drawAPT.draw_pir(selected_city, pir_df, income_df, price_df)
     elif my_choice == 'HAI':
         data_load_state = st.text('Loading HAI index Data...')
-        pir_df, income_df, price_df = load_hai_data()
-        data_load_state.text("PIR index Data Done! (using st.cache)")
+        hai_df, info_df = load_hai_data()
+        data_load_state.text("HAI index Data Done! (using st.cache)")
 
-        city_list = ['서울', '경기', '인천']
+        city_list = hai_df.columns.to_list()
         selected_city = st.sidebar.selectbox(
-                '수도권', city_list
+                '지역', city_list
             )
-        submit = st.sidebar.button('Draw PIR chart')
+        submit = st.sidebar.button('Draw HAI chart')
         if submit:
-            drawAPT.draw_pir(selected_city, pir_df, income_df, price_df)
+            drawAPT.draw_hai(selected_city, hai_df, info)
     else:
         data_load_state = st.text('Loading 매수매도 index Data...')
         # senti_df = load_senti_data()
