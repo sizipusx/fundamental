@@ -152,6 +152,7 @@ def load_senti_data():
 
 @st.cache
 def load_pir_data():
+    file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c63261956010df5ec03076143/(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.04)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
     kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
     pir =  kb_dict['KB아파트담보대출PIR']
     pir = pir.iloc[:pir['지역'].count()-1,1:11]
@@ -339,7 +340,12 @@ if __name__ == "__main__":
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()
         data_load_state.text("PIR index Data Done! (using st.cache)")
-
+        st.write("* <b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
+        st.write("  - 가구소득은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 대출자의 연소득 중위값임")
+        st.write("  - 주택가격은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 실행시 조사된 담보평가 가격의 중위값임")
+        st.write("* KB 아파트 PIR은 KB국민은행에서 실행된 아파트 담보대출(구입자금대출) 중 실제 거래된 아파트 거래가격과 해당 여신거래자의 가계소득 자료를 기반으로 작성된 지수로 기존 당행에서 발표중인 PIR지수의 보조지표로 활용할 수 있음. ")
+        st.write("* 발표시기 : 해당분기 익익월 보고서 발표(예 / 1분기 자료 ⇒ 5월 보고서 )")
+        
         city_list = ['서울', '경기', '인천']
         selected_city = st.sidebar.selectbox(
                 '수도권', city_list
@@ -351,7 +357,7 @@ if __name__ == "__main__":
         data_load_state = st.text('Loading HAI index Data...')
         hai_df, info_df = load_hai_data()
         data_load_state.text("HAI index Data Done! (using st.cache)")
-        st.write("주택구매력지수(HAI)  Housing affordability index")
+        st.write("<b>주택구매력지수(HAI)  Housing affordability index</b>")
         st.write("* HAI = (중위가구소득 ÷ 대출상환가능소득) ×100 ")
         st.write("* 주택구매력지수란 우리나라에서 중간정도의 소득을 가진 가구가 금융기관의 대출을 받아 중간가격 정도의 주택을 구입한다고 가정할 때, \
             현재의 소득으로 대출원리금상환에 필요한 금액을 부담할 수 있는 능력을 의미")
