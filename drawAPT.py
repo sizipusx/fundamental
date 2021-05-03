@@ -296,9 +296,9 @@ def draw_pir(selected_city2, pir_df, income_df, price_df):
 
 def draw_hai(city, hai_df, info_df):
     titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.9) 
-
+    hai_df = hai_df.round(decimals=2)
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Scatter(mode='lines', name = 'PIR', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
