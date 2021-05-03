@@ -24,10 +24,19 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-def read_source():
+#return object
+def read_source(): 
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
     file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c63261956010df5ec03076143/(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.04)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
     kbm_dict = pd.ExcelFile(file_path)
+
+    return kbm_dict
+
+ #return dic
+def read_source_excel():
+    # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/eba3275f50fdb23c63261956010df5ec03076143/(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.04)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
+    kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     return kbm_dict
 
@@ -127,7 +136,7 @@ def load_pop_data():
 
 @st.cache
 def load_senti_data():
-    kbm_dict = read_source()
+    kbm_dict = read_source_excel()
 
     m_sheet = '매수우위,매매거래,전세수급,전세거래,KB부동산 매매가격 전망지수,KB부동산 전세가격 전망지수'
     m_list = m_sheet.split(',')
