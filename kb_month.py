@@ -351,6 +351,13 @@ if __name__ == "__main__":
         data_load_state = st.text('Loading HAI index Data...')
         hai_df, info_df = load_hai_data()
         data_load_state.text("HAI index Data Done! (using st.cache)")
+        st.write("주택구매력지수(HAI)  Housing affordability index")
+        st.write("HAI = (중위가구소득 ÷ 대출상환가능소득) ×100 ")
+        st.write("주택구매력지수란 우리나라에서 중간정도의 소득을 가진 가구가 금융기관의 대출을 받아 중간가격 정도의 주택을 구입한다고 가정할 때, ")
+        st.write("현재의 소득으로 대출원리금상환에 필요한 금액을 부담할 수 있는 능력을 의미")
+        st.write("HAI가 100보다 클수록 중간정도의 소득을 가진 가구가 중간가격 정도의 주택을 큰 무리없이 구입할 수 있다는 것을 나타내며, HAI가 상승하면 ")
+        st.write("주택구매력이 증가한다는 것을 의미")
+        st.write("* 발표시기 : 해당분기 익익월 보고서 발표(예 / 1분기 자료 ⇒ 5월 보고서 )")
 
         city_list = hai_df.columns.to_list()
         selected_city = st.sidebar.selectbox(
