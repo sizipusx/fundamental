@@ -280,8 +280,8 @@ def draw_pir(selected_city2, pir_df, income_df, price_df):
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = 'PIR', x =  pir_df.index, y= pir_df[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Bar(name = '가구소득', x = income_df.index, y = income_df[selected_city2], marker_color=  marker_colors[2]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '주택가격', x = price_df.index, y = price_df[selected_city2], marker_color=  marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '가구소득', x = income_df.index, y = income_df[selected_city2], marker_color=  marker_colors[2], opacity=0.6), secondary_y = True)
+    fig.add_trace(go.Bar(name = '주택가격', x = price_df.index, y = price_df[selected_city2], marker_color=  marker_colors[1], opacity=0.6), secondary_y = True)
     fig.update_layout(barmode='stack')
     
     # fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
