@@ -310,9 +310,10 @@ def draw_hai(city, hai_df, info_df):
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     #매수우위지수
-    js_index = senti_dfs[0].round(decimals=2)
-    js_1 = df_as[0].round(decimals=2)
-    js_2 = df_bs[0].round(decimals=2)
+    js_index = senti_dfs[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_1 = df_as[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_2 = df_bs[0].apply(lambda x: x.replace('-','0')).astyoe(float).round(decimals=2)
+
     titles = dict(text= '('+ selected_dosi + ') 매수우위지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -382,9 +383,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #매매거래지수
-    js_sell = senti_dfs[1].round(decimals=2)
-    js_3 = df_as[1].round(decimals=2)
-    js_4 = df_bs[1].round(decimals=2)
+    js_sell = senti_dfs[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_3 = df_as[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_4 = df_bs[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 매매거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -418,9 +419,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #전세수급
-    js_j = senti_dfs[2].round(decimals=2)
-    js_5 = df_as[2].round(decimals=2)
-    js_6 = df_bs[2].round(decimals=2)
+    js_j = senti_dfs[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_5 = df_as[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_6 = df_bs[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 전세수급지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -454,9 +455,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #전세거래
-    js_js = senti_dfs[3].round(decimals=2)
-    js_7 = df_as[3].round(decimals=2)
-    js_8 = df_bs[3].round(decimals=2)
+    js_js = senti_dfs[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_7 = df_as[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_8 = df_bs[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') 전세거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -490,9 +491,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #KB부동산 매매가격 전망지수
-    js_for = senti_dfs[4].round(decimals=2)
-    js_9 = df_as[4].round(decimals=2)
-    js_10 = df_bs[4].round(decimals=2)
+    js_for = senti_dfs[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_9 = df_as[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_10 = df_bs[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') KB부동산 매매가격 전망지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -526,9 +527,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
     #KB부동산 전세가격 전망지수
-    js_for_j = senti_dfs[5].round(decimals=2)
-    js_11 = df_as[5].round(decimals=2)
-    js_12 = df_bs[5].round(decimals=2)
+    js_for_j = senti_dfs[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_11 = df_as[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_12 = df_bs[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     titles = dict(text= '('+ selected_dosi + ') KB부동산 전세가격 전망지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
