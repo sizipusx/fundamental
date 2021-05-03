@@ -127,7 +127,7 @@ def load_pop_data():
 
 @st.cache
 def load_senti_data():
-    kb_dict = read_source()
+    kbm_dict = read_source()
 
     m_sheet = '매수우위,매매거래,전세수급,전세거래,KB부동산 매매가격 전망지수,KB부동산 전세가격 전망지수'
     m_list = m_sheet.split(',')
