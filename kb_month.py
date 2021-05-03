@@ -358,7 +358,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw HAI chart')
         if submit:
-            drawAPT.draw_hai(selected_city, hai_df, info)
+            drawAPT.draw_hai(selected_city, hai_df, info_df)
     else:
         data_load_state = st.text('Loading 매수매도 index Data...')
         # senti_df = load_senti_data()
