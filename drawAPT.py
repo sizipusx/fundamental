@@ -323,7 +323,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
+    fig.add_hline(y=100.0, line_color="pink", annotation_text="매수자많음>100", annotation_position="bottom right")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
@@ -423,9 +423,9 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     titles = dict(text= '('+ selected_dosi + ') 전세수급지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_5.index, y= js_5[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='수요<공급', x =  js_6.index, y= js_6[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
-    fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_j.index, y= js_j[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_5.index, y= js_5[selected_dosi].round(2), marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='수요<공급', x =  js_6.index, y= js_6[selected_dosi].round(2), marker_color = marker_colors[2]), secondary_y = False)                                             
+    fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_j.index, y= js_j[selected_dosi].round(2), marker_color = marker_colors[1]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
