@@ -127,28 +127,93 @@ def load_pop_data():
 
 @st.cache
 def load_senti_data():
-    kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+    kb_dict = read_source()
 
-    js = kb_dict['매수매도']
-    js = js.set_index("Unnamed: 0")
-    js.index.name="날짜"
+    m_sheet = '매수우위,매매거래,전세수급,전세거래,KB부동산 매매가격 전망지수,KB부동산 전세가격 전망지수'
+m_list = m_sheet.split(',')
+df_dic = []
+df_a = []
+df_b = []
 
-    #컬럼명 바꿈
-    j1 = js.columns.map(lambda x: x.split(' ')[0])
+for k in kbm_dict.keys():
+    js = kbm_dict[k]
+    # print(f"sheet name is {k}")
 
-    new_s1 = []
-    for num, gu_data in enumerate(j1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(j1[check])
+    if k in m_list:
+        print(f"sheet name is {k}")
+        js = js.set_index("Unnamed: 0")
+        js.index.name="날짜"
 
-    #컬럼 설정
-    js.columns = [new_s1,js.iloc[0]]
-    js = js.round(decimals=2)
+        #컬럼명 바꿈
+        j1 = js.columns.map(lambda x: x.split(' ')[0])
 
-    return js
+        new_s1 = []
+        for num, gu_data in enumerate(j1):
+            check = num
+            if gu_data.startswith('Un'):
+                new_s1.append(new_s1[check-1])
+            else:
+                new_s1.append(j1[check])
+
+        #컬럼 설정
+        js.columns = [new_s1,js.iloc[0]]
+
+        #전세수급지수만 filtering
+        if k == '매수우위':
+            js_index = js.xs("매수우위지수", axis=1, level=1)
+            js_a = js.xs("매도자 많음", axis=1, level=1)
+            js_b = js.xs("매수자 많음", axis=1, level=1)
+        elif k == '매매거래':
+            js_index = js.xs("매매거래지수", axis=1, level=1)
+            js_a = js.xs("활발함", axis=1, level=1)
+            js_b = js.xs("한산함", axis=1, level=1)
+        elif k == '전세수급':
+            js_index = js.xs("전세수급지수", axis=1, level=1)
+            js_a = js.xs("수요>공급", axis=1, level=1)
+            js_b = js.xs("수요<공급", axis=1, level=1)
+        elif k == '전세거래':
+            js_index = js.xs("전세거래지수", axis=1, level=1)
+            js_a = js.xs("활발함", axis=1, level=1)
+            js_b = js.xs("한산함", axis=1, level=1)
+        elif k == 'KB부동산 매매가격 전망지수':
+            js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
+            js_a = js.xs("약간상승", axis=1, level=1)
+            js_b = js.xs("약간하락", axis=1, level=1)
+        elif k == 'KB부동산 전세가격 전망지수':
+            js_index = js.xs("KB부동산\n전세전망지수", axis=1, level=1)
+            js_a = js.xs("약간상승", axis=1, level=1)
+            js_b = js.xs("약간하락", axis=1, level=1)
+        #필요 데이터만
+        js_index = js_index.iloc[2:js_index['서울'].count(), : ]
+        js_a = js_a.iloc[2:js_a['서울'].count(), : ]
+        js_b = js_b.iloc[2:js_b['서울'].count(), : ]
+
+        #날짜 바꿔보자
+        index_list = list(js_index.index)
+        new_index = []
+
+        for num, raw_index in enumerate(index_list):
+            temp = str(raw_index).split('.')
+            if len(temp[0]) == 3:
+                if int(temp[0].replace("'","")) >84:
+                    new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+                else:
+                    new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
+            else:
+                new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+
+        js_index.set_index(pd.to_datetime(new_index), inplace=True)
+        js_a.set_index(pd.to_datetime(new_index), inplace=True)
+        js_b.set_index(pd.to_datetime(new_index), inplace=True)
+
+               
+        #매달 마지막 데이터만 넣기
+        # js_last = js_index.iloc[-1].to_frame().T
+        df_dic.append(js_index)
+        df_a.append(js_a)
+        df_b.append(js_b)
+
+    return df_dic, df_a, df_b
 
 @st.cache
 def load_pir_data():
@@ -373,19 +438,14 @@ if __name__ == "__main__":
             drawAPT.draw_hai(selected_city, hai_df, info_df)
     else:
         data_load_state = st.text('Loading 매수매도 index Data...')
-        # senti_df = load_senti_data()
+        senti_dfs, df_as, df_bs = load_senti_data()
         data_load_state.text("매수매도 index Data Done! (using st.cache)")
 
-        # js_1 = senti_df.xs("매도자많음", axis=1, level=1)
-        # js_2 = senti_df.xs("매수자많음", axis=1, level=1)
-        # js_index = senti_df.xs("매수우위지수", axis=1, level=1)
-
-        # # city_list = ['전국', '서울', '강북', '강남', '6개광역시','5개광역시','부산','대구','인천','광주','대전','울산',,'수도권','세종', \
-        # #             '경기도', '강원도', '충청북도', '전라북도', '전라남도', '경상북도','경상남도','기타지방','제주']
-        # column_list = js_index.columns.to_list()
-        # selected_dosi = st.sidebar.selectbox(
-        #         '광역시-도', column_list
-        #     )
-        # submit = st.sidebar.button('Draw Sentimental Index chart')
-        # if submit:
-        #     run_sentimental_index()
+        city_list = senti_dfs[0].columns.to_list()
+        
+        selected_dosi = st.sidebar.selectbox(
+                '광역시-도', city_list
+            )
+        submit = st.sidebar.button('Draw Sentimental Index chart')
+        if submit:
+            drawAPT.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs)
