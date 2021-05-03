@@ -205,8 +205,8 @@ def load_pir_data():
 
     return pir_df, income_df, house_df
 
-@st.cache
-def load_hai_data():
+# @st.cache
+# def load_hai_data():
 
 
 
