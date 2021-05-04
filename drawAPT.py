@@ -300,7 +300,7 @@ def draw_hai(city, hai_df, info_df):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
-    fig.add_shape(type="line", y0=100.0, y1=100.0, line=dict(color="RoyalBlue",width=3))
+    fig.add_shape(type="line", x0=hai_df.index[0], y0=100.0, x1=hai_df.index[-1], y1=100.0, line=dict(color="pink",width=1))
     # fig.add_hline(y=100.0, line_color="pink", annotation_text="100>무리없이구입가능", annotation_position="bottom right") 
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
@@ -310,7 +310,7 @@ def draw_hai(city, hai_df, info_df):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
     
-    fig = go.Figure([go.Bar(x=info_df.index, y='주담대금리')])
+    fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
     # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
     fig.add_hline(y=2.5)
     st.plotly_chart(fig)
