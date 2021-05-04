@@ -308,6 +308,10 @@ def draw_hai(city, hai_df, info_df):
     fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
+    
+    fig = px.scatter(info_df, x=info_df.index, y="주담대금리")
+    fig.add_hline(y=1.0)
+    st.plotly_chart(fig)
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     #매수우위지수

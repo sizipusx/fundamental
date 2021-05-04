@@ -433,6 +433,7 @@ if __name__ == "__main__":
         data_load_state = st.text('Loading HAI index Data...')
         hai_df, info_df = load_hai_data()
         hai_df = hai_df.astype(float).fillna(0).round(decimals=2)
+        info_df = info_df.astype(float).fillna(0).round(decimals=2)
         st.dataframe(info_df)
         data_load_state.text("HAI index Data Done! (using st.cache)")
         st.write("<b>주택구매력지수(HAI)  Housing affordability index</b>")
