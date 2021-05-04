@@ -312,7 +312,7 @@ def draw_hai(city, hai_df, info_df):
     titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.9) 
     fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
     # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
-    fig.add_hline(y=info_df['주담대금리'].average())
+    fig.add_hline(y=info_df['주담대금리'].mean(axis=0))
     fig.update_yaxes(title_text='금리', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="%") #tickprefix="$", 
     st.plotly_chart(fig)
 
