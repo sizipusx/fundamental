@@ -76,8 +76,8 @@ def load_index_data():
 
     mdf.set_index(pd.to_datetime(new_index), inplace=True)
     jdf.set_index(pd.to_datetime(new_index), inplace=True)
-    mdf = mdf.round(decimals=2)
-    jdf = jdf.round(decimals=2)
+    mdf = mdf.astype(float).fillna(0).round(decimals=2)
+    jdf = jdf.astype(float).fillna(0).round(decimals=2)
 
     #geojson file open
     geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
