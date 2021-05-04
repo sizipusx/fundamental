@@ -416,7 +416,7 @@ if __name__ == "__main__":
         pir_df, income_df, price_df = load_pir_data()
         pir_df = pir_df.astype(float).fillna(0).round(decimals=2)
         data_load_state.text("PIR index Data Done! (using st.cache)")
-        st.header("* <b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
+        st.header("<b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
         st.write("  - 가구소득은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 대출자의 연소득 중위값임")
         st.write("  - 주택가격은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 실행시 조사된 담보평가 가격의 중위값임")
         st.write("* KB 아파트 PIR은 KB국민은행에서 실행된 아파트 담보대출(구입자금대출) 중 실제 거래된 아파트 거래가격과 해당 여신거래자의 가계소득 자료를 기반으로 작성된 지수로 기존 당행에서 발표중인 PIR지수의 보조지표로 활용할 수 있음. ")
