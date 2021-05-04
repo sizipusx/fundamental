@@ -300,6 +300,7 @@ def draw_hai(city, hai_df, info_df):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
+    fig.add_hline(y=100.0, line_color="pink", annotation_text="100>무리없이구입가능", annotation_position="bottom right")
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
