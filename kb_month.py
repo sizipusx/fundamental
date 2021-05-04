@@ -416,7 +416,7 @@ if __name__ == "__main__":
         pir_df, income_df, price_df = load_pir_data()
         pir_df = pir_df.astype(float).fillna(0).round(decimals=2)
         data_load_state.text("PIR index Data Done! (using st.cache)")
-        st.write("* <b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
+        st.header("* <b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
         st.write("  - 가구소득은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 대출자의 연소득 중위값임")
         st.write("  - 주택가격은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 실행시 조사된 담보평가 가격의 중위값임")
         st.write("* KB 아파트 PIR은 KB국민은행에서 실행된 아파트 담보대출(구입자금대출) 중 실제 거래된 아파트 거래가격과 해당 여신거래자의 가계소득 자료를 기반으로 작성된 지수로 기존 당행에서 발표중인 PIR지수의 보조지표로 활용할 수 있음. ")
@@ -435,7 +435,7 @@ if __name__ == "__main__":
         hai_df = hai_df.astype(float).fillna(0).round(decimals=2)
         info_df = info_df.astype(float).fillna(0).round(decimals=2)
         data_load_state.text("HAI index Data Done! (using st.cache)")
-        st.write("<b>주택구매력지수(HAI)  Housing affordability index</b>")
+        st.header("<b>주택구매력지수(HAI)  Housing affordability index</b>")
         st.write("* HAI = (중위가구소득 ÷ 대출상환가능소득) ×100 ")
         st.write("* 주택구매력지수란 우리나라에서 중간정도의 소득을 가진 가구가 금융기관의 대출을 받아 중간가격 정도의 주택을 구입한다고 가정할 때, \
             현재의 소득으로 대출원리금상환에 필요한 금액을 부담할 수 있는 능력을 의미")
