@@ -303,7 +303,7 @@ def draw_hai(city, hai_df, info_df):
     fig.add_hline(y=100.0, line_color="pink", annotation_text="100>무리없이구입가능", annotation_position="bottom right")
     # fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
