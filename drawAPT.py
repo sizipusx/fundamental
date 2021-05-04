@@ -309,7 +309,7 @@ def draw_hai(city, hai_df, info_df):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
     
-    fig = px.scatter(info_df, x=info_df.index, y="주담대금리")
+    fig = px.bar(info_df, x=info_df.index, y="주담대금리")
     fig.add_hline(y=2.5)
     st.plotly_chart(fig)
 
