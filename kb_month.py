@@ -414,7 +414,7 @@ if __name__ == "__main__":
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()
-        st.dataframe(pir_df)
+        pir_df = pir_df.astype(float).fillna(0).round(decimals=2)
         data_load_state.text("PIR index Data Done! (using st.cache)")
         st.write("* <b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
         st.write("  - 가구소득은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 대출자의 연소득 중위값임")
