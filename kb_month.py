@@ -368,7 +368,7 @@ if __name__ == "__main__":
     
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
     bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
-    bubble_df2 = bubble_df2.astype(float).fillna(0)round(decimals=2)*100
+    bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=2)*100
     st.dataframe(bubble_df2)
 
     #전세 파워 만들기
