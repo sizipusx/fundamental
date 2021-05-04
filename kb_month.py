@@ -369,7 +369,7 @@ if __name__ == "__main__":
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
     bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
     bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
-    st.dataframe(mdf)
+    # st.dataframe(mdf)
 
     #전세 파워 만들기
     cum_ch = (mdf_change/100 +1).cumprod()
@@ -414,6 +414,7 @@ if __name__ == "__main__":
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()
+        st.dataframe(pir_df)
         data_load_state.text("PIR index Data Done! (using st.cache)")
         st.write("* <b>PIR(Price to income ratio)= 주택가격/가구소득</b>")
         st.write("  - 가구소득은 분기단위 해당 지역 내 KB국민은행 부동산담보대출(아파트) 대출자의 연소득 중위값임")
