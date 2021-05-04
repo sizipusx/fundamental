@@ -434,7 +434,6 @@ if __name__ == "__main__":
         hai_df, info_df = load_hai_data()
         hai_df = hai_df.astype(float).fillna(0).round(decimals=2)
         info_df = info_df.astype(float).fillna(0).round(decimals=2)
-        st.dataframe(info_df)
         data_load_state.text("HAI index Data Done! (using st.cache)")
         st.write("<b>주택구매력지수(HAI)  Housing affordability index</b>")
         st.write("* HAI = (중위가구소득 ÷ 대출상환가능소득) ×100 ")
