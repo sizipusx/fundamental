@@ -95,7 +95,8 @@ def load_senti_data():
 
     #컬럼 설정
     js.columns = [new_s1,js.iloc[0]]
-    js = js.round(decimals=2)
+    js = js.iloc[2:js[('전국', '매수우위지수')].count()]
+    js = js.astype(float).fillna(0).round(decimals=2)
 
     return js
 
