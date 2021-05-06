@@ -395,6 +395,7 @@ if __name__ == "__main__":
         js_1 = senti_df.xs("매도자많음", axis=1, level=1)
         js_2 = senti_df.xs("매수자많음", axis=1, level=1)
         js_index = senti_df.xs("매수우위지수", axis=1, level=1)
+        js_index = js_index.round(decimals=2)
         st.dataframe(js_index)
 
         # city_list = ['전국', '서울', '강북', '강남', '6개광역시','5개광역시','부산','대구','인천','광주','대전','울산',,'수도권','세종', \
