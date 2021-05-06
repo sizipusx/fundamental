@@ -180,7 +180,7 @@ def run_price_index() :
     fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df3.index, y= bubble_df3[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
 
     fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='버블지수2', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='pink', secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = True) #tickprefix="$", 
@@ -203,7 +203,7 @@ def run_sentimental_index():
     fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["100>매수자많음"], mode="text"))
     fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(hovermode="x unified")
-    # fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
@@ -394,6 +394,7 @@ if __name__ == "__main__":
         js_1 = senti_df.xs("매도자많음", axis=1, level=1)
         js_2 = senti_df.xs("매수자많음", axis=1, level=1)
         js_index = senti_df.xs("매수우위지수", axis=1, level=1)
+        st.dataframe(js_index)
 
         # city_list = ['전국', '서울', '강북', '강남', '6개광역시','5개광역시','부산','대구','인천','광주','대전','울산',,'수도권','세종', \
         #             '경기도', '강원도', '충청북도', '전라북도', '전라남도', '경상북도','경상남도','기타지방','제주']
