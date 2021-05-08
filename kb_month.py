@@ -375,6 +375,7 @@ if __name__ == "__main__":
     jcum_ch = (jdf_change/100 +1).cumprod()
     m_power = (jcum_ch - cum_ch)*100
     m_power = m_power.astype(float).fillna(0).round(decimals=2)
+    st.dataframe(m_power)
 
     #마지막 데이터만 
     power_df = m_power.iloc[-1].T.to_frame()
