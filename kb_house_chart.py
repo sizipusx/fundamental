@@ -381,7 +381,7 @@ if __name__ == "__main__":
     power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
     power_df = power_df.sort_values('rank', ascending=True)
     # st.dataframe(power_df)
-    st.table(power_df)
+    # st.table(power_df)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
