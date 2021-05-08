@@ -109,7 +109,6 @@ def load_index_data():
 @st.cache
 def load_pop_data():
     popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
-    st.dataframe(popheader)
      #인구수 
     pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/pop.csv', skiprows=1)
     pop['행정구역'] = popheader
