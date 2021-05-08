@@ -379,7 +379,8 @@ if __name__ == "__main__":
     power_df['score'] = power_df['jrank'] + power_df['brank']
     power_df['rank'] = power_df['score'].rank(ascending=True)
     power_df = power_df.sort_values('rank', ascending=True)
-    st.dataframe(power_df)
+    # st.dataframe(power_df)
+    st.table(power_df)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
@@ -391,7 +392,7 @@ if __name__ == "__main__":
             draw_basic()
 
     elif my_choice == 'Price Index':
-
+        st.table(power_df)
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
