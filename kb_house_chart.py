@@ -374,8 +374,8 @@ if __name__ == "__main__":
     power_df.columns = ['전세파워', '버블지수']
     power_df.dropna(inplace=True)
     power_df = power_df.astype(float).fillna(0).round(decimals=2)
-    power_df['jrank'] = powr_df['전세파워'].rank(ascending=False)
-    power_df['brank'] = powr_df['버블파워'].rank(ascending=True)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False)
+    power_df['brank'] = power_df['버블파워'].rank(ascending=True)
     power_df['score'] = power_df['jrank'] + power_df['brank']
     power_df['rank'] = power_df['score'].rank(ascending=True)
     st.dataframe(power_df)
