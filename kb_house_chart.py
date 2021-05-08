@@ -317,7 +317,7 @@ def draw_basic():
 
     #버블지수/전세파워 table 추가
     fig = go.Figure(data=[go.Table(
-                        header=dict(values=['지역',power_df.columns],
+                        header=dict(values=['지역','전세파워', '버블지수', '전세파워 rank', '버블지수 rank', '전세+버블 score', '전체 rank'],
                         fill_color='paleturquoise',
                         align='left'),
                         cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
