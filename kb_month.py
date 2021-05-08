@@ -374,7 +374,7 @@ if __name__ == "__main__":
     cum_ch = (mdf_change/100 +1).cumprod()
     jcum_ch = (jdf_change/100 +1).cumprod()
     m_power = (jcum_ch - cum_ch)*100
-    m_power = m_power.astype(float).round(decimals=2)
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
     
 
     #여기서부터는 선택

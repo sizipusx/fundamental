@@ -345,7 +345,7 @@ if __name__ == "__main__":
     last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
-    last_df = last_df.round(decimals=2)
+    last_df = last_df.astype(float).fillna(0).round(decimals=2)
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     df.columns = ['매매증감', '전세증감', 'SIG_CD']
@@ -360,9 +360,22 @@ if __name__ == "__main__":
     
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
     bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
-    bubble_df3 = bubble_df3.round(decimals=5)*100
+    bubble_df3 = bubble_df3.astype(float).fillna(0).round(decimals=5)*100
     st.dataframe(bubble_df3)
-    
+
+    #전세 파워 만들기
+    cum_ch = (mdf_change/100 +1).cumprod()
+    jcum_ch = (jdf_change/100 +1).cumprod()
+    m_power = (jcum_ch - cum_ch)*100
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '전세증감']
+    power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    st.dataframe(power_df)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
