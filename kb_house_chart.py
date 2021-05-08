@@ -309,7 +309,7 @@ def draw_basic():
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
-    title = dict(text='주요 시 구 주간 매매지수 증감',  x=0.5, y = 0.9) 
+    title = dict(text='주요 시-구 주간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df.index)
@@ -324,7 +324,7 @@ def draw_basic():
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
-        title = dict(text='주요 시 구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
+        title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
         fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
                             text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
         fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
