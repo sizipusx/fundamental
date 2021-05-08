@@ -215,7 +215,7 @@ def run_sentimental_index():
         )
     st.plotly_chart(fig)
 
-def draw_basic(last_df,df, geo_data, last_pop):
+def draw_basic(last_df,df, geo_data, last_pop, power_df):
     # 월간 인구수 세대수 증감
     title = dict(text='주요 시 구 월간 인구수-세대수 증감', x=0.5, y = 0.9) 
     fig1 = px.scatter(last_pop, x='인구증감', y='세대증감', color='세대증감', size=abs(last_pop['세대증감']), 
@@ -224,6 +224,23 @@ def draw_basic(last_df,df, geo_data, last_pop):
     fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     st.plotly_chart(fig1)
+
+    #버블지수/전세파워 table 추가
+    fig = go.Figure(data=[go.Table(
+                        header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
+                                            '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
+                                    fill_color='royalblue',
+                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+                                    font=dict(color='white', size=12),
+                                    height=40),
+                        cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
+                                            power_df['brank'], power_df['score'], power_df['rank']], 
+                                    fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
+                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+                                    font_size=12,
+                                    height=30))
+                    ])
+    st.plotly_chart(fig)
 
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'

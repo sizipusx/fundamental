@@ -380,7 +380,7 @@ if __name__ == "__main__":
     power_df = m_power.iloc[-1].T.to_frame()
     power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
     power_df.columns = ['전세파워', '버블지수']
-    power_df.dropna(inplace=True)
+    # power_df.dropna(inplace=True)
     power_df = power_df.astype(float).fillna(0).round(decimals=2)
     power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
     power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
@@ -400,6 +400,7 @@ if __name__ == "__main__":
             draw_basic()
 
     elif my_choice == 'Price Index':
+        st.subtitle("전세파워 높고 버블지수 낮은 지역 상위 20곳")
         st.table(power_df.iloc[:20])
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \

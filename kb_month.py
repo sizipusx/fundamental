@@ -375,6 +375,18 @@ if __name__ == "__main__":
     jcum_ch = (jdf_change/100 +1).cumprod()
     m_power = (jcum_ch - cum_ch)*100
     m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df2.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '버블지수']
+    # power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+    power_df['score'] = power_df['jrank'] + power_df['brank']
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+    power_df = power_df.sort_values('rank', ascending=True)
     
 
     #여기서부터는 선택
@@ -384,9 +396,11 @@ if __name__ == "__main__":
     if my_choice == 'Basic':
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            drawAPT.draw_basic(last_df, df, geo_data, last_pop)
+            drawAPT.draw_basic(last_df, df, geo_data, last_pop, power_df)
 
     elif my_choice == 'Price Index':
+        st.subtitle("전세파워 높고 버블지수 낮은 지역 상위 20곳")
+        st.table(power_df.iloc[:20])
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
