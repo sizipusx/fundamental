@@ -240,12 +240,12 @@ def draw_basic(last_df,df, geo_data, last_pop):
                     '전세증감:' + df['전세증감'] + '<br>' + \
                     '인구증감:' + df['인구증감'] + '<br>' + \
                     '세대증감:' + df['세대증감']
-    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['매매증감'].astype(float),
-                                        colorscale="Reds", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
+    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['전세증감'].astype(float),
+                                        colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=False,
                         text=df['text'], # hover text
                         marker_line_color='white', # line markers between states
-                        colorbar_title="매매증감")
+                        colorbar_title="전세증감")
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
@@ -260,15 +260,15 @@ def draw_basic(last_df,df, geo_data, last_pop):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
-    fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_yaxes(title_text='월간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
                 annotation_position="bottom right")
     st.plotly_chart(fig)
-    st.dataframe(last_df.T.style.highlight_max(axis=1))
+    # st.dataframe(last_df.T.style.highlight_max(axis=1))
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
-        title = dict(text='주요 시 구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
+        title = dict(text='주요 시 구 월간 매매/전세지수 증감', x=0.5, y = 0.9) 
         fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
                             text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
         fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
