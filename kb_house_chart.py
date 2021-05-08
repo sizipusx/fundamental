@@ -270,6 +270,7 @@ def run_sentimental_index():
 
 def draw_basic():
     #버블지수/전세파워 table 추가
+    title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
     fig = go.Figure(data=[go.Table(
                         header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
                                             '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
@@ -284,6 +285,7 @@ def draw_basic():
                                     font_size=12,
                                     height=30))
                     ])
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
     st.plotly_chart(fig)
 
     #choroplethmapbax
