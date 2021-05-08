@@ -219,7 +219,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,255,255)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     # 월간 인구수 세대수 증감
-    title = dict(text='주요 시 구 월간 인구수-세대수 증감', x=0.5, y = 0.9) 
+    title = dict(text='주요 시-구 월간 인구수-세대수 증감', x=0.5, y = 0.9) 
     fig1 = px.scatter(last_pop, x='인구증감', y='세대증감', color='세대증감', size=abs(last_pop['세대증감']), 
                         text= last_pop.index, hover_name=last_pop.index, color_continuous_scale='Bluered')
     fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
@@ -228,6 +228,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     st.plotly_chart(fig1)
 
     #버블지수/전세파워 table 추가
+    title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
     fig = go.Figure(data=[go.Table(
                         header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
                                             '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
@@ -242,6 +243,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
                                     font_size=12,
                                     height=30))
                     ])
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
     st.plotly_chart(fig)
 
     #choroplethmapbax
@@ -259,7 +261,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
                     '전세증감:' + df['전세증감'] + '<br>' + \
                     '인구증감:' + df['인구증감'] + '<br>' + \
                     '세대증감:' + df['세대증감']
-    titles = dict(text='주요 시-구 주간 전세지수 증감',  x=0.5, y = 1.0) 
+    titles = dict(text='주요 시-구 주간 전세지수 증감',  x=0.5, y = 0.95) 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['전세증감'].astype(float),
                                         colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=False,
@@ -273,7 +275,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
-    titles = dict(text='주요 시 구 월간 매매지수 증감',  x=0.5, y = 0.9) 
+    titles = dict(text='주요 시-구 월간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df.index)
@@ -288,7 +290,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
-        title = dict(text='주요 시 구 월간 매매/전세지수 증감', x=0.5, y = 0.9) 
+        title = dict(text='주요 시-구 월간 매매/전세지수 증감', x=0.5, y = 0.9) 
         fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
                             text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
         fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
