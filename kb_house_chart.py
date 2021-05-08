@@ -317,10 +317,11 @@ def draw_basic():
 
     #버블지수/전세파워 table 추가
     fig = go.Figure(data=[go.Table(
-                        header=dict(values=list(power_df.columns),
+                        header=dict(values=list('지역',power_df.columns),
                         fill_color='paleturquoise',
                         align='left'),
-                        cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수']], fill_color='lavender', align='left'))
+                        cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
+                            power_df['brank'], power_df['score'], power_df['rank']], fill_color='lavender', align='left'))
                     ])
     st.plotly_chart(fig)
 
@@ -374,10 +375,10 @@ if __name__ == "__main__":
     power_df.columns = ['전세파워', '버블지수']
     power_df.dropna(inplace=True)
     power_df = power_df.astype(float).fillna(0).round(decimals=2)
-    power_df['jrank'] = power_df['전세파워'].rank(ascending=False).round(1)
-    power_df['brank'] = power_df['버블지수'].rank(ascending=True).round(decimals=1)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
     power_df['score'] = power_df['jrank'] + power_df['brank']
-    power_df['rank'] = power_df['score'].rank(ascending=True)
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
     power_df = power_df.sort_values('rank', ascending=True)
     # st.dataframe(power_df)
     st.table(power_df)
