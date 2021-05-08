@@ -285,7 +285,7 @@ def draw_basic():
                                     height=30))
                     ])
     st.plotly_chart(fig)
-    
+
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
 
@@ -320,7 +320,7 @@ def draw_basic():
     fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
                 annotation_position="bottom right")
     st.plotly_chart(fig)
-    st.dataframe(last_df.T.style.highlight_max(axis=1))
+    # st.datafrasme(last_df.T.style.highlight_max(axis=1))
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
