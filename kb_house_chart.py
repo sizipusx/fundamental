@@ -315,15 +315,13 @@ def draw_basic():
         fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
         st.plotly_chart(fig1)
 
-    #버블지수/전세파워 table 추가
-    # fig = go.Figure(data=[go.Table(
-    #                     header=dict(values=list(bubble_df3.columns),
-    #                                 fill_color='paleturquoise',
-    #                                 align='left'),
-    #                     cells=dict(values=[df.Rank, df.State, df.Postal, df.Population],
-    #                             fill_color='lavender',
-    #                             align='left'))
-    # ])
+    버블지수/전세파워 table 추가
+    fig = go.Figure(data=[go.Table(
+                        header=dict(values=list(power_df.columns),
+                        fill_color='paleturquoise',
+                        align='left'),
+                        cells=dict(values=[power_df['전세파워'], power_df['버블지수'], fill_color='lavender', align='left'))
+                    ])
 
 
 
@@ -372,7 +370,7 @@ if __name__ == "__main__":
     #마지막 데이터만 
     power_df = m_power.iloc[-1].T.to_frame()
     power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
-    power_df.columns = ['전세파워', '전세증감']
+    power_df.columns = ['전세파워', '버블지수']
     power_df.dropna(inplace=True)
     power_df = power_df.astype(float).fillna(0).round(decimals=2)
     st.dataframe(power_df)
