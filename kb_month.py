@@ -336,13 +336,15 @@ if __name__ == "__main__":
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
-    mdf_change = mdf_change.astype(float).fillna(0)
+    
     mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    mdf_change = mdf_change.astype(float).fillna(0)
     # mdf = mdf.mask(np.isinf(mdf))
     jdf_change = jdf.pct_change()*100
     jdf_change = jdf_change.iloc[1:]
-    jdf_change = jdf_change.astype(float).fillna(0)
+    
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf_change = jdf_change.astype(float).fillna(0)
     # jdf = jdf.mask(np.isinf(jdf))
     #일주일 간 상승률 순위
     last_df = mdf_change.iloc[-1].T.to_frame()
