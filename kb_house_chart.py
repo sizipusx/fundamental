@@ -269,6 +269,23 @@ def run_sentimental_index():
     st.plotly_chart(fig)
 
 def draw_basic():
+    #버블지수/전세파워 table 추가
+    fig = go.Figure(data=[go.Table(
+                        header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
+                                            '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
+                                    fill_color='royalblue',
+                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+                                    font=dict(color='white', size=12),
+                                    height=40),
+                        cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
+                                            power_df['brank'], power_df['score'], power_df['rank']], 
+                                    fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
+                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+                                    font_size=12,
+                                    height=30))
+                    ])
+    st.plotly_chart(fig)
+    
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
 
@@ -314,24 +331,6 @@ def draw_basic():
         fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
         st.plotly_chart(fig1)
-
-    #버블지수/전세파워 table 추가
-    fig = go.Figure(data=[go.Table(
-                        header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
-                                            '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
-                                    fill_color='royalblue',
-                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
-                                    font=dict(color='white', size=12),
-                                    height=40),
-                        cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
-                                            power_df['brank'], power_df['score'], power_df['rank']], 
-                                    fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
-                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
-                                    font_size=12,
-                                    height=30))
-                    ])
-    st.plotly_chart(fig)
-
 
 
 if __name__ == "__main__":
