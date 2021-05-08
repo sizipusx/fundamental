@@ -257,7 +257,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
                     '전세증감:' + df['전세증감'] + '<br>' + \
                     '인구증감:' + df['인구증감'] + '<br>' + \
                     '세대증감:' + df['세대증감']
-    title = dict(text='주요 시 구 주간 전세지수 증감',  x=0.5, y = 0.9) 
+    titles = dict(text='주요 시-구 주간 전세지수 증감',  x=0.5, y = 0.9) 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['전세증감'].astype(float),
                                         colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=False,
@@ -267,7 +267,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
@@ -275,7 +275,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df.index)
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_yaxes(title_text='월간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
