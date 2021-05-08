@@ -320,7 +320,7 @@ def draw_basic():
                         header=dict(values=list(power_df.columns),
                         fill_color='paleturquoise',
                         align='left'),
-                        cells=dict(values=[power_df['전세파워'], power_df['버블지수'], fill_color='lavender', align='left'))
+                        cells=dict(values=[power_df['전세파워'], power_df['버블지수']], fill_color='lavender', align='left'))
                     ])
 
 
