@@ -315,6 +315,15 @@ def draw_basic():
         fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
         st.plotly_chart(fig1)
 
+    #버블지수/전세파워 table 추가
+    # fig = go.Figure(data=[go.Table(
+    #                     header=dict(values=list(bubble_df3.columns),
+    #                                 fill_color='paleturquoise',
+    #                                 align='left'),
+    #                     cells=dict(values=[df.Rank, df.State, df.Postal, df.Population],
+    #                             fill_color='lavender',
+    #                             align='left'))
+    # ])
 
 
 
@@ -352,7 +361,7 @@ if __name__ == "__main__":
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
     bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
     bubble_df3 = bubble_df3.round(decimals=5)*100
-    # st.dataframe(bubble_df3)
+    st.dataframe(bubble_df3)
     
 
     #여기서부터는 선택
