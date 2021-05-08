@@ -322,6 +322,7 @@ def draw_basic():
                         align='left'),
                         cells=dict(values=[power_df['전세파워'], power_df['버블지수']], fill_color='lavender', align='left'))
                     ])
+    st.plotly_chart(fig)
 
 
 
