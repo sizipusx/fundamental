@@ -240,6 +240,7 @@ def draw_basic(last_df,df, geo_data, last_pop):
                     '전세증감:' + df['전세증감'] + '<br>' + \
                     '인구증감:' + df['인구증감'] + '<br>' + \
                     '세대증감:' + df['세대증감']
+    title = dict(text='주요 시 구 주간 전세지수 증감',  x=0.5, y = 0.9) 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['전세증감'].astype(float),
                                         colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=False,
@@ -249,7 +250,7 @@ def draw_basic(last_df,df, geo_data, last_pop):
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-    fig.update_layout(title_text='<b>KB 주요 조사 시-구 월간 매매-전세-인구-세대 증감</b>')
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
