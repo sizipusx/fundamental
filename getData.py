@@ -228,6 +228,8 @@ def get_overview(ticker):
     dividend_df.columns = ['Dividend']
     volume_df = df[volume_data].T
     volume_df.columns = ['Volume']
+    volume_df = volume_df.astype(float).fillna(0)
+    volume_df.update(volume_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     price_df = df[price_data].T
     price_df.columns = ['Price']
 
