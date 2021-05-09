@@ -48,7 +48,7 @@ def run(code, com_name):
         st.dataframe(naver_q.style.highlight_max(axis=0))
     
     st.subheader("Valuation")
-    st.table(value_df)
+    st.table(value_df.astype(float).fillna(0).round(decimals=2))
     #RIM Price
     rim_price, r_ratio = makeData.kor_rim(ttm_df)
     #기업의 최근 price
@@ -105,7 +105,7 @@ def run(code, com_name):
     start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
     price_df = fdr.DataReader(code,start_date)
 
-    chart.price_chart(code, price_df)
+    chart.price_chart(code, price_dfss)
 
     st.subheader("Earnings")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
