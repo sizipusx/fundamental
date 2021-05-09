@@ -105,7 +105,7 @@ def run(code, com_name):
     start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
     price_df = fdr.DataReader(code,start_date)
 
-    chart.price_chart(code, sprice_df)
+    chart.price_chart(code, price_df)
 
     st.subheader("Earnings")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
