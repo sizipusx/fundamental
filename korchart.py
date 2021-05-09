@@ -101,7 +101,11 @@ def run(code, com_name):
     st.plotly_chart(fig)
 
     st.subheader("Candlestick Chart")
-    chart.candlestick_chart(code)
+    now = datetime.now() +pd.DateOffset(days=-4000)
+    start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
+    price_df = fdr.DataReader(code,start_date)
+
+    chart.price_chart(code, sprice_df)
 
     st.subheader("Earnings")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
