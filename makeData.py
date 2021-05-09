@@ -12,6 +12,9 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 def CAGR(iterable_df):
     total_year = len(iterable_df.index)-1
+    #total_year가 1년이 안되는 경우 그냥 1년으로 하자!
+    if total_year == 0:
+        total_year = 1
     total = (iterable_df.iat[-1,0]/iterable_df.iat[0,0])
     cagr = round((total**(1/total_year)-1)*100,2)
     
@@ -24,8 +27,13 @@ def valuation(df, input_ticker):
     value_list.append(df.loc['Price',0])
     value_list.append(df.loc['AnalystTargetPrice',0])
     value_list.append(round(float(df.loc['TrailingPE',0]),2))
-    value_list.append(str(round(1/float(df.loc['TrailingPE',0])*100,2))+"%")
+    try:
+        value_list.append(str(round(1/float(df.loc['TrailingPE',0])*100,2))+"%")
+    except:
+        value_list.append('0%')
     ##할인률 12%
+    if df.loc['BookValue',0] =='None':
+        df.loc['BookValue',0] = 0
     value_list.append(round(float(df.loc['BookValue',0])*(float(df.loc['ReturnOnEquityTTM', 0])/0.12),2))
     value_list.append(str(round((value_list[4]/value_list[0] -1)*100,2))+"%")
 
