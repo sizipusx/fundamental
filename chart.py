@@ -398,7 +398,9 @@ def candlestick_chart(code):
     start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
 
     df = fdr.DataReader(code,start_date)
-
+    title = '('  + code + ') Price'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig = go.Figure(data=[go.Candlestick(x=df.index,
                 open=df['Open'],
                 high=df['High'],
@@ -406,6 +408,11 @@ def candlestick_chart(code):
                 close=df['Close'],
                 increasing_line_color= 'red', decreasing_line_color= 'blue'
                 )])
+    fig.add_trace(go.Bar(name = 'Volume', x = df.index, y = df['Volume'], marker_color= '#34314c'), secondary_y = True)
+    fig.update_yaxes(title_text='Volume',showticklabels= True, showgrid = False, zeroline=False, secondary_y = True)
+    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(
     fig.update_layout(
             showlegend=True,
             legend=dict(
