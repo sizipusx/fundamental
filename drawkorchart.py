@@ -16,6 +16,7 @@ template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seabo
 def income_chart(input_ticker, income_df, income_df_q):
     # Profit and Margin
     st.subheader('Annual Profit, Margin ')
+    st.write("check ", income_df.loc[:,y_data_bar[0])
     x_data = income_df.index
     title = '('  + input_ticker + ') <b>Annual Profit & Margin</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
