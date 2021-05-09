@@ -16,13 +16,14 @@ template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seabo
 def income_chart(input_ticker, income_df, income_df_q):
     # Profit and Margin
     st.subheader('Annual Profit, Margin ')
-    st.write("check ", income_df.loc[:,y_data_bar[0])
+    
     x_data = income_df.index
     title = '('  + input_ticker + ') <b>Annual Profit & Margin</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar = ['매출액', '영업이익', '당기순이익']
     y_data_line = ['영업이익률', '순이익률', 'ROE(지배주주)']
+    st.write("check ", income_df.loc[:,y_data_bar[0])
 
     for y_data, color in zip(y_data_bar, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data], marker_color= color), secondary_y = False) 
