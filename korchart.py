@@ -48,7 +48,7 @@ def run(code, com_name):
         st.dataframe(naver_q.style.highlight_max(axis=0))
     
     st.subheader("Valuation")
-    st.dataframe(value_dfs)
+    st.dataframe(value_df)
     st.table(value_df.astype(float).fillna(0).round(decimals=2))
     #RIM Price
     rim_price, r_ratio = makeData.kor_rim(ttm_df)
