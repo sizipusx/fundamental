@@ -413,7 +413,6 @@ def candlestick_chart(code):
     fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(
-    fig.update_layout(
             showlegend=True,
             legend=dict(
             orientation="h",
