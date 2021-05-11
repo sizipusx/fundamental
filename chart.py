@@ -278,7 +278,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     # for y_data, color in zip(y_data_bar, marker_colors) :
     #     fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = False) 
     fig.add_trace(go.Bar(name = y_data[0], x = x_data, y = ttm_df[y_data[0]], text = ttm_df[y_data[0]], 
-                        textposition = 'outside', marker_color= marker_colors[1]), secondary_y = True)
+                        textposition = 'outside', marker_color= marker_colors[1], opacity=0.5), secondary_y = True)
     
     fig.add_trace(go.Scatter(mode='lines', 
                             name = 'Close', x =  ttm_df.index, y= ttm_df['Price'],
@@ -302,7 +302,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     # for y_data, color in zip(y_data_bar, marker_colors) :
     #     fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = False) 
     fig.add_trace(go.Bar(name = y_data[0], x = x_data, y = annual_df[y_data[0]], 
-                        text = annual_df[y_data[0]], textposition = 'outside', marker_color= marker_colors[1]), secondary_y = True)
+                        text = annual_df[y_data[0]], textposition = 'outside', marker_color= marker_colors[1], opacity=0.5), secondary_y = True)
     
     fig.add_trace(go.Scatter(mode='lines', 
                             name = 'Close', x =  annual_df.index, y= annual_df['Price'],
