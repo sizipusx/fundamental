@@ -33,9 +33,10 @@ def income_chart(input_ticker, income_df, income_df_q):
                                     text= income_df[y_data], textposition = 'top center', marker_color = color),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(title_text='Revenue', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-    fig.update_yaxes(title_text='Income', range=[-max(income_df.loc[:,y_data_line[0]]), max(income_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="%")
+    fig.update_yaxes(title_text='Probit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='Margin', range=[-max(income_df.loc[:,y_data_line[0]]), max(income_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="원", secondary_y = False)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
@@ -59,7 +60,7 @@ def income_chart(input_ticker, income_df, income_df_q):
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='Revenue', range=[0, max(income_df_q.loc[:,y_data_bar[0]])*2], secondary_y = False)
     fig.update_yaxes(title_text='Income', range=[-max(income_df_q.loc[:,y_data_line[0]]), max(income_df_q.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="%")
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
 
