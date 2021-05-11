@@ -48,7 +48,8 @@ def run(code, com_name):
         st.dataframe(naver_q.style.highlight_max(axis=0))
     
     st.subheader("Valuation")
-    st.table(value_df.astype(float).fillna(0).round(decimals=2))
+    value_df = value_df.astype(float).fillna(0).round(decimals=2)
+    st.table(value_df)
     #RIM Price
     rim_price, r_ratio = makeData.kor_rim(ttm_df)
     #기업의 최근 price
