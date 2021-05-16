@@ -109,7 +109,6 @@ def load_index_data():
 @st.cache
 def load_pop_data():
     popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
-    st.dataframe(popheader)
      #인구수 
     pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/pop.csv', skiprows=1)
     pop['행정구역'] = popheader
@@ -336,11 +335,17 @@ if __name__ == "__main__":
 
     #월간 증감률
     mdf_change = mdf.pct_change()*100
-    mdf_change = mdf_change.astype(float)
     mdf_change = mdf_change.iloc[1:]
+    
+    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    mdf_change = mdf_change.astype(float).fillna(0)
+    # mdf = mdf.mask(np.isinf(mdf))
     jdf_change = jdf.pct_change()*100
     jdf_change = jdf_change.iloc[1:]
-    jdf_change = jdf_change.astype(float)
+    
+    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf_change = jdf_change.astype(float).fillna(0)
+    # jdf = jdf.mask(np.isinf(jdf))
     #일주일 간 상승률 순위
     last_df = mdf_change.iloc[-1].T.to_frame()
     last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
@@ -375,7 +380,19 @@ if __name__ == "__main__":
     cum_ch = (mdf_change/100 +1).cumprod()
     jcum_ch = (jdf_change/100 +1).cumprod()
     m_power = (jcum_ch - cum_ch)*100
-    m_power = m_power.astype(float).round(decimals=2)
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df2.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '버블지수']
+    # power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+    power_df['score'] = power_df['jrank'] + power_df['brank']
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+    power_df = power_df.sort_values('rank', ascending=True)
     
 
     #여기서부터는 선택
@@ -385,9 +402,11 @@ if __name__ == "__main__":
     if my_choice == 'Basic':
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            drawAPT.draw_basic(last_df, df, geo_data, last_pop)
+            drawAPT.draw_basic(last_df, df, geo_data, last_pop, power_df)
 
     elif my_choice == 'Price Index':
+        st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
+        st.table(power_df.iloc[:20])
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \

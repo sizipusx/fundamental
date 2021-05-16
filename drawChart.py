@@ -53,7 +53,7 @@ def run():
     st.table(valuation_df)
     
     # st.dataframe(income_q)
-    st.dataframe(balance_q)
+    # st.dataframe(balance_q)
     # st.dataframe(cash_a)
     # st.dataframe(earning_q)
     #Growth Ratio 
