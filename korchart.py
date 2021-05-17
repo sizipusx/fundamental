@@ -46,7 +46,7 @@ def run(code, com_name):
         st.dataframe(ann_df.style.highlight_max(axis=0))
         st.dataframe(naver_ann.style.highlight_max(axis=0))
         st.dataframe(naver_q.style.highlight_max(axis=0))
-    
+    st.dataframe(ttm_df.style.highlight_max(axis=0))
     st.subheader("Valuation")
     value_df = value_df.astype(float).fillna(0).round(decimals=2)
     st.table(value_df)
