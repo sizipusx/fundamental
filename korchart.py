@@ -85,33 +85,32 @@ def run(code, com_name):
     delta = {'reference': 15}))
     st.plotly_chart(fig)
     
-    """
     #PEG 
-    fig = go.Figure(go.Indicator(
-    mode = "number+delta",
-    value = value_df.iloc[7,0],
-    title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    delta = {'reference': 1.5}))
-    st.plotly_chart(fig)
+    # fig = go.Figure(go.Indicator(
+    # mode = "number+delta",
+    # value = value_df.iloc[7,0],
+    # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
+    # domain = {'x': [0, 1], 'y': [0, 1]},
+    # delta = {'reference': 1.5}))
+    # st.plotly_chart(fig)
 
-    #PERR, PBRR
-    fig = go.Figure(go.Indicator(
-    mode = "number+delta",
-    value = value_df.iloc[8,0],
-    title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    delta = {'reference': 2}))
-    st.plotly_chart(fig)
+    # #PERR, PBRR
+    # fig = go.Figure(go.Indicator(
+    # mode = "number+delta",
+    # value = value_df.iloc[8,0],
+    # title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
+    # domain = {'x': [0, 1], 'y': [0, 1]},
+    # delta = {'reference': 2}))
+    # st.plotly_chart(fig)
 
-    fig = go.Figure(go.Indicator(
-    mode = "number+delta",
-    value = value_df.iloc[9,0],
-    title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    delta = {'reference': 2}))
-    st.plotly_chart(fig)
-    """
+    # fig = go.Figure(go.Indicator(
+    # mode = "number+delta",
+    # value = value_df.iloc[9,0],
+    # title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
+    # domain = {'x': [0, 1], 'y': [0, 1]},
+    # delta = {'reference': 2}))
+    # st.plotly_chart(fig)
+    
 
     st.subheader("Candlestick Chart")
     now = datetime.now() +pd.DateOffset(days=-4000)
@@ -122,7 +121,7 @@ def run(code, com_name):
 
     st.subheader("Earnings")
     from PIL import Image
-    ecycle = Image.open("https://raw.githubusercontent.com/sizipusx/fundamental/main/good-cycle.png")
+    ecycle = Image.open("https://photos.app.goo.gl/cndihg1eTtTFXpig7")
     st.image(ecycle, caption='이익 예상 라이프 사이클')
 
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
