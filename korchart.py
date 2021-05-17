@@ -71,7 +71,7 @@ def run(code, com_name):
         mode = "gauge+number+delta",
         value = ttm_df.iloc[-1,0],
         delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
-        title = {'text': f"Last EPS (r={ttm_df.iloc[-1,0]}) relative Max EPS"},
+        title = {'text': f"Last EPS ={ttm_df.iloc[-1,0]}) relative Max EPS = {ttm_df['EPS'].max().astype(int)}"},
         domain = {'x': [0, 1], 'y': [0, 1]}
     ))
     st.plotly_chart(fig)
@@ -119,6 +119,7 @@ def run(code, com_name):
     chart.price_chart(code, price_df)
 
     st.subheader("Earnings")
+    st.image("https://github.com/sizipusx/fundamental/blob/43ec978f109d4866ede6f84b6a37571c5dcbc53c/good-cycle.png")
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     drawkorchart.income_chart(code, naver_ann, naver_q)
     drawkorchart.balance_chart(code, naver_q)
