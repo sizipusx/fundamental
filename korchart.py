@@ -85,7 +85,7 @@ def run(code, com_name):
     delta = {'reference': 15}))
     st.plotly_chart(fig)
     
-   """
+    """
     #PEG 
     fig = go.Figure(go.Indicator(
     mode = "number+delta",
