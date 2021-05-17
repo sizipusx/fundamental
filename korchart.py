@@ -70,7 +70,7 @@ def run(code, com_name):
         mode = "gauge+number+delta",
         value = ttm_df.iloc[-1,0],
         delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
-        title = {'text': f"Last EPS ={ttm_df.iloc[-1,0]}) relative Max EPS = {ttm_df['EPS'].max().astype(int)}"},
+        title = {'text': f"Last ttmEPS ={ttm_df.iloc[-1,0]}원 relative Max ttmEPS = {ttm_df['EPS'].max().astype(int)} 원"},
         domain = {'x': [0, 1], 'y': [0, 1]}
     ))
     st.plotly_chart(fig)
