@@ -122,7 +122,7 @@ def run(code, com_name):
 
     st.subheader("Earnings")
     from PIL import Image
-    ecycle = Image.open("https://github.com/sizipusx/fundamental/blob/43ec978f109d4866ede6f84b6a37571c5dcbc53c/good-cycle.png")
+    ecycle = Image.open("https://raw.githubusercontent.com/sizipusx/fundamental/main/good-cycle.png")
     st.image(ecycle, caption='이익 예상 라이프 사이클')
 
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
