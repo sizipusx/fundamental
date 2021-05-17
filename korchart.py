@@ -119,7 +119,10 @@ def run(code, com_name):
     chart.price_chart(code, price_df)
 
     st.subheader("Earnings")
-    st.image("https://github.com/sizipusx/fundamental/blob/43ec978f109d4866ede6f84b6a37571c5dcbc53c/good-cycle.png")
+    from PIL import Image
+    ecycle = Image.open("https://github.com/sizipusx/fundamental/blob/43ec978f109d4866ede6f84b6a37571c5dcbc53c/good-cycle.png")
+    st.image(ecycle, caption='이익 예상 라이프 사이클')
+
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     drawkorchart.income_chart(code, naver_ann, naver_q)
     drawkorchart.balance_chart(code, naver_q)
