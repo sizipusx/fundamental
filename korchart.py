@@ -46,7 +46,7 @@ def run(code, com_name):
         st.dataframe(ann_df.style.highlight_max(axis=0))
         st.dataframe(naver_ann.style.highlight_max(axis=0))
         st.dataframe(naver_q.style.highlight_max(axis=0))
-    st.dataframe(ttm_df.style.highlight_max(axis=0))
+    
     st.subheader("Valuation")
     value_df = value_df.astype(float).fillna(0).round(decimals=2)
     st.table(value_df)
@@ -62,6 +62,16 @@ def run(code, com_name):
         value = value_df.iloc[1,0],
         delta = {'reference': value_df.iloc[0,0], 'relative': True},
         title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
+        domain = {'x': [0, 1], 'y': [0, 1]}
+    ))
+    st.plotly_chart(fig)
+
+    #ttmeps last / ttmeps.max()
+    fig = go.Figure(go.Indicator(
+        mode = "gauge+number+delta",
+        value = ttm_df.iloc[-1],
+        delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
+        title = {'text': f"Last EPS (r={ttm_df.iloc[-1]}) relative Max EPS"},
         domain = {'x': [0, 1], 'y': [0, 1]}
     ))
     st.plotly_chart(fig)

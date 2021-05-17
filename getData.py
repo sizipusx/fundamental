@@ -341,6 +341,7 @@ def get_naver_finance(code):
     f_df = q_df.T
     f_df.index = pd.to_datetime(f_df.index, format='%Y-%m-%d')
     f_df.fillna(0, inplace=True)
+    f_df = f_df.round(decimals=2)
 
     return ann_df, f_df
 
