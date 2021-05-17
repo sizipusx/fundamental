@@ -84,7 +84,8 @@ def run(code, com_name):
     domain = {'x': [0, 1], 'y': [0, 1]},
     delta = {'reference': 15}))
     st.plotly_chart(fig)
-
+    
+   """
     #PEG 
     fig = go.Figure(go.Indicator(
     mode = "number+delta",
@@ -110,6 +111,7 @@ def run(code, com_name):
     domain = {'x': [0, 1], 'y': [0, 1]},
     delta = {'reference': 2}))
     st.plotly_chart(fig)
+    """
 
     st.subheader("Candlestick Chart")
     now = datetime.now() +pd.DateOffset(days=-4000)
