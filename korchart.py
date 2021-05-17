@@ -69,7 +69,7 @@ def run(code, com_name):
     #ttmeps last / ttmeps.max()
     fig = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
-        value = ttm_df.iloc[-1],
+        value = ttm_df.iloc[-1,0],
         delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
         title = {'text': f"Last EPS (r={ttm_df.iloc[-1]}) relative Max EPS"},
         domain = {'x': [0, 1], 'y': [0, 1]}
