@@ -60,8 +60,12 @@ def load_buy_data():
     df.index = pd.to_datetime(df.index)
     df = df.apply(lambda x: x.replace('-','0'))
     df = df.astype(float)
+    org_df = df.copy()
+    drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종','충남', '충북']
+    df.drop(drop_list, axis=1, inplace=True)
+    df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
 
-    return df
+    return df, org_df
 
 @st.cache
 def load_index_data():
@@ -354,7 +358,7 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change = load_pop_data()
-    b_df = load_buy_data()
+    b_df, org_df = load_buy_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #월간 증감률
