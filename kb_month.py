@@ -53,6 +53,9 @@ def load_buy_data():
     df = df.rename({'지 역':'지역명'}, axis='columns')
     df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
     df = df.set_index("지역명")
+    df = df.T
+    df.columns = [df.columns, df.iloc[0]]
+    df = df.iloc[1:]
     df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-27'))
     df.index = pd.to_datetime(df.index)
     df = df.apply(lambda x: x.replace('-','0'))
