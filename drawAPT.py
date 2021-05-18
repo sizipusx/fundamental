@@ -598,7 +598,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
               fillcolor="green", opacity=0.25, line_width=0)
     st.plotly_chart(fig)
 
-def run_buy_index(selected_dosi, b_df):
+def run_buy_basic(b_df):
     df_total = b_df.xs('합계',axis=1, level=1)
     df_si = b_df.xs('관할시군구내',axis=1, level=1)
     df_do = b_df.xs('관할시도내',axis=1, level=1)
@@ -704,6 +704,9 @@ def run_buy_index(selected_dosi, b_df):
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
+    
+
+def run_buy_index(selected_dosi, b_df):
     selected_df = b_df.xs(selected_dosi, axis=1, level=0)
     #make %
     per_df = round(selected_df.div(selected_df['합계'], axis=0)*100,1)
