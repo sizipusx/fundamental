@@ -678,7 +678,7 @@ def run_buy_basic(b_df, org_df):
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
-    fig = px.bar(df_outer, x= df_outer.index, y=df_outer.iloc[:,0], color=df_outer.iloc[:,0], color_continuous_scale='Bluered', text=df_outer.index)
+    fig = px.bar(df_outer, x= df_outer.iloc[-1].index, y=df_outer.iloc[:,0], color=df_outer.iloc[:,0], color_continuous_scale='Bluered', text=df_outer.index)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
