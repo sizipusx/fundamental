@@ -40,6 +40,26 @@ def read_source_excel():
 
     return kbm_dict
 
+
+@st.cache
+def load_buy_data():
+    #년 증감 계산을 위해 최소 12개월치 데이터 필요
+    path = r'https://github.com/sizipusx/fundamental/blob/1d2cdf146b07178f8e48a846d73885410622e40d/files/apt_buy.xlsx?raw=true'
+    data_type = 'Sheet1' 
+    df = pd.read_excel(path, sheet_name=data_type, header=10)
+    path1 = r'https://github.com/sizipusx/fundamental/blob/9e9b0d21f96dd50719a9bafab69507138929a193/kbheader.xlsx?raw=true'
+    header = pd.read_excel(path1, sheet_name='buyer')
+    df['지 역'] = header['local'].str.strip()
+    df = df.rename({'지 역':'지역명'}, axis='columns')
+    df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    df = df.set_index("지역명")
+    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-27'))
+    df.index = pd.to_datetime(df.index)
+    df = df.apply(lambda x: x.replace('-','0'))
+    df = df.astype(float)
+
+    return df
+
 @st.cache
 def load_index_data():
     kbm_dict = read_source()
@@ -429,6 +449,7 @@ if __name__ == "__main__":
 
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
+            drawAPT.run_buy_index(selected_city2, df)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')

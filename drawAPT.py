@@ -597,3 +597,85 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
     st.plotly_chart(fig)
+
+def run_buy_index(selected_dosi, b_df):
+    df_total = b_df.xs('합계',axis=1, level=1)
+    df_si = b_df.xs('관할시군구내',axis=1, level=1)
+    df_do = b_df.xs('관할시도내',axis=1, level=1)
+    df_seoul = b_df.xs('관할시도외_서울',axis=1, level=1)
+    df_etc = b_df.xs('관할시도외_기타',axis=1, level=1)
+    ## q증감률
+    df_total_ch = df_total.pct_change()
+    df_total_yoy = df_total.pct_change(12)
+
+    df_si_ch = df_si.pct_change()
+    df_si_yoy = df_si.pct_change(12)
+
+    df_do_ch = df_do.pct_change()
+    df_do_yoy = df_do.pct_change(12)
+
+    df_seoul_ch = df_seoul.pct_change()
+    df_seoul_yoy = df_seoul.pct_change(12)
+
+    df_etc_ch = df_etc.pct_change()
+    df_etc_yoy = df_etc.pct_change(12)
+
+    ### 증감량
+    df_total_amt = df_total - df_total.shift(1)
+    df_si_amt = df_si - df_si.shift(1)
+    df_do_amt = df_do - df_do.shift(1)
+    df_seoul_amt = df_seoul - df_seoul.shift(1)
+    df_etc_amt = df_etc - df_etc.shift(1)
+
+    #투자자 합산
+    df_outer = df_seoul.add(df_etc)
+    df_outer_amt = df_outer.sub(df_outer.shift(1))
+    df_outer_ch = df_outer.pct_change()
+    df_outer_yoy = df_outer.pct_change(12)
+
+    #dropping NaN,  infinite values 
+    df_outer_ch.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df_outer_ch.fillna(0,inplace=True)
+    df_outer_yoy.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df_outer_yoy.fillna(0,inplace=True)
+
+    #mom, yoy 투자자 변화
+    change_df = df_outer_ch.iloc[-1].T.to_frame()
+    change_df['YoY'] = df_outer_yoy.iloc[-1].T.to_frame()
+    change_df.columns = ['MoM', 'YoY']
+    #평균이 10이하인 지역은 제외하자
+    change_df['mean'] = df_outer.mean()
+    change_df2 = round(change_df[change_df['mean'] > 10],1)
+
+     #챠트 기본 설정
+    # colors 
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+    #마지막 달
+    last_month = pd.to_datetime(str(df_outer.index.values[-1])).strftime('%Y.%m')
+
+    # box plot
+    fig = px.box(df_outer,y=df_outer.columns, notched=True, title= "각 지역 통계(2006.1월~" + last_month +"월)")
+    st.plotly_chart(fig)
+
+    #최근 한달 동안 투자자 수가 가장 많이 유입된 곳 보기
+    title = '최근 한달 동안 투자자가 가장 많이 유입된 곳'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    fig = go.Figure([go.Bar(x=df_outer.columns, y=df_outer.iloc[-1])])
+    # fig.add_hline(y=df_outer.iloc[-1,0], line_dash="dot", line_color="green", annotation_text="전국 투자자 수", 
+    #             annotation_position="bottom right")
+    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    fig.update_yaxes(title_text='서울기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    st.plotly_chart(fig)
+    #최근 한달 동안 투자자 수 증감률이 가장 높은 곳 
+    title = '최근 한달 동안 투자자수 증감률이 가장 높은 곳'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    fig = go.Figure([go.Bar(x=df_outer_ch.columns, y=df_outer_ch.iloc[-1,:])])
+    fig.add_hline(y=df_outer_ch.iloc[-1,0], line_dash="dot", line_color="green", annotation_text="전국 투자자 증감률", 
+                annotation_position="bottom right")
+    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+    fig.update_yaxes(title_text='서울기타지역 투자자 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    
+    st.plotly_chart(fig)

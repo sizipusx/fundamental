@@ -141,7 +141,8 @@ def run(code, com_name):
     
     totalcycle = Image.open("image.png")
     st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
-    st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
+    with st.beta_expander("See explanation"):
+        st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
 
     chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     drawkorchart.income_chart(code, naver_ann, naver_q)
