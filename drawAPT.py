@@ -655,7 +655,6 @@ def run_buy_basic(b_df, org_df):
     last_df.columns = ['서울매수자', '기타지역매수자']
     last_df = last_df.astype(int)
     last_df['투자자'] = last_df['서울매수자'].add(last_df['기타지역매수자'])
-    st.dataframe(last_df)
 
      #챠트 기본 설정
     # colors 
@@ -672,35 +671,17 @@ def run_buy_basic(b_df, org_df):
     #최근 한달 동안 투자자 수가 가장 많이 유입된 곳 보기
     title = '최근 한달 동안 투자자가 가장 많이 유입된 곳'
     titles = dict(text= title, x=0.5, y = 0.9) 
-    fig = go.Figure([go.Bar(x=df_outer.columns, y=df_outer.iloc[-1])])
-    # fig.add_hline(y=df_outer.iloc[-1,0], line_dash="dot", line_color="green", annotation_text="전국 투자자 수", 
-    #             annotation_position="bottom right")
-    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-    fig.update_yaxes(title_text='서울기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
-    st.plotly_chart(fig)
-
     fig = px.bar(last_df, x= last_df.index, y= last_df.iloc[:,-1], color=last_df.iloc[:,-1], color_continuous_scale='Bluered', text=last_df.index)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
-    fig.update_yaxes(title_text='서울기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
+    fig.update_yaxes(title_text='서울+기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
     # fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
     #             annotation_position="bottom right")
     st.plotly_chart(fig)
 
-    #최근 한달 동안 투자자 수 증감률이 가장 높은 곳 
-    title = '최근 한달 동안 투자자수 증감률이 가장 높은 곳'
-    titles = dict(text= title, x=0.5, y = 0.9) 
-    fig = go.Figure([go.Bar(x=df_outer_ch.columns, y=df_outer_ch.iloc[-1,:])])
-    fig.add_hline(y=df_outer_ch.iloc[-1,0], line_dash="dot", line_color="green", annotation_text="전국 투자자 증감률", 
-                annotation_position="bottom right")
-    fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
-    fig.update_yaxes(title_text='서울기타지역 투자자 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    
-    st.plotly_chart(fig)
 
-    title = last_month +"<b> 서울지역/기타지역 거주자 매수</b>"
+    title = last_month +"월 <b> 서울지역/기타지역 거주자 매수</b>"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.scatter(last_df, x='서울매수자', y='기타지역매수자', color='기타지역매수자', color_continuous_scale='Bluered', size=last_df['서울매수자'], 
                         text= last_df.index, hover_name=last_df.index)
