@@ -653,6 +653,8 @@ def run_buy_basic(b_df, org_df):
     last_df = df_seoul.iloc[-1].T.to_frame()
     last_df['기타지역'] = df_etc.iloc[-1].T.to_frame()
     last_df.columns = ['서울매수자', '기타지역매수자']
+    last_df = last_df.astype(int)
+    last_df['투자자'] = last_df['서울매수자'].add(last_df['기타지역매수자'])
     st.dataframe(last_df)
 
      #챠트 기본 설정
@@ -678,7 +680,7 @@ def run_buy_basic(b_df, org_df):
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
-    fig = px.bar(df_outer, x= df_outer.iloc[-1].index, y=df_outer.iloc[:,0], color=df_outer.iloc[:,0], color_continuous_scale='Bluered', text=df_outer.index)
+    fig = px.bar(last_df, x= last_df.index, y= last_df.iloc[:,-1], color=last_df.iloc[:,-1], color_continuous_scale='Bluered', text=last_df.index)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')

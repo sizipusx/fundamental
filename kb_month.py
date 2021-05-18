@@ -47,7 +47,7 @@ def load_buy_data():
     path = r'https://github.com/sizipusx/fundamental/blob/1d2cdf146b07178f8e48a846d73885410622e40d/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
     df = pd.read_excel(path, sheet_name=data_type, header=10)
-    path1 = r'https://github.com/sizipusx/fundamental/blob/9e9b0d21f96dd50719a9bafab69507138929a193/kbheader.xlsx?raw=true'
+    path1 = r'https://github.com/sizipusx/fundamental/blob/130612c3436245a3202de78375eb12ecc712e8d9/files/kbheader.xlsx?raw=true'
     header = pd.read_excel(path1, sheet_name='buyer')
     df['지 역'] = header['local'].str.strip()
     df = df.rename({'지 역':'지역명'}, axis='columns')
@@ -61,8 +61,7 @@ def load_buy_data():
     df = df.apply(lambda x: x.replace('-','0'))
     df = df.astype(float)
     org_df = df.copy()
-    st.dataframe(df)
-    drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종','충남', '충북']
+    drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종 세종','충남', '충북']
     df.drop(drop_list, axis=1, level=0, inplace=True)
     # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
 
@@ -73,7 +72,7 @@ def load_index_data():
     kbm_dict = read_source()
     # kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/36d7cf8622721b020fac048866aa02d88509186b/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/130612c3436245a3202de78375eb12ecc712e8d9/files/kbheader.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
