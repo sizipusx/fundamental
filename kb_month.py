@@ -351,6 +351,7 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change = load_pop_data()
+    b_df = load_buy_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #월간 증감률
@@ -449,7 +450,7 @@ if __name__ == "__main__":
 
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
-            drawAPT.run_buy_index(selected_city2, df)
+            drawAPT.run_buy_index(selected_city2, b_df)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
