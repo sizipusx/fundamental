@@ -275,6 +275,8 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
+    st.dataframe(last_df)
+
     titles = dict(text='주요 시-구 월간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
@@ -674,6 +676,17 @@ def run_buy_basic(b_df, org_df):
     fig.update_yaxes(title_text='서울기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
+
+    fig = px.bar(df_outer, x= df_outer.columns, y=df_outer.iloc[-1], color=df_outer.iloc[-1], color_continuous_scale='Bluered', \
+                text=df_outer.columns)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_traces(texttemplate='%{label}', textposition='outside')
+    fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
+    fig.update_yaxes(title_text='서울기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    # fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+    #             annotation_position="bottom right")
+    st.plotly_chart(fig)
+
     #최근 한달 동안 투자자 수 증감률이 가장 높은 곳 
     title = '최근 한달 동안 투자자수 증감률이 가장 높은 곳'
     titles = dict(text= title, x=0.5, y = 0.9) 
