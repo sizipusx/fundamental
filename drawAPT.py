@@ -285,7 +285,7 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_yaxes(title_text='월간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+    fig.add_hline(y=last_df.iloc[0,0].astype(float), line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
                 annotation_position="bottom right")
     st.plotly_chart(fig)
     # st.dataframe(last_df.T.style.highlight_max(axis=1))
@@ -677,8 +677,8 @@ def run_buy_basic(b_df, org_df):
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
-    fig = px.bar(df_outer, x= df_outer.columns, y=df_outer.iloc[-1], color=df_outer.iloc[-1], color_continuous_scale='Bluered', \
-                text=df_outer.columns)
+    st.dataframe(df_outer)
+    fig = px.bar(df_outer, x= df_outer.columns, y=df_outer.iloc[-1], color=df_outer.iloc[-1], color_continuous_scale='Bluered', text=df_outer.columns)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
