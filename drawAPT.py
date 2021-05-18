@@ -681,7 +681,7 @@ def run_buy_basic(b_df, org_df):
     st.plotly_chart(fig)
 
 
-    title = last_month +"월 <b> 서울지역/기타지역 거주자 매수</b>"
+    title = last_month +"월 <b>서울지역/기타지역 거주자 매수</b>"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.scatter(last_df, x='서울매수자', y='기타지역매수자', color='기타지역매수자', color_continuous_scale='Bluered', size=last_df['서울매수자'], 
                         text= last_df.index, hover_name=last_df.index)
@@ -691,7 +691,7 @@ def run_buy_basic(b_df, org_df):
     st.plotly_chart(fig)
 
     #매매/전세 증감률 Bubble Chart
-    title = last_month +"<b> 투자자 MoM-YoY 증감률</b>"
+    title = last_month +"월 기준<b> 투자자 MoM-YoY 증감률</b>"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.scatter(change_df2, x='MoM', y='YoY', color='MoM', size='mean', 
                         text= change_df2.index, hover_name=change_df2.index)
