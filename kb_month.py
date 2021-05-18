@@ -432,7 +432,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             drawAPT.draw_basic(last_df, df, geo_data, last_pop, power_df)
-            drawAPT.run_buy_basic(b_df)
+            drawAPT.run_buy_basic(b_df, org_df)
     elif my_choice == 'Price Index':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
         st.table(power_df.iloc[:20])
