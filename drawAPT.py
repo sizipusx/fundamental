@@ -275,8 +275,6 @@ def draw_basic(last_df,df, geo_data, last_pop, power_df):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
-    st.dataframe(last_df)
-
     titles = dict(text='주요 시-구 월간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
