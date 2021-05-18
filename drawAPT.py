@@ -647,6 +647,11 @@ def run_buy_index(selected_dosi, b_df):
     change_df['mean'] = df_outer.mean()
     change_df2 = round(change_df[change_df['mean'] > 10],1)
 
+    #한달간 투자자 변동 순위
+    last_df = df_seoul.iloc[-1].T.to_frame()
+    last_df['기타지역'] = df_etc.iloc[-1].T.to_frame()
+    last_df.columns = ['서울매수자', '기타지역매수자']
+
      #챠트 기본 설정
     # colors 
     marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
@@ -678,4 +683,39 @@ def run_buy_index(selected_dosi, b_df):
     fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
     fig.update_yaxes(title_text='서울기타지역 투자자 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     
+    st.plotly_chart(fig)
+
+    title = last_month +"<b> 서울지역/기타지역 거주자 매수</b>"
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = px.scatter(last_df, x='서울매수자', y='기타지역매수자', color='기타지역매수자', color_continuous_scale='Bluered', size=last_df['서울매수자'], 
+                        text= last_df.index, hover_name=last_df.index)
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
+    st.plotly_chart(fig)
+
+    #매매/전세 증감률 Bubble Chart
+    title = last_month +"<b> 투자자 MoM-YoY 증감률</b>"
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = px.scatter(change_df2, x='MoM', y='YoY', color='MoM', size='mean', 
+                        text= change_df2.index, hover_name=change_df2.index)
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    st.plotly_chart(fig)
+
+    selected_df = b_df.xs(selected_dosi, axis=1, level=0)
+    #make %
+    per_df = round(selected_df.div(selected_df['합계'], axis=0)*100,1)
+    title = "["+selected_dosi+"] 매입자별 전체 거래량"
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    st.plotly_chart(fig)
+
+    title = "["+selected_dosi+"] 매입자별 비중"
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
+    fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
