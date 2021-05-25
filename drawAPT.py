@@ -52,11 +52,12 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
 
 
     with st.beta_expander("See explanation"):
-            st.markdown(f'최종업데이트: **{last_month}**')
+            st.markdown(f'인구-세대수 최종업데이트: **{last_month}월**')
             st.write(f"인구수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3 ")
             st.write(f"세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
 
 def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2, m_power) :
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
    
     titles = dict(text= '('+selected_city2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
@@ -135,6 +136,9 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2,
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
+    with st.beta_expander("See explanation"):
+            st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
+            st.write(f"인구수 Source : https://onland.kbstar.com/quics?page=C060737 ")
 
     #box chart
     fig2 = go.Figure()
@@ -611,6 +615,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
 def run_buy_basic(b_df, org_df):
+    buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
     df_total = b_df.xs('합계',axis=1, level=1)
     df_si = b_df.xs('관할시군구내',axis=1, level=1)
     df_do = b_df.xs('관할시도내',axis=1, level=1)
@@ -709,6 +714,10 @@ def run_buy_basic(b_df, org_df):
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
+
+    with st.beta_expander("See explanation"):
+            st.markdown(f'매입자 거주지별 매매 최종업데이트: **{buy_last_month}월**')
+            st.write(f"Source : http://www.r-one.co.kr/rone/resis/statistics/statisticsViewer.do ")
 
     
 

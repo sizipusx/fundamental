@@ -369,9 +369,9 @@ if __name__ == "__main__":
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
     buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
-    st.write("KB last month: <b>" + kb_last_month+"월</b>")
-    st.write("인구수 last month: <b>" + pop_last_month+"월</b>")
-    st.write("매입자 거주지별 매매현황 last month: <b>" + buy_last_month+"월</b>")
+    st.write("KB last month: " + kb_last_month+"월")
+    st.write("인구수 last month: " + pop_last_month+"월")
+    st.write("매입자 거주지별 매매현황 last month: " + buy_last_month+"월")
 
     #월간 증감률
     mdf_change = mdf.pct_change()*100
