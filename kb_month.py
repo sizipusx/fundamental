@@ -146,6 +146,7 @@ def load_pop_data():
     test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.27'))
     pop.columns = test
     df = pop.T
+    df = df.iloc[:-1]
     df.index = pd.to_datetime(df.index)
     df_change = df.pct_change()*100
     df_change = df_change.round(decimals=2)
@@ -156,6 +157,7 @@ def load_pop_data():
     sae = sae.iloc[:,3:]
     sae.columns = test
     sdf = sae.T
+    sdf = sdf.iloc[:-1]
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
