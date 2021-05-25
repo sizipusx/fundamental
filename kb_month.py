@@ -139,18 +139,18 @@ def load_index_data():
 def load_pop_data():
     popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
      #인구수 
-    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr', skiprows=1)
+    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr')
     pop['행정구역'] = popheader
     pop = pop.set_index("행정구역")
     pop = pop.iloc[:,3:]
-    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.27'))
     pop.columns = test
     df = pop.T
     df.index = pd.to_datetime(df.index)
     df_change = df.pct_change()*100
     df_change = df_change.round(decimals=2)
     #세대수
-    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/saedae.csv', encoding='euc-kr', skiprows=1)
+    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/saedae.csv', encoding='euc-kr')
     sae['행정구역'] = popheader
     sae = sae.set_index("행정구역")
     sae = sae.iloc[:,3:]
