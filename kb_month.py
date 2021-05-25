@@ -365,6 +365,12 @@ if __name__ == "__main__":
     b_df, org_df = load_buy_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
+    #마지막 달
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+    pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
+    st.write("KB last month:" + kb_last_month+"월")
+    st.write("인구수 last month:" + pop_last_month+"월")
+
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
