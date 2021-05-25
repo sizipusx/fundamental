@@ -138,7 +138,7 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2,
     st.plotly_chart(fig)
     with st.beta_expander("See explanation"):
             st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
-            st.write(f"인구수 Source : https://onland.kbstar.com/quics?page=C060737 ")
+            st.write(f"Source : https://onland.kbstar.com/quics?page=C060737 ")
 
     #box chart
     fig2 = go.Figure()
