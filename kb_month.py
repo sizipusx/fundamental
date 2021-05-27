@@ -165,23 +165,25 @@ def load_index_data():
 def load_pop_data():
     popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
      #인구수 
-    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/pop.csv', skiprows=1)
+    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr')
     pop['행정구역'] = popheader
     pop = pop.set_index("행정구역")
     pop = pop.iloc[:,3:]
-    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.27'))
     pop.columns = test
     df = pop.T
+    df = df.iloc[:-1]
     df.index = pd.to_datetime(df.index)
     df_change = df.pct_change()*100
     df_change = df_change.round(decimals=2)
     #세대수
-    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/saedae.csv', encoding='euc-kr', skiprows=1)
+    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/saedae.csv', encoding='euc-kr')
     sae['행정구역'] = popheader
     sae = sae.set_index("행정구역")
     sae = sae.iloc[:,3:]
     sae.columns = test
     sdf = sae.T
+    sdf = sdf.iloc[:-1]
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
@@ -389,6 +391,14 @@ if __name__ == "__main__":
     b_df, org_df = load_buy_data()
     ratio_df, one_header = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
+
+    #마지막 달
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+    pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
+    buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
+    st.write("KB last month: " + kb_last_month+"월")
+    st.write("인구수 last month: " + pop_last_month+"월")
+    st.write("매입자 거주지별 매매현황 last month: " + buy_last_month+"월")
 
     #월간 증감률
     mdf_change = mdf.pct_change()*100
