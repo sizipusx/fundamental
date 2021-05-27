@@ -698,7 +698,6 @@ def run_buy_basic(b_df, org_df):
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
-    
 
 def run_buy_index(selected_dosi, b_df):
     selected_df = b_df.xs(selected_dosi, axis=1, level=0)
@@ -715,4 +714,12 @@ def run_buy_index(selected_dosi, b_df):
     fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    st.plotly_chart(fig)
+
+def run_pop_index(selected_dosi, middle_df):
+    title = "["+selected_dosi+"] 전세가율"
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = px.line(middle_df, x=middle_df.index, y=selected_dosi)
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
