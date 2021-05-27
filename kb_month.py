@@ -466,8 +466,8 @@ if __name__ == "__main__":
     middle_df = ratio_df.xs("중위", axis=1, level=1)
     middle_df.columns = one_header.columns[1:]
     one_last_df = middle_df.iloc[-1].T.to_frame()
-    sub_df = last_df[last_df.iloc[:,0] >= 70.0]
-    st.dataframe(sub_df)
+    sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
+    # st.dataframe(sub_df)
     sub_df.columns = ['전세가율']
     sub_df = sub_df.sort_values('전세가율', ascending=False )
 
