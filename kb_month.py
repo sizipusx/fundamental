@@ -40,6 +40,33 @@ def read_source_excel():
 
     return kbm_dict
 
+@st.cache
+def load_ratio_data():
+    file_path = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/files/sell_jeon_ration.csv'
+    ratio_df = pd.read_csv(file_path, skiprows=1)
+    ratio_df.iloc[1,0] = '날짜'
+    header_path = 'https://github.com/sizipusx/fundamental/blob/e78f57d1a884c56721c2df612c32e1e73e88dd1f/files/one_header.xlsx?raw=true'
+    one_header = pd.read_excel(header_path, sheet_name="시도구")
+
+    #컬럼명 바꿈
+    j1 = ratio_df.columns.map(lambda x: x.split(' ')[0])
+    new_s1 = []
+    for num, gu_data in enumerate(j1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(j1[check])
+    new_s1[0] = "date"
+    ratio_df.columns = [new_s1, ratio_df.iloc[1]]
+    df = ratio_df.iloc[4:ratio_df[('전국', '중위')].count()]
+    df = df.set_index([('date', '날짜')])
+    df.index = pd.to_datetime(df.index)
+    df.index.name = 'date'
+    df = df.astype(float).round(decimals = 2)
+
+    return df, one_header
+
 
 @st.cache
 def load_buy_data():
@@ -363,6 +390,7 @@ if __name__ == "__main__":
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change = load_pop_data()
     b_df, org_df = load_buy_data()
+    ratio_df, one_header = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
@@ -434,6 +462,13 @@ if __name__ == "__main__":
     power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
     power_df = power_df.sort_values('rank', ascending=True)
     
+    #감정원 전세가율 마지막 데이터
+    middle_df = df.xs("중위", axis=1, level=1)
+    middle_df.columns = one_header.columns[1:]
+    one_last_df = middle_df.iloc[-1].T.to_frame()
+    sub_df = last_df[last_df.iloc[:,0] >= 70.0]
+    sub_df.columns = ['전세가율']
+    sub_df = sub_df.sort_values('전세가율', ascending=False )
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
@@ -469,6 +504,7 @@ if __name__ == "__main__":
 
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
+            drawAPT.run_ratio_index(selected_city2, middle_df)
             drawAPT.run_buy_index(selected_city2, b_df)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':

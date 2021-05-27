@@ -734,3 +734,12 @@ def run_buy_index(selected_dosi, b_df):
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
+
+
+def run_ratio_index(selected_dosi, middle_df):
+    title = "["+selected_dosi+"] 전세가율"
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = px.line(middle_df, x=middle_df.index, y=selected_dosi)
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
+    st.plotly_chart(fig)
