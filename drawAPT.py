@@ -740,7 +740,7 @@ def run_ratio_index(selected_dosi, middle_df):
     title = "["+selected_dosi+"] 전세가율"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.line(middle_df, x=middle_df.index, y=selected_dosi)
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template))
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
