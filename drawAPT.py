@@ -28,6 +28,8 @@ marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,
 template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
 def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
+    last_month = pd.to_datetime(str(df.index.values[-1])).strftime('%Y.%m')
+
     titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
@@ -48,7 +50,14 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     # fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
+
+    with st.beta_expander("See explanation"):
+            st.markdown(f'인구-세대수 최종업데이트: **{last_month}월**')
+            st.write(f"인구수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3 ")
+            st.write(f"세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
+
 def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2, m_power) :
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
    
     titles = dict(text= '('+selected_city2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
@@ -127,6 +136,9 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2,
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
+    with st.beta_expander("See explanation"):
+            st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
+            st.write(f"Source : https://onland.kbstar.com/quics?page=C060737 ")
 
     #box chart
     fig2 = go.Figure()
@@ -216,6 +228,10 @@ def run_sentimental_index():
     st.plotly_chart(fig)
 
 def draw_basic(last_df,df, geo_data, last_pop, power_df):
+
+    #마지막 달
+    # last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
+
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,255,255)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     # 월간 인구수 세대수 증감
@@ -667,7 +683,7 @@ def run_buy_basic(b_df, org_df):
     # st.plotly_chart(fig)
 
     #최근 한달 동안 투자자 수가 가장 많이 유입된 곳 보기
-    title = '최근 한달 동안 투자자가 가장 많이 유입된 곳'
+    title = last_month + '월 <b>최근 한달 동안 투자자가 가장 많이 유입된 곳</b>'
     titles = dict(text= title, x=0.5, y = 0.9) 
     fig = px.bar(last_df, x= last_df.index, y= last_df.iloc[:,-1], color=last_df.iloc[:,-1], color_continuous_scale='Bluered', text=last_df.index)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -679,7 +695,7 @@ def run_buy_basic(b_df, org_df):
     st.plotly_chart(fig)
 
 
-    title = last_month +"월 <b>서울지역/기타지역 거주자 매수</b>"
+    title = last_month +"월 <b>서울 - 기타지역 거주자 매수</b>"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.scatter(last_df, x='서울매수자', y='기타지역매수자', color='기타지역매수자', color_continuous_scale='Bluered', size=last_df['서울매수자'], 
                         text= last_df.index, hover_name=last_df.index)
@@ -700,26 +716,21 @@ def run_buy_basic(b_df, org_df):
 
 
 def run_buy_index(selected_dosi, b_df):
+    buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
     selected_df = b_df.xs(selected_dosi, axis=1, level=0)
+    #마지막 달
+    last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
     per_df = round(selected_df.div(selected_df['합계'], axis=0)*100,1)
-    title = "["+selected_dosi+"] 매입자별 전체 거래량"
+    title = last_month + "월 ["+selected_dosi+"] 매입자별 전체 거래량"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
-    title = "["+selected_dosi+"] 매입자별 비중"
+    title = last_month + "월 ["+selected_dosi+"] 매입자별 비중"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
-    st.plotly_chart(fig)
-
-def run_pop_index(selected_dosi, middle_df):
-    title = "["+selected_dosi+"] 전세가율"
-    titles = dict(text= title, x=0.5, y = 0.95) 
-    fig = px.line(middle_df, x=middle_df.index, y=selected_dosi)
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
-    fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
