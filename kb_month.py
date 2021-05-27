@@ -463,7 +463,7 @@ if __name__ == "__main__":
     power_df = power_df.sort_values('rank', ascending=True)
     
     #감정원 전세가율 마지막 데이터
-    middle_df = df.xs("중위", axis=1, level=1)
+    middle_df = ratio_df.xs("중위", axis=1, level=1)
     middle_df.columns = one_header.columns[1:]
     one_last_df = middle_df.iloc[-1].T.to_frame()
     sub_df = last_df[last_df.iloc[:,0] >= 70.0]
