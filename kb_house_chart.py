@@ -341,6 +341,9 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     data_load_state.text("index Data Done! (using st.cache)")
+    #마지막 주
+    kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
+    st.subheader("KB 기준 week: " + kb_last_week)
 
     #주간 증감률
     mdf_change = mdf.pct_change()*100
