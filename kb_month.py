@@ -71,7 +71,7 @@ def load_ratio_data():
 @st.cache
 def load_buy_data():
     #년 증감 계산을 위해 최소 12개월치 데이터 필요
-    path = r'https://github.com/sizipusx/fundamental/blob/5441c57ac618fc6448319c8beb8512d89cdf6638/files/apt_buy.xlsxraw=true'
+    path = r'https://github.com/sizipusx/fundamental/blob/5441c57ac618fc6448319c8beb8512d89cdf6638/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
     df = pd.read_excel(path, sheet_name=data_type, header=10)
     path1 = r'https://github.com/sizipusx/fundamental/blob/130612c3436245a3202de78375eb12ecc712e8d9/files/kbheader.xlsx?raw=true'
