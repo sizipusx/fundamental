@@ -59,7 +59,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
 def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2, m_power) :
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
    
-    titles = dict(text= '('+selected_city2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '('+selected_city2 +') 월간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
