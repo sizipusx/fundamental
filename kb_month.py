@@ -27,7 +27,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 #return object
 def read_source(): 
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    file_path = 'https://github.com/sizipusx/fundamental/blob/5441c57ac618fc6448319c8beb8512d89cdf6638/files/%E2%98%85(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.05)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
     kbm_dict = pd.ExcelFile(file_path)
 
     return kbm_dict
@@ -35,7 +35,7 @@ def read_source():
  #return dic
 def read_source_excel():
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    file_path = 'https://github.com/sizipusx/fundamental/blob/5441c57ac618fc6448319c8beb8512d89cdf6638/files/%E2%98%85(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.05)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
     kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     return kbm_dict
@@ -283,7 +283,7 @@ def load_senti_data():
 
 @st.cache
 def load_pir_data():
-    file_path = 'https://github.com/sizipusx/fundamental/blob/5441c57ac618fc6448319c8beb8512d89cdf6638/files/%E2%98%85(%EC%9B%94%EA%B0%84)KB%EC%A3%BC%ED%83%9D%EA%B0%80%EA%B2%A9%EB%8F%99%ED%96%A5_%EC%8B%9C%EA%B3%84%EC%97%B4(2021.05)_A%EC%A7%80%EC%88%98%ED%86%B5%EA%B3%84.xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
     kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
     pir =  kb_dict['KB아파트담보대출PIR']
     pir = pir.iloc[:pir['지역'].count()-1,1:11]
