@@ -17,10 +17,16 @@ import streamlit as st
 import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as font_manager
 
-# plt.rc('font', family='NanumBarunGothic') 
-plt.rc('font', family='Malgun Gothic')
+import matplotlib as mpl
+import matplotlib.font_manager as fm
 
+fe = fm.FontEntry(
+    fname='https://github.com/sizipusx/fundamental/blob/9798d9a026dd3fd8afaf71006f269fed52139177/files/MALANGMALANGR.TTF',
+    name='MALANGMALANGR')
+fm.fontManager.ttflist.insert(0, fe) # or append is fine
+mpl.rcParams['font.family'] = fe.name # = 'your custom ttf font name'
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
