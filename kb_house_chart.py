@@ -406,7 +406,7 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
 
         plt.annotate(dispname, (row['x']+0.5, row['y']+0.5), weight='bold',
                      fontsize=fontsize, ha='center', va='center', color=annocolor,
-                     linespacing=linespacing, fontproperties=fontprop)
+                     linespacing=linespacing)
         
     # 시도 경계 그린다.
     for path in BORDER_LINES:
