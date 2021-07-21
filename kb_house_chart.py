@@ -19,13 +19,14 @@ import FinanceDataReader as fdr
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 import matplotlib 
+matplotlib.font_manager._rebuild()
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
 
 font_path = "files/MALANGMALANGR.TTF"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
-matplotlib.font_manager._rebuild()
+
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
