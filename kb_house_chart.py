@@ -18,7 +18,8 @@ import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
 
-plt.rc('font', family='NanumBarunGothic') 
+# plt.rc('font', family='NanumBarunGothic') 
+plt.rc('font', family='Malgun Gothic')
 
 
 pd.set_option('display.float_format', '{:.2f}'.format)
