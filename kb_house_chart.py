@@ -405,16 +405,7 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     plt.tight_layout()
     plt.show()
 
-    #function 불러 보자
-    path = 'https://github.com/sizipusx/fundamental/blob/9abf900fe8527ff491c5daabd9f3bd6279821425/files/city_info.xlsx?raw=true'
-    header_excel = pd.ExcelFile(path)
-    df1 = header_excel.parse('basic', index_col=0)
-    df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
-    df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
-    df1.dropna(inplace=True)
-    drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
-
-
+    
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
         title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
@@ -486,6 +477,15 @@ if __name__ == "__main__":
     power_df = power_df.sort_values('rank', ascending=True)
     # st.dataframe(power_df)
     # st.table(power_df)
+
+    #function 불러 보자
+    path = 'https://github.com/sizipusx/fundamental/blob/9abf900fe8527ff491c5daabd9f3bd6279821425/files/city_info.xlsx?raw=true'
+    header_excel = pd.ExcelFile(path)
+    df1 = header_excel.parse('basic', index_col=0)
+    df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    df1.dropna(inplace=True)
+    drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
