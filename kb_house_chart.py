@@ -29,7 +29,7 @@ import matplotlib.font_manager as fm
 # mpl.rcParams['font.family'] = fe.name # = 'your custom ttf font name'
 
 
-path = '/files/MALANGMALANGR.TTF'
+path = 'https://github.com/sizipusx/fundamental/blob/main/files/MALANGMALANGR.TTF'
 fontprop = fm.FontProperties(fname=path)
 
 pd.set_option('display.float_format', '{:.2f}'.format)
