@@ -20,17 +20,14 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as font_manager
 
 import matplotlib as mpl
-import matplotlib.font_manager as fm
+import matplotlib.font_manager as font_manager
 
-# fe = fm.FontEntry(
-#     fname='https://github.com/sizipusx/fundamental/blob/d243febffbda721dfb8e135c94d9ed52f0049892/files/MALANGMALANGR.TTF',
-#     name='MALANGMALANGR')
-# fm.fontManager.ttflist.insert(0, fe) # or append is fine
-# mpl.rcParams['font.family'] = fe.name # = 'your custom ttf font name'
+font_dirs = ['https://github.com/sizipusx/fundamental/blob/main/files/MALANGMALANGR.TTF', ]
+font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+font_list = font_manager.createFontList(font_files)
+font_manager.fontManager.ttflist.extend(font_list)
 
-
-path = 'https://github.com/sizipusx/fundamental/blob/main/files/MALANGMALANGR.TTF'
-fontprop = fm.FontProperties(fname=path)
+mpl.rcParams['font.family'] = 'My Custom Font'
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
