@@ -22,11 +22,15 @@ import matplotlib.font_manager as font_manager
 import matplotlib as mpl
 import matplotlib.font_manager as fm
 
-fe = fm.FontEntry(
-    fname='https://github.com/sizipusx/fundamental/blob/d243febffbda721dfb8e135c94d9ed52f0049892/files/MALANGMALANGR.TTF',
-    name='MALANGMALANGR')
-fm.fontManager.ttflist.insert(0, fe) # or append is fine
-mpl.rcParams['font.family'] = fe.name # = 'your custom ttf font name'
+# fe = fm.FontEntry(
+#     fname='https://github.com/sizipusx/fundamental/blob/d243febffbda721dfb8e135c94d9ed52f0049892/files/MALANGMALANGR.TTF',
+#     name='MALANGMALANGR')
+# fm.fontManager.ttflist.insert(0, fe) # or append is fine
+# mpl.rcParams['font.family'] = fe.name # = 'your custom ttf font name'
+
+
+path = 'https://github.com/sizipusx/fundamental/blob/d243febffbda721dfb8e135c94d9ed52f0049892/files/MALANGMALANGR.TTF'
+fontprop = fm.FontProperties(fname=path)
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
@@ -406,7 +410,7 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
 
         plt.annotate(dispname, (row['x']+0.5, row['y']+0.5), weight='bold',
                      fontsize=fontsize, ha='center', va='center', color=annocolor,
-                     linespacing=linespacing)
+                     linespacing=linespacing, fontproperties=fontprop)
         
     # 시도 경계 그린다.
     for path in BORDER_LINES:
