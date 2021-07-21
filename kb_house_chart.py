@@ -18,15 +18,13 @@ import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
-import matplotlib 
-matplotlib.font_manager._rebuild()
+
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
 
 font_path = "files/MALANGMALANGR.TTF"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
-
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
@@ -504,7 +502,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
-            drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
+            # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     elif my_choice == 'Price Index':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
