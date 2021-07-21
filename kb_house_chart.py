@@ -22,7 +22,7 @@ from matplotlib import font_manager, rc
 font_list = [font.name for font in font_manager.fontManager.ttflist]
 st.write(font_list)
 
-font_path = "https://github.com/sizipusx/fundamental/blob/b3eea8169529127ec56caae4cc191e007d4e6de3/files/MALANGMALANGR.TTF"
+font_path = "./files/MALANGMALANGR.TTF"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
 
