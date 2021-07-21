@@ -27,7 +27,7 @@ font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
 font_list = font_manager.createFontList(font_files)
 font_manager.fontManager.ttflist.extend(font_list)
 
-mpl.rcParams['font.family'] = 'My Custom Font'
+mpl.rcParams['font.family'] = 'MALANGMALANGR'
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
