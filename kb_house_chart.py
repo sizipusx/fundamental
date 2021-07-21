@@ -405,9 +405,15 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     plt.tight_layout()
     plt.show()
 
-
     #function 불러 보자
+    path = 'https://github.com/sizipusx/fundamental/blob/9abf900fe8527ff491c5daabd9f3bd6279821425/files/city_info.xlsx?raw=true'
+    header_excel = pd.ExcelFile(path)
+    df1 = header_excel.parse('basic', index_col=0)
+    df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    df1.dropna(inplace=True)
     drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
+
 
     with st.beta_container():
         #매매/전세 증감률 Bubble Chart
