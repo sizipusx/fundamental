@@ -329,6 +329,18 @@ def draw_basic():
     st.plotly_chart(fig)
     # st.datafrasme(last_df.T.style.highlight_max(axis=1))
 
+
+    
+    with st.beta_container():
+        #매매/전세 증감률 Bubble Chart
+        title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
+        fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
+                            text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
+        fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+        fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+        fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        st.plotly_chart(fig1)
+
     #2021-7-21 update 개별로
 def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     gamma = 0.75
@@ -405,16 +417,6 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     plt.tight_layout()
     plt.show()
 
-    
-with st.beta_container():
-    #매매/전세 증감률 Bubble Chart
-    title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
-    fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                        text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
-    fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    st.plotly_chart(fig1)
 
 
 if __name__ == "__main__":
