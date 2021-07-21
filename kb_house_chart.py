@@ -406,15 +406,15 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     plt.show()
 
     
-    with st.beta_container():
-        #매매/전세 증감률 Bubble Chart
-        title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
-        fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                            text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
-        fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-        fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-        fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig1)
+with st.beta_container():
+    #매매/전세 증감률 Bubble Chart
+    title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
+    fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
+                        text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
+    fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig1)
 
 
 if __name__ == "__main__":
@@ -485,7 +485,7 @@ if __name__ == "__main__":
     df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
     df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
     df1.dropna(inplace=True)
-    drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
+    
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
@@ -495,6 +495,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
+            drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     elif my_choice == 'Price Index':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
