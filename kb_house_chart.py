@@ -504,7 +504,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
-            drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
+            # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     elif my_choice == 'Price Index':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
