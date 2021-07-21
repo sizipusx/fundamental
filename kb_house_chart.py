@@ -22,7 +22,7 @@ from matplotlib import font_manager, rc
 font_list = [font.name for font in font_manager.fontManager.ttflist]
 st.write(font_list)
 
-font_path = "./files/NanumSquareRoundR.ttf"
+font_path = "./files/MALANGMALANGR.ttf"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
 
