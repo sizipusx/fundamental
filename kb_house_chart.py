@@ -23,7 +23,7 @@ import matplotlib as mpl
 import matplotlib.font_manager as fm
 
 fe = fm.FontEntry(
-    fname='https://github.com/sizipusx/fundamental/files/MALANGMALANGR.TTF',
+    fname='https://github.com/sizipusx/fundamental/blob/d243febffbda721dfb8e135c94d9ed52f0049892/files/MALANGMALANGR.TTF',
     name='MALANGMALANGR')
 fm.fontManager.ttflist.insert(0, fe) # or append is fine
 mpl.rcParams['font.family'] = fe.name # = 'your custom ttf font name'
