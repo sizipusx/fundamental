@@ -450,7 +450,6 @@ if __name__ == "__main__":
     last_df = last_df.astype(float).fillna(0).round(decimals=2)
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    st.dataframe(df)
     df.columns = ['매매증감', '전세증감', 'SIG_CD']
     df['SIG_CD']= df['SIG_CD'].astype(str)
 
@@ -503,7 +502,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
-            # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
+            drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     elif my_choice == 'Price Index':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
