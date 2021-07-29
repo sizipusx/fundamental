@@ -133,6 +133,26 @@ def run_price_index() :
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+                annotation_position="bottom right")
+    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+              annotation_text="8.2 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+              annotation_text="9.13 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+              annotation_text="12.16/2.24 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+              annotation_text="6.17/7.10 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+              annotation_text="8.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
+              annotation_text="2.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -329,26 +349,6 @@ def draw_basic():
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
-                annotation_position="bottom right")
-    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
-              annotation_text="8.2 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
-              annotation_text="9.13 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
-              annotation_text="12.16/2.24 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
-              annotation_text="6.17/7.10 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
-              annotation_text="8.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
-              annotation_text="2.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
     st.plotly_chart(fig)
     # st.datafrasme(last_df.T.style.highlight_max(axis=1))
 
