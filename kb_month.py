@@ -108,8 +108,8 @@ def load_index_data():
     code_df.index = code_df.index.str.strip()
 
     #주택가격지수
-    mdf = kbm_dict.parse("매매APT", skiprows=1, index_col=0, convert_float=True)
-    jdf = kbm_dict.parse("전세APT", skiprows=1, index_col=0, convert_float=True)
+    mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0, convert_float=True)
+    jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0, convert_float=True)
     mdf.columns = header.columns
     jdf.columns = header.columns
     #index 날짜 변경
