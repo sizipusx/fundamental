@@ -351,7 +351,7 @@ def draw_basic():
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= last_df['index'], y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                 text=last_df['index'])
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=str(last_df.iloc[0,1]), annotation_position="bottom right")
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text="전국 증감률", annotation_position="bottom right")
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
