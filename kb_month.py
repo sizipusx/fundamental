@@ -27,7 +27,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 #return object
 def read_source(): 
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/fb0c90dfdc04ef44f3bbd3bfe528d3eccb6f3029/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.ExcelFile(file_path)
 
     return kbm_dict
@@ -35,7 +35,7 @@ def read_source():
  #return dic
 def read_source_excel():
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/fb0c90dfdc04ef44f3bbd3bfe528d3eccb6f3029/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     return kbm_dict
