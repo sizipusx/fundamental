@@ -195,7 +195,7 @@ def load_pop_data():
 def load_senti_data():
     kbm_dict = read_source_excel()
 
-    m_sheet = '매수우위,매매거래,전세수급,전세거래,KB부동산 매매가격 전망지수,KB부동산 전세가격 전망지수'
+    m_sheet = '21.매수우위,22.매매거래,23.전세수급,24.전세거래,25.KB부동산 매매가격 전망지수,26.KB부동산 전세가격 전망지수'
     m_list = m_sheet.split(',')
     df_dic = []
     df_a = []
@@ -225,27 +225,27 @@ def load_senti_data():
             js.columns = [new_s1,js.iloc[0]]
 
             #전세수급지수만 filtering
-            if k == '매수우위':
+            if k == '21.매수우위':
                 js_index = js.xs("매수우위지수", axis=1, level=1)
                 js_a = js.xs("매도자 많음", axis=1, level=1)
                 js_b = js.xs("매수자 많음", axis=1, level=1)
-            elif k == '매매거래':
+            elif k == '22.매매거래':
                 js_index = js.xs("매매거래지수", axis=1, level=1)
                 js_a = js.xs("활발함", axis=1, level=1)
                 js_b = js.xs("한산함", axis=1, level=1)
-            elif k == '전세수급':
+            elif k == '23.전세수급':
                 js_index = js.xs("전세수급지수", axis=1, level=1)
                 js_a = js.xs("수요>공급", axis=1, level=1)
                 js_b = js.xs("수요<공급", axis=1, level=1)
-            elif k == '전세거래':
+            elif k == '24.전세거래':
                 js_index = js.xs("전세거래지수", axis=1, level=1)
                 js_a = js.xs("활발함", axis=1, level=1)
                 js_b = js.xs("한산함", axis=1, level=1)
-            elif k == 'KB부동산 매매가격 전망지수':
+            elif k == '25.KB부동산 매매가격 전망지수':
                 js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
                 js_a = js.xs("약간상승", axis=1, level=1)
                 js_b = js.xs("약간하락", axis=1, level=1)
-            elif k == 'KB부동산 전세가격 전망지수':
+            elif k == '26.KB부동산 전세가격 전망지수':
                 js_index = js.xs("KB부동산\n전세전망지수", axis=1, level=1)
                 js_a = js.xs("약간상승", axis=1, level=1)
                 js_b = js.xs("약간하락", axis=1, level=1)
