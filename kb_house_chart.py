@@ -141,7 +141,7 @@ def run_price_index() :
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
-                annotation_position="bottom right")
+                annotation_position=" top center")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
