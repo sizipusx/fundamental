@@ -45,6 +45,13 @@ def load_index_data():
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
+    #2021-7-30 코드 추가
+    # header 파일
+    basic_df = header_excel.parse('city')
+    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    basic_df.dropna(inplace=True)
+    basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
 
     mdf.columns = header.columns
     mdf = mdf.iloc[1:]
@@ -81,7 +88,7 @@ def load_index_data():
         geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return mdf, jdf, code_df, geo_data
+    return mdf, jdf, code_df, geo_data, basic_df
 
 @st.cache
 def load_senti_data():
@@ -327,10 +334,10 @@ def draw_basic():
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감'] 
     title = dict(text='<b>주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
-    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['SIG_CD'], z=df['전세증감'].astype(float),
+    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
                                         colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=False,
-                        text=df['text'], # hover text
+                        text=df['index'], # hover text
                         marker_line_color='white', # line markers between states
                         colorbar_title="전세증감")
     # fig.update_traces(hovertext=df['index'])
@@ -342,9 +349,11 @@ def draw_basic():
 
     title = dict(text='주요 시-구 주간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
-    fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
-                text=last_df.index)
-    fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
+    fig = px.bar(last_df, x= last_df['index'], y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
+                text=last_df['index'])
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+                annotation_position="bottom right")
+    # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
@@ -445,7 +454,7 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
 if __name__ == "__main__":
     st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    mdf, jdf, code_df, geo_data = load_index_data()
+    mdf, jdf, code_df, geo_data, basic_df = load_index_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -466,10 +475,12 @@ if __name__ == "__main__":
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.astype(float).fillna(0).round(decimals=2)
+    last_df = last_df.reset_index()
     #마지막달 dataframe에 지역 코드 넣어 합치기
-    df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    df.columns = ['매매증감', '전세증감', 'SIG_CD']
-    df['SIG_CD']= df['SIG_CD'].astype(str)
+    # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+    df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
+    # df.columns = ['매매증감', '전세증감', 'SIG_CD']
+    # df['SIG_CD']= df['SIG_CD'].astype(str)
 
     #버블 지수 만들어 보자
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
@@ -503,13 +514,13 @@ if __name__ == "__main__":
     # st.dataframe(power_df)
     # st.table(power_df)
 
-    #function 불러 보자
-    path = 'https://github.com/sizipusx/fundamental/blob/9abf900fe8527ff491c5daabd9f3bd6279821425/files/city_info.xlsx?raw=true'
-    header_excel = pd.ExcelFile(path)
-    df1 = header_excel.parse('basic', index_col=0)
-    df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
-    df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
-    df1.dropna(inplace=True)
+    # #function 불러 보자
+    # path = 'https://github.com/sizipusx/fundamental/blob/9abf900fe8527ff491c5daabd9f3bd6279821425/files/city_info.xlsx?raw=true'
+    # header_excel = pd.ExcelFile(path)
+    # df1 = header_excel.parse('basic', index_col=0)
+    # df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    # df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    # df1.dropna(inplace=True)
     
 
     #여기서부터는 선택
