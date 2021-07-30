@@ -140,7 +140,7 @@ def run_price_index() :
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
+    fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
                 annotation_position="bottom right")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
@@ -520,7 +520,8 @@ if __name__ == "__main__":
     # df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
     # df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
     # df1.dropna(inplace=True)
-    
+    org = df['지역']
+    org = org.str.split(" ", expand=True)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
