@@ -283,9 +283,11 @@ def load_senti_data():
 
 @st.cache
 def load_pir_data():
-    file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
-    kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
-    pir =  kb_dict['KB아파트담보대출PIR']
+    kbm_dict = read_source()
+    pir = kbm_dict.parse('14.NEW_HAI', skiprows=1)
+    # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
+    # kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+    # pir =  kb_dict['KB아파트담보대출PIR']
     pir = pir.iloc[:pir['지역'].count()-1,1:11]
 
     s1 = ['분기', '서울', '서울', '서울', '경기', '경기', '경기', '인천', '인천', '인천']
@@ -339,7 +341,7 @@ def load_pir_data():
 @st.cache
 def load_hai_data():
     kbm_dict = read_source()
-    hai = kbm_dict.parse('NEW_HAI', skiprows=1)
+    hai = kbm_dict.parse('14.NEW_HAI', skiprows=1)
     hai_old = hai.iloc[:135,2:]
     hai_old = hai_old.set_index("지역")
     hai_old.index.name="날짜"
