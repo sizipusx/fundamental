@@ -73,8 +73,8 @@ def load_index_data():
         sigun_id = sigun_dict['properties']['SIG_CD']
         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
         try:
-            sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
-            jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
+            sell_change = df.loc[(df.code == sigun_id), '매매증감'].iloc[0]
+            jeon_change = df.loc[(df.code == sigun_id), '전세증감'].iloc[0]
         except:
             sell_change = 0
             jeon_change =0
@@ -88,7 +88,7 @@ def load_index_data():
         geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return mdf, jdf, code_df, geo_data, basic_df
+    return mdf, jdf, geo_data, basic_df
 
 @st.cache
 def load_senti_data():
@@ -349,7 +349,7 @@ def draw_basic():
 
     title = dict(text='주요 시-구 주간 매매지수 증감',  x=0.5, y = 0.9) 
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
-    fig = px.bar(last_df, x= last_df['index'], y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
+    fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
                 text=last_df['index'])
     fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
@@ -366,7 +366,7 @@ def draw_basic():
         #매매/전세 증감률 Bubble Chart
         title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
         fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                            text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
+                            text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
         fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -453,7 +453,7 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
 if __name__ == "__main__":
     st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    mdf, jdf, code_df, geo_data, basic_df = load_index_data()
+    mdf, jdf, geo_data, basic_df = load_index_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
