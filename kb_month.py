@@ -92,7 +92,9 @@ def load_buy_data():
     drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '부천', '안양']
     df.drop(drop_list, axis=1, level=0, inplace=True)
     df.drop(drop_list2, axis=1, level=0, inplace=True)
-    df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
+    drop_list3 = df.columns[df.columns.get_level_values(0).str.endswith('군')]
+    df.drop(drop_list3, axis=1, inplace=True)
+    # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
 
     return df, org_df
 
