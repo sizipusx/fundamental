@@ -735,7 +735,7 @@ def run_buy_index(selected_dosi, b_df, mdf):
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
 
-#감정원 주간 지수와 거래량 같이 그려보자. 2021-8-3 추가
+#감정원 주간 지수와 거래량 같이 그려보자. 2021-8-3 추가 444
      # colors 
     marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
     # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
