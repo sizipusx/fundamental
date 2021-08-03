@@ -95,7 +95,7 @@ def load_buy_data():
     # drop_list3 = df.columns[df.columns.get_level_values(0).str.endswith('군')]
     # df.drop(drop_list3, axis=1, inplace=True)
     # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
-
+    
     return df, org_df
 
 @st.cache
@@ -512,7 +512,7 @@ if __name__ == "__main__":
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
             drawAPT.run_ratio_index(selected_city2, middle_df)
-            drawAPT.run_buy_index(selected_city2, b_df)
+            drawAPT.run_buy_index(selected_city2, b_df, mdf)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')

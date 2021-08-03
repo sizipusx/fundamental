@@ -715,7 +715,7 @@ def run_buy_basic(b_df, org_df):
     st.plotly_chart(fig)
 
 
-def run_buy_index(selected_dosi, b_df):
+def run_buy_index(selected_dosi, b_df, mdf):
     buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
     selected_df = b_df.xs(selected_dosi, axis=1, level=0)
     #마지막 달
@@ -734,6 +734,31 @@ def run_buy_index(selected_dosi, b_df):
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
     st.plotly_chart(fig)
+
+#감정원 주간 지수와 거래량 같이 그려보자. 2021-8-3 추가
+     # colors 
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+
+    x_data = selected_df.index
+    title = '<b>매매지수와 거래량</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "투자자수", x = x_data, y =selected_df['합계'], 
+                        text = selected_df['합계'], textposition = 'outside', 
+                        marker_color= marker_colors[0]), secondary_y = False) 
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "매매지수", x =  mdf.index, y=mdf[selected_dosi],
+                                    text= mdf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text="투자자수", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="명", secondary_y = False)
+    fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+    
 
 
 def run_ratio_index(selected_dosi, middle_df):
