@@ -725,14 +725,14 @@ def run_buy_index(selected_dosi, org_df, mdf):
     title = last_month + "월 ["+selected_dosi+"] 매입자별 전체 거래량"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     st.plotly_chart(fig)
 
     title = last_month + "월 ["+selected_dosi+"] 매입자별 비중"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     st.plotly_chart(fig)
 
 #감정원 주간 지수와 거래량 같이 그려보자. 2021-8-3 추가 444
