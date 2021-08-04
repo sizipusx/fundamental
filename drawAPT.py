@@ -742,7 +742,7 @@ def run_buy_index(selected_dosi, org_df, mdf):
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
     x_data = selected_df.index
-    title = '<b>부동산원 매매지수와 거래량</b>'
+    title = '<b>KB 매매지수와 거래량</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "투자자수", x = x_data, y =selected_df['합계'], 
