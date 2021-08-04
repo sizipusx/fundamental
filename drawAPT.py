@@ -749,13 +749,13 @@ def run_buy_index(selected_dosi, org_df, mdf):
                         text = selected_df['합계'], textposition = 'outside', 
                         marker_color= marker_colors[0]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines', 
-                                    name = "매매지수", x =  mdf.index, y=mdf[selected_dosi],  hovertemplate = '%Y-%m',
+                                    name = "매매지수", x =  mdf.index, y=mdf[selected_dosi],  
                                     text= mdf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text="매매 거래량", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="건", secondary_y = False)
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
