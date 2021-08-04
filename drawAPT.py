@@ -718,6 +718,8 @@ def run_buy_basic(b_df, org_df):
 def run_buy_index(selected_dosi, org_df, mdf):
     buy_last_month = pd.to_datetime(str(org_df.index.values[-1])).strftime('%Y.%m')
     selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    st.dataframe(selected_df)
+    st.dataframe(org_df)
     #마지막 달
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
