@@ -720,7 +720,6 @@ def run_buy_index(selected_dosi, org_df, mdf):
     if selected_dosi == "제주서귀포":
         selected_dosi ="제주" 
     selected_df = org_df.xs(selected_dosi, axis=1, level=0)
-    st.dataframe(mdf)
     #마지막 달
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
