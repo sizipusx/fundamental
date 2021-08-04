@@ -46,7 +46,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='인구세대수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     # fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
@@ -74,7 +74,7 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2,
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -134,7 +134,7 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2,
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='blue',  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     st.plotly_chart(fig)
     with st.beta_expander("See explanation"):
             st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
@@ -167,7 +167,7 @@ def run_sentimental_index():
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
@@ -688,7 +688,7 @@ def run_buy_basic(b_df, org_df):
     fig = px.bar(last_df, x= last_df.index, y= last_df.iloc[:,-1], color=last_df.iloc[:,-1], color_continuous_scale='Bluered', text=last_df.index)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
-    fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
+    fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show', xaxis_tickformat = '%Y-%m')
     fig.update_yaxes(title_text='서울+기타지역 투자자 수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
     # fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,0],2)}", \
     #             annotation_position="bottom right")
@@ -699,7 +699,7 @@ def run_buy_basic(b_df, org_df):
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.scatter(last_df, x='서울매수자', y='기타지역매수자', color='기타지역매수자', color_continuous_scale='Bluered', size=last_df['서울매수자'], 
                         text= last_df.index, hover_name=last_df.index)
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="명")
     st.plotly_chart(fig)
@@ -711,7 +711,7 @@ def run_buy_basic(b_df, org_df):
                         text= change_df2.index, hover_name=change_df2.index)
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     st.plotly_chart(fig)
 
 
