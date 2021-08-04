@@ -506,7 +506,8 @@ if __name__ == "__main__":
                 '구-시', second_list
             )
         # if  st.checkbox('Show 매매지수 data'):
-        #     st.dataframe(mdf.style.highlight_max(axis=0))
+        st.dataframe(mdf.style.highlight_max(axis=0))
+        st.dataframe(org_df.style.highlight_max(axis=0))
         
         submit = st.sidebar.button('Draw Price Index chart')
 
