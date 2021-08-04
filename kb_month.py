@@ -83,7 +83,7 @@ def load_buy_data():
     df = df.T
     df.columns = [df.columns, df.iloc[0]]
     df = df.iloc[1:]
-    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-27'))
+    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
     df.index = pd.to_datetime(df.index)
     df = df.apply(lambda x: x.replace('-','0'))
     df = df.astype(float)
