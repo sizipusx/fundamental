@@ -74,7 +74,7 @@ def load_buy_data():
     path = r'https://github.com/sizipusx/fundamental/blob/19cd2dd417f037c8dca2611ebe88896b9abb78b4/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
     df = pd.read_excel(path, sheet_name=data_type, header=10)
-    path1 = r'https://github.com/sizipusx/fundamental/blob/130612c3436245a3202de78375eb12ecc712e8d9/files/kbheader.xlsx?raw=true'
+    path1 = r'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
     header = pd.read_excel(path1, sheet_name='buyer')
     df['지 역'] = header['local'].str.strip()
     df = df.rename({'지 역':'지역명'}, axis='columns')
@@ -89,7 +89,7 @@ def load_buy_data():
     df = df.astype(float)
     org_df = df.copy()
     drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종 세종','충남', '충북']
-    drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '부천', '안양']
+    drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
     # big_city = df.iloc[:,drop_list]
     df.drop(drop_list, axis=1, level=0, inplace=True)
     df.drop(drop_list2, axis=1, level=0, inplace=True)
@@ -104,7 +104,7 @@ def load_index_data():
     kbm_dict = read_source()
     # kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/130612c3436245a3202de78375eb12ecc712e8d9/files/kbheader.xlsx?raw=true'
+    path = 'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
@@ -495,7 +495,7 @@ if __name__ == "__main__":
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
                     '충북','청주', '충주','제천', '충남','천안', '공주','아산', '논산', '계룡','당진','서산', '전북', '전주', '익산', '군산', \
                     '전남', '목포','순천','여수','광양','경북','포항','구미', '경산', '안동','김천','경남','창원', '양산','거제','진주', \
-                    '김해','통영', '제주도','제주서귀포','기타지방']
+                    '김해','통영', '제주서귀포','기타지방']
         column_list = mdf.columns.to_list()
         city_series = pd.Series(column_list)
         selected_city = st.sidebar.selectbox(
