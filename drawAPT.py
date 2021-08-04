@@ -765,6 +765,8 @@ def run_buy_index(selected_dosi, org_df, mdf):
 
 def run_ratio_index(selected_dosi, middle_df):
     title = "["+selected_dosi+"] 중위 가격 전세가율"
+    if selected_dosi == "제주서귀포":
+        selected_dosi ="제주" 
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.line(middle_df, x=middle_df.index, y=selected_dosi)
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
