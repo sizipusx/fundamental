@@ -722,13 +722,13 @@ def run_buy_index(selected_dosi, org_df, mdf):
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
     per_df = round(selected_df.div(selected_df['합계'], axis=0)*100,1)
-    title = last_month + "월 ["+selected_dosi+"] 매입자별 전체 거래량"
+    title = last_month + "월까지 ["+selected_dosi+"] 매입자별 전체 거래량"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     st.plotly_chart(fig)
 
-    title = last_month + "월 ["+selected_dosi+"] 매입자별 비중"
+    title = last_month + "월까지 ["+selected_dosi+"] 매입자별 비중"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
@@ -742,10 +742,10 @@ def run_buy_index(selected_dosi, org_df, mdf):
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
     x_data = selected_df.index
-    title = '<b>KB 매매지수와 거래량</b>'
+    title = "["+selected_dosi+"] <b>KB 매매지수와 거래량</b>"
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = "투자자수", x = x_data, y =selected_df['합계'], 
+    fig.add_trace(go.Bar(name = "매매거래량", x = x_data, y =selected_df['합계'], 
                         text = selected_df['합계'], textposition = 'outside', 
                         marker_color= marker_colors[0]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines', 
