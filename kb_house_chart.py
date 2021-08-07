@@ -32,7 +32,7 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-file_path = 'https://github.com/sizipusx/fundamental/blob/42080627758e3f75677a2d33da5e1532824966a6/files/WeeklySeriesTables.xlsx?raw=true'
+file_path = 'https://github.com/sizipusx/fundamental/blob/08abcf9407be1f8f9865453e5b201e5388387ba8/files/WeeklySeriesTables.xlsx?raw=True'
 
 @st.cache
 def load_index_data():
@@ -373,7 +373,7 @@ def draw_basic():
         st.plotly_chart(fig1)
 
     #2021-7-21 update 개별로
-def drawKorea(targetData, blockedMap, d1, d2, cmapname):
+def drawKorea(targetData, blockedMap, d1, d2, cmapname, title, last_week):
     gamma = 0.75
 
     whitelabelmin = (max(blockedMap[targetData]) - min(blockedMap[targetData])) * 0.25 + min(blockedMap[targetData])
@@ -384,11 +384,11 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     vmax = max(blockedMap[targetData])
 
     BORDER_LINES = [
-        [(1,0),(1,1),(2,1),(2,2),(6,2),(6,0),(1,0)], # 인천
-        [(1, 5), (1, 7), (2, 5), (3, 5), (3, 4), (8, 4), (8, 7), (7, 7), (7, 9), (4, 9), (4, 7), (1, 7),(2,5)], # 서울
-        [(1, 9), (3, 9), (3, 10), (8, 10), (8, 9),
-         (9, 9), (9, 8), (10, 8), (10, 5), (9, 5), (9, 3)], # 경기도
-        [(9, 12), (9, 10), (8, 10)], # 강원도
+       [(1,0),(1,1),(2,1),(2,2),(6,2),(6,0),(1,0)], # 인천
+        [(1, 5), (1, 7), (1, 5), (2, 5), (2, 5), (2,4),  (2, 4), (4, 4), (4,4), (4,3), (4,3), (5,3), (5,3), (5,4), (5,4), (7,4), 
+         (7,4), (7, 9), (4, 9), (4,8), (3,8), (3,7), (1,7)], # 서울
+        [(0, 8), (1,8), (1, 9), (3, 9), (3, 10), (6,10), (6, 11),(8, 11), (8, 10), (8, 9), (9, 9), (10, 9), (10, 3)], # 경기도
+        [(9, 13), (9, 9)], # 강원도
         [(10, 5), (11, 5), (11, 4), (12, 4), (12, 5), (13, 5),
          (13, 4), (14, 4), (14, 2)], # 충청남도
         [(11, 5), (12, 5), (12, 6), (15, 6), (15, 7), (13, 7),
@@ -409,6 +409,10 @@ def drawKorea(targetData, blockedMap, d1, d2, cmapname):
     
     plt.figure(figsize=(8, 13))
     plt.pcolor(masked_mapdata, vmin=vmin, vmax=vmax, cmap=cmapname, edgecolor='#aaaaaa', linewidth=0.5)
+    # 시계열 데이터
+    plt.title(last_week+' 기준 '+title, fontdict=font)
+    #일반 데이터
+    # plt.title(title, fontdict=font)
 
     # 지역 이름 표시
     for idx, row in blockedMap.iterrows():
@@ -478,6 +482,7 @@ if __name__ == "__main__":
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
+    drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
 
