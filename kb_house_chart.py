@@ -378,7 +378,7 @@ def draw_basic():
 def drawKorea(targetData, blockedMap, d1, d2, cmapname, title, last_week):
     gamma = 0.75
 
-    whitelabelmin = (max(blockedMap[targetData].astype(float)) - min(blockedMap[targetData].astype(float)) * 0.25 + min(blockedMap[targetData].astype(float)
+    whitelabelmin = (max(blockedMap[targetData].astype(float)) - min(blockedMap[targetData].astype(float))) * 0.25 + min(blockedMap[targetData].astype(float))
 
     datalabel = targetData
 
