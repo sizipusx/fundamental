@@ -484,7 +484,7 @@ if __name__ == "__main__":
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
-    drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
+    
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
 
@@ -538,6 +538,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
+            drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     elif my_choice == 'Price Index':
