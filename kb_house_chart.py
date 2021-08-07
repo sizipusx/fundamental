@@ -538,7 +538,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
-            st.dataframe(df)
+            # st.dataframe(df)
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
