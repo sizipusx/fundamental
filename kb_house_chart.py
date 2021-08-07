@@ -22,7 +22,7 @@ from matplotlib import font_manager, rc
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
 
-plt.rc('font', family='NanumBarunGothic') 
+plt.rc('font', family='DejaVu Sans') 
 font = {'color':  'darkred',
         'weight': 'normal',
         'size': 16,
