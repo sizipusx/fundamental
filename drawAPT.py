@@ -756,6 +756,7 @@ def run_buy_index(selected_dosi, org_df, mdf):
                                     text= mdf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=selected_df['합계'].mean(axis=0))
     fig.update_yaxes(title_text="매매 거래량", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="건", secondary_y = False)
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
