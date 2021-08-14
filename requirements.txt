@@ -4,7 +4,7 @@ alphaj-krx-crawler==0.1.1
 finance-datareader==0.9.31
 beautifulsoup4==4.7.1
 OpenDartReader==0.1.1
-plotly==5.1.0
+plotly==5.2.1
 plotly-express==0.4.1
 pykrx==1.0.12
 streamlit==0.78.0
