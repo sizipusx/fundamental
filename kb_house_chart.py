@@ -535,6 +535,8 @@ if __name__ == "__main__":
                     "What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis')
                     )
     if my_choice == 'Basic':
+        st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
+        st.table(power_df.iloc[:50])
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic()
@@ -543,8 +545,7 @@ if __name__ == "__main__":
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
     elif my_choice == 'Price Index':
-        st.subheader("전세파워 높고 버블지수 낮은 지역 상위 20곳")
-        st.table(power_df.iloc[:20])
+        
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
