@@ -43,10 +43,9 @@ def read_source_excel():
 @st.cache
 def load_ratio_data():
     file_path = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/files/sell_jeon_ration.csv'
-    ratio_df = pd.read_csv(file_path, skiprows=1)
-    ratio_df.iloc[1,0] = '날짜'
-    header_path = 'https://github.com/sizipusx/fundamental/blob/e78f57d1a884c56721c2df612c32e1e73e88dd1f/files/one_header.xlsx?raw=true'
-    one_header = pd.read_excel(header_path, sheet_name="시도구")
+    ratio_df = pd.read_csv(file_path, index_col=0, skiprows=1)
+    header_path = 'https://github.com/sizipusx/fundamental/blob/d38155a2dc988e321b568407ebcfb7b7b1efe650/files/header.xlsx?raw=true'
+    one_header = pd.read_excel(header_path, sheet_name="one")
 
     #컬럼명 바꿈
     j1 = ratio_df.columns.map(lambda x: x.split(' ')[0])
@@ -59,8 +58,7 @@ def load_ratio_data():
             new_s1.append(j1[check])
     new_s1[0] = "date"
     ratio_df.columns = [new_s1, ratio_df.iloc[1]]
-    df = ratio_df.iloc[4:ratio_df[('전국', '중위')].count()]
-    df = df.set_index([('date', '날짜')])
+    df = ratio_df.iloc[4:ratio_df[('date', '중위')].count()]
     df.index = pd.to_datetime(df.index)
     df.index.name = 'date'
     df = df.astype(float).round(decimals = 2)
@@ -173,7 +171,7 @@ def load_pop_data():
     pop['행정구역'] = popheader
     pop = pop.set_index("행정구역")
     pop = pop.iloc[:,3:]
-    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.27'))
+    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
     pop.columns = test
     df = pop.T
     df = df.iloc[:-1]
@@ -469,7 +467,7 @@ if __name__ == "__main__":
     
     #감정원 전세가율 마지막 데이터
     middle_df = ratio_df.xs("중위", axis=1, level=1)
-    middle_df.columns = one_header.columns[1:]
+    middle_df.columns = one_header.columns
     one_last_df = middle_df.iloc[-1].T.to_frame()
     sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
     # st.dataframe(sub_df)
