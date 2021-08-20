@@ -46,6 +46,51 @@ def load_ratio_data():
     ratio_df = pd.read_csv(file_path, index_col=0, skiprows=1)
     header_path = 'https://github.com/sizipusx/fundamental/blob/d38155a2dc988e321b568407ebcfb7b7b1efe650/files/header.xlsx?raw=true'
     one_header = pd.read_excel(header_path, sheet_name="one")
+    ################# 여기느 평단가 소스
+    path = r"https://github.com/sizipusx/fundamental/blob/59d57bf682d94c0263aff1230815893edcbd751d/files/apt_price.xlsx?raw=True"
+    peong = pd.read_excel(path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    omdf = peong['sell']
+    ojdf = peong['jeon']
+    mdf = omdf.iloc[4:,:]
+    jdf = ojdf.iloc[4:,:]
+    #헤더변경
+    s1 = mdf.columns
+    new_s1 = []
+    for num, gu_data in enumerate(s1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(s1[check])
+    
+    mdf.columns =[new_s1, omdf.iloc[1]]
+    jdf.columns = [new_s1, ojdf.iloc[1]]
+
+    smdf = mdf.xs('중위매매',axis=1, level=1)
+    sadf = mdf.xs('중위단위매매', axis=1, level=1)
+    jmdf = jdf.xs('중위전세',axis=1, level=1)
+    jadf = jdf.xs('중위단위전세', axis=1, level=1)
+    smdf.columns = one_header.columns
+    sadf.columns = one_header.columns
+    jmdf.columns = one_header.columns
+    jadf.columns = one_header.columns
+
+    sadf = sadf.astype(float)
+    smdf = smdf.astype(float)
+    jadf = jadf.astype(float)
+    jmdf = jmdf.astype(float)
+
+    sadf = sadf*0.33
+    smdf = smdf*0.33
+    jadf = jadf*0.33
+    jmdf = jmdf*0.33
+
+    sadf = sadf.round(decimals=1)
+
+    sadf_ch = sadf.pct_change()*100
+    sadf_ch = sadf_ch.round(decimals=2)
+    
+    ######################### 여기부터는 전세가율
 
     #컬럼명 바꿈
     j1 = ratio_df.columns.map(lambda x: x.split(' ')[0])
@@ -63,7 +108,7 @@ def load_ratio_data():
     df.index.name = 'date'
     df = df.astype(float).round(decimals = 2)
 
-    return df, one_header
+    return df, one_header, sadf, sadf_ch
 
 
 @st.cache
@@ -393,7 +438,7 @@ if __name__ == "__main__":
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change = load_pop_data()
     b_df, org_df = load_buy_data()
-    ratio_df, one_header = load_ratio_data()
+    ratio_df, one_header, peong_df, peong_ch = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
@@ -512,7 +557,7 @@ if __name__ == "__main__":
 
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
-            drawAPT.run_ratio_index(selected_city2, middle_df)
+            drawAPT.run_ratio_index(selected_city2, middle_df,  peong_df, peong_ch)
             drawAPT.run_buy_index(selected_city2, org_df, mdf)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':
