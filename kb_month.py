@@ -330,7 +330,7 @@ def load_senti_data():
 @st.cache
 def load_pir_data():
     kbm_dict = read_source()
-    pir = kbm_dict.parse('14.NEW_HAI', skiprows=1)
+    pir = kbm_dict.parse('13.KB아파트담보대출PIR', skiprows=1)
     # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
     # kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
     # pir =  kb_dict['KB아파트담보대출PIR']
