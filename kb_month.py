@@ -27,7 +27,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 #return object
 def read_source(): 
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    file_path = 'https://github.com/sizipusx/fundamental/blob/fb0c90dfdc04ef44f3bbd3bfe528d3eccb6f3029/files/KB_monthlyA.xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.ExcelFile(file_path)
 
     return kbm_dict
@@ -35,7 +35,7 @@ def read_source():
  #return dic
 def read_source_excel():
     # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    file_path = 'https://github.com/sizipusx/fundamental/blob/fb0c90dfdc04ef44f3bbd3bfe528d3eccb6f3029/files/KB_monthlyA.xlsx?raw=true'
+    file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     return kbm_dict
@@ -47,7 +47,7 @@ def load_ratio_data():
     header_path = 'https://github.com/sizipusx/fundamental/blob/d38155a2dc988e321b568407ebcfb7b7b1efe650/files/header.xlsx?raw=true'
     one_header = pd.read_excel(header_path, sheet_name="one")
     ################# 여기느 평단가 소스
-    path = r"https://github.com/sizipusx/fundamental/blob/59d57bf682d94c0263aff1230815893edcbd751d/files/apt_price.xlsx?raw=True"
+    path = r"https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/apt_price.xlsx?raw=True"
     peong = pd.read_excel(path, sheet_name=None, header=1, index_col=0, parse_dates=True)
     omdf = peong['sell']
     ojdf = peong['jeon']
@@ -114,7 +114,7 @@ def load_ratio_data():
 @st.cache
 def load_buy_data():
     #년 증감 계산을 위해 최소 12개월치 데이터 필요
-    path = r'https://github.com/sizipusx/fundamental/blob/19cd2dd417f037c8dca2611ebe88896b9abb78b4/files/apt_buy.xlsx?raw=true'
+    path = r'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
     df = pd.read_excel(path, sheet_name=data_type, header=10)
     path1 = r'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
