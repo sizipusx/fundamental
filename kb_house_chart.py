@@ -306,9 +306,6 @@ def run_sentimental_index(mdf_change):
         )
     st.plotly_chart(fig)
 
-    new_columns = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
-                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
-    js_index.columns = new_columns
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
@@ -518,11 +515,12 @@ if __name__ == "__main__":
         js_index = js_index.round(decimals=2)
         # st.dataframe(js_index)
 
-        # city_list = ['전국', '서울', '강북', '강남', '6개광역시','5개광역시','부산','대구','인천','광주','대전','울산',,'수도권','세종', \
-        #             '경기도', '강원도', '충청북도', '전라북도', '전라남도', '경상북도','경상남도','기타지방','제주']
-        column_list = js_index.columns.to_list()
+        city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
+        js_index.columns = city_list
+        # column_list = js_index.columns.to_list()
         selected_dosi = st.sidebar.selectbox(
-                '광역시-도', column_list
+                '광역시-도', city_list
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
