@@ -306,7 +306,9 @@ def run_sentimental_index(mdf_change):
         )
     st.plotly_chart(fig)
 
-    
+    new_columns = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
+    js_index.columns = new_columns
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
