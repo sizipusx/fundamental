@@ -509,15 +509,17 @@ if __name__ == "__main__":
         senti_df = load_senti_data()
         data_load_state.text("매수매도 index Data Done! (using st.cache)")
 
-        js_1 = senti_df.xs("매도자많음", axis=1, level=1)
-        js_2 = senti_df.xs("매수자많음", axis=1, level=1)
-        js_index = senti_df.xs("매수우위지수", axis=1, level=1)
-        js_index = js_index.round(decimals=2)
-        # st.dataframe(js_index)
-
         city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
+
+        js_1 = senti_df.xs("매도자많음", axis=1, level=1)
+        js_1.columns = city_list
+        js_2 = senti_df.xs("매수자많음", axis=1, level=1)
+        js_2.columns = city_list
+        js_index = senti_df.xs("매수우위지수", axis=1, level=1)
         js_index.columns = city_list
+        js_index = js_index.round(decimals=2)
+        # st.dataframe(js_index)     
         # column_list = js_index.columns.to_list()
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도', city_list
