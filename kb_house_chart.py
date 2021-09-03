@@ -309,7 +309,7 @@ def run_sentimental_index(mdf_change):
     
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
-    titles = dict(text= title,  x=0, y = 0.9) 
+    titles = dict(text= title,  x=0.2, y = 1.0) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =mdf_change[selected_dosi], 
                         text = mdf_change[selected_dosi], textposition = 'outside', 
