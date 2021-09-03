@@ -309,7 +309,7 @@ def run_sentimental_index(mdf_change):
     
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
-    titles = dict(text= title, x=0.5, y = 1) 
+    titles = dict(text= title,  xanchor="left", yanchor="bottom") 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =mdf_change[selected_dosi], 
                         text = mdf_change[selected_dosi], textposition = 'outside', 
@@ -320,7 +320,7 @@ def run_sentimental_index(mdf_change):
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m')
-    fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1.02, xanchor="right",  x=1))
+    fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1.02, xanchor="right",  x=0.8))
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
