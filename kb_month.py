@@ -212,7 +212,7 @@ def load_index_data():
 def load_pop_data():
     popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
     #인구수 
-    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr')
+    pop = pd.read_csv('https://github.com/sizipusx/fundamental/blob/6885841f228b2d866e782e772d36a7163bafd993/files/pop.csv', encoding='euc-kr')
     pop['행정구역'] = popheader
     pop = pop.set_index("행정구역")
     pop = pop.iloc[:,3:]
