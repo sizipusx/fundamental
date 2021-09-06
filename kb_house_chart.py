@@ -306,7 +306,6 @@ def run_sentimental_index(mdf_change):
         )
     st.plotly_chart(fig)
 
-    
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
@@ -510,17 +509,20 @@ if __name__ == "__main__":
         senti_df = load_senti_data()
         data_load_state.text("매수매도 index Data Done! (using st.cache)")
 
-        js_1 = senti_df.xs("매도자많음", axis=1, level=1)
-        js_2 = senti_df.xs("매수자많음", axis=1, level=1)
-        js_index = senti_df.xs("매수우위지수", axis=1, level=1)
-        js_index = js_index.round(decimals=2)
-        # st.dataframe(js_index)
+        city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
 
-        # city_list = ['전국', '서울', '강북', '강남', '6개광역시','5개광역시','부산','대구','인천','광주','대전','울산',,'수도권','세종', \
-        #             '경기도', '강원도', '충청북도', '전라북도', '전라남도', '경상북도','경상남도','기타지방','제주']
-        column_list = js_index.columns.to_list()
+        js_1 = senti_df.xs("매도자많음", axis=1, level=1)
+        js_1.columns = city_list
+        js_2 = senti_df.xs("매수자많음", axis=1, level=1)
+        js_2.columns = city_list
+        js_index = senti_df.xs("매수우위지수", axis=1, level=1)
+        js_index.columns = city_list
+        js_index = js_index.round(decimals=2)
+        # st.dataframe(js_index)     
+        # column_list = js_index.columns.to_list()
         selected_dosi = st.sidebar.selectbox(
-                '광역시-도', column_list
+                '광역시-도', city_list
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
