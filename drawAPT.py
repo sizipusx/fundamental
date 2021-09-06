@@ -354,7 +354,7 @@ def draw_hai(city, hai_df, info_df):
     fig.update_yaxes(title_text='금리', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="%") #tickprefix="$", 
     st.plotly_chart(fig)
 
-def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
+def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
     js_index = senti_dfs[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_1 = df_as[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
@@ -427,6 +427,25 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs):
             ),
             rangeslider=dict(visible=True), type="date")      
     )
+    st.plotly_chart(fig)
+
+    #매수우위와 매매증감 
+    x_data = mdf_change.index
+    title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
+    titles = dict(text= title,  x=0.5, y = 0.9) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =mdf_change[selected_dosi], 
+                        text = mdf_change[selected_dosi], textposition = 'outside', 
+                        marker_color= marker_colors[0]), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=100.0, line_width=1, line_color="red", secondary_y = False)
+    fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_yaxes(title_text="매매증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
     #매매거래지수

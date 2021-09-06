@@ -610,4 +610,4 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
-            drawAPT.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs)
+            drawAPT.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
