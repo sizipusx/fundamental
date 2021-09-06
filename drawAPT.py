@@ -440,7 +440,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=100.0, line_width=1, line_color="red", secondary_y = False)
-    fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="top right", secondary_y = True)
+    fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="dot", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m')
