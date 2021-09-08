@@ -230,7 +230,7 @@ def load_pop_data():
     sae = sae.iloc[:,3:]
     sae.columns = test
     sdf = sae.T
-    sdf = sdf.iloc[:-1]
+    # sdf = sdf.iloc[:-1]
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
