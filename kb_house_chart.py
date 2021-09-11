@@ -34,7 +34,7 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-file_path = 'https://github.com/sizipusx/fundamental/blob/1469fd90dfb28f3fb2690b5fb120110b7fa3f7ee/files/WeeklySeriesTables.xlsx?raw=True'
+file_path = 'https://github.com/sizipusx/fundamental/blob/8581d31811901ad76a1f33cb08366656cfd2f61f/files/WeeklySeriesTables.xlsx?raw=True'
 
 @st.cache
 def load_index_data():
