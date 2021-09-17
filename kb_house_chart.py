@@ -34,7 +34,7 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-file_path = 'https://github.com/sizipusx/fundamental/blob/8581d31811901ad76a1f33cb08366656cfd2f61f/files/WeeklySeriesTables.xlsx?raw=True'
+file_path = 'https://github.com/sizipusx/fundamental/blob/41a8cd2192d61bad679b91ee871d620a84e702c2/files/WeeklySeriesTables.xlsx?raw=True'
 
 @st.cache
 def load_index_data():
@@ -310,8 +310,8 @@ def run_sentimental_index(mdf_change):
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =mdf_change[selected_dosi], 
-                        text = mdf_change[selected_dosi], textposition = 'outside', 
+    fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =round(mdf_change[selected_dosi],2), 
+                        text = round(mdf_change[selected_dosi],2), textposition = 'outside', 
                         marker_color= marker_colors[0]), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
