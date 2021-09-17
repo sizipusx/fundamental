@@ -833,7 +833,12 @@ def run_ratio_index(selected_dosi, sadf, sadf_ch, jadf, jadf_ch, jratio_df):
     if selected_dosi == "제주서귀포":
         selected_dosi ="제주" 
     titles = dict(text= title, x=0.5, y = 0.95) 
-    fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
+    fig = make_subplots(specs=[[{'secondary_y': False}]]) 
+    # fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "전세가율", x =  jratio_df.index, y=jratio_df[selected_dosi],  
+                                    text= jratio_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = False)
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
