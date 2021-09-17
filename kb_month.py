@@ -44,52 +44,43 @@ def read_source_excel():
 def load_ratio_data():
     file_path = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/files/sell_jeon_ration.csv'
     ratio_df = pd.read_csv(file_path, index_col=0, skiprows=1)
-    header_path = 'https://github.com/sizipusx/fundamental/blob/d38155a2dc988e321b568407ebcfb7b7b1efe650/files/header.xlsx?raw=true'
-    one_header = pd.read_excel(header_path, sheet_name="one")
-    ################# 여기느 평단가 소스
-    path = r"https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/apt_price.xlsx?raw=True"
-    peong = pd.read_excel(path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-    omdf = peong['sell']
-    ojdf = peong['jeon']
-    mdf = omdf.iloc[4:,:]
-    jdf = ojdf.iloc[4:,:]
-    #헤더변경
-    s1 = mdf.columns
-    new_s1 = []
-    for num, gu_data in enumerate(s1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
+    header_path = 'https://github.com/sizipusx/fundamental/blob/80e5af9925c10a53b855cf6757fa1bba7eeb136d/files/header.xlsx?raw=true'
+    header_excel = pd.ExcelFile(header_path)
+    kb_header = header_excel.parse('KB')
+    ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
+    p_path = r"https://github.com/sizipusx/fundamental/blob/1a800b4035fafde7df18ecd1882a8313051a9b45/files/kb_price.xlsx?raw=True"
+    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    print(type(kb_dict))
+    for k in kb_dict.keys():
+        print(k)
+    mdf = kb_dict['sell']
+    jdf = kb_dict['jeon']
+    mdf = mdf.iloc[2:mdf['서울'].count()+1]
+    jdf = jdf.iloc[2:jdf['서울'].count()+1]
+    #index 날짜 변경
+    index_list = list(mdf.index)
+
+    new_index = []
+
+    for num, raw_index in enumerate(index_list):
+        temp = str(raw_index).split('.')
+        if int(temp[0]) > 12 :
+            if len(temp[0]) == 2:
+                new_index.append('19' + temp[0] + '.' + temp[1])
+            else:
+                new_index.append(temp[0] + '.' + temp[1])
         else:
-            new_s1.append(s1[check])
-    
-    mdf.columns =[new_s1, omdf.iloc[1]]
-    jdf.columns = [new_s1, ojdf.iloc[1]]
+            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
 
-    smdf = mdf.xs('중위매매',axis=1, level=1)
-    sadf = mdf.xs('중위단위매매', axis=1, level=1)
-    jmdf = jdf.xs('중위전세',axis=1, level=1)
-    jadf = jdf.xs('중위단위전세', axis=1, level=1)
-    smdf.columns = one_header.columns
-    sadf.columns = one_header.columns
-    jmdf.columns = one_header.columns
-    jadf.columns = one_header.columns
-
-    sadf = sadf.astype(float)
-    smdf = smdf.astype(float)
-    jadf = jadf.astype(float)
-    jmdf = jmdf.astype(float)
-
-    sadf = sadf*0.33
-    smdf = smdf*0.33
-    jadf = jadf*0.33
-    jmdf = jmdf*0.33
-
-    sadf = sadf.round(decimals=1)
-
-    sadf_ch = sadf.pct_change()*100
-    sadf_ch = sadf_ch.round(decimals=2)
-    
+    mdf.columns = kb_header.columns
+    jdf.columns = kb_header.columns
+    mdf = round(mdf.replace('-','0').astype(float)*3.3,2)
+    jdf = round(jdf.replace('-','0').astype(float)*3.3,2)
+    mdf_ch = mdf.pct_change()*100
+    mdf_ch = mdf_ch.round(decimals=2)
+    jdf_ch = jdf.pct_change()*100
+    jdf_ch = jdf_ch.round(decimals=2)
+        
     ######################### 여기부터는 전세가율
 
     #컬럼명 바꿈
@@ -108,7 +99,7 @@ def load_ratio_data():
     df.index.name = 'date'
     df = df.astype(float).round(decimals = 2)
 
-    return df, one_header, sadf, sadf_ch
+    return df, one_header, mdf, mdf_ch, jdf, jdf_ch
 
 
 @st.cache
@@ -438,7 +429,7 @@ if __name__ == "__main__":
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change = load_pop_data()
     b_df, org_df = load_buy_data()
-    ratio_df, one_header, peong_df, peong_ch = load_ratio_data()
+    ratio_df, one_header, peong_df, peong_ch, peongj_df, peongj_ch = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
@@ -557,7 +548,7 @@ if __name__ == "__main__":
 
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
-            drawAPT.run_ratio_index(selected_city2, middle_df,  peong_df, peong_ch)
+            drawAPT.run_ratio_index(selected_city2, middle_df,  peong_df, peong_ch, peongj_df, peongj_ch)
             drawAPT.run_buy_index(selected_city2, org_df, mdf)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':
