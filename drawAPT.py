@@ -785,14 +785,14 @@ def run_buy_index(selected_dosi, org_df, mdf):
     
 
 
-def run_ratio_index(selected_dosi, middle_df, sadf, sadf_ch):
+def run_ratio_index(selected_dosi, middle_df, sadf, sadf_ch, jadf, jadf_ch):
 
     marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
     # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
     x_data = sadf_ch.index
-    title = "[<b>"+selected_dosi+"</b>] 중위 매매 평단가 변화"
+    title = "[<b>"+selected_dosi+"</b>] KB 평균 매매 평단가 변화"
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =sadf_ch[selected_dosi], 
@@ -804,6 +804,25 @@ def run_ratio_index(selected_dosi, middle_df, sadf, sadf_ch):
                                     secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=sadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(sadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="평단가", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="만원", secondary_y = False)
+    fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(hovermode="x unified")
+    st.plotly_chart(fig)
+
+    x_data = jadf_ch.index
+    title = "[<b>"+selected_dosi+"</b>] KB 평균 전세 평단가 변화"
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =jadf_ch[selected_dosi], 
+                        text = jadf_ch[selected_dosi], textposition = 'outside', 
+                        marker_color= marker_colors[0]), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "평단가", x =  jadf.index, y=jadf[selected_dosi],  
+                                    text= jadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=jadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(jadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
     fig.update_yaxes(title_text="평단가", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="만원", secondary_y = False)
     fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
