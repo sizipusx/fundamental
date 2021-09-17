@@ -48,7 +48,7 @@ def load_ratio_data():
     ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
     p_path = r"https://github.com/sizipusx/fundamental/blob/1a800b4035fafde7df18ecd1882a8313051a9b45/files/kb_price.xlsx?raw=True"
     kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-    print(type(kb_dict))
+
     for k in kb_dict.keys():
         print(k)
     mdf = kb_dict['sell']
@@ -69,7 +69,8 @@ def load_ratio_data():
                 new_index.append(temp[0] + '.' + temp[1])
         else:
             new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
-
+    mdf.set_index(pd.to_datetime(new_index), inplace=True)
+    jdf.set_index(pd.to_datetime(new_index), inplace=True)
     mdf.columns = kb_header.columns
     jdf.columns = kb_header.columns
     mdf = round(mdf.replace('-','0').astype(float)*3.3,2)
