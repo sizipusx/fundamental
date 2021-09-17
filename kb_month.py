@@ -42,8 +42,6 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    file_path = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/files/sell_jeon_ration.csv'
-    ratio_df = pd.read_csv(file_path, index_col=0, skiprows=1)
     header_path = 'https://github.com/sizipusx/fundamental/blob/80e5af9925c10a53b855cf6757fa1bba7eeb136d/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
     kb_header = header_excel.parse('KB')
@@ -82,24 +80,10 @@ def load_ratio_data():
     jdf_ch = jdf_ch.round(decimals=2)
         
     ######################### 여기부터는 전세가율
+    jratio = round(jdf/mdf*100,1)
+    
 
-    #컬럼명 바꿈
-    j1 = ratio_df.columns.map(lambda x: x.split(' ')[0])
-    new_s1 = []
-    for num, gu_data in enumerate(j1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(j1[check])
-    new_s1[0] = "date"
-    ratio_df.columns = [new_s1, ratio_df.iloc[1]]
-    df = ratio_df.iloc[4:ratio_df[('date', '중위')].count()]
-    df.index = pd.to_datetime(df.index)
-    df.index.name = 'date'
-    df = df.astype(float).round(decimals = 2)
-
-    return df, one_header, mdf, mdf_ch, jdf, jdf_ch
+    return mdf, mdf_ch, jdf, jdf_ch, jratio
 
 
 @st.cache
@@ -429,7 +413,7 @@ if __name__ == "__main__":
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change = load_pop_data()
     b_df, org_df = load_buy_data()
-    ratio_df, one_header, peong_df, peong_ch, peongj_df, peongj_ch = load_ratio_data()
+    peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
@@ -548,7 +532,7 @@ if __name__ == "__main__":
 
         if submit:
             drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
-            drawAPT.run_ratio_index(selected_city2, middle_df,  peong_df, peong_ch, peongj_df, peongj_ch)
+            drawAPT.run_ratio_index(selected_city2, peong_df, peong_ch, peongj_df, peongj_ch, ratio_df)
             drawAPT.run_buy_index(selected_city2, org_df, mdf)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
     elif my_choice == 'PIR':

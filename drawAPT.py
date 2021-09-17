@@ -785,7 +785,7 @@ def run_buy_index(selected_dosi, org_df, mdf):
     
 
 
-def run_ratio_index(selected_dosi, middle_df, sadf, sadf_ch, jadf, jadf_ch):
+def run_ratio_index(selected_dosi, sadf, sadf_ch, jadf, jadf_ch, jratio_df):
 
     marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
     # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
@@ -829,11 +829,11 @@ def run_ratio_index(selected_dosi, middle_df, sadf, sadf_ch, jadf, jadf_ch):
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
-    title = "["+selected_dosi+"] 중위 가격 전세가율"
+    title = "["+selected_dosi+"] KB 평균 가격 전세가율"
     if selected_dosi == "제주서귀포":
         selected_dosi ="제주" 
     titles = dict(text= title, x=0.5, y = 0.95) 
-    fig = px.line(middle_df, x=middle_df.index, y=selected_dosi)
+    fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
