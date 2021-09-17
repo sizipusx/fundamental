@@ -485,10 +485,8 @@ if __name__ == "__main__":
     power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
     power_df = power_df.sort_values('rank', ascending=True)
     
-    #감정원 전세가율 마지막 데이터
-    middle_df = ratio_df.xs("중위", axis=1, level=1)
-    middle_df.columns = one_header.columns
-    one_last_df = middle_df.iloc[-1].T.to_frame()
+    #KB 전세가율 마지막 데이터
+    one_last_df = ratio_df.iloc[-1].T.to_frame()
     sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
     # st.dataframe(sub_df)
     sub_df.columns = ['전세가율']
