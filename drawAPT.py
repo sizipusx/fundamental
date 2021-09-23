@@ -62,7 +62,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change, not_sell_df):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '60~85㎡', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60~85㎡')], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Bar(name ='85㎡초과', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '85㎡초과')], marker_color = marker_colors[2]), secondary_y = False)                                             
-    fig.add_trace(go.Bar(name ='60㎡이하', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60㎡이하')], marker_color = marker_colors[3]), secondary_y = False)
+    fig.add_trace(go.Bar(name ='60㎡이하', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60㎡이하')], marker_color = marker_colors[4]), secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', name ='전체', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '소계')], marker_color = marker_colors[0]), secondary_y = True)
     # fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
