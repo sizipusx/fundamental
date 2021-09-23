@@ -27,7 +27,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
-def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
+def run_pop_index(selected_city2, df, df_change, sdf, sdf_change, not_sell_df):
     last_month = pd.to_datetime(str(df.index.values[-1])).strftime('%Y.%m')
 
     titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
@@ -55,6 +55,23 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
             st.markdown(f'인구-세대수 최종업데이트: **{last_month}월**')
             st.write(f"인구수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3 ")
             st.write(f"세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
+
+    #미분양 그래프
+    titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = '국민', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60~85㎡')], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Bar(name ='대형', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '85㎡초과')], marker_color = marker_colors[2]), secondary_y = False)                                             
+    fig.add_trace(go.Bar(name ='소형', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60㎡이하')], marker_color = marker_colors[3]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전체', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '소계')], marker_color = marker_colors[0]), secondary_y = True)
+    # fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(title_text='호', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False)
+    fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True) #ticksuffix="%"
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    # fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
+    st.plotly_chart(fig)
+
 
 def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change, bubble_df2, m_power) :
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
