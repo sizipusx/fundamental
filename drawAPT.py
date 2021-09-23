@@ -31,7 +31,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change, not_sell_df):
     last_month = pd.to_datetime(str(df.index.values[-1])).strftime('%Y.%m')
 
     titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)']
+    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(255,153,204)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
