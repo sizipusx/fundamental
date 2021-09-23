@@ -211,7 +211,28 @@ def load_pop_data():
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
 
-    return df, df_change, sdf, sdf_change
+    ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
+    path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
+    data_type = 'Sheet1' 
+    df1 = pd.read_excel(path, sheet_name=data_type, index_col=0, parse_dates=True)
+
+    #컬럼명 바꿈
+    j1 = df1.columns
+    new_s1 = []
+    for num, gu_data in enumerate(j1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(j1[check])
+
+    #컬럼 설정
+    df1.columns = [new_s1,df1.iloc[0]]
+    df1 = df1.iloc[2:]
+    df1 = df1.sort_index()
+    df1 = df1.astype(int)
+
+    return df, df_change, sdf, sdf_change, df1
 
 @st.cache
 def load_senti_data():
@@ -412,7 +433,7 @@ if __name__ == "__main__":
     st.title("KB 부동산 월간 시계열 분석")
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
-    popdf, popdf_change, saedf, saedf_change = load_pop_data()
+    popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
     b_df, org_df = load_buy_data()
     peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
@@ -530,7 +551,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Price Index chart')
 
         if submit:
-            drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change)
+            drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change, not_sell)
             drawAPT.run_ratio_index(selected_city2, peong_df, peong_ch, peongj_df, peongj_ch, ratio_df)
             drawAPT.run_buy_index(selected_city2, org_df, mdf)
             drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
