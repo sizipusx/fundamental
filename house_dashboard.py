@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@sizipusx 
-LarryPrato
-/
-projectcontroldashboard
-Public
-1
-05
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-projectcontroldashboard/pc_db.py /
-@LarryPrato
-LarryPrato Update pc_db.py
-Latest commit b9f835f on 7 Jul
- History
- 1 contributor
-691 lines (665 sloc)  29.8 KB
-   
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -54,7 +24,7 @@ html_header="""
   border-style: inset;
   border-width: 1.5px;"></h1>
 """
-st.set_page_config(page_title="Project Control Dashboard", page_icon="", layout="wide")
+st.set_page_config(page_title="House Analysis Dashboard", page_icon="", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -719,16 +689,3 @@ html_line="""
 <p style="color:Gainsboro; text-align: right;">By: larryprato@gmail.com</p>
 """
 st.markdown(html_line, unsafe_allow_html=True)
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Loading complete
