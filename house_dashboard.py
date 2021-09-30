@@ -1,9 +1,394 @@
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
 import streamlit as st
 import pandas as pd
 
+import drawAPT
 
+### data 가져오기 영역 ##########################
+def read_source(): 
+    file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
+    kbm_dict = pd.ExcelFile(file_path)
+
+    return kbm_dict
+
+def read_source_excel():
+    file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
+    kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+
+    return kbm_dict
+
+@st.cache
+def load_ratio_data():
+    header_path = 'https://github.com/sizipusx/fundamental/blob/80e5af9925c10a53b855cf6757fa1bba7eeb136d/files/header.xlsx?raw=true'
+    header_excel = pd.ExcelFile(header_path)
+    kb_header = header_excel.parse('KB')
+    ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
+    p_path = r"https://github.com/sizipusx/fundamental/blob/1a800b4035fafde7df18ecd1882a8313051a9b45/files/kb_price.xlsx?raw=True"
+    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+
+    for k in kb_dict.keys():
+        print(k)
+    mdf = kb_dict['sell']
+    jdf = kb_dict['jeon']
+    mdf = mdf.iloc[2:mdf['서울'].count()+1]
+    jdf = jdf.iloc[2:jdf['서울'].count()+1]
+    #index 날짜 변경
+    index_list = list(mdf.index)
+
+    new_index = []
+
+    for num, raw_index in enumerate(index_list):
+        temp = str(raw_index).split('.')
+        if int(temp[0]) > 12 :
+            if len(temp[0]) == 2:
+                new_index.append('19' + temp[0] + '.' + temp[1])
+            else:
+                new_index.append(temp[0] + '.' + temp[1])
+        else:
+            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+    mdf.set_index(pd.to_datetime(new_index), inplace=True)
+    jdf.set_index(pd.to_datetime(new_index), inplace=True)
+    mdf.columns = kb_header.columns
+    jdf.columns = kb_header.columns
+    mdf = round(mdf.replace('-','0').astype(float)*3.3,2)
+    jdf = round(jdf.replace('-','0').astype(float)*3.3,2)
+    mdf_ch = mdf.pct_change()*100
+    mdf_ch = mdf_ch.round(decimals=2)
+    jdf_ch = jdf.pct_change()*100
+    jdf_ch = jdf_ch.round(decimals=2)
+        
+    ######################### 여기부터는 전세가율
+    jratio = round(jdf/mdf*100,1)
+    
+
+    return mdf, mdf_ch, jdf, jdf_ch, jratio
+
+
+@st.cache
+def load_buy_data():
+    #년 증감 계산을 위해 최소 12개월치 데이터 필요
+    path = r'https://github.com/sizipusx/fundamental/blob/20d4e65edfee33ff87588a03d74135b536910d9a/files/apt_buy.xlsx?raw=true'
+    data_type = 'Sheet1' 
+    df = pd.read_excel(path, sheet_name=data_type, header=10)
+    path1 = r'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
+    header = pd.read_excel(path1, sheet_name='buyer')
+    df['지 역'] = header['local'].str.strip()
+    df = df.rename({'지 역':'지역명'}, axis='columns')
+    df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    df = df.set_index("지역명")
+    df = df.T
+    df.columns = [df.columns, df.iloc[0]]
+    df = df.iloc[1:]
+    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    df.index = pd.to_datetime(df.index)
+    df = df.apply(lambda x: x.replace('-','0'))
+    df = df.astype(float)
+    org_df = df.copy()
+    drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종 세종','충남', '충북']
+    drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
+    # big_city = df.iloc[:,drop_list]
+    df.drop(drop_list, axis=1, level=0, inplace=True)
+    df.drop(drop_list2, axis=1, level=0, inplace=True)
+    # drop_list3 = df.columns[df.columns.get_level_values(0).str.endswith('군')]
+    # df.drop(drop_list3, axis=1, inplace=True)
+    # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
+    
+    return df, org_df
+
+@st.cache
+def load_index_data():
+    kbm_dict = read_source()
+    # kbm_dict = pd.ExcelFile(file_path)
+    #헤더 변경
+    path = 'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
+    header_excel = pd.ExcelFile(path)
+    header = header_excel.parse('KB')
+    code_df = header_excel.parse('code', index_col=1)
+    code_df.index = code_df.index.str.strip()
+
+    #주택가격지수
+    mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0, convert_float=True)
+    jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0, convert_float=True)
+    mdf.columns = header.columns
+    jdf.columns = header.columns
+    #index 날짜 변경
+    
+    mdf = mdf.iloc[2:]
+    jdf = jdf.iloc[2:]
+    index_list = list(mdf.index)
+
+    new_index = []
+
+    for num, raw_index in enumerate(index_list):
+        temp = str(raw_index).split('.')
+        if int(temp[0]) > 12 :
+            if len(temp[0]) == 2:
+                new_index.append('19' + temp[0] + '.' + temp[1])
+            else:
+                new_index.append(temp[0] + '.' + temp[1])
+        else:
+            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+
+    mdf.set_index(pd.to_datetime(new_index), inplace=True)
+    jdf.set_index(pd.to_datetime(new_index), inplace=True)
+    mdf = mdf.astype(float).fillna(0).round(decimals=2)
+    jdf = jdf.astype(float).fillna(0).round(decimals=2)
+
+    #geojson file open
+    geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
+    with urlopen(geo_source) as response:
+        geo_data = json.load(response)
+    
+    #geojson file 변경
+    for idx, sigun_dict in enumerate(geo_data['features']):
+        sigun_id = sigun_dict['properties']['SIG_CD']
+        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+        try:
+            sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
+            jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
+        except:
+            sell_change = 0
+            jeon_change =0
+        # continue
+        
+        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+        # print(txt)
+        
+        geo_data['features'][idx]['id'] = sigun_id
+        geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        geo_data['features'][idx]['properties']['tooltip'] = txt
+   
+    return mdf, jdf, code_df, geo_data
+
+@st.cache
+def load_pop_data():
+    popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
+    #인구수 
+    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr')
+    pop['행정구역'] = popheader
+    pop = pop.set_index("행정구역")
+    pop = pop.iloc[:,3:]
+    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    pop.columns = test
+    df = pop.T
+    # df = df.iloc[:-1]
+    df.index = pd.to_datetime(df.index)
+    df_change = df.pct_change()*100
+    df_change = df_change.round(decimals=2)
+    #세대수
+    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/saedae.csv', encoding='euc-kr')
+    sae['행정구역'] = popheader
+    sae = sae.set_index("행정구역")
+    sae = sae.iloc[:,3:]
+    sae.columns = test
+    sdf = sae.T
+    # sdf = sdf.iloc[:-1]
+    sdf.index = pd.to_datetime(sdf.index)
+    sdf_change = sdf.pct_change()*100
+    sdf_change = sdf_change.round(decimals=2)
+
+    ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
+    path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
+    data_type = 'Sheet1' 
+    df1 = pd.read_excel(path, sheet_name=data_type, index_col=0, parse_dates=True)
+
+    #컬럼명 바꿈
+    j1 = df1.columns
+    new_s1 = []
+    for num, gu_data in enumerate(j1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(j1[check])
+
+    #컬럼 설정
+    df1.columns = [new_s1,df1.iloc[0]]
+    df1 = df1.iloc[2:]
+    df1 = df1.sort_index()
+    df1 = df1.astype(int)
+
+    return df, df_change, sdf, sdf_change, df1
+
+@st.cache
+def load_senti_data():
+    kbm_dict = read_source_excel()
+
+    m_sheet = '21.매수우위,22.매매거래,23.전세수급,24.전세거래,25.KB부동산 매매가격 전망지수,26.KB부동산 전세가격 전망지수'
+    m_list = m_sheet.split(',')
+    df_dic = []
+    df_a = []
+    df_b = []
+
+    for k in kbm_dict.keys():
+        js = kbm_dict[k]
+        # print(f"sheet name is {k}")
+
+        if k in m_list:
+            print(f"sheet name is {k}")
+            js = js.set_index("Unnamed: 0")
+            js.index.name="날짜"
+
+            #컬럼명 바꿈
+            j1 = js.columns.map(lambda x: x.split(' ')[0])
+
+            new_s1 = []
+            for num, gu_data in enumerate(j1):
+                check = num
+                if gu_data.startswith('Un'):
+                    new_s1.append(new_s1[check-1])
+                else:
+                    new_s1.append(j1[check])
+
+            #컬럼 설정
+            js.columns = [new_s1,js.iloc[0]]
+
+            #전세수급지수만 filtering
+            if k == '21.매수우위':
+                js_index = js.xs("매수우위지수", axis=1, level=1)
+                js_a = js.xs("매도자 많음", axis=1, level=1)
+                js_b = js.xs("매수자 많음", axis=1, level=1)
+            elif k == '22.매매거래':
+                js_index = js.xs("매매거래지수", axis=1, level=1)
+                js_a = js.xs("활발함", axis=1, level=1)
+                js_b = js.xs("한산함", axis=1, level=1)
+            elif k == '23.전세수급':
+                js_index = js.xs("전세수급지수", axis=1, level=1)
+                js_a = js.xs("수요>공급", axis=1, level=1)
+                js_b = js.xs("수요<공급", axis=1, level=1)
+            elif k == '24.전세거래':
+                js_index = js.xs("전세거래지수", axis=1, level=1)
+                js_a = js.xs("활발함", axis=1, level=1)
+                js_b = js.xs("한산함", axis=1, level=1)
+            elif k == '25.KB부동산 매매가격 전망지수':
+                js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
+                js_a = js.xs("약간상승", axis=1, level=1)
+                js_b = js.xs("약간하락", axis=1, level=1)
+            elif k == '26.KB부동산 전세가격 전망지수':
+                js_index = js.xs("KB부동산\n전세전망지수", axis=1, level=1)
+                js_a = js.xs("약간상승", axis=1, level=1)
+                js_b = js.xs("약간하락", axis=1, level=1)
+            #필요 데이터만
+            js_index = js_index.iloc[2:js_index['서울'].count(), : ]
+            js_a = js_a.iloc[2:js_a['서울'].count(), : ]
+            js_b = js_b.iloc[2:js_b['서울'].count(), : ]
+
+            #날짜 바꿔보자
+            index_list = list(js_index.index)
+            new_index = []
+
+            for num, raw_index in enumerate(index_list):
+                temp = str(raw_index).split('.')
+                if len(temp[0]) == 3:
+                    if int(temp[0].replace("'","")) >84:
+                        new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+                    else:
+                        new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
+                else:
+                    new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+
+            js_index.set_index(pd.to_datetime(new_index), inplace=True)
+            js_a.set_index(pd.to_datetime(new_index), inplace=True)
+            js_b.set_index(pd.to_datetime(new_index), inplace=True)
+
+                
+            #매달 마지막 데이터만 넣기
+            # js_last = js_index.iloc[-1].to_frame().T
+            df_dic.append(js_index)
+            df_a.append(js_a)
+            df_b.append(js_b)
+
+    return df_dic, df_a, df_b
+##########################################
+mdf, jdf, code_df, geo_data = load_index_data()
+    popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
+    b_df, org_df = load_buy_data()
+    peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
+    data_load_state.text("index & pop Data Done! (using st.cache)")
+
+    #마지막 달
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+    pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
+    buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
+    st.write("KB last month: " + kb_last_month+"월")
+    st.write("인구수 last month: " + pop_last_month+"월")
+    st.write("매입자 거주지별 매매현황 last month: " + buy_last_month+"월")
+
+    #월간 증감률
+    mdf_change = mdf.pct_change()*100
+    mdf_change = mdf_change.iloc[1:]
+    
+    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    mdf_change = mdf_change.astype(float).fillna(0)
+    # mdf = mdf.mask(np.isinf(mdf))
+    jdf_change = jdf.pct_change()*100
+    jdf_change = jdf_change.iloc[1:]
+    
+    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf_change = jdf_change.astype(float).fillna(0)
+    # jdf = jdf.mask(np.isinf(jdf))
+    #일주일 간 상승률 순위
+    last_df = mdf_change.iloc[-1].T.to_frame()
+    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+    last_df.columns = ['매매증감', '전세증감']
+    last_df.dropna(inplace=True)
+    last_df = last_df.round(decimals=2)
+    # st.dataframe(last_df.style.highlight_max(axis=0))
+    #인구, 세대수 마지막 데이터
+    last_pop = popdf_change.iloc[-1].T.to_frame()
+    last_pop['세대증감'] = saedf_change.iloc[-1].T.to_frame()
+    last_pop.columns = ['인구증감', '세대증감']
+    last_pop.dropna(inplace=True)
+    last_pop = last_pop.round(decimals=2) 
+
+    #마지막달 dataframe에 지역 코드 넣어 합치기
+    df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+    df.columns = ['매매증감', '전세증감', 'SIG_CD']
+    df['SIG_CD']= df['SIG_CD'].astype(str)
+    # df.reset_index(inplace=True)
+
+    #버블 지수 만들어 보자
+    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df = bubble_df*100
+    
+    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+    bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
+    # st.dataframe(mdf)
+
+    #전세 파워 만들기
+    cum_ch = (mdf_change/100 +1).cumprod()
+    jcum_ch = (jdf_change/100 +1).cumprod()
+    m_power = (jcum_ch - cum_ch)*100
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df2.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '버블지수']
+    # power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+    power_df['score'] = power_df['jrank'] + power_df['brank']
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+    power_df = power_df.sort_values('rank', ascending=True)
+    
+    #KB 전세가율 마지막 데이터
+    one_last_df = ratio_df.iloc[-1].T.to_frame()
+    sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
+    # st.dataframe(sub_df)
+    sub_df.columns = ['전세가율']
+    sub_df = sub_df.sort_values('전세가율', ascending=False )
+
+
+
+#############html 영역####################
 
 html_header="""
 <head>
@@ -81,24 +466,22 @@ html_card_footer3="""
   </div>
 </div>
 """
+### first select box ----
+senti_dfs, df_as, df_bs = load_senti_data()
+city_list = senti_dfs[0].columns.to_list()
+
+selected_disc = st.selectbox(' Select 광역시도', city_list)
+html_br="""
+<br>
+"""
+st.markdown(html_br, unsafe_allow_html=True)
 ### Block 1#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
+    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,30,1,30,1])
     with col1:
         st.write("")
     with col2:
-        st.markdown(html_card_header1, unsafe_allow_html=True)
-        fig_c1 = go.Figure(go.Indicator(
-            mode="number+delta",
-            value=35,
-            number={'suffix': "%", "font": {"size": 40, 'color': "#008080", 'family': "Arial"}},
-            delta={'position': "bottom", 'reference': 46, 'relative': False},
-            domain={'x': [0, 1], 'y': [0, 1]}))
-        fig_c1.update_layout(autosize=False,
-                             width=350, height=90, margin=dict(l=20, r=20, b=20, t=30),
-                             paper_bgcolor="#fbfff0", font={'size': 20})
-        st.plotly_chart(fig_c1)
-        st.markdown(html_card_footer1, unsafe_allow_html=True)
+        drawAPT.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
     with col3:
         st.write("")
     with col4:
@@ -119,25 +502,6 @@ with st.beta_container():
         st.plotly_chart(fig_c2)
         st.markdown(html_card_footer2, unsafe_allow_html=True)
     with col5:
-        st.write("")
-    with col6:
-        st.markdown(html_card_header3, unsafe_allow_html=True)
-        fig_c3 = go.Figure(go.Indicator(
-            mode="number+delta",
-            value=1.085,
-            number={"font": {"size": 40, 'color': "#008080", 'family': "Arial"}},
-            delta={'position': "bottom", 'reference': 1, 'relative': False},
-            domain={'x': [0, 1], 'y': [0, 1]}))
-        fig_c3.update_layout(autosize=False,
-                             width=350, height=90, margin=dict(l=20, r=20, b=20, t=30),
-                             paper_bgcolor="#fbfff0", font={'size': 20})
-        fig_c3.update_traces(delta_decreasing_color="#3D9970",
-                             delta_increasing_color="#FF4136",
-                             delta_valueformat='.3f',
-                             selector=dict(type='indicator'))
-        st.plotly_chart(fig_c3)
-        st.markdown(html_card_footer3, unsafe_allow_html=True)
-    with col7:
         st.write("")
 html_br="""
 <br>
