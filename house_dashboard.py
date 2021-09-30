@@ -11,10 +11,10 @@ html_header="""
 <meta charset="utf-8">
 <meta name="keywords" content="project control, dashboard, management, EVA">
 <meta name="description" content="project control dashboard">
-<meta name="author" content="Larry Prato">
+<meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h1 style="font-size:300%; color:#008080; font-family:Georgia"> PROJECT CONTROL <br>
+<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
  <h2 style="color:#008080; font-family:Georgia"> DASHBOARD</h3> <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
@@ -31,7 +31,7 @@ st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
-data=pd.read_excel('curva.xlsx')
+# data=pd.read_excel('curva.xlsx')
 
 html_card_header1="""
 <div class="card">
