@@ -21,6 +21,28 @@ footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 # data=pd.read_excel('curva.xlsx')
 
+#############html 영역####################
+
+html_header="""
+<head>
+<title>PControlDB</title>
+<meta charset="utf-8">
+<meta name="keywords" content="project control, dashboard, management, EVA">
+<meta name="description" content="project control dashboard">
+<meta name="author" content="indiesoul">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
+ <h2 style="color:#008080; font-family:Georgia"> DASHBOARD</h3> <br>
+ <hr style= "  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1.5px;"></h1>
+"""
+
 
 ### data 가져오기 영역 ##########################
 def read_source(): 
@@ -400,29 +422,7 @@ sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
 sub_df.columns = ['전세가율']
 sub_df = sub_df.sort_values('전세가율', ascending=False )
 
-
-
-#############html 영역####################
-
-html_header="""
-<head>
-<title>PControlDB</title>
-<meta charset="utf-8">
-<meta name="keywords" content="project control, dashboard, management, EVA">
-<meta name="description" content="project control dashboard">
-<meta name="author" content="indiesoul">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
- <h2 style="color:#008080; font-family:Georgia"> DASHBOARD</h3> <br>
- <hr style= "  display: block;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  margin-left: auto;
-  margin-right: auto;
-  border-style: inset;
-  border-width: 1.5px;"></h1>
-"""
+###################################
 
 html_card_header1="""
 <div class="card">
