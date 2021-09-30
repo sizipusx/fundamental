@@ -12,6 +12,16 @@ from urllib.request import urlopen
 import json
 from pandas.io.json import json_normalize
 
+st.set_page_config(page_title="House Analysis Dashboard", page_icon="", layout="wide")
+st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
+st.markdown(html_header, unsafe_allow_html=True)
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
+# data=pd.read_excel('curva.xlsx')
+
+
 ### data 가져오기 영역 ##########################
 def read_source(): 
     file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
@@ -413,14 +423,6 @@ html_header="""
   border-style: inset;
   border-width: 1.5px;"></h1>
 """
-st.set_page_config(page_title="House Analysis Dashboard", page_icon="", layout="wide")
-st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
-st.markdown(html_header, unsafe_allow_html=True)
-st.markdown(""" <style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-</style> """, unsafe_allow_html=True)
-# data=pd.read_excel('curva.xlsx')
 
 html_card_header1="""
 <div class="card">
