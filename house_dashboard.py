@@ -305,86 +305,85 @@ def load_senti_data():
     return df_dic, df_a, df_b
 ##########################################
 mdf, jdf, code_df, geo_data = load_index_data()
-    popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
-    b_df, org_df = load_buy_data()
-    peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
-    data_load_state.text("index & pop Data Done! (using st.cache)")
+popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
+b_df, org_df = load_buy_data()
+peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
 
-    #마지막 달
-    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
-    pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
-    buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
-    st.write("KB last month: " + kb_last_month+"월")
-    st.write("인구수 last month: " + pop_last_month+"월")
-    st.write("매입자 거주지별 매매현황 last month: " + buy_last_month+"월")
+#마지막 달
+kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
+buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
+st.write("KB last month: " + kb_last_month+"월")
+st.write("인구수 last month: " + pop_last_month+"월")
+st.write("매입자 거주지별 매매현황 last month: " + buy_last_month+"월")
 
-    #월간 증감률
-    mdf_change = mdf.pct_change()*100
-    mdf_change = mdf_change.iloc[1:]
-    
-    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    mdf_change = mdf_change.astype(float).fillna(0)
-    # mdf = mdf.mask(np.isinf(mdf))
-    jdf_change = jdf.pct_change()*100
-    jdf_change = jdf_change.iloc[1:]
-    
-    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change = jdf_change.astype(float).fillna(0)
-    # jdf = jdf.mask(np.isinf(jdf))
-    #일주일 간 상승률 순위
-    last_df = mdf_change.iloc[-1].T.to_frame()
-    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
-    last_df.columns = ['매매증감', '전세증감']
-    last_df.dropna(inplace=True)
-    last_df = last_df.round(decimals=2)
-    # st.dataframe(last_df.style.highlight_max(axis=0))
-    #인구, 세대수 마지막 데이터
-    last_pop = popdf_change.iloc[-1].T.to_frame()
-    last_pop['세대증감'] = saedf_change.iloc[-1].T.to_frame()
-    last_pop.columns = ['인구증감', '세대증감']
-    last_pop.dropna(inplace=True)
-    last_pop = last_pop.round(decimals=2) 
+#월간 증감률
+mdf_change = mdf.pct_change()*100
+mdf_change = mdf_change.iloc[1:]
 
-    #마지막달 dataframe에 지역 코드 넣어 합치기
-    df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    df.columns = ['매매증감', '전세증감', 'SIG_CD']
-    df['SIG_CD']= df['SIG_CD'].astype(str)
-    # df.reset_index(inplace=True)
+mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+mdf_change = mdf_change.astype(float).fillna(0)
+# mdf = mdf.mask(np.isinf(mdf))
+jdf_change = jdf.pct_change()*100
+jdf_change = jdf_change.iloc[1:]
 
-    #버블 지수 만들어 보자
-    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
-    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
-    bubble_df = bubble_df*100
-    
-    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
-    bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
-    bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
-    # st.dataframe(mdf)
+jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+jdf_change = jdf_change.astype(float).fillna(0)
+# jdf = jdf.mask(np.isinf(jdf))
+#일주일 간 상승률 순위
+last_df = mdf_change.iloc[-1].T.to_frame()
+last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+last_df.columns = ['매매증감', '전세증감']
+last_df.dropna(inplace=True)
+last_df = last_df.round(decimals=2)
+# st.dataframe(last_df.style.highlight_max(axis=0))
+#인구, 세대수 마지막 데이터
+last_pop = popdf_change.iloc[-1].T.to_frame()
+last_pop['세대증감'] = saedf_change.iloc[-1].T.to_frame()
+last_pop.columns = ['인구증감', '세대증감']
+last_pop.dropna(inplace=True)
+last_pop = last_pop.round(decimals=2) 
 
-    #전세 파워 만들기
-    cum_ch = (mdf_change/100 +1).cumprod()
-    jcum_ch = (jdf_change/100 +1).cumprod()
-    m_power = (jcum_ch - cum_ch)*100
-    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+#마지막달 dataframe에 지역 코드 넣어 합치기
+df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+df.columns = ['매매증감', '전세증감', 'SIG_CD']
+df['SIG_CD']= df['SIG_CD'].astype(str)
+# df.reset_index(inplace=True)
 
-    #마지막 데이터만 
-    power_df = m_power.iloc[-1].T.to_frame()
-    power_df['버블지수'] = bubble_df2.iloc[-1].T.to_frame()
-    power_df.columns = ['전세파워', '버블지수']
-    # power_df.dropna(inplace=True)
-    power_df = power_df.astype(float).fillna(0).round(decimals=2)
-    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
-    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
-    power_df['score'] = power_df['jrank'] + power_df['brank']
-    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
-    power_df = power_df.sort_values('rank', ascending=True)
-    
-    #KB 전세가율 마지막 데이터
-    one_last_df = ratio_df.iloc[-1].T.to_frame()
-    sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
-    # st.dataframe(sub_df)
-    sub_df.columns = ['전세가율']
-    sub_df = sub_df.sort_values('전세가율', ascending=False )
+#버블 지수 만들어 보자
+#아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+bubble_df = bubble_df*100
+
+#곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
+# st.dataframe(mdf)
+
+#전세 파워 만들기
+cum_ch = (mdf_change/100 +1).cumprod()
+jcum_ch = (jdf_change/100 +1).cumprod()
+m_power = (jcum_ch - cum_ch)*100
+m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+#마지막 데이터만 
+power_df = m_power.iloc[-1].T.to_frame()
+power_df['버블지수'] = bubble_df2.iloc[-1].T.to_frame()
+power_df.columns = ['전세파워', '버블지수']
+# power_df.dropna(inplace=True)
+power_df = power_df.astype(float).fillna(0).round(decimals=2)
+power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+power_df['score'] = power_df['jrank'] + power_df['brank']
+power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+power_df = power_df.sort_values('rank', ascending=True)
+
+#KB 전세가율 마지막 데이터
+one_last_df = ratio_df.iloc[-1].T.to_frame()
+sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
+# st.dataframe(sub_df)
+sub_df.columns = ['전세가율']
+sub_df = sub_df.sort_values('전세가율', ascending=False )
 
 
 
