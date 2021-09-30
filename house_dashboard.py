@@ -558,7 +558,9 @@ with st.beta_container():
     with col5:
         st.write("")
     with col6:
+        st.markdown(html_card_header5, unsafe_allow_html=True)
         
+        st.markdown(html_card_footer5, unsafe_allow_html=True)
     with col7:
         st.write("")
 
