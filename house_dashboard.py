@@ -475,7 +475,7 @@ html_card_footer3="""
 senti_dfs, df_as, df_bs = load_senti_data()
 city_list = senti_dfs[0].columns.to_list()
 
-selected_disc = st.selectbox(' Select 광역시도', city_list)
+selected_dosi = st.selectbox(' Select 광역시도', city_list)
 html_br="""
 <br>
 """
