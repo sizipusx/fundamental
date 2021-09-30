@@ -6,6 +6,10 @@ import streamlit as st
 import pandas as pd
 
 import drawAPT
+import requests
+from urllib.request import urlopen
+import json
+from pandas.io.json import json_normalize
 
 ### data 가져오기 영역 ##########################
 def read_source(): 
