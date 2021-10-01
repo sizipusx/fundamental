@@ -499,8 +499,37 @@ city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광
                     '김해','통영', '제주서귀포','기타지방']
 column_list = mdf.columns.to_list()
 city_series = pd.Series(column_list)
+small_list = []
+if selected_dosi == '전국':
+  small_list = '전국'
+elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
+  or selected_dosi == '대전' or selected_dosi == '울산' :
+  small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+elif selected_dosi == '경기':
+  small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
+    '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+elif selected_dosi == '강원':
+  small_list = ['강원', '춘천','강릉', '원주']
+elif selected_dosi == '충북':
+  samll_list = ['충북','청주', '충주','제천']
+elif selected_dosi == '충남':
+  samll_list = ['충남','천안', '공주','아산', '논산', '계룡','당진','서산']
+elif selected_dosi == '전북':
+  samll_list = ['전북', '전주', '익산', '군산']
+elif selected_dosi == '전남':
+  samll_list = ['전남', '목포','순천','여수','광양']
+elif selected_dosi == '경북':
+  samll_list = ['경북','포항','구미', '경산', '안동','김천']
+elif selected_dosi == '충북':
+  samll_list = ['경남','창원', '양산','거제','진주', '김해','통영']
+elif selected_dosi == '제주서귀포':
+  samll_list = ['제주서귀포']
 
-selected_disc = st.selectbox(' Select city', city_list)
+
+##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
+
+
+selected_disc = st.selectbox(' Select city', samll_list)
 html_br="""
 <br>
 """
