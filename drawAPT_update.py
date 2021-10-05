@@ -377,6 +377,8 @@ def run_sell_index(selected_dosi, sadf, sadf_ch):
 
 
 def run_jeon_index(selected_dosi, jadf, jadf_ch):
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     x_data = jadf_ch.index
     title = "[<b>"+selected_dosi+"</b>] KB 평균 전세 평단가 변화"
     titles = dict(text= title, x=0.5, y = 0.85) 
@@ -397,6 +399,8 @@ def run_jeon_index(selected_dosi, jadf, jadf_ch):
     st.plotly_chart(fig)
 
 def run_jeon_ratio(selected_dosi, jratio_df):
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     title = "["+selected_dosi+"] KB 평균 가격 전세가율"
     if selected_dosi == "제주서귀포":
         selected_dosi ="제주" 
