@@ -556,7 +556,7 @@ with st.beta_container():
 html_br="""
 <br>
 """
-
+st.markdown(html_br, unsafe_allow_html=True)
 ### Block 6#########################################################################################
 with st.beta_container():
     col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
@@ -578,6 +578,26 @@ with st.beta_container():
 html_br="""
 <br>
 """
+st.markdown(html_br, unsafe_allow_html=True)
+#################block 7###########################################################################
+with st.beta_container():
+    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
+    with col1:
+        st.write("")
+    with col2:
+        drawAPT_update.run_buy_index(selected_city, org_df)
+    with col3:
+        st.write("")
+    with col4:
+        drawAPT_update.run_buy_ratio(selected_city, org_df)
+    with col5:
+        st.write("")
+    with col6:
+        drawAPT_update.run_trade_index(selected_city, org_df, mdf)
+    with col7:
+        st.write("")
+
+
 
 html_line="""
 <br>
