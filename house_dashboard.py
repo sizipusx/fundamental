@@ -434,7 +434,7 @@ html_br="""
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 1#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
+    col1, col2, col3, col4, col5 = st.beta_columns([1,15,1,15,1,15,1])
     with col1:
         st.write("")
     with col2:
@@ -445,6 +445,10 @@ with st.beta_container():
         drawAPT_update.draw_ds_change(selected_dosi, senti_dfs, mdf_change)
     with col5:
         st.write("")
+    with col6:
+        drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
+    with col7:
+        st.write("")
 html_br="""
 <br>
 """
@@ -453,7 +457,7 @@ st.markdown(html_br, unsafe_allow_html=True)
 
 ### Block 2#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
+    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
     with col1:
         st.write("")
     with col2:
@@ -463,6 +467,10 @@ with st.beta_container():
     with col4:
         drawAPT_update.draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs)
     with col5:
+        st.write("")
+    with col6:
+        drawAPT_update.draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs)
+    with col7:
         st.write("")
 
 html_br="""
