@@ -563,7 +563,7 @@ with st.beta_container():
     with col3:
         st.write("")
     with col4:
-        drawAPT_update.run_jeon_index(selected_city, peongj_df, peongj_ch, ratio_df)
+        drawAPT_update.run_jeon_index(selected_city, peongj_df, peongj_ch)
     with col5:
         st.write("")
     with col6:
