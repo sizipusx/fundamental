@@ -533,17 +533,13 @@ html_br="""
 
 ### Block 5#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
+    col1, col2, col3 = st.beta_columns([30,2,30])
     with col1:
-        st.write("")
-    with col2:
         drawAPT_update.run_pop_index(selected_city, popdf, popdf_change, saedf, saedf_change)
+    with col2:
+        st.write("")
     with col3:
-        st.write("")
-    with col4:
         drawAPT_update.run_not_sell(selected_city,not_sell)
-    with col5:
-        st.write("")
 
 html_br="""
 <br>
@@ -551,9 +547,7 @@ html_br="""
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 6#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
-    with col1:
-        st.write("")
+    col2, col3, col4, col5, col6 = st.beta_columns([20,1,20,1,20])
     with col2:
         drawAPT_update.run_sell_index(selected_city, peong_df, peong_ch)
     with col3:
@@ -564,8 +558,6 @@ with st.beta_container():
         st.write("")
     with col6:
         drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
-    with col7:
-        st.write("")
 
 html_br="""
 <br>
@@ -573,9 +565,7 @@ html_br="""
 st.markdown(html_br, unsafe_allow_html=True)
 #################block 7###########################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
-    with col1:
-        st.write("")
+    col2, col3, col4, col5, col6 = st.beta_columns([20,1,20,1,20])
     with col2:
         drawAPT_update.run_buy_index(selected_city, org_df)
     with col3:
@@ -586,22 +576,19 @@ with st.beta_container():
         st.write("")
     with col6:
         drawAPT_update.run_trade_index(selected_city, org_df, mdf)
-    with col7:
-        st.write("")
-
+html_br="""
+<br>
+"""
+st.markdown(html_br, unsafe_allow_html=True)
 ### Block 8#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
-    with col1:
-        st.write("")
+    col2, col3, col4 = st.beta_columns([30,2,30])
     with col2:
         drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change)
     with col3:
         st.write("")
     with col4:
         drawAPT_update.run_bubble(selected_city, bubble_df2, m_power)
-    with col5:
-        st.write("")
 
 html_line="""
 <br>
