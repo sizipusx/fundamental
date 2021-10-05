@@ -18,7 +18,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
@@ -309,7 +309,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
 
     titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(255,153,204)']
-    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -348,4 +348,66 @@ def run_not_sell(selected_city2, not_sell_df):
     fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     # fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
+    st.plotly_chart(fig)
+
+#평단가 변화
+def run_sell_index(selected_dosi, sadf, sadf_ch):
+
+    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+
+    x_data = sadf_ch.index
+    title = "[<b>"+selected_dosi+"</b>] KB 평균 매매 평단가 변화"
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =sadf_ch[selected_dosi], 
+                        text = sadf_ch[selected_dosi], textposition = 'outside', 
+                        marker_color= marker_colors[0]), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "평단가", x =  sadf.index, y=sadf[selected_dosi],  
+                                    text= sadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=sadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(sadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="평단가", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="만원", secondary_y = False)
+    fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(hovermode="x unified")
+    st.plotly_chart(fig)
+
+
+def run_jeon_index(selected_dosi, jadf, jadf_ch):
+    x_data = jadf_ch.index
+    title = "[<b>"+selected_dosi+"</b>] KB 평균 전세 평단가 변화"
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =jadf_ch[selected_dosi], 
+                        text = jadf_ch[selected_dosi], textposition = 'outside', 
+                        marker_color= marker_colors[0]), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "평단가", x =  jadf.index, y=jadf[selected_dosi],  
+                                    text= jadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=jadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(jadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="평단가", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="만원", secondary_y = False)
+    fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(hovermode="x unified")
+    st.plotly_chart(fig)
+
+def run_jeon_ratio(selected_dosi, jratio_df):
+    title = "["+selected_dosi+"] KB 평균 가격 전세가율"
+    if selected_dosi == "제주서귀포":
+        selected_dosi ="제주" 
+    titles = dict(text= title, x=0.5, y = 0.95) 
+    fig = make_subplots(specs=[[{'secondary_y': False}]]) 
+    # fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "전세가율", x =  jratio_df.index, y=jratio_df[selected_dosi],  
+                                    text= jratio_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    secondary_y = False)
+    fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
+    fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
+    fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)

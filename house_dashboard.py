@@ -542,96 +542,38 @@ with st.beta_container():
         st.write("")
     with col2:
         drawAPT_update.run_pop_index(selected_city, popdf, popdf_change, saedf, saedf_change)
+    with col3:
         st.write("")
     with col4:
         drawAPT_update.run_not_sell(selected_city,not_sell)
     with col5:
         st.write("")
+
+html_br="""
+<br>
+"""
+
+### Block 6#########################################################################################
+with st.beta_container():
+    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,15,1,15,1,15,1])
+    with col1:
+        st.write("")
+    with col2:
+        drawAPT_update.run_sell_index(selected_city, peong_df, peong_ch)
+    with col3:
+        st.write("")
+    with col4:
+        drawAPT_update.run_jeon_index(selected_city, peongj_df, peongj_ch, ratio_df)
+    with col5:
+        st.write("")
     with col6:
-        st.markdown(html_card_header5, unsafe_allow_html=True)
-        
-        st.markdown(html_card_footer5, unsafe_allow_html=True)
+        drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
     with col7:
         st.write("")
 
 html_br="""
 <br>
 """
-st.markdown(html_br, unsafe_allow_html=True)
-
-html_card_header6="""
-<div class="card">
-  <div class="card-body" style="border-radius: 10px 10px 0px 0px; background: #eef9ea; padding-top: 10px; width: 250px;
-   height: 50px;">
-    <h5 class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 5px 0;">Cost Variance For Selected Discipline</h5>
-  </div>
-</div>
-"""
-html_card_footer6="""
-<div class="card">
-  <div class="card-body" style="border-radius: 0px 0px 10px 10px; background: #eef9ea; padding-top: 1rem;; width: 250px;
-   height: 50px;">
-    <p class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 0px 0;">Montly Value </p>
-  </div>
-</div>
-"""
-html_card_header7="""
-<div class="card">
-  <div class="card-body" style="border-radius: 10px 10px 0px 0px; background: #eef9ea; padding-top: 5px; width: 250px;
-   height: 50px;">
-    <h5 class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 8px 0;">Schedule Variance For Selected Discipline</h5>
-  </div>
-</div>
-"""
-html_card_footer7="""
-<div class="card">
-  <div class="card-body" style="border-radius: 0px 0px 10px 10px; background: #eef9ea; padding-top: 1rem;; width: 250px;
-   height: 50px;">
-    <p class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 0px 0;">Montly Value</p>
-  </div>
-</div>
-"""
-html_card_header8="""
-<div class="card">
-  <div class="card-body" style="border-radius: 10px 10px 0px 0px; background: #eef9ea; padding-top: 5px; width: 550px;
-   height: 50px;">
-    <h5 class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 10px 0;">Main Issues By Discipline</h5>
-  </div>
-</div>
-"""
-
-html_list="""
-<ul style="color:#008080; font-family:Georgia; font-size: 15px">
-  <li>Nulla volutpat aliquam velit</li>
-  <li>Maecenas sed diam eget risus varius blandit</li>
-  <li>Etiam porta sem malesuada magna mollis euismod</li>
-  <li>Fusce dapibus, tellus ac cursus commodo</li>
-  <li>Maecenas sed diam eget risus varius blandit</li>
-</ul> 
-"""
-
-### Block 6#########################################################################################
-with st.beta_container():
-    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,10,1,10,1,20,1])
-    with col1:
-        st.write("")
-    with col2:
-        st.markdown(html_card_header6, unsafe_allow_html=True)
-        
-        st.markdown(html_card_footer6, unsafe_allow_html=True)
-    with col3:
-        st.write("")
-    with col4:
-        st.markdown(html_card_header7, unsafe_allow_html=True)
-        
-        st.markdown(html_card_footer7, unsafe_allow_html=True)
-    with col5:
-        st.write("")
-    with col6:
-        st.markdown(html_card_header8, unsafe_allow_html=True)
-        st.markdown(html_list, unsafe_allow_html=True)
-    with col7:
-        st.write("")
 
 html_line="""
 <br>
