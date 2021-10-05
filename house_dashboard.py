@@ -24,7 +24,7 @@ html_header="""
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
- <h2 style="color:#008080; font-family:Georgia"> DASHBOARD</h3> <br>
+ <h2 style="color:#008080; font-family:Georgia"> 지역분석 </h3> <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -529,61 +529,22 @@ elif selected_dosi == '제주서귀포':
 ##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
 
 
-selected_disc = st.selectbox(' Select city', small_list)
+selected_city = st.selectbox(' Select city', small_list)
 html_br="""
 <br>
-"""
-st.markdown(html_br, unsafe_allow_html=True)
-
-html_card_header4="""
-<div class="card">
-  <div class="card-body" style="border-radius: 10px 10px 0px 0px; background: #eef9ea; padding-top: 10px; width: 250px;
-   height: 50px;">
-    <h5 class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 5px 0;">Progress For Selected Discipline</h5>
-  </div>
-</div>
-"""
-html_card_footer4="""
-<div class="card">
-  <div class="card-body" style="border-radius: 0px 0px 10px 10px; background: #eef9ea; padding-top: 1rem;; width: 250px;
-   height: 50px;">
-    <p class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 0px 0;">Montly Value (%)</p>
-  </div>
-</div>
-"""
-html_card_header5="""
-<div class="card">
-  <div class="card-body" style="border-radius: 10px 10px 0px 0px; background: #eef9ea; padding-top: 10px; width: 250px;
-   height: 50px;">
-    <h5 class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 5px 0;">Spend Hours For Selected Discipline</h5>
-  </div>
-</div>
-"""
-html_card_footer5="""
-<div class="card">
-  <div class="card-body" style="border-radius: 0px 0px 10px 10px; background: #eef9ea; padding-top: 1rem;; width: 250px;
-   height: 50px;">
-    <p class="card-title" style="background-color:#eef9ea; color:#008080; font-family:Georgia; text-align: center; padding: 0px 0;">Montly Relative Change (%)</p>
-  </div>
-</div>
 """
 
 
 ### Block 5#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5, col6, col7 = st.beta_columns([1,10,1,10,1,20,1])
+    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
     with col1:
         st.write("")
     with col2:
-        st.markdown(html_card_header4, unsafe_allow_html=True)
-        
-        st.markdown(html_card_footer4, unsafe_allow_html=True)
-    with col3:
+        drawAPT_update.run_pop_index(selected_city, popdf, popdf_change, saedf, saedf_change)
         st.write("")
     with col4:
-        st.markdown(html_card_header5, unsafe_allow_html=True)
-        
-        st.markdown(html_card_footer5, unsafe_allow_html=True)
+        drawAPT_update.run_not_sell(selected_city,not_sell)
     with col5:
         st.write("")
     with col6:
