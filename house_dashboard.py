@@ -597,7 +597,19 @@ with st.beta_container():
     with col7:
         st.write("")
 
-
+### Block 8#########################################################################################
+with st.beta_container():
+    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
+    with col1:
+        st.write("")
+    with col2:
+        drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change)
+    with col3:
+        st.write("")
+    with col4:
+        drawAPT_update.run_bubble(selected_city, bubble_df2, m_power)
+    with col5:
+        st.write("")
 
 html_line="""
 <br>

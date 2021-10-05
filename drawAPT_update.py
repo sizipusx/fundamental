@@ -96,7 +96,6 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     st.plotly_chart(fig)
 
 def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
-    #매수우위와 매매증감
     #매수우위지수
     js_index = senti_dfs[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     x_data = mdf_change.index
@@ -466,3 +465,90 @@ def run_trade_index(selected_dosi, org_df, mdf):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
+
+def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+   
+    titles = dict(text= '('+selected_city2 +') 월간 매매-전세 지수', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    
+    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+
+    
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
+    st.plotly_chart(fig)
+
+    with st.beta_expander("See explanation"):
+            st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
+            st.write("Source : https://onland.kbstar.com/quics?page=C060737 ")
+
+
+def run_bubble(selected_city2, bubble_df2, m_power):
+    #bubble index chart
+    titles = dict(text= '('+selected_city2 +') 월간 버블 지수', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Scatter(mode='lines', name = '버블지수', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[3]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세파워', x =  m_power.index, y= m_power[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='blue',  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    st.plotly_chart(fig)
+    
+    with st.beta_expander("See explanation"):
+            #st.markdown('아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)')
+            st.write("곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)")
+
