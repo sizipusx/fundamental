@@ -131,8 +131,6 @@ def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     # fig.add_shape(type="line", x0=js_sell.index[0], y0=100.0, x1=js_sell.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="활발함>100", annotation_position="bottom right", secondary_y = True)
     fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
@@ -168,8 +166,6 @@ def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
     # fig.add_trace(go.Scatter(x=[js_j.index[-2]], y=[99.0], text=["공급부족>100"], mode="text"))
     # fig.add_shape(type="line", x0=js_j.index[0], y0=100.0, x1=js_j.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="공급부족>100", annotation_position="bottom right", secondary_y = True)
-    fig.update_layout(hovermode="x unified")
-    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
@@ -190,6 +186,7 @@ def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
     fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs):
@@ -205,10 +202,10 @@ def draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs):
     # fig.add_trace(go.Scatter(x=[js_js.index[-2]], y=[99.0], text=["활발함>100"], mode="text"))
     # fig.add_shape(type="line", x0=js_js.index[0], y0=100.0, x1=js_js.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="활발함>100", annotation_position="bottom right", secondary_y = True)
-    fig.update_layout(hovermode="x unified")
-    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
+    #fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(hovermode="x unified")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
@@ -242,8 +239,6 @@ def draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs):
     #fig.add_trace(go.Scatter(x=[js_for.index[-2]], y=[99.0], text=["상승비중높음>100"], mode="text"))
     #fig.add_shape(type="line", x0=js_for.index[0], y0=100.0, x1=js_for.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="상승비중높음>100", annotation_position="bottom right", secondary_y = True)
-    fig.update_layout(hovermode="x unified")
-    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
@@ -264,6 +259,7 @@ def draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs):
     fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
@@ -279,9 +275,6 @@ def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
     #fig.add_trace(go.Scatter(x=[js_for_j.index[-2]], y=[99.0], text=["상승비중높음>100"], mode="text"))
     #fig.add_shape(type="line", x0=js_for_j.index[0], y0=100.0, x1=js_for_j.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="상승비중높음>100", annotation_position="bottom right", secondary_y = True)
-    fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
@@ -302,6 +295,7 @@ def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
     fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 #인구수/ 미분양 그래프
