@@ -97,7 +97,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
 def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
     #매수우위지수와 매매증감
     js_index = senti_dfs[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    mdf_change = mdf_change.round(decimal=2)
+    mdf_change = mdf_change.astype(float).round(decimal=2)
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
