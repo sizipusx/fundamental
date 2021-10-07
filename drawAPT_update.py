@@ -330,6 +330,8 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     #미분양 그래프
 def run_not_sell(selected_city2, not_sell_df):
     titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
+    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(98, 255, 0)', 'rgb(255,153,204)']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '60~85㎡', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60~85㎡')], marker_color = marker_colors[1]), secondary_y = True)
