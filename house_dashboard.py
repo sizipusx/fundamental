@@ -44,14 +44,16 @@ footer {visibility: hidden;}
 # data=pd.read_excel('curva.xlsx')
 
 ### data 가져오기 영역 ##########################
+file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
+
 def read_source(): 
-    file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
+    # file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.ExcelFile(file_path)
 
     return kbm_dict
 
 def read_source_excel():
-    file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
+    # file_path = 'https://github.com/sizipusx/fundamental/blob/f204259c131f693dd0cb6359d73f459ceceba5c7/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     return kbm_dict
@@ -62,7 +64,7 @@ def load_ratio_data():
     header_excel = pd.ExcelFile(header_path)
     kb_header = header_excel.parse('KB')
     ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
-    p_path = r"https://github.com/sizipusx/fundamental/blob/1a800b4035fafde7df18ecd1882a8313051a9b45/files/kb_price.xlsx?raw=True"
+    p_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
     kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
 
     for k in kb_dict.keys():
