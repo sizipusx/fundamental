@@ -358,10 +358,10 @@ def run_sell_index(selected_dosi, sadf, sadf_ch):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =sadf_ch[selected_dosi], 
                         text = sadf_ch[selected_dosi], textposition = 'outside', 
-                        marker_color= marker_colors[0]), secondary_y = True) 
+                        marker_color= marker_colors[2]), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', 
                                     name = "평단가", x =  sadf.index, y=sadf[selected_dosi],  
-                                    text= sadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    text= sadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
                                     secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=sadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(sadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
@@ -381,10 +381,10 @@ def run_jeon_index(selected_dosi, jadf, jadf_ch):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =jadf_ch[selected_dosi], 
                         text = jadf_ch[selected_dosi], textposition = 'outside', 
-                        marker_color= marker_colors[0]), secondary_y = True) 
+                        marker_color= marker_colors[2]), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', 
                                     name = "평단가", x =  jadf.index, y=jadf[selected_dosi],  
-                                    text= jadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    text= jadf[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
                                     secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=jadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(jadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
