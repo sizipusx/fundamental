@@ -450,10 +450,10 @@ def run_trade_index(selected_dosi, org_df, mdf):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매거래량", x = x_data, y =selected_df['합계'], 
                         text = selected_df['합계'], textposition = 'outside', 
-                        marker_color= marker_colors[0]), secondary_y = False) 
+                        marker_color= marker_colors[2]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines', 
                                     name = "매매지수", x =  mdf.index, y=mdf[selected_dosi],  
-                                    text= mdf[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+                                    text= mdf[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=selected_df['합계'].mean(axis=0))
