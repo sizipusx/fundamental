@@ -471,17 +471,13 @@ st.markdown(html_br, unsafe_allow_html=True)
 
 ### Block 3#########################################################################################
 with st.beta_container():
-    col1, col2, col3, col4, col5 = st.beta_columns([1,30,1,30,1])
+    col1, col2, col3 = st.beta_columns([30,1,30])
     with col1:
-        st.write("")
-    with col2:
         drawAPT_update.draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs)
+    with col2:
+        st.write("")
     with col3:
-        st.write("")
-    with col4:
         drawAPT_update.draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs)
-    with col5:
-        st.write("")
 
 html_br="""
 <br>
