@@ -518,7 +518,8 @@ elif selected_dosi == '충북':
   small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
 elif selected_dosi == '제주서귀포':
   small_list = ['제주서귀포']
-
+elif selected_dosi == '세종':
+  small_list = ['세종']
 
 ##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
 
