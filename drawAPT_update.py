@@ -325,9 +325,9 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
 
     with st.beta_expander("See explanation"):
             st.markdown(f'인구-세대수 최종업데이트: **{last_month}월**')
-            st.write(f"인구수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3 ")
-            st.write(f"세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
-
+            st.write("인구수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3 ")
+            st.write("세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
+            st.write("기타 소스: https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01#content-group")
     #미분양 그래프
 def run_not_sell(selected_city2, not_sell_df):
     titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
