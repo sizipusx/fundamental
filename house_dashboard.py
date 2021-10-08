@@ -592,8 +592,30 @@ with st.beta_container():
         st.write("")
     with col4:
         drawAPT_update.run_bubble(selected_city, bubble_df2, m_power)
+html_br="""
+<br>
+"""
+
+####지역 시황 ###############
+path = 'https://github.com/sizipusx/fundamental/blob/92513409f61208c2b8f39ec3349174ab0287a3d3/files/local_issue.xlsx?raw=true'
+df_dic = pd.ExcelFile(path)
+dmf = df_dic.parse("KB매매", index_col=0)
+djf = df_dic.parse("KB전세", index_col=0)
+
+with st.beta_container():
+    col2, col3, col4 = st.beta_columns([30,2,30])
+    with col2:
+        st.table(dmf[selected_city].dropna())
+    with col3:
+        st.table(djf[selected_city].dropna())
+    with col4:
+        drawAPT_update.jdisc_table(selected_city, djf)
+html_br="""
+<br>
+"""
 
 html_line="""
+
 <br>
 <br>
 <br>
