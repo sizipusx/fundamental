@@ -607,9 +607,9 @@ with st.beta_container():
     with col2:
         st.table(dmf[selected_city].dropna())
     with col3:
-        st.table(djf[selected_city].dropna())
+        st.write("")
     with col4:
-        drawAPT_update.jdisc_table(selected_city, djf)
+        st.table(djf[selected_city].dropna())
 html_br="""
 <br>
 """
