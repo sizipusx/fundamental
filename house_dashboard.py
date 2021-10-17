@@ -44,6 +44,9 @@ footer {visibility: hidden;}
 # data=pd.read_excel('curva.xlsx')
 
 ### data 가져오기 영역 ##########################
+#매주 지역별 시황
+local_path = 'https://github.com/sizipusx/fundamental/blob/84c355e9999590e3bd94f6133156a881a4ce2566/files/local_issue.xlsx?raw=true'
+#매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
 
 def read_source(): 
@@ -597,8 +600,7 @@ html_br="""
 """
 
 ####지역 시황 ###############
-path = 'https://github.com/sizipusx/fundamental/blob/92513409f61208c2b8f39ec3349174ab0287a3d3/files/local_issue.xlsx?raw=true'
-df_dic = pd.ExcelFile(path)
+df_dic = pd.ExcelFile(local_path)
 dmf = df_dic.parse("KB매매", index_col=0)
 djf = df_dic.parse("KB전세", index_col=0)
 
