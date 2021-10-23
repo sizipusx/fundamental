@@ -244,7 +244,7 @@ def run_sentimental_index(mdf_change):
     fig.update_layout(hovermode="x unified")
     fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
