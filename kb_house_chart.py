@@ -241,8 +241,7 @@ def run_sentimental_index(mdf_change):
     fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["100>매수자많음"], mode="text"))
     fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
-    fig.update_layout(hovermode="x unified")
-    fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
+    # fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
@@ -304,6 +303,7 @@ def run_sentimental_index(mdf_change):
             type="date"
             )      
         )
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
     x_data = mdf_change.index
