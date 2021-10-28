@@ -47,7 +47,7 @@ footer {visibility: hidden;}
 #매주 지역별 시황
 local_path = 'https://github.com/sizipusx/fundamental/blob/8f87f486f5a1b8996ebb88fb7f3d290449ca2d81/files/local_issue.xlsx?raw=true'
 #매월 데이타
-file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
+file_path = 'https://github.com/sizipusx/fundamental/blob/5f6f6f35caf0d0a0adc00e759c0e31e5c5b24efc/files/KB_monthlyA.xlsx?raw=true'
 
 def read_source(): 
     # file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
