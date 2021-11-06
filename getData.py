@@ -197,7 +197,7 @@ def get_overview(ticker):
 
     df = pd.json_normalize(response_json)
     description_data = ['MarketCapitalization', 'Symbol', 'AssetType', 'Name', 'Description', 'Exchange', 'Currency', 'Country', 'Sector', \
-                        'Industry', 'Address', 'FullTimeEmployees', 'FiscalYearEnd', 'LatestQuarter', 'LastSplitFactor', 'LastSplitDate']
+                        'Industry', 'Address', 'FullTimeEmployees', 'FiscalYearEnd', 'LatestQuarter']
     profit_data = ['RevenueTTM', 'RevenuePerShareTTM', 'ProfitMargin','GrossProfitTTM', 'OperatingMarginTTM', 'EBITDA', \
                     'QuarterlyEarningsGrowthYOY', 'QuarterlyRevenueGrowthYOY']
     dividend_data = ['DividendPerShare', 'DividendYield', 'PayoutRatio', \
