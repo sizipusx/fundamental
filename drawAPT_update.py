@@ -389,7 +389,7 @@ def run_jeon_index(selected_dosi, jadf, jadf_ch):
                                     secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=jadf_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(jadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
-    fig.update_yaxes(title_text="평단가", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="만원", secondary_y = False)
+    fig.update_yaxes(title_text="평단가", showticklabels= True, showgrid = True, zeroline=True,     , secondary_y = False)
     fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
