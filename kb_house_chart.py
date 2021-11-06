@@ -356,8 +356,8 @@ def draw_basic():
                     '전세증감:' + df['전세증감'] 
     title = dict(text='<b>주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
-                                        colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
-    fig.update_traces(color_continuous_scale='Bluered',
+                                        colorscale="Reds", color_continuous_scale='Bluered', ssszmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
+    fig.update_traces(autocolorscale=True,
                         text=df['text'], # hover text
                         marker_line_color='white', # line markers between states
                         colorbar_title="전세증감")
