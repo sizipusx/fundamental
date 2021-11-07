@@ -138,7 +138,8 @@ def run_price_index() :
     gu_city_series = pd.Series(gu_city)
     draw_list = []
     if selected_dosi in gu_city:
-        draw_list = [selected_dosi]
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        # draw_list = [selected_dosi]
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '기타지방']
     elif selected_dosi == '수도권':
