@@ -497,6 +497,7 @@ city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광
 column_list = mdf.columns.to_list()
 city_series = pd.Series(column_list)
 small_list = []
+mirco_list = []
 if selected_dosi == '전국':
   small_list = ['전국']
 elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
@@ -527,10 +528,27 @@ elif selected_dosi == '세종':
 ##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
 
 
-selected_city = st.selectbox(' Select city', small_list)
+#selected_city = st.selectbox(' Select city', small_list)
+#html_br="""
+#<br>
+#"""
+
+### Select Block #########################################################################################
+with st.beta_container():
+    col1, col2, col3 = st.beta_columns([30,2,30])
+    with col1:
+        selected_city = st.selectbox(' Select city', small_list)
+    with col2:
+        st.write("")
+    with col3:
+        if selected_city = '전주':
+            mirco_list = ['전주 덕진구', '전주 완산구']
+            selected_micro_city = st.selectbox(' Select city', mirco_list)
+
 html_br="""
 <br>
 """
+
 
 
 ### Block 5#########################################################################################
