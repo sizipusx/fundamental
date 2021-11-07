@@ -27,6 +27,8 @@ template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seabo
 def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, city3, city_series) :
     if city3 in draw_list:
         draw_list = city_series[city_series.str.contains(city3)].to_list()
+    if city3 in gu_city:
+        draw_list = city_series[city_series.str.contains(city3)].to_list()
 
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
    
