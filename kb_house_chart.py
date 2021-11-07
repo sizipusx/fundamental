@@ -1,5 +1,6 @@
 import time
 from datetime import datetime
+import drawAPT_weekly
 
 import numpy as np
 import pandas as pd
@@ -123,11 +124,36 @@ def run_price_index() :
    
     # 챠트 기본 설정 
     # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)', \
+                       'rgb(0,0,0)', 'rgb(255,0,0)', 'rgb(0,255,0)', 'rgb(0,0,255)', 'rgb(255,255,0)', \
+                        'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
+                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
+                             'rgb(153,51,102)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
+                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     #같이 그려보자
+    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산' \
+                 '천안', '청주', '전주', '포항', '창원']
+    gu_city_series = pd.Series(gu_city)
+    draw_list = []
+    if gu_city_series.str.contains(selected_dosi):
+        draw_list = [selected_dosi]
+    elif selected_dosi == '전국':
+        draw_list = ['전국', '수도권', '기타지방']
+    elif selected_dosi == '수도권':
+        draw_list = ['서울', '경기', '인천']
+    elif selected_dosi == '6개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
+    elif selected_dosi == '5개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산']
+    elif selected_dosi == '경기':
+        draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    
+    drawAPT_weekly.run_price_index_all(draw_list,  mdf,jdf, mdf_change, jdf_change, gu_city)
 
+    
 
     titles = dict(text= '('+selected_dosi2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
