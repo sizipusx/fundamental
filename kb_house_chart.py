@@ -137,7 +137,7 @@ def run_price_index() :
                  '천안', '청주', '전주', '포항', '창원']
     gu_city_series = pd.Series(gu_city)
     draw_list = []
-    if gu_city_series.str.contains(selected_dosi):
+    if selected_dosi in gu_city:
         draw_list = [selected_dosi]
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '기타지방']
