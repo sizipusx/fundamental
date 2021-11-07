@@ -528,27 +528,27 @@ if __name__ == "__main__":
             )
         # if  st.checkbox('Show 매매지수 data'):
         #     st.dataframe(mdf.style.highlight_max(axis=0))
-        if selected_dosi == '수원':
+        if selected_dosi2 == '수원':
             mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
-        elif selected_dosi == '성남':
+        elif selected_dosi2 == '성남':
             mirco_list = ['성남', '성남 수정구', '성남 중원구', '성남 분당구']
-        elif selected_dosi == '고양':
+        elif selected_dosi2 == '고양':
             mirco_list = ['고양', '고양 덕양구', '고양 일산동구', '고양 일산서구']
-        elif selected_dosi == '안양':
+        elif selected_dosi2 == '안양':
             mirco_list = ['안양', '안양 만안구', '안양 동안구']
-        elif selected_dosi == '안산':
+        elif selected_dosi2 == '안산':
             mirco_list = ['안산', '안산 단원구', '안산 상록구']
-        elif selected_dosi == '용인':
+        elif selected_dosi2 == '용인':
             mirco_list = ['용인', '용인 처인구', '용인 기흥구', '용인 수지구']
-        elif selected_dosi == '천안':
+        elif selected_dosi2 == '천안':
             mirco_list = ['천안', '천안 서북구', '천안 동남구']
-        elif selected_dosi == '청주':
+        elif selected_dosi2 == '청주':
             mirco_list = ['청주', '청주 청원구', '청주 흥덕구', '청주 서원구', '청주 상당구']
-        elif selected_dosi == '전주':
+        elif selected_dosi2 == '전주':
             mirco_list = ['전주', '전주 덕진구', '전주 완산구']
-        elif selected_dosi == '포항':
+        elif selected_dosi2 == '포항':
             mirco_list = ['포항', '포항 남구', '포항 북구']
-        elif selected_dosi == '창원':
+        elif selected_dosi2 == '창원':
             mirco_list = ['창원', '창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구']
 
         selected_dosi3 = st.sidebar.selectbox(
