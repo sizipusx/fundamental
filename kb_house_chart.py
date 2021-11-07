@@ -126,6 +126,9 @@ def run_price_index() :
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
     template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
+    #같이 그려보자
+
+
     titles = dict(text= '('+selected_city2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -486,8 +489,8 @@ if __name__ == "__main__":
         city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
 
-        # column_list = mdf.columns.to_list()
-        city_series = pd.Series(city_list)
+        column_list = mdf.columns.to_list()
+        city_series = pd.Series(column_list)
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도-시', city_list
             )
@@ -498,7 +501,7 @@ if __name__ == "__main__":
         if selected_dosi == '전국':
             small_list = ['전국', '수도권', '기타지방']
         elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
-        or selected_dosi == '대전' or selected_dosi == '울산' :
+            or selected_dosi == '대전' or selected_dosi == '울산' :
             small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
         elif selected_dosi == '경기':
             small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
