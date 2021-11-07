@@ -151,7 +151,7 @@ def run_price_index() :
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
     
-    drawAPT_weekly.run_price_index_all(draw_list, mdf,jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
+    drawAPT_weekly.run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
 
     
 

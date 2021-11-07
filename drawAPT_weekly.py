@@ -24,7 +24,10 @@ marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,
                                  'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
-def run_price_index_all(draw_list, mdf,jdf, mdf_change, jdf_change, gu_city) :
+def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, city3, city_series) :
+    if city3 in draw_list:
+        draw_list = city_series[city_series.str.contains(city3)].to_list()
+
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
    
     title = "<b>KB 매매지수 변화 같이 보기</b>"
