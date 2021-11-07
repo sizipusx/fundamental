@@ -133,7 +133,7 @@ def run_price_index() :
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     #같이 그려보자
-    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산' \
+    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
     gu_city_series = pd.Series(gu_city)
     draw_list = []
