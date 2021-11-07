@@ -541,7 +541,7 @@ with st.beta_container():
     with col2:
         st.write("")
     with col3:
-        if selected_city = '전주':
+        if selected_city == '전주':
             mirco_list = ['전주 덕진구', '전주 완산구']
             selected_micro_city = st.selectbox(' Select city', mirco_list)
 
