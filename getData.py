@@ -206,8 +206,7 @@ def get_overview(ticker):
                     'BookValue', 'PriceToBookRatio','PEGRatio', 'EVToRevenue', 'EVToEBITDA','PriceToSalesRatioTTM']
     return_data = ['ReturnOnEquityTTM', 'ReturnOnAssetsTTM']
     price_data = ['Beta', '52WeekHigh', '52WeekLow', '50DayMovingAverage', '200DayMovingAverage']
-    volume_data = ['SharesOutstanding', 'SharesFloat', 'SharesShort', 'SharesShortPriorMonth', 'ShortRatio', 'ShortPercentOutstanding', \
-                    'ShortPercentFloat', 'PercentInsiders', 'PercentInstitutions']
+    volume_data = ['SharesOutstanding', 'SharesFloat', 'SharesShort', 'SharesShortPriorMonth']
     valuation_data = ['AnalystTargetPrice']
 
     description_df = df[description_data].T
