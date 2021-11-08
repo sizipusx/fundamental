@@ -1,11 +1,8 @@
-import time
 from datetime import datetime
 
 import numpy as np
 import pandas as pd
 
-import requests
-import json
 from pandas.io.json import json_normalize
 
 import plotly.express as px
@@ -962,4 +959,50 @@ def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_
             type="date"
             )      
         )
+    st.plotly_chart(fig)
+
+def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi, selected_dosi2, selected_dosi3):
+    #마지막 데이터만
+    last_df = peong_df.iloc[-1].T.to_frame()
+    last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
+    last_df.columns = ['평균매매가', '평균전세가']
+    last_df.dropna(inplace=True)
+    last_df = last_df.round(decimals=2)
+    #같이 그려보자
+    gu_city = ['부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+                 '천안', '청주', '전주', '포항', '창원']
+    # gu_city_series = pd.Series(gu_city)
+    column_list = peong_df.columns.to_list()
+    city_series = pd.Series(column_list)
+    draw_list = []
+    if selected_dosi in gu_city:
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        # draw_list = [selected_dosi]
+    elif selected_dosi == '전국':
+        draw_list = ['전국', '수도권', '기타지방']
+    elif selected_dosi == '서울':
+        draw_list = ['서울 강북', '서울 강남']
+    elif selected_dosi == '수도권':
+        draw_list = ['서울', '경기', '인천']
+    elif selected_dosi == '6개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
+    elif selected_dosi == '5개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산']
+    elif selected_dosi == '경기':
+        draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    
+    if selected_dosi3 in draw_list:
+        draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
+    if selected_dosi3 in gu_city:
+        draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
+
+    # 사분면 그래프로 그려보자.
+    #매매/전세 증감률 Bubble Chart
+    title = dict(text='주요 시-구 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
+    fig = px.scatter(last_df, x='평균매매가', y='평균전세가', color='평균매매가', size=abs(last_df['평균매매가']), 
+                        text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
