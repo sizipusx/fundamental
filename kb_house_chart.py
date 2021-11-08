@@ -133,7 +133,7 @@ def run_price_index() :
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     #같이 그려보자
-    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+    gu_city = ['부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
     gu_city_series = pd.Series(gu_city)
     draw_list = []
@@ -142,6 +142,8 @@ def run_price_index() :
         # draw_list = [selected_dosi]
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '기타지방']
+    elif selected_dosi == '서울':
+        draw_list = ['서울 강북', '서울 강남']
     elif selected_dosi == '수도권':
         draw_list = ['서울', '경기', '인천']
     elif selected_dosi == '6개광역시':
@@ -558,9 +560,7 @@ if __name__ == "__main__":
             )
         # if  st.checkbox('Show 매매지수 data'):
         #     st.dataframe(mdf.style.highlight_max(axis=0))
-        if selected_dosi2 == '서울':
-            mirco_list = ['서울 강북', '서울 강남']
-        elif selected_dosi2 == '수원':
+        if selected_dosi2 == '수원':
             mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
         elif selected_dosi2 == '성남':
             mirco_list = ['성남', '성남 수정구', '성남 중원구', '성남 분당구']
@@ -587,7 +587,7 @@ if __name__ == "__main__":
                 '구', mirco_list
             )
         
-        submit = st.sidebar.button('Draw Price Index chart')
+        submit = st.sidebar.button('Draw Price Index together')
         if submit:
             run_price_index()
     else:

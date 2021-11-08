@@ -653,9 +653,7 @@ if __name__ == "__main__":
             )
         # if  st.checkbox('Show 매매지수 data'):
         #     st.dataframe(mdf.style.highlight_max(axis=0))
-        if selected_dosi2 == '서울':
-            mirco_list = ['서울 강북', '서울 강남']
-        elif selected_dosi2 == '수원':
+        if selected_dosi2 == '수원':
             mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
         elif selected_dosi2 == '성남':
             mirco_list = ['성남', '성남 수정구', '성남 중원구', '성남 분당구']
