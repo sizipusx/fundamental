@@ -961,7 +961,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_
         )
     st.plotly_chart(fig)
 
-def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi, selected_dosi2, selected_dosi3):
+def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi, selected_dosi2, selected_dosi3, small_list):
     #마지막 데이터만
     last_df = peong_df.iloc[-1].T.to_frame()
     last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
@@ -971,6 +971,7 @@ def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected
     #같이 그려보자
     gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
+    do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
     # gu_city_series = pd.Series(gu_city)
     column_list = peong_df.columns.to_list()
     city_series = pd.Series(column_list)
@@ -989,6 +990,8 @@ def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected
     elif selected_dosi == '경기':
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    elif selected_dosi in do_list:
+        draw_list = small_list
     
     if selected_dosi3 in draw_list:
         draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
