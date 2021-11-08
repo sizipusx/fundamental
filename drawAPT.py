@@ -860,3 +860,117 @@ def run_ratio_index(selected_dosi, sadf, sadf_ch, jadf, jadf_ch, jratio_df):
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
+
+def run_local_analysis():
+    # 챠트 기본 설정 
+    # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
+    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
+                       'rgb(0,0,0)', 'rgb(255,0,0)', 'rgb(0,255,0)', 'rgb(0,0,255)', 'rgb(255,255,0)', \
+                        'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
+                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
+                             'rgb(153,51,102)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
+                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+
+    #같이 그려보자
+    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+                 '천안', '청주', '전주', '포항', '창원']
+    gu_city_series = pd.Series(gu_city)
+    draw_list = []
+    if selected_dosi in gu_city:
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        # draw_list = [selected_dosi]
+    elif selected_dosi == '전국':
+        draw_list = ['전국', '수도권', '기타지방']
+    elif selected_dosi == '수도권':
+        draw_list = ['서울', '경기', '인천']
+    elif selected_dosi == '6개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
+    elif selected_dosi == '5개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산']
+    elif selected_dosi == '경기':
+        draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    
+    drawAPT_weekly.run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
+
+    
+
+    titles = dict(text= '('+selected_dosi2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    
+    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+
+    
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    # fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
+    #             annotation_position="bottom right")
+    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+              annotation_text="8.2 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+              annotation_text="9.13 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+              annotation_text="12.16/2.24 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+              annotation_text="6.17/7.10 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+              annotation_text="8.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
+              annotation_text="2.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
+    st.plotly_chart(fig)

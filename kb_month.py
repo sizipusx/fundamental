@@ -516,7 +516,7 @@ if __name__ == "__main__":
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment analysis')
+                    "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', 'local Analysis')
                     )
     if my_choice == 'Basic':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
@@ -593,7 +593,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw HAI chart')
         if submit:
             drawAPT.draw_hai(selected_city, hai_df, info_df)
-    else:
+    elif my_choice == 'Sentiment' :
         data_load_state = st.text('Loading Sentimental index Data...')
         senti_dfs, df_as, df_bs = load_senti_data()
         data_load_state.text("Sentimental index Data Done! (using st.cache)")
@@ -606,3 +606,80 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             drawAPT.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
+    else :
+
+        city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
+
+        column_list = mdf.columns.to_list()
+        city_series = pd.Series(column_list)
+        selected_dosi = st.sidebar.selectbox(
+                '광역시-도-시', city_list
+            )
+        
+        #두번째 도시
+        small_list = []
+        mirco_list = []
+        if selected_dosi == '전국':
+            small_list = ['전국', '수도권', '기타지방']
+        elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
+            or selected_dosi == '대전' or selected_dosi == '울산' :
+            small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        elif selected_dosi == '경기':
+            small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
+                        '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+        elif selected_dosi == '강원':
+            small_list = ['강원', '춘천','강릉', '원주']
+        elif selected_dosi == '충북':
+            small_list = ['충북','청주', '충주','제천']
+        elif selected_dosi == '충남':
+            small_list = ['충남','천안', '공주','아산', '논산', '계룡','당진','서산']
+        elif selected_dosi == '전북':
+            small_list = ['전북', '전주', '익산', '군산']
+        elif selected_dosi == '전남':
+            small_list = ['전남', '목포','순천','여수','광양']
+        elif selected_dosi == '경북':
+            small_list = ['경북','포항','구미', '경산', '안동','김천']
+        elif selected_dosi == '충북':
+            small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
+        elif selected_dosi == '제주서귀포':
+            small_list = ['제주서귀포']
+        elif selected_dosi == '세종':
+            small_list = ['세종']
+        
+        second_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        selected_dosi2 = st.sidebar.selectbox(
+                '구-시', small_list
+            )
+        # if  st.checkbox('Show 매매지수 data'):
+        #     st.dataframe(mdf.style.highlight_max(axis=0))
+        if selected_dosi2 == '수원':
+            mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
+        elif selected_dosi2 == '성남':
+            mirco_list = ['성남', '성남 수정구', '성남 중원구', '성남 분당구']
+        elif selected_dosi2 == '고양':
+            mirco_list = ['고양', '고양 덕양구', '고양 일산동구', '고양 일산서구']
+        elif selected_dosi2 == '안양':
+            mirco_list = ['안양', '안양 만안구', '안양 동안구']
+        elif selected_dosi2 == '안산':
+            mirco_list = ['안산', '안산 단원구', '안산 상록구']
+        elif selected_dosi2 == '용인':
+            mirco_list = ['용인', '용인 처인구', '용인 기흥구', '용인 수지구']
+        elif selected_dosi2 == '천안':
+            mirco_list = ['천안', '천안 서북구', '천안 동남구']
+        elif selected_dosi2 == '청주':
+            mirco_list = ['청주', '청주 청원구', '청주 흥덕구', '청주 서원구', '청주 상당구']
+        elif selected_dosi2 == '전주':
+            mirco_list = ['전주', '전주 덕진구', '전주 완산구']
+        elif selected_dosi2 == '포항':
+            mirco_list = ['포항', '포항 남구', '포항 북구']
+        elif selected_dosi2 == '창원':
+            mirco_list = ['창원', '창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구']
+
+        selected_dosi3 = st.sidebar.selectbox(
+                '구', mirco_list
+            )
+        
+        submit = st.sidebar.button('Draw Price Index chart')
+        if submit:
+            drawAPT.run_local_analysis()
