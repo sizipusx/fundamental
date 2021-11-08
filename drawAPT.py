@@ -861,7 +861,7 @@ def run_ratio_index(selected_dosi, sadf, sadf_ch, jadf, jadf_ch, jratio_df):
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
 
-def run_local_analysis():
+def run_local_analysis(mdf, jdf, mdf_change, jdf_change, small_list, mirco_list, selected_dosi, selected_dosi2, selected_dosi3):
     # 챠트 기본 설정 
     # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
@@ -875,13 +875,17 @@ def run_local_analysis():
     #같이 그려보자
     gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
-    gu_city_series = pd.Series(gu_city)
+    # gu_city_series = pd.Series(gu_city)
+    column_list = mdf.columns.to_list()
+    city_series = pd.Series(column_list)
     draw_list = []
     if selected_dosi in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
         # draw_list = [selected_dosi]
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '기타지방']
+    elif selected_dosi == '서울':
+        draw_list = ['서울 강북', '서울 강남']
     elif selected_dosi == '수도권':
         draw_list = ['서울', '경기', '인천']
     elif selected_dosi == '6개광역시':
@@ -892,46 +896,31 @@ def run_local_analysis():
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
     
-    drawAPT_weekly.run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
+    if selected_dosi3 in draw_list:
+        draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
+    if selected_dosi3 in gu_city:
+        draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
 
-    
-
-    titles = dict(text= '('+selected_dosi2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
+    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+   
+    title = "<b>KB 매매지수 변화 같이 보기</b>"
+    titles = dict(text= title, x=0.5, y = 0.85) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
-    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-
-    
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
-    fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    # fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
-    #             annotation_position="bottom right")
-    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
-              annotation_text="8.2 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
-              annotation_text="9.13 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
-              annotation_text="12.16/2.24 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
-              annotation_text="6.17/7.10 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
-              annotation_text="8.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
-              annotation_text="2.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
+    for index, value in enumerate(draw_list):
+        fig.add_trace(
+            go.Bar(x=mdf_change.index, y=mdf_change.loc[:,value],  name=value, marker_color= marker_colors[index]),    
+            secondary_y=True,
+            )
+    for index, value in enumerate(draw_list):
+        fig.add_trace(
+            go.Scatter(x=mdf.index, y=mdf.loc[:,value],  name=value, marker_color= marker_colors[index]),    
+            secondary_y=False,
+            )
+    fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
     fig.update_layout(
             showlegend=True,
             legend=dict(

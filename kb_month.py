@@ -682,4 +682,4 @@ if __name__ == "__main__":
         
         submit = st.sidebar.button('Analize local index chart')
         if submit:
-            drawAPT.run_local_analysis()
+            drawAPT.run_local_analysis(mdf, jdf, mdf_change, jdf_change, city_list, small_list, mirco_list, selected_dosi, selected_dosi2, selected_dosi3)
