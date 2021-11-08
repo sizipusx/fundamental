@@ -995,8 +995,6 @@ def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected
     if selected_dosi3 in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
     
-    st.dataframe(last_df)
-
     draw_df = last_df.loc[draw_list,:]
 
     # 사분면 그래프로 그려보자.
