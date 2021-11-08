@@ -527,11 +527,9 @@ if __name__ == "__main__":
         mirco_list = []
         if selected_dosi == '전국':
             small_list = ['전국', '수도권', '기타지방']
-        elif selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
+        elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
             or selected_dosi == '대전' or selected_dosi == '울산' :
             small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
-        elif selected_dosi == '서울':
-            small_list = ['서울 강북', '서울 강남']
         elif selected_dosi == '경기':
             small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                         '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
@@ -560,7 +558,9 @@ if __name__ == "__main__":
             )
         # if  st.checkbox('Show 매매지수 data'):
         #     st.dataframe(mdf.style.highlight_max(axis=0))
-        if selected_dosi2 == '수원':
+        if selected_dosi2 == '서울':
+            mirco_list = ['서울 강북', '서울 강남']
+        elif selected_dosi2 == '수원':
             mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
         elif selected_dosi2 == '성남':
             mirco_list = ['성남', '성남 수정구', '성남 중원구', '성남 분당구']
