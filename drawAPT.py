@@ -858,7 +858,7 @@ def run_ratio_index(selected_dosi, sadf, sadf_ch, jadf, jadf_ch, jratio_df):
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
 
-def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_dosi3):
+def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_dosi3, small_list):
     # 챠트 기본 설정 
     # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
@@ -870,6 +870,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     #같이 그려보자
+    do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
     gu_city = ['부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
     # gu_city_series = pd.Series(gu_city)
@@ -892,6 +893,8 @@ def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_
     elif selected_dosi == '경기':
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    elif selected_dosi in do_list:
+        draw_list = small_list
     
     if selected_dosi3 in draw_list:
         draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
