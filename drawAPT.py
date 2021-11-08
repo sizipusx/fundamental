@@ -861,7 +861,7 @@ def run_ratio_index(selected_dosi, sadf, sadf_ch, jadf, jadf_ch, jratio_df):
     fig.add_hline(y=70.0, line_color="pink", annotation_text="70%", annotation_position="bottom right")
     st.plotly_chart(fig)
 
-def run_local_analysis(mdf, jdf, mdf_change, jdf_change, small_list, mirco_list, selected_dosi, selected_dosi2, selected_dosi3):
+def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_dosi3):
     # 챠트 기본 설정 
     # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
     marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
