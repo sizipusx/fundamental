@@ -622,9 +622,11 @@ if __name__ == "__main__":
         mirco_list = []
         if selected_dosi == '전국':
             small_list = ['전국', '수도권', '기타지방']
-        elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
+        elif selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
             or selected_dosi == '대전' or selected_dosi == '울산' :
             small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        elif selected_dosi == '서울':
+            small_list = ['서울 강북', '서울 강남']
         elif selected_dosi == '경기':
             small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                         '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
@@ -680,6 +682,6 @@ if __name__ == "__main__":
                 '구', mirco_list
             )
         
-        submit = st.sidebar.button('Draw Price Index chart')
+        submit = st.sidebar.button('Analize local index chart')
         if submit:
             drawAPT.run_local_analysis()
