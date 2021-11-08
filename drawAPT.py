@@ -996,13 +996,15 @@ def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected
         draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
     if selected_dosi3 in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi3)].to_list()
+    
+    st.dataframe(last_df)
 
     # 사분면 그래프로 그려보자.
     #매매/전세 증감률 Bubble Chart
     title = dict(text='주요 시-구 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
     fig = px.scatter(last_df, x='평균매매가', y='평균전세가', color='평균매매가', size=abs(last_df['평균매매가']), 
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
-    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     st.plotly_chart(fig)
