@@ -977,6 +977,9 @@ def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected
     draw_list = []
     if selected_dosi in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+    elif selected_dosi == '전국':
+        draw_list = ['전국', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '경기', '강원', '충북', '충남', '전북', '전남', \
+                        '경남', '경북', '제주서귀포']
     elif selected_dosi == '수도권':
         draw_list = ['서울', '경기', '인천']
     elif selected_dosi == '6개광역시':
