@@ -873,7 +873,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 
     #같이 그려보자
-    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+    gu_city = ['부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
     # gu_city_series = pd.Series(gu_city)
     column_list = mdf.columns.to_list()
