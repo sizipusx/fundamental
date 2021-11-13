@@ -23,6 +23,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
+header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
 
 #return object
 def read_source(): 
@@ -215,7 +216,7 @@ def load_pop_data():
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
-    
+
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
     path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
     data_type = 'Sheet1' 
