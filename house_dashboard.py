@@ -352,7 +352,7 @@ def load_senti_data():
 
     return df_dic, df_a, df_b
 
-@st.cache
+@st.cache(suppress_st_warning=True)
 def load_local_basic():
     basic_dict = pd.ExcelFile(basic_path)
     df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)

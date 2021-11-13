@@ -10,6 +10,7 @@ from pandas.io.json import json_normalize
 
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
@@ -19,6 +20,30 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="graph by 기하급수적",
+            textangle=0,
+            opacity=0.2,
+            font=dict(color="black", size=20),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=-0.2,
+            showarrow=False,
+        )
+    ]
+)
+
+
+marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
+                       'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,0,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
+                        'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
+                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
+                             'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
+                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
@@ -548,3 +573,141 @@ def run_bubble(selected_city2, bubble_df2, m_power):
             #st.markdown('아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)')
             st.write("곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)")
 
+def draw_basic_info(selected_dosi, basic_df, bigc, smc):
+
+    if selected_dosi == '전국':
+        title = '광역시도 인구 동향'
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
+        y_data_line = [('인구 및 세대수', '12인가구비율'), ('인구 및 세대수', '노인인구비율'), ('인구 및 세대수', '아파트거주비율')]
+
+
+        for y_data, color in zip(y_data_line, marker_colors): 
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=round(bigc[y_data]*100,1),
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+
+        for y_data, color in zip(y_data_bar, marker_colors):
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
+                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+
+        fig.update_traces(texttemplate='%{text:.3s}') 
+        # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
+        # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    elif selected_dosi == '5개광역시':
+        city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
+        bigc = bigc.loc[city_list,:]
+        title = '5광역시도 인구 동향'
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
+        y_data_line = [('인구 및 세대수', '12인가구비율'), ('인구 및 세대수', '노인인구비율'), ('인구 및 세대수', '아파트거주비율')]
+
+
+        for y_data, color in zip(y_data_line, marker_colors): 
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=round(bigc[y_data]*100,1),
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+
+        for y_data, color in zip(y_data_bar, marker_colors):
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
+                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+
+        fig.update_traces(texttemplate='%{text:.3s}') 
+        # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
+        # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+        
+    elif selected_dosi == '6개광역시':
+        city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
+        bigc = bigc.loc[city_list,:]
+        title = '6광역시도 인구 동향'
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
+        y_data_line = [('인구 및 세대수', '12인가구비율'), ('인구 및 세대수', '노인인구비율'), ('인구 및 세대수', '아파트거주비율')]
+
+
+        for y_data, color in zip(y_data_line, marker_colors): 
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=round(bigc[y_data]*100,1),
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+
+        for y_data, color in zip(y_data_bar, marker_colors):
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
+                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+
+        fig.update_traces(texttemplate='%{text:.3s}') 
+        # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
+        # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+
+    elif selected_dosi == '수도권':
+        city_list = ['서울', '경기', '인천']                                                    
+        bigc = bigc.loc[city_list,:]
+        title = '수도권 인구 동향'
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
+        y_data_line = [('인구 및 세대수', '12인가구비율'), ('인구 및 세대수', '노인인구비율'), ('인구 및 세대수', '아파트거주비율')]
+
+
+        for y_data, color in zip(y_data_line, marker_colors): 
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=round(bigc[y_data]*100,1),
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+
+        for y_data, color in zip(y_data_bar, marker_colors):
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
+                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+
+        fig.update_traces(texttemplate='%{text:.3s}') 
+        # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
+        # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    elif selected_dosi == '기타지방':
+        city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
+        bigc = bigc.loc[city_list,:]
+        title = '기타지방 인구 동향'
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
+        y_data_line = [('인구 및 세대수', '12인가구비율'), ('인구 및 세대수', '노인인구비율'), ('인구 및 세대수', '아파트거주비율')]
+
+
+        for y_data, color in zip(y_data_line, marker_colors): 
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=round(bigc[y_data]*100,1),
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+
+        for y_data, color in zip(y_data_bar, marker_colors):
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
+                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+
+        fig.update_traces(texttemplate='%{text:.3s}') 
+        # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
+        # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="백만명", secondary_y = False)
+        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+        
