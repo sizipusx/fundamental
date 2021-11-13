@@ -186,22 +186,27 @@ def load_index_data():
 
 @st.cache
 def load_pop_data():
-    popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
-    #인구수 
-    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr')
-    pop['행정구역'] = popheader
-    pop = pop.set_index("행정구역")
-    pop = pop.iloc[:,3:]
-    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
-    pop.columns = test
-    df = pop.T
+    #인구수 파일 변경
+    p_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
+    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, parse_dates=True)
+    pdf = kb_dict['pop']
+    sae = kb_dict['sae']
+
+    #header file: 인구수와 세대수가 약간 다르다.
+    psdf = pd.read_excel(header_path, sheet_name='pop', header=0)
+  
+    pdf['행정구역'] = psdf['pop']
+    pdf = pdf.set_index("행정구역")
+    pdf = pdf.iloc[:,3:]
+    test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    pdf.columns = test
+    df = pdf.T
     # df = df.iloc[:-1]
     df.index = pd.to_datetime(df.index)
     df_change = df.pct_change()*100
     df_change = df_change.round(decimals=2)
     #세대수
-    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/saedae.csv', encoding='euc-kr')
-    sae['행정구역'] = popheader
+    sae['행정구역'] =  psdf['sae']
     sae = sae.set_index("행정구역")
     sae = sae.iloc[:,3:]
     sae.columns = test
@@ -210,7 +215,7 @@ def load_pop_data():
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
-
+    
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
     path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
     data_type = 'Sheet1' 
