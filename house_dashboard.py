@@ -49,6 +49,7 @@ local_path = 'https://github.com/sizipusx/fundamental/blob/04e84cd88b14c91532b0f
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/5f6f6f35caf0d0a0adc00e759c0e31e5c5b24efc/files/KB_monthlyA.xlsx?raw=true'
 header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
+basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
 
 def read_source(): 
     # file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
@@ -350,11 +351,29 @@ def load_senti_data():
             df_b.append(js_b)
 
     return df_dic, df_a, df_b
-##########################################
+
+@st.cache
+def load_local_basic():
+    basic_dict = pd.ExcelFile(basic_path)
+    df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)
+    df[('인구 및 세대수', '인구수')] = df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
+    df[('인구 및 세대수', '세대수')] = df[('인구 및 세대수', '세대수')].apply(lambda x: x.replace(',','')).astype(float)
+    # df[('종사자규모별 사업체수', '500 - 999명')] = df[('종사자규모별 사업체수', '500 - 999명')].apply(lambda x: x.replace(',','')).astype(int)
+    # df[('종사자규모별 사업체수', '1000명\n이상')] = df[('종사자규모별 사업체수', '1000명\n이상')].apply(lambda x: x.replace(',','')).astype(int)
+    df = df.round(decimals=2)
+    bigc = df.loc[:'제주',:]
+    smc = df.loc['서울 강남구':, :]
+    smc.loc[:,('보험료', '직장월급여')].replace([np.inf, -np.inf], np.nan, inplace=True)
+    smc.loc[:,('보험료', '직장월급여')] = df.loc[:,('보험료', '직장월급여')].astype(float).fillna(0)
+    smc.loc[:,('보험료', '직장월급여')]
+
+    return df, bigc, smc
+########################################## data 불러오기 ######################
 mdf, jdf, code_df, geo_data = load_index_data()
 popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
 b_df, org_df = load_buy_data()
 peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
+basic_df, bigc, smc = load_local_basic()
 
 #마지막 달
 kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
@@ -433,13 +452,26 @@ sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
 sub_df.columns = ['전세가율']
 sub_df = sub_df.sort_values('전세가율', ascending=False )
 
-###################################
+################################### graph 그리기 ##########################################
 
 ### first select box ----
 senti_dfs, df_as, df_bs = load_senti_data()
 do_list = senti_dfs[0].columns.to_list()
 
 selected_dosi = st.selectbox(' Select 광역시도', do_list)
+html_br="""
+<br>
+"""
+st.markdown(html_br, unsafe_allow_html=True)
+### Block 0#########################################################################################
+with st.beta_container():
+    col1, col2, col3 = st.beta_columns([30,2,30])
+    with col1:
+        drawAPT_update.draw_basic_info(selected_dosi, basic_df, bigc, smc)
+    with col2:
+        st.write("")
+    with col3:
+        drawAPT_update.draw_ds_change(selected_dosi, senti_dfs, mdf_change)
 html_br="""
 <br>
 """
