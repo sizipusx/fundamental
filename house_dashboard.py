@@ -471,7 +471,7 @@ with st.beta_container():
     with col2:
         st.write("")
     with col3:
-        drawAPT_update.draw_ds_change(selected_dosi, senti_dfs, mdf_change)
+        drawAPT_update.draw_company_info(selected_dosi, basic_df, bigc, smc)
 html_br="""
 <br>
 """
