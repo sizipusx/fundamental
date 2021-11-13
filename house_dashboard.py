@@ -48,6 +48,7 @@ footer {visibility: hidden;}
 local_path = 'https://github.com/sizipusx/fundamental/blob/04e84cd88b14c91532b0f1c9c0cf18020fb478d6/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/5f6f6f35caf0d0a0adc00e759c0e31e5c5b24efc/files/KB_monthlyA.xlsx?raw=true'
+header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=True'
 
 def read_source(): 
     # file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
@@ -63,7 +64,7 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    header_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/header.xlsx?raw=true'
+    # header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
     kb_header = header_excel.parse('KB')
     ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
@@ -114,8 +115,8 @@ def load_buy_data():
     path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
     df = pd.read_excel(path, sheet_name=data_type, header=10)
-    path1 = r'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/header.xlsx?raw=true'
-    header = pd.read_excel(path1, sheet_name='buyer')
+    # path1 = r'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
+    header = pd.read_excel(header_path, sheet_name='buyer')
     df['지 역'] = header['local'].str.strip()
     df = df.rename({'지 역':'지역명'}, axis='columns')
     df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
@@ -144,8 +145,8 @@ def load_index_data():
     kbm_dict = read_source()
     # kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
-    header_excel = pd.ExcelFile(path)
+    # path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
+    header_excel = pd.ExcelFile(header_path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
