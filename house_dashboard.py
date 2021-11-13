@@ -476,6 +476,19 @@ html_br="""
 <br>
 """
 st.markdown(html_br, unsafe_allow_html=True)
+### Block 0.5#########################################################################################
+with st.beta_container():
+    col1, col2, col3 = st.beta_columns([30,2,30])
+    with col1:
+        drawAPT_update.draw_pay_info(selected_dosi, basic_df, bigc, smc)
+    with col2:
+        st.write("")
+    with col3:
+        drawAPT_update.draw_earning_info(selected_dosi, basic_df, bigc, smc)
+html_br="""
+<br>
+"""
+st.markdown(html_br, unsafe_allow_html=True)
 ### Block 1#########################################################################################
 with st.beta_container():
     col1, col2, col3 = st.beta_columns([30,2,30])
