@@ -740,3 +740,152 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
+
+def draw_company_info(selected_dosi, basic_df, bigc, smc):
+
+    if selected_dosi == '전국':
+        title =  "시도 기업체 수"
+        titles = dict(text= title, x=0.5, y = 0.95) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
+
+        for col_data, color in zip(size_list, marker_colors): 
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+
+        # Change the bar mode
+        fig.update_layout(barmode='stack')
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    elif selected_dosi == '5개광역시':
+        city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
+        bigc = bigc.loc[city_list,:]
+
+        title = '5광역시도 기업체 수'
+        titles = dict(text= title, x=0.5, y = 0.95) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+
+        size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
+
+        for col_data, color in zip(size_list, marker_colors): 
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+
+        # Change the bar mode
+        fig.update_layout(barmode='stack')
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+        
+    elif selected_dosi == '6개광역시':
+        city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
+        bigc = bigc.loc[city_list,:]
+        title = '6광역시도 기업체 수'
+        titles = dict(text= title, x=0.5, y = 0.95) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+
+        size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
+
+        for col_data, color in zip(size_list, marker_colors): 
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+
+        # Change the bar mode
+        fig.update_layout(barmode='stack')
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+
+    elif selected_dosi == '수도권':
+        city_list = ['서울', '경기', '인천']                                                    
+        bigc = bigc.loc[city_list,:]
+        title =  "수도권 기업체 수"
+        titles = dict(text= title, x=0.5, y = 0.95) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+
+        size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
+
+        for col_data, color in zip(size_list, marker_colors): 
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+
+        # Change the bar mode
+        fig.update_layout(barmode='stack')
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    elif selected_dosi == '기타지방':
+        city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
+        bigc = bigc.loc[city_list,:]
+        title =  "기타지방 기업체 수"
+        titles = dict(text= title, x=0.5, y = 0.95) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+
+        size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
+
+        for col_data, color in zip(size_list, marker_colors): 
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+
+        # Change the bar mode
+        fig.update_layout(barmode='stack')
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    else:
+        city_list = smc.index
+        city_series = pd.Series(city_list)
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()                                                  
+        bigc = smc.loc[draw_list, :]
+
+        title = selected_dosi +' 기업체 수'
+        titles = dict(text= title, x=0.5, y = 0.95) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+
+        size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
+
+        for col_data, color in zip(size_list, marker_colors): 
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+
+        # Change the bar mode
+        fig.update_layout(barmode='stack')
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)    
