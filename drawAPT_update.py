@@ -713,7 +713,8 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
     else:
         city_list = smc.index
         city_series = pd.Series(city_list)
-        bigc = city_series[city_series.str.contains(selected_dosi)].to_list()                                                  
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()                                                  
+        bigc = smc.loc[draw_list, :]
 
         title = selected_dosi +' 인구 동향'
         titles = dict(text= title, x=0.5, y = 0.85) 
