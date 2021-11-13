@@ -386,10 +386,11 @@ last_df = last_df.round(decimals=2)
 # st.dataframe(last_df.style.highlight_max(axis=0))
 #인구, 세대수 마지막 데이터
 last_pop = popdf_change.iloc[-1].T.to_frame()
-last_pop['세대증감'] = saedf_change.iloc[-1].T.to_frame()
-last_pop.columns = ['인구증감', '세대증감']
-last_pop.dropna(inplace=True)
-last_pop = last_pop.round(decimals=2) 
+last_sae = saedf_change.iloc[-1].T.to_frame()
+last_ps = pd.merge(last_pop, last_sae, how='inner', left_index=True, right_index=True)
+last_ps.columns = ['인구증감', '세대증감']
+# last_pop.dropna(inplace=True)
+last_ps = last_ps.round(decimals=2) 
 
 #마지막달 dataframe에 지역 코드 넣어 합치기
 df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
