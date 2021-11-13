@@ -63,7 +63,7 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    header_path = 'https://github.com/sizipusx/fundamental/blob/80e5af9925c10a53b855cf6757fa1bba7eeb136d/files/header.xlsx?raw=true'
+    header_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
     kb_header = header_excel.parse('KB')
     ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
@@ -114,7 +114,7 @@ def load_buy_data():
     path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
     df = pd.read_excel(path, sheet_name=data_type, header=10)
-    path1 = r'https://github.com/sizipusx/fundamental/blob/d91daa59a4409bd9281172d2a1d46a56b27fac2a/files/header.xlsx?raw=true'
+    path1 = r'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/header.xlsx?raw=true'
     header = pd.read_excel(path1, sheet_name='buyer')
     df['지 역'] = header['local'].str.strip()
     df = df.rename({'지 역':'지역명'}, axis='columns')
