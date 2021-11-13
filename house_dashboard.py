@@ -48,7 +48,7 @@ footer {visibility: hidden;}
 local_path = 'https://github.com/sizipusx/fundamental/blob/04e84cd88b14c91532b0f1c9c0cf18020fb478d6/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/5f6f6f35caf0d0a0adc00e759c0e31e5c5b24efc/files/KB_monthlyA.xlsx?raw=true'
-header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=True'
+header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
 
 def read_source(): 
     # file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
@@ -71,8 +71,8 @@ def load_ratio_data():
     p_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
     kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
 
-    for k in kb_dict.keys():
-        print(k)
+    # for k in kb_dict.keys():
+    #     print(k)
     mdf = kb_dict['sell']
     jdf = kb_dict['jeon']
     mdf = mdf.iloc[2:mdf['서울'].count()+1]
@@ -208,22 +208,27 @@ def load_index_data():
 
 @st.cache
 def load_pop_data():
-    popheader = pd.read_csv("https://raw.githubusercontent.com/sizipusx/fundamental/main/popheader.csv")
-    #인구수 
-    pop = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/pop.csv', encoding='euc-kr')
-    pop['행정구역'] = popheader
-    pop = pop.set_index("행정구역")
-    pop = pop.iloc[:,3:]
-    test = pop.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
-    pop.columns = test
-    df = pop.T
+    #인구수 파일 변경
+    p_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
+    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, parse_dates=True)
+    pdf = kb_dict['pop']
+    sae = kb_dict['sae']
+
+    #header file: 인구수와 세대수가 약간 다르다.
+    psdf = pd.read_excel(header_path, sheet_name='pop', header=0)
+  
+    pdf['행정구역'] = psdf['pop']
+    pdf = pdf.set_index("행정구역")
+    pdf = pdf.iloc[:,3:]
+    test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    pdf.columns = test
+    df = pdf.T
     # df = df.iloc[:-1]
     df.index = pd.to_datetime(df.index)
     df_change = df.pct_change()*100
     df_change = df_change.round(decimals=2)
     #세대수
-    sae = pd.read_csv('https://raw.githubusercontent.com/sizipusx/fundamental/main/files/saedae.csv', encoding='euc-kr')
-    sae['행정구역'] = popheader
+    sae['행정구역'] =  psdf['sae']
     sae = sae.set_index("행정구역")
     sae = sae.iloc[:,3:]
     sae.columns = test
