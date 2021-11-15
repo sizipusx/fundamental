@@ -1209,7 +1209,6 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     draw_list = []
     if selected_dosi in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
-        # draw_list = [selected_dosi]
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '기타지방']
     elif selected_dosi == '서울':
@@ -1303,7 +1302,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     draw_list = []
     if selected_dosi in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
-        draw_list = draw_list.append('전국')
+        draw_list.append('전국')
     elif selected_dosi == '전국':
         draw_list = ['전국', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '경기', '강원', '충북', '충남', '전북', '전남', \
                         '경남', '경북', '제주서귀포']
