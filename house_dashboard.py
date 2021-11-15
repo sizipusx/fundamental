@@ -591,7 +591,9 @@ elif selected_dosi == '제주서귀포':
 elif selected_dosi == '세종':
   small_list = ['세종']
 
-if selected_dosi != '6개광역시' or '5개광역시' or '기타지방':
+if selected_dosi == '6개광역시' or '5개광역시' or '기타지방':
+    st.write("No Data")
+else :
 
 
     ##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
