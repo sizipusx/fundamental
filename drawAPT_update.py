@@ -1207,7 +1207,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     column_list = mdf.columns.to_list()
     city_series = pd.Series(column_list)
     draw_list = []
-    if selected_dosi in gu_city:
+    if selected_dosi in gu_city or do_list:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '기타지방']
