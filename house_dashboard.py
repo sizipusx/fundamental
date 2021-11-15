@@ -537,21 +537,23 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 
+if selected_dosi == '6개광역시' or '5개광역시' or '기타지방':
+    st.write("No Data")
+else :
+    ### Block 3 KB 전망지수 #########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,1,30])
+        with col1:
+            drawAPT_update.draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_update.draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs)
 
-### Block 3#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,1,30])
-    with col1:
-        drawAPT_update.draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs)
-    with col2:
-        st.write("")
-    with col3:
-        drawAPT_update.draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs)
-
-html_br="""
-<br>
-"""
-st.markdown(html_br, unsafe_allow_html=True)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
 
 ###  2번째 구선택: 시도구 ########################################################################################################
 city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
