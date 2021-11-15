@@ -497,7 +497,7 @@ with st.beta_container():
     with col2:
         st.write("")
     with col3:
-        drawAPT_update.run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi)
+        drawAPT_update.run_local_price(peong_df, peongj_df, selected_dosi)
 
 html_br="""
 <br>
