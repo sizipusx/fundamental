@@ -1346,8 +1346,8 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     ))
     # fig = px.scatter(draw_df, x='평균매매가', y='평균전세가', color='평균매매가', size=abs(draw_df['평균매매가']), 
     #                     text= draw_df.index, hover_name=draw_df.index, color_continuous_scale='Bluered')
-    fig.add_hline(y=draw_df.loc['전국','평균전세가'], line_width=1, line_color="red", secondary_y = False)
-    fig.add_vline(x=draw_df.loc['전국','평균매매가'], line_width=1, line_color="red", secondary_y = False)
+    fig.add_hline(y=draw_df.loc['전국','평균전세가'], line_width=1, line_color="red", line_dash="dot", secondary_y = False)
+    fig.add_vline(x=draw_df.loc['전국','평균매매가'], line_width=1, line_color="red", line_dash="dot", secondary_y = False)
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
