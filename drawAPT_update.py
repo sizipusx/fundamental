@@ -327,8 +327,6 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     last_month = pd.to_datetime(str(df.index.values[-1])).strftime('%Y.%m')
 
     titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(255,153,204)']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -355,9 +353,6 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     #미분양 그래프
 def run_not_sell(selected_city2, not_sell_df):
     titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(98, 255, 0)', 'rgb(255,153,204)']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
-
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '60~85㎡', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60~85㎡')], marker_color = marker_colors[1]), secondary_y = True)
     fig.add_trace(go.Bar(name ='85㎡초과', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '85㎡초과')], marker_color = marker_colors[2]), secondary_y = True)                                             
@@ -373,10 +368,6 @@ def run_not_sell(selected_city2, not_sell_df):
 
 #평단가 변화
 def run_sell_index(selected_dosi, sadf, sadf_ch):
-
-    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-
     x_data = sadf_ch.index
     title = "[<b>"+selected_dosi+"</b>] KB 평균 매매 평단가 변화"
     titles = dict(text= title, x=0.5, y = 0.85) 
@@ -398,8 +389,6 @@ def run_sell_index(selected_dosi, sadf, sadf_ch):
 
 
 def run_jeon_index(selected_dosi, jadf, jadf_ch):
-    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     x_data = jadf_ch.index
     title = "[<b>"+selected_dosi+"</b>] KB 평균 전세 평단가 변화"
     titles = dict(text= title, x=0.5, y = 0.85) 
@@ -420,7 +409,6 @@ def run_jeon_index(selected_dosi, jadf, jadf_ch):
     st.plotly_chart(fig)
 
 def run_jeon_ratio(selected_dosi, jratio_df):
-    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     title = "["+selected_dosi+"] KB 평균 가격 전세가율"
     if selected_dosi == "제주서귀포":
