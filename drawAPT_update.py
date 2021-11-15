@@ -1222,6 +1222,24 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     elif selected_dosi == '경기':
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    elif selected_dosi == '충북':
+        draw_list = ['청주 흥덕구', '청주 청원구', '청주 상당구', '청주 서원구', '충주', '제천']
+    elif selected_dosi == '강원':
+        draw_list = ['춘천', '강릉', '원주']
+    elif selected_dosi == '충남':
+        draw_list = ['천안 동남구', '천안 서북구', '공주', '아산', '논산', '계룡', '당진', '서산']
+    elif selected_dosi == '전북':
+        draw_list = ['전주 완산구', '전주 덕진구', '익산', '군산']
+    elif selected_dosi == '전남':
+        draw_list = ['목포', '순천', '광양', '여수']
+    elif selected_dosi == '경북':
+        draw_list = ['포항 남구', '포항 북구', '구미', '경산', '안동', '김천']
+    elif selected_dosi == '경남':
+        draw_list = ['창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구', '양산', '거제', '진주', '김해', '통영']
+    elif selected_dosi == '제주':
+        draw_list = ['제주서귀포']
+    elif selected_dosi == '기타지방':
+        draw_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
        
     title = "<b>KB 매매지수 변화 같이 보기</b>"
     titles = dict(text= title, x=0.5, y = 0.85) 
@@ -1315,6 +1333,24 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     elif selected_dosi == '경기':
         draw_list = ['전국', '경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+    elif selected_dosi == '충북':
+        draw_list = ['전국', '청주 흥덕구', '청주 청원구', '청주 상당구', '청주 서원구', '충주', '제천']
+    elif selected_dosi == '강원':
+        draw_list = ['전국', '춘천', '강릉', '원주']
+    elif selected_dosi == '충남':
+        draw_list = ['전국', '천안 동남구', '천안 서북구', '공주', '아산', '논산', '계룡', '당진', '서산']
+    elif selected_dosi == '전북':
+        draw_list = ['전국', '전주 완산구', '전주 덕진구', '익산', '군산']
+    elif selected_dosi == '전남':
+        draw_list = ['전국', '목포', '순천', '광양', '여수']
+    elif selected_dosi == '경북':
+        draw_list = ['전국', '포항 남구', '포항 북구', '구미', '경산', '안동', '김천']
+    elif selected_dosi == '경남':
+        draw_list = ['전국', '창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구', '양산', '거제', '진주', '김해', '통영']
+    elif selected_dosi == '제주':
+        draw_list = ['전국', '제주서귀포']
+    elif selected_dosi == '기타지방':
+        draw_list = ['전국', '강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
         
     draw_df = last_df.loc[draw_list,:]
 
