@@ -1300,7 +1300,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     column_list = peong_df.columns.to_list()
     city_series = pd.Series(column_list)
     draw_list = []
-    if selected_dosi in gu_city:
+    if selected_dosi in gu_city or do_list:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
         draw_list.append('전국')
     elif selected_dosi == '전국':
