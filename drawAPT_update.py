@@ -914,7 +914,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-        
+
     elif selected_dosi == '5개광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
@@ -1319,13 +1319,13 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
         draw_list = ['전국', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '경기', '강원', '충북', '충남', '전북', '전남', \
                         '경남', '경북', '제주서귀포']
     elif selected_dosi == '수도권':
-        draw_list = ['서울', '경기', '인천']
+        draw_list = ['전국', '서울', '경기', '인천']
     elif selected_dosi == '6개광역시':
-        draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
+        draw_list = ['전국', '전국', '부산', '대구', '광주', '대전', '울산', '인천']
     elif selected_dosi == '5개광역시':
-        draw_list = ['부산', '대구', '광주', '대전', '울산']
+        draw_list = ['전국', '부산', '대구', '광주', '대전', '울산']
     elif selected_dosi == '경기':
-        draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
+        draw_list = ['전국', '경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
         
     draw_df = last_df.loc[draw_list,:]
@@ -1346,6 +1346,8 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     ))
     # fig = px.scatter(draw_df, x='평균매매가', y='평균전세가', color='평균매매가', size=abs(draw_df['평균매매가']), 
     #                     text= draw_df.index, hover_name=draw_df.index, color_continuous_scale='Bluered')
+    fig.add_hline(y=draw_df.loc['전국':,'평균전세가'], line_width=1, line_color="red", secondary_y = False)
+    fig.add_vline(y=draw_df.loc['전국':,'평균매매가'], line_width=1, line_color="red", secondary_y = False)
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
