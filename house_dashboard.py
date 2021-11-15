@@ -489,6 +489,20 @@ html_br="""
 <br>
 """
 st.markdown(html_br, unsafe_allow_html=True)
+### Block 0.6#########################################################################################
+with st.beta_container():
+    col1, col2, col3 = st.beta_columns([30,2,30])
+    with col1:
+        drawAPT_update.run_local_analysis(mdf, mdf_change, selected_dosi)
+    with col2:
+        st.write("")
+    with col3:
+        drawAPT_update.run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi)
+
+html_br="""
+<br>
+"""
+st.markdown(html_br, unsafe_allow_html=True)
 ### Block 1#########################################################################################
 with st.beta_container():
     col1, col2, col3 = st.beta_columns([30,2,30])
@@ -539,7 +553,7 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 
-### 시도구
+###  2번째 구선택: 시도구 ########################################################################################################
 city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
