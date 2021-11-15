@@ -1327,7 +1327,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     elif selected_dosi == '수도권':
         draw_list = ['전국', '서울', '경기', '인천']
     elif selected_dosi == '6개광역시':
-        draw_list = ['전국', '전국', '부산', '대구', '광주', '대전', '울산', '인천']
+        draw_list = ['전국', '부산', '대구', '광주', '대전', '울산', '인천']
     elif selected_dosi == '5개광역시':
         draw_list = ['전국', '부산', '대구', '광주', '대전', '울산']
     elif selected_dosi == '경기':
