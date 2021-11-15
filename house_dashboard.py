@@ -591,114 +591,117 @@ elif selected_dosi == '제주서귀포':
 elif selected_dosi == '세종':
   small_list = ['세종']
 
-##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
+if selected_dosi != '6개광역시' or '5개광역시' or '기타지방':
 
 
-#selected_city = st.selectbox(' Select city', small_list)
-#html_br="""
-#<br>
-#"""
-
-### Select Block #########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
-    with col1:
-        selected_city = st.selectbox(' Select city', small_list)
-    with col2:
-        st.write("")
-    with col3:
-        if selected_city == '전주':
-            mirco_list = ['전주', '전주 덕진구', '전주 완산구']
-            selected_micro_city = st.selectbox(' Select city', mirco_list)
-
-html_br="""
-<br>
-"""
+    ##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
 
 
+    #selected_city = st.selectbox(' Select city', small_list)
+    #html_br="""
+    #<br>
+    #"""
 
-### Block 5#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
-    with col1:
-        drawAPT_update.run_pop_index(selected_city, popdf, popdf_change, saedf, saedf_change)
-    with col2:
-        st.write("")
-    with col3:
-        drawAPT_update.run_not_sell(selected_city,not_sell)
+    ### Select Block #########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            selected_city = st.selectbox(' Select city', small_list)
+        with col2:
+            st.write("")
+        with col3:
+            if selected_city == '전주':
+                mirco_list = ['전주', '전주 덕진구', '전주 완산구']
+                selected_micro_city = st.selectbox(' Select city', mirco_list)
 
-html_br="""
-<br>
-"""
-st.markdown(html_br, unsafe_allow_html=True)
-### Block 6#########################################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
-    with col2:
-        drawAPT_update.run_sell_index(selected_city, peong_df, peong_ch)
-    with col3:
-        st.write("")
-    with col4:
-        drawAPT_update.run_jeon_index(selected_city, peongj_df, peongj_ch)
+    html_br="""
+    <br>
+    """
 
-st.markdown(html_br, unsafe_allow_html=True)
-### Block 6-1#########################################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
-    with col2:
-        drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
-    with col3:
-        st.write("")
-    with col4:
-        drawAPT_update.run_trade_index(selected_city, org_df, mdf)
-    
-html_br="""
-<br>
-"""
-st.markdown(html_br, unsafe_allow_html=True)
-#################block 7###########################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
-    with col2:
-        drawAPT_update.run_buy_index(selected_city, org_df)
-    with col3:
-        st.write("")
-    with col4:
-        drawAPT_update.run_buy_ratio(selected_city, org_df)
 
-html_br="""
-<br>
-"""
-st.markdown(html_br, unsafe_allow_html=True)
-### Block 8#########################################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
-    with col2:
-        drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change)
-    with col3:
-        st.write("")
-    with col4:
-        drawAPT_update.run_bubble(selected_city, bubble_df2, m_power)
-html_br="""
-<br>
-"""
 
-####지역 시황 ###############
-df_dic = pd.ExcelFile(local_path)
-dmf = df_dic.parse("KB매매", index_col=0)
-djf = df_dic.parse("KB전세", index_col=0)
+    ### Block 5#########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            drawAPT_update.run_pop_index(selected_city, popdf, popdf_change, saedf, saedf_change)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_update.run_not_sell(selected_city,not_sell)
 
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
-    with col2:
-        st.table(dmf[selected_city].dropna())
-    with col3:
-        st.write("")
-    with col4:
-        st.table(djf[selected_city].dropna())
-html_br="""
-<br>
-"""
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 6#########################################################################################
+    with st.beta_container():
+        col2, col3, col4 = st.beta_columns([30,2,30])
+        with col2:
+            drawAPT_update.run_sell_index(selected_city, peong_df, peong_ch)
+        with col3:
+            st.write("")
+        with col4:
+            drawAPT_update.run_jeon_index(selected_city, peongj_df, peongj_ch)
+
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 6-1#########################################################################################
+    with st.beta_container():
+        col2, col3, col4 = st.beta_columns([30,2,30])
+        with col2:
+            drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
+        with col3:
+            st.write("")
+        with col4:
+            drawAPT_update.run_trade_index(selected_city, org_df, mdf)
+        
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    #################block 7###########################################################################
+    with st.beta_container():
+        col2, col3, col4 = st.beta_columns([30,2,30])
+        with col2:
+            drawAPT_update.run_buy_index(selected_city, org_df)
+        with col3:
+            st.write("")
+        with col4:
+            drawAPT_update.run_buy_ratio(selected_city, org_df)
+
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 8#########################################################################################
+    with st.beta_container():
+        col2, col3, col4 = st.beta_columns([30,2,30])
+        with col2:
+            drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change)
+        with col3:
+            st.write("")
+        with col4:
+            drawAPT_update.run_bubble(selected_city, bubble_df2, m_power)
+    html_br="""
+    <br>
+    """
+
+    ####지역 시황 ###############
+    df_dic = pd.ExcelFile(local_path)
+    dmf = df_dic.parse("KB매매", index_col=0)
+    djf = df_dic.parse("KB전세", index_col=0)
+
+    with st.beta_container():
+        col2, col3, col4 = st.beta_columns([30,2,30])
+        with col2:
+            st.table(dmf[selected_city].dropna())
+        with col3:
+            st.write("")
+        with col4:
+            st.table(djf[selected_city].dropna())
+    html_br="""
+    <br>
+    """
 
 html_line="""
 
