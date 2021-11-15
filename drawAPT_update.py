@@ -18,7 +18,13 @@ import streamlit as st
 pd.set_option('display.float_format', '{:.2f}'.format)
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
-marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+
+marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
+                       'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,0,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
+                        'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
+                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
+                             'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
+                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 pio.templates["myID"] = go.layout.Template(
     layout_annotations=[
@@ -37,13 +43,6 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 
-
-marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
-                       'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,0,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
-                        'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
-                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
-                             'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
-                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
@@ -1209,3 +1208,144 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig) 
+
+def run_local_analysis(mdf, mdf_change, selected_dosi):
+    #같이 그려보자
+    do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
+    gu_city = ['부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+                 '천안', '청주', '전주', '포항', '창원']
+    # gu_city_series = pd.Series(gu_city)
+    column_list = mdf.columns.to_list()
+    city_series = pd.Series(column_list)
+    draw_list = []
+    if selected_dosi in gu_city:
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        # draw_list = [selected_dosi]
+    elif selected_dosi == '전국':
+        draw_list = ['전국', '수도권', '기타지방']
+    elif selected_dosi == '서울':
+        draw_list = ['서울 강북', '서울 강남']
+    elif selected_dosi == '수도권':
+        draw_list = ['서울', '경기', '인천']
+    elif selected_dosi == '6개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
+    elif selected_dosi == '5개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산']
+    elif selected_dosi == '경기':
+        draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+       
+    title = "<b>KB 매매지수 변화 같이 보기</b>"
+    titles = dict(text= title, x=0.5, y = 0.85) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    
+    for index, value in enumerate(draw_list):
+        fig.add_trace(
+            go.Bar(x=mdf_change.index, y=mdf_change.loc[:,value],  name=value, marker_color= marker_colors[index]),    
+            secondary_y=True,
+            )
+    for index, value in enumerate(draw_list):
+        fig.add_trace(
+            go.Scatter(x=mdf.index, y=mdf.loc[:,value],  name=value, marker_color= marker_colors[index]),    
+            secondary_y=False,
+            )
+    fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
+    st.plotly_chart(fig)
+
+def run_local_price(peong_df, peongj_df, selected_dosi):
+    #마지막 데이터만
+    last_df = peong_df.iloc[-1].T.to_frame()
+    last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
+    last_df.columns = ['평균매매가', '평균전세가']
+    last_df.dropna(inplace=True)
+    last_df = last_df.round(decimals=2)
+    #같이 그려보자
+    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+                 '천안', '청주', '전주', '포항', '창원']
+    do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
+    # gu_city_series = pd.Series(gu_city)
+    column_list = peong_df.columns.to_list()
+    city_series = pd.Series(column_list)
+    draw_list = []
+    if selected_dosi in gu_city:
+        draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+    elif selected_dosi == '전국':
+        draw_list = ['전국', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '경기', '강원', '충북', '충남', '전북', '전남', \
+                        '경남', '경북', '제주서귀포']
+    elif selected_dosi == '수도권':
+        draw_list = ['서울', '경기', '인천']
+    elif selected_dosi == '6개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
+    elif selected_dosi == '5개광역시':
+        draw_list = ['부산', '대구', '광주', '대전', '울산']
+    elif selected_dosi == '경기':
+        draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+        
+    draw_df = last_df.loc[draw_list,:]
+
+    # 사분면 그래프로 그려보자.
+    #매매/전세 증감률 Bubble Chart
+    title = dict(text='주요 시-구 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
+    fig = go.Figure(data=go.Scatter(
+        x=draw_df.loc[:'평균매매가'], y=draw_df.loc[:,'평균전세가'], 
+        mode='markers',
+        text = draw_df.index, #+'<br>원천/거주지 비율:'+ str(smc.loc[:,('원천징수지/주소지', '비율')]*10),
+        marker=dict(
+            size=draw_df.loc[:'평균매매가'],
+            color=draw_df.loc[:,'평균전세가'], #set color equal to a variable
+            colorscale='Bluered', # one of plotly colorscales
+            showscale=True
+        )
+    ))
+    # fig = px.scatter(draw_df, x='평균매매가', y='평균전세가', color='평균매매가', size=abs(draw_df['평균매매가']), 
+    #                     text= draw_df.index, hover_name=draw_df.index, color_continuous_scale='Bluered')
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
