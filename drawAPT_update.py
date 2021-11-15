@@ -1332,11 +1332,11 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     #매매/전세 증감률 Bubble Chart
     title = dict(text='주요 시-구 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
     fig = go.Figure(data=go.Scatter(
-        x=draw_df.loc[:'평균매매가'], y=draw_df.loc[:,'평균전세가'], 
+        x=draw_df.loc[:,'평균매매가'], y=draw_df.loc[:,'평균전세가'], 
         mode='markers',
         text = draw_df.index, #+'<br>원천/거주지 비율:'+ str(smc.loc[:,('원천징수지/주소지', '비율')]*10),
         marker=dict(
-            size=draw_df.loc[:'평균매매가'],
+            size=draw_df.loc[:,'평균매매가'],
             color=draw_df.loc[:,'평균전세가'], #set color equal to a variable
             colorscale='Bluered', # one of plotly colorscales
             showscale=True
