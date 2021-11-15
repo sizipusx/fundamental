@@ -914,6 +914,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
+        
     elif selected_dosi == '5개광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
@@ -1253,6 +1254,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     fig.update_layout(
             showlegend=True,
             legend=dict(
