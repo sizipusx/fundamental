@@ -1336,7 +1336,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
         mode='markers',
         text = draw_df.index, #+'<br>원천/거주지 비율:'+ str(smc.loc[:,('원천징수지/주소지', '비율')]*10),
         marker=dict(
-            size=draw_df.loc[:,'평균매매가']/10,
+            size=draw_df.loc[:,'평균매매가']/100,
             color=draw_df.loc[:,'평균전세가'], #set color equal to a variable
             colorscale='Bluered', # one of plotly colorscales
             showscale=True
