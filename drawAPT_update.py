@@ -1054,16 +1054,16 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data]/1000000,
-                                        text = bigc[y_data]/1000000, textposition = 'top center', marker_color = color), secondary_y = True)
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
+                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
-                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
+                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="만원", secondary_y = False)
-        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만원", secondary_y = True)
+        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="원", secondary_y = False)
+        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="원", secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1080,16 +1080,16 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data]/1000000,
-                                        text = bigc[y_data]/1000000, textposition = 'top center', marker_color = color), secondary_y = True)
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
+                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
-                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
+                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="만원", secondary_y = False)
-        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만원", secondary_y = True)
+        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="원", secondary_y = False)
+        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="원", secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1107,16 +1107,16 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data]/1000000,
-                                        text = bigc[y_data]/1000000, textposition = 'top center', marker_color = color), secondary_y = True)
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
+                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
-                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
+                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="만원", secondary_y = False)
-        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만원", secondary_y = True)
+        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="원", secondary_y = False)
+        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="원", secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1134,16 +1134,16 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data]/1000000,
-                                        text = bigc[y_data]/1000000, textposition = 'top center', marker_color = color), secondary_y = True)
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
+                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
-                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
+                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="만원", secondary_y = False)
-        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만원", secondary_y = True)
+        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="원", secondary_y = False)
+        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="원", secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1160,16 +1160,16 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data]/1000000,
-                                        text = bigc[y_data]/1000000, textposition = 'top center', marker_color = color), secondary_y = True)
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
+                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
-                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
+                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="만원", secondary_y = False)
-        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만원", secondary_y = True)
+        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="원", secondary_y = False)
+        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="원", secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1188,16 +1188,16 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data]/1000000,
-                                        text = bigc[y_data]/1000000, textposition = 'top center', marker_color = color), secondary_y = True)
+            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
+                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
-                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
+                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="만원", secondary_y = False)
-        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만원", secondary_y = True)
+        fig.update_yaxes(title_text='보험료', range=[0, max(bigc.loc[:,y_data_bar[0]])*2.5], ticksuffix="원", secondary_y = False)
+        fig.update_yaxes(title_text='추정 직장월급여', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="원", secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
