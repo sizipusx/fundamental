@@ -602,14 +602,14 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
-                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
+                                text =bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
         # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
         fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='인구세대수', ticksuffix="천명", secondary_y = False)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -630,14 +630,14 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
-                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
+                                text =bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
         # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
         fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='인구세대수', ticksuffix="천명", secondary_y = False)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -658,14 +658,14 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
-                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
+                                text =bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
         # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
         fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='인구세대수', ticksuffix="천명", secondary_y = False)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -685,14 +685,14 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
-                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
+                                text =bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
         # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
         fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='인구세대수', ticksuffix="천명", secondary_y = False)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -715,14 +715,14 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/1000, 
-                                text =bigc[y_data]/1000, textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data]/10000, 
+                                text =bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         # fig.update_yaxes(title_text='가구구성비율', range=[0, max(bigc.loc[:,y_data_bar[0]])*2], ticksuffix="%", secondary_y = True)
         # fig.update_yaxes(title_text='인구세대수', range=[-max(bigc.loc[:,y_data_line[0]]), max(bigc.loc[:,y_data_line[0]])* 1.2], ticksuffix="백만명", secondary_y = False)
         fig.update_yaxes(title_text='가구구성비율', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='인구세대수', ticksuffix="천명", secondary_y = False)
+        fig.update_yaxes(title_text='인구세대수', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -738,15 +738,16 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
-            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data]/10000, 
+                                text = bigc.loc[:, col_data]/10000, textposition = 'outside', marker_color=color ), secondary_y = False)
         fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
         fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
-        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False, ticksuffix="만명") #ticksuffix="%"
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="명", secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
@@ -763,15 +764,16 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
-            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data],  
+                              text = bigc.loc[:, col_data]/10000, textposition = 'outside', marker_color=color), secondary_y = False)
         fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
         fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
-        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False,ticksuffix="만명")
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="명")  
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
@@ -788,15 +790,16 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
-            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
+                                text = bigc.loc[:, col_data]/10000, textposition = 'outside', marker_color=color ), secondary_y = False)
         fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
         fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
-        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False, ticksuffix="만명")
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True,  ticksuffix="명")  
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
@@ -813,15 +816,15 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
-            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
+                                    text = bigc.loc[:, col_data]/10000, textposition = 'outside', marker_color=color ), secondary_y = False)
         fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
-
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
         fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
-        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False, ticksuffix="만명")
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="명")  
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
@@ -837,15 +840,16 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
-            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
+                                    text = bigc.loc[:, col_data]/10000, textposition = 'outside', marker_color=color ), secondary_y = False)
         fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
         fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
-        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False, ticksuffix="만명")
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="명") 
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
@@ -864,15 +868,16 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명\n이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
-            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], marker_color=color ), secondary_y = False)
+            fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
+                                text = bigc.loc[:, col_data]/10000, textposition = 'outside', marker_color=color ), secondary_y = False)
         fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
         fig.update_yaxes(showspikes=True, spikecolor="orange", spikethickness=0.5)
-        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True)#, ticksuffix="%") #tickprefix="$", 
+        fig.update_yaxes(title_text='종사자규모별 사업체수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False, ticksuffix="만명")
+        fig.update_yaxes(title_text='500명이상\n사업체수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="명") 
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)    
@@ -892,12 +897,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data], 
-                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
+                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="명", secondary_y = False)
+        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -919,12 +924,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data], 
-                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
+                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="명", secondary_y = False)
+        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -946,12 +951,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data], 
-                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
+                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="명", secondary_y = False)
+        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -973,12 +978,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data], 
-                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
+                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="명", secondary_y = False)
+        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -999,12 +1004,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data], 
-                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
+                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="명", secondary_y = False)
+        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1027,12 +1032,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
-            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data], 
-                                text = bigc[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+            fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
+                                text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="명", secondary_y = False)
+        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
