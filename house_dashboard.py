@@ -45,11 +45,16 @@ footer {visibility: hidden;}
 
 ### data 가져오기 영역 ##########################
 #매주 지역별 시황
-local_path = 'https://github.com/sizipusx/fundamental/blob/04e84cd88b14c91532b0f1c9c0cf18020fb478d6/files/local_issue.xlsx?raw=true'
+local_path = 'https://github.com/sizipusx/fundamental/blob/61136345d04905ed4252c5cdc759ab8cfd7dea44/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/5f6f6f35caf0d0a0adc00e759c0e31e5c5b24efc/files/KB_monthlyA.xlsx?raw=true'
 header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
+buy_path = r'https://github.com/sizipusx/fundamental/blob/b294185051879415d5234bffcfc15975a9f616ef/files/apt_buy.xlsx?raw=true'
+price_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
+pop_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
+not_sell_path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
+
 
 def read_source(): 
     # file_path = 'https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/KB_monthlyA.xlsx?raw=true'
@@ -65,12 +70,10 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    # header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
     kb_header = header_excel.parse('KB')
     ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
-    p_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
-    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    kb_dict = pd.read_excel(price_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
 
     # for k in kb_dict.keys():
     #     print(k)
@@ -113,10 +116,8 @@ def load_ratio_data():
 @st.cache
 def load_buy_data():
     #년 증감 계산을 위해 최소 12개월치 데이터 필요
-    path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
     data_type = 'Sheet1' 
-    df = pd.read_excel(path, sheet_name=data_type, header=10)
-    # path1 = r'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
+    df = pd.read_excel(buy_path, sheet_name=data_type, header=10)
     header = pd.read_excel(header_path, sheet_name='buyer')
     df['지 역'] = header['local'].str.strip()
     df = df.rename({'지 역':'지역명'}, axis='columns')
@@ -146,7 +147,6 @@ def load_index_data():
     kbm_dict = read_source()
     # kbm_dict = pd.ExcelFile(file_path)
     #헤더 변경
-    # path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
@@ -210,8 +210,7 @@ def load_index_data():
 @st.cache
 def load_pop_data():
     #인구수 파일 변경
-    p_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
-    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, parse_dates=True)
+    kb_dict = pd.read_excel(pop_path, sheet_name=None, header=1, parse_dates=True)
     pdf = kb_dict['pop']
     sae = kb_dict['sae']
 
@@ -240,9 +239,8 @@ def load_pop_data():
     sdf_change = sdf_change.round(decimals=2)
 
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
-    path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
     data_type = 'Sheet1' 
-    df1 = pd.read_excel(path, sheet_name=data_type, index_col=0, parse_dates=True)
+    df1 = pd.read_excel(not_sell_path, sheet_name=data_type, index_col=0, parse_dates=True)
 
     #컬럼명 바꿈
     j1 = df1.columns
