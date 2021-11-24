@@ -584,7 +584,7 @@ elif selected_dosi == '전남':
   small_list = ['전남', '목포','순천','여수','광양']
 elif selected_dosi == '경북':
   small_list = ['경북','포항','구미', '경산', '안동','김천']
-elif selected_dosi == '충북':
+elif selected_dosi == '경남':
   small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
 elif selected_dosi == '제주서귀포':
   small_list = ['제주서귀포']
