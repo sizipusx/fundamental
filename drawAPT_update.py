@@ -357,8 +357,6 @@ def run_not_sell(selected_city2, not_sell_df, small_list):
         selected_city2 = selected_city2 + ' 계'
     elif selected_city2 == '전국':
         selected_city2 = '전국 합계'
-    elif selected_city2 == '경기':
-        selected_city2 == '경기 '+ selected_city2
     else:
         print("소도시")
 
