@@ -357,8 +357,12 @@ def run_not_sell(selected_city2, not_sell_df, small_list):
         selected_city2 = selected_city2 + ' 계'
     elif selected_city2 == '전국':
         selected_city2 = '전국 합계'
+    elif selected_city2 in small_list[1:]:
+        selected_city2 = small_list[0] + ' ' +small_list
     else:
         print("소도시")
+
+    
 
     slice_df =  not_sell_df.xs(selected_city2, axis=1, level=0)   
 
