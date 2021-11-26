@@ -352,6 +352,12 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
             st.write("기타 소스: https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01#content-group")
     #미분양 그래프
 def run_not_sell(selected_city2, not_sell_df):
+    big_city_list = ['전국', '서울', '부산', '대전', '대구', '광주', '인천', '울산', '강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
+    if selected_city2 in big_city_list:
+        selected_city2 = selected_city2 + ' 계'
+    else:
+        print("소도시")
+
     slice_df =  not_sell_df.xs(selected_city2, axis=1, level=0)   
 
     titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
