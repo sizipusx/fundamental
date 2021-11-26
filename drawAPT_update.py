@@ -354,27 +354,20 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
 def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
     do_city = ['경기','강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
     gu_city = ['서울', '부산', '대구', '대전', '울산', '인천', '광주']
+    etc_city = ['강남', '강북', '6개광역시', '5개광역시', '기타지방']
 
     if selected_city == '전국' and selected_city2 == '전국':
         city = '전국 합계'
-        st.write(city)
     elif (selected_city in gu_city) and (selected_city == selected_city2):
         city = selected_city + ' 계'
-        st.write(city) 
     elif (selected_city in gu_city) and (selected_city != selected_city2):
         city = selected_city2
-        st.write(city)
     elif (selected_city in do_city) and (selected_city == selected_city2):
         city = selected_city + ' 계' 
-        st.write(city)
     elif (selected_city in do_city) and (selected_city != selected_city2):
         city = selected_city + ' '+ selected_city2+ '시'
-        st.write(city)
     else:
-        city = 'error'
-        st.write(selected_city)
-        st.write(selected_city2)
-        st.write(city)
+        city = '전국 계'
 
     slice_df =  not_sell_df.xs(city, axis=1, level=0)   
 
