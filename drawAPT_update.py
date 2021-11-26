@@ -352,12 +352,14 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
             st.write("기타 소스: https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01#content-group")
     #미분양 그래프
 def run_not_sell(selected_city2, not_sell_df):
+    slice_df =  not_sell_df.xs(selected_city2, axis=1, level=0)   
+
     titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '60~85㎡', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60~85㎡')], marker_color = marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Bar(name ='85㎡초과', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '85㎡초과')], marker_color = marker_colors[2]), secondary_y = True)                                             
-    fig.add_trace(go.Bar(name ='60㎡이하', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '60㎡이하')], marker_color = marker_colors[4]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name ='전체', x =  not_sell_df.index, y= not_sell_df[(selected_city2, '소계')], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '60~85㎡', x =  slice_df.index, y= slice_df['60~85㎡'], marker_color = marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Bar(name ='85㎡초과', x =  slice_df.index, y= slice_df['60∼85㎡'], marker_color = marker_colors[2]), secondary_y = True)                                             
+    fig.add_trace(go.Bar(name ='60㎡이하', x =  slice_df.index, y= slice_df['60㎡이하'], marker_color = marker_colors[4]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name ='전체', x =  slice_df.index, y= slice_df['소계'], marker_color = marker_colors[0]), secondary_y = False)
     # fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(title_text='호', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = True)
