@@ -652,7 +652,7 @@ with st.beta_container():
     with col2:
         st.write("")
     with col3:
-        drawAPT_update.run_not_sell(selected_city,not_sell)
+        drawAPT_update.run_not_sell(selected_city,not_sell, small_list)
 
 html_br="""
 <br>
