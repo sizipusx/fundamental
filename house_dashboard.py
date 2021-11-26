@@ -50,7 +50,7 @@ local_path = 'https://github.com/sizipusx/fundamental/blob/04e84cd88b14c91532b0f
 file_path = 'https://github.com/sizipusx/fundamental/blob/5f6f6f35caf0d0a0adc00e759c0e31e5c5b24efc/files/KB_monthlyA.xlsx?raw=true'
 header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
-buy_path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
+buy_path = r'https://github.com/sizipusx/fundamental/blob/c8ea88dbed45db4d58ac493bd11677fadca10cb9/files/apt_buy.xlsx?raw=true'
 p_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
 pop_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/30085a522c84c8dbe9e7ce6a20397ff1d0846b36/files/not_selling_apt.xlsx?raw=true'
@@ -602,7 +602,7 @@ elif selected_dosi == '제주서귀포':
 elif selected_dosi == '세종':
   small_list = ['세종']
  ##6개 광역시, 5대광역시, 기타지방은 인구수가 없음
-elif selected_dosi == '6개광역시' or '5개광역시' or '기타지방':
+elif selected_dosi == '6개광역시' or '5개광역시' or '기타지방' or '강북' or '강남':
     small_list = []
     st.write("No Data")
 else:
