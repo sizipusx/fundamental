@@ -605,6 +605,9 @@ elif selected_dosi == '세종':
 elif selected_dosi == '6개광역시' or '5개광역시' or '기타지방':
     small_list = []
     st.write("No Data")
+else:
+    small_list = []
+    st.write("No Data")
   
 ### Select Block #########################################################################################
 with st.beta_container():
@@ -654,7 +657,7 @@ with st.beta_container():
     with col2:
         st.write("")
     with col3:
-        drawAPT_update.run_not_sell(selected_city,not_sell, small_list)
+        drawAPT_update.run_not_sell(selected_city, selected_city,not_sell, small_list)
 
 html_br="""
 <br>
