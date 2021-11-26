@@ -352,26 +352,20 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
             st.write("기타 소스: https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01#content-group")
     #미분양 그래프
 def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
+    do_city = ['경기','강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
+    gu_city = ['서울', '부산', '대구', '대전', '울산', '인천', '광주']
     if selected_city == '전국' and selected_city2 == '전국':
         city = '전국 합계'
+    elif (selected_city in gu_city) and (selected_city == selected_city2):
+        city = selected_city + '계' 
+    elif (selected_city in gu_city) and (selected_city != selected_city2):
+        city = selected_city2
+    elif (selected_city in do_city) and (selected_city == selected_city2):
+        city = selected_city + '계' 
+    elif (selected_city in do_city) and (selected_city != selected_city2):
+        city = selected_city + ' '+ selected_city2+ '시'
     else:
-        city = selected_city + ' 계'
-    
-
-    big_city_list = ['서울','경기', '부산', '대전', '대구', '광주', '인천', '울산', '강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
-    if selected_city2 in big_city_list:
-        selected_city2 = selected_city2 + ' 계'
-    elif selected_city2 == '전국':
-        selected_city2 = '전국 합계'
-    else:
-        print("소도시")
-    
-    gu_city = ['서울', '부산', '대구', '대전', '울산', '광주', '인천']
-    if selected_city2 in gu_city:
-        selected_city2 = small_list[0] + ' ' + selected_city2+ '시'
-    
-
-    
+        city = ''
 
     slice_df =  not_sell_df.xs(city, axis=1, level=0)   
 
