@@ -364,8 +364,8 @@ def run_not_sell(selected_city2, not_sell_df):
 
     titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '60~85㎡', x =  slice_df.index, y= slice_df['60~85㎡'], marker_color = marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Bar(name ='85㎡초과', x =  slice_df.index, y= slice_df['60∼85㎡'], marker_color = marker_colors[2]), secondary_y = True)                                             
+    fig.add_trace(go.Bar(name = '60~85㎡', x =  slice_df.index, y= slice_df['60∼85㎡'], marker_color = marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Bar(name ='85㎡초과', x =  slice_df.index, y= slice_df['85㎡초과'], marker_color = marker_colors[2]), secondary_y = True)                                             
     fig.add_trace(go.Bar(name ='60㎡이하', x =  slice_df.index, y= slice_df['60㎡이하'], marker_color = marker_colors[4]), secondary_y = True)
     fig.add_trace(go.Scatter(mode='lines', name ='전체', x =  slice_df.index, y= slice_df['소계'], marker_color = marker_colors[0]), secondary_y = False)
     # fig.update_layout(hovermode="x unified")
