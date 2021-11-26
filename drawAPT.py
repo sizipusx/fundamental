@@ -972,7 +972,7 @@ def run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
     #같이 그려보자
-    gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
+    gu_city = ['서울', '부산', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
     do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
     # gu_city_series = pd.Series(gu_city)
