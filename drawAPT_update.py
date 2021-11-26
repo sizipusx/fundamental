@@ -357,16 +357,22 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
 
     if selected_city == '전국' and selected_city2 == '전국':
         city = '전국 합계'
+        print(city)
     elif (selected_city in gu_city) and (selected_city == selected_city2):
-        city = selected_city + ' 계' 
+        city = selected_city + ' 계'
+        print(city) 
     elif (selected_city in gu_city) and (selected_city != selected_city2):
         city = selected_city2
+        print(city)
     elif (selected_city in do_city) and (selected_city == selected_city2):
         city = selected_city + ' 계' 
+        print(city)
     elif (selected_city in do_city) and (selected_city != selected_city2):
         city = selected_city + ' '+ selected_city2+ '시'
+        print(city)
     else:
         city = ''
+        print(city)
 
     slice_df =  not_sell_df.xs(city, axis=1, level=0)   
 
