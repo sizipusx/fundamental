@@ -372,6 +372,8 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
         st.write(city)
     else:
         city = 'error'
+        st.write(selected_city)
+        st.write(selected_city2)
         st.write(city)
 
     slice_df =  not_sell_df.xs(city, axis=1, level=0)   
