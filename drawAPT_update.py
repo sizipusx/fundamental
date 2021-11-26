@@ -355,7 +355,7 @@ def run_not_sell(selected_city2, not_sell_df):
     big_city_list = ['서울', '부산', '대전', '대구', '광주', '인천', '울산', '강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
     if selected_city2 in big_city_list:
         selected_city2 = selected_city2 + ' 계'
-    elif selected_city2 = '전국':
+    elif selected_city2 == '전국':
         selected_city2 = '전국 합계'
     else:
         print("소도시")
