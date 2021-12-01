@@ -51,7 +51,7 @@ file_path = 'https://github.com/sizipusx/fundamental/blob/1cd9833730322c39290f7f
 header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
 buy_path = r'https://github.com/sizipusx/fundamental/blob/c8ea88dbed45db4d58ac493bd11677fadca10cb9/files/apt_buy.xlsx?raw=true'
-p_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
+p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
 pop_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/30085a522c84c8dbe9e7ce6a20397ff1d0846b36/files/not_selling_apt.xlsx?raw=true'
 
