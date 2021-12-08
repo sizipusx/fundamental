@@ -48,12 +48,15 @@ footer {visibility: hidden;}
 local_path = 'https://github.com/sizipusx/fundamental/blob/517243a8f714c79682af556c6cd4d507d60ba804/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/1cd9833730322c39290f7fa1f21c9261fd71f86e/files/202111_monthly.xlsx?raw=true'
-header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
-basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
 buy_path = r'https://github.com/sizipusx/fundamental/blob/3d11bb80062e42238c110812e7c62f4072b9510c/files/apt_buy.xlsx?raw=true'
 p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
 pop_path = r"https://github.com/sizipusx/fundamental/blob/c982621f8cb42abfd6d07a7cf6f928767c17772e/files/pop.xlsx?raw=True"
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/30085a522c84c8dbe9e7ce6a20397ff1d0846b36/files/not_selling_apt.xlsx?raw=true'
+#년단위
+basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
+#상시
+header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
+
 
 
 def read_source(): 
