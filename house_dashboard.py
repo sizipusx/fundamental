@@ -51,7 +51,7 @@ file_path = 'https://github.com/sizipusx/fundamental/blob/1cd9833730322c39290f7f
 buy_path = r'https://github.com/sizipusx/fundamental/blob/3d11bb80062e42238c110812e7c62f4072b9510c/files/apt_buy.xlsx?raw=true'
 p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
 pop_path = r"https://github.com/sizipusx/fundamental/blob/c982621f8cb42abfd6d07a7cf6f928767c17772e/files/pop.xlsx?raw=True"
-not_sell_path = 'https://github.com/sizipusx/fundamental/blob/30085a522c84c8dbe9e7ce6a20397ff1d0846b36/files/not_selling_apt.xlsx?raw=true'
+not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
 #년단위
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
 #상시
