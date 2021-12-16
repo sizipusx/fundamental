@@ -49,13 +49,15 @@ local_path = 'https://github.com/sizipusx/fundamental/blob/517243a8f714c79682af5
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/1cd9833730322c39290f7fa1f21c9261fd71f86e/files/202111_monthly.xlsx?raw=true'
 buy_path = r'https://github.com/sizipusx/fundamental/blob/3d11bb80062e42238c110812e7c62f4072b9510c/files/apt_buy.xlsx?raw=true'
-p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
+# 2021. 11월부터 KB 데이터에서 기타지방 평균가격 제공하지 않음 => 다시 부동산원 데이터로 변경: 2021. 12. 16
+#p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
+p_path = r"https://github.com/sizipusx/fundamental/blob/ef97bef5926a26664701158df800d15ea9fe5224/files/one_apt_price.xlsx?raw=True"
 pop_path = r"https://github.com/sizipusx/fundamental/blob/c982621f8cb42abfd6d07a7cf6f928767c17772e/files/pop.xlsx?raw=True"
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
 #년단위
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
-#상시
-header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
+#상시 : 평단가 업데이트로 header 업데이트 2021. 12. 16
+header_path = 'https://github.com/sizipusx/fundamental/blob/2288b85df1ad5fa0541e2f5d7d09a2a021d6c08c/files/header.xlsx?raw=True'
 
 
 
@@ -73,49 +75,33 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    # header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
-    header_excel = pd.ExcelFile(header_path)
-    kb_header = header_excel.parse('KB')
+    header_dict = pd.read_excel(header_path, sheet_name=None)
+    header = header_dict['one_price']
     ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
-    # p_path = r"https://github.com/sizipusx/fundamental/blob/de78350bd7c03eb4c7e798fd4bbada8d601ce410/files/kb_price.xlsx?raw=True"
-    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-
-    # for k in kb_dict.keys():
-    #     print(k)
-    mdf = kb_dict['sell']
-    jdf = kb_dict['jeon']
-    mdf = mdf.iloc[2:mdf['서울'].count()+1]
-    jdf = jdf.iloc[2:jdf['서울'].count()+1]
-    #index 날짜 변경
-    index_list = list(mdf.index)
-
-    new_index = []
-
-    for num, raw_index in enumerate(index_list):
-        temp = str(raw_index).split('.')
-        if int(temp[0]) > 12 :
-            if len(temp[0]) == 2:
-                new_index.append('19' + temp[0] + '.' + temp[1])
-            else:
-                new_index.append(temp[0] + '.' + temp[1])
-        else:
-            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
-    mdf.set_index(pd.to_datetime(new_index), inplace=True)
-    jdf.set_index(pd.to_datetime(new_index), inplace=True)
-    mdf.columns = kb_header.columns
-    jdf.columns = kb_header.columns
-    mdf = round(mdf.replace('-','0').astype(float)*3.3,2)
-    jdf = round(jdf.replace('-','0').astype(float)*3.3,2)
-    mdf_ch = mdf.pct_change()*100
-    mdf_ch = mdf_ch.round(decimals=2)
-    jdf_ch = jdf.pct_change()*100
-    jdf_ch = jdf_ch.round(decimals=2)
-        
+    one_dict = pd.read_excel(p_path, sheet_name=None, header=10)
+    omdf = one_dict['sell']
+    ojdf = one_dict['jeon']
+    omdf['지역명'] = header['지역명'].str.strip()
+    ojdf['지역명'] = header['지역명'].str.strip()
+    omdf = omdf.set_index('지역명')
+    ojdf = ojdf.set_index('지역명')
+    omdf = omdf.iloc[:,4:]
+    ojdf = ojdf.iloc[:,4:]
+    omdf = omdf.T
+    ojdf = ojdf.T
+    omdf = omdf.astype(str).applymap(lambda x: x.replace('-','0'))
+    ojdf = ojdf.astype(str).applymap(lambda x: x.replace('-','0'))
+    omdf = omdf.astype(float)
+    ojdf = ojdf.astype(float)
+    omdf_ch = omdf.pct_change()*100
+    omdf_ch = omdf_ch.round(decimals=2)
+    ojdf_ch = ojdf.pct_change()*100
+    ojdf_ch = ojdf_ch.round(decimals=2)
     ######################### 여기부터는 전세가율
-    jratio = round(jdf/mdf*100,1)
+    jratio = round(ojdf/omdf*100,1)
     
 
-    return mdf, mdf_ch, jdf, jdf_ch, jratio
+    return omdf, omdf_ch, ojdf, ojdf_ch, jratio
 
 
 @st.cache

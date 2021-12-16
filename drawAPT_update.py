@@ -1333,12 +1333,12 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     st.dataframe(last_df)
     last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
     last_df.columns = ['평균매매가', '평균전세가']
-    last_df.dropna(inplace=True)
+    #last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
     #같이 그려보자
     gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
-    do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
+    do_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주도']
     # gu_city_series = pd.Series(gu_city)
     column_list = peong_df.columns.to_list()
     city_series = pd.Series(column_list)
@@ -1348,7 +1348,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
         draw_list.append('전국')
     elif selected_dosi == '전국':
         draw_list = ['전국', '서울', '부산', '대구', '인천', '광주', '대전', '울산', '경기', '강원', '충북', '충남', '전북', '전남', \
-                        '경남', '경북', '제주서귀포']
+                        '경남', '경북', '제주도']
     elif selected_dosi == '수도권':
         draw_list = ['전국', '서울', '경기', '인천']
     elif selected_dosi == '6개광역시':
@@ -1373,7 +1373,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     elif selected_dosi == '경남':
         draw_list = ['전국', '창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구', '양산', '거제', '진주', '김해', '통영']
     elif selected_dosi == '제주':
-        draw_list = ['전국', '제주서귀포']
+        draw_list = ['전국', '제주', '서귀포']
     elif selected_dosi == '기타지방':
         draw_list = ['전국', '강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
         
