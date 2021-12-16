@@ -1330,6 +1330,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
 def run_local_price(peong_df, peongj_df, selected_dosi):
     #마지막 데이터만
     last_df = peong_df.iloc[-1].T.to_frame()
+    st.dataframe(last_df)
     last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
     last_df.columns = ['평균매매가', '평균전세가']
     last_df.dropna(inplace=True)
