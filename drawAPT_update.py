@@ -62,6 +62,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     # fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
@@ -138,6 +139,7 @@ def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
@@ -145,7 +147,7 @@ def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     js_sell = senti_dfs[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_3 = df_as[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_4 = df_bs[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '('+ selected_dosi + ') 매매거래지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] 매매거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '활발함', x =  js_3.index, y= js_3[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -175,13 +177,14 @@ def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
     js_j = senti_dfs[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_5 = df_as[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_6 = df_bs[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '('+ selected_dosi + ') 전세수급지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] 전세수급지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_5.index, y= js_5[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -211,13 +214,14 @@ def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs):
     js_js = senti_dfs[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_7 = df_as[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_8 = df_bs[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '('+ selected_dosi + ') 전세거래지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] 전세거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '활발함', x =  js_7.index, y= js_7[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -230,6 +234,7 @@ def draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs):
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
@@ -254,7 +259,7 @@ def draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs):
     js_for = senti_dfs[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_9 = df_as[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_10 = df_bs[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '('+ selected_dosi + ') KB부동산 매매가격 전망지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] KB부동산 매매가격 전망지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '약간상승', x =  js_9.index, y= js_9[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -284,13 +289,14 @@ def draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs):
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
     js_for_j = senti_dfs[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_11 = df_as[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_12 = df_bs[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '('+ selected_dosi + ') KB부동산 전세가격 전망지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] KB부동산 전세가격 전망지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '약간상승', x =  js_11.index, y= js_11[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -320,13 +326,14 @@ def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 #인구수/ 미분양 그래프
 def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     last_month = pd.to_datetime(str(df.index.values[-1])).strftime('%Y.%m')
 
-    titles = dict(text= '('+selected_city2 +') 세대수 증감', x=0.5, y = 0.9) 
+    titles = dict(text= '['+selected_city2 +'] 세대수 증감', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -342,6 +349,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     fig.update_yaxes(title_text='증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     # fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 
@@ -371,7 +379,7 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
 
     slice_df =  not_sell_df.xs(city, axis=1, level=0)   
 
-    titles = dict(text= ' ('+ selected_city2 + ') 준공 후 미분양', x=0.5, y = 0.9) 
+    titles = dict(text= ' <b>['+ selected_city2 + ']</b> 준공 후 미분양', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '60~85㎡', x =  slice_df.index, y= slice_df['60∼85㎡'], marker_color = marker_colors[1]), secondary_y = True)
     fig.add_trace(go.Bar(name ='85㎡초과', x =  slice_df.index, y= slice_df['85㎡초과'], marker_color = marker_colors[2]), secondary_y = True)                                             
@@ -383,12 +391,13 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
     fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     # fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 #평단가 변화
 def run_sell_index(selected_dosi, sadf, sadf_ch):
     x_data = sadf_ch.index
-    title = "[<b>"+selected_dosi+"</b>] KB 평균 매매 평단가 변화"
+    title = "[<b>"+selected_dosi+"</b>] 부동산원 매매 평균 평단가"
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =sadf_ch[selected_dosi], 
@@ -404,12 +413,13 @@ def run_sell_index(selected_dosi, sadf, sadf_ch):
     fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 
 def run_jeon_index(selected_dosi, jadf, jadf_ch):
     x_data = jadf_ch.index
-    title = "[<b>"+selected_dosi+"</b>] KB 평균 전세 평단가 변화"
+    title = "[<b>"+selected_dosi+"</b>] 부동산원 전세 평균 평단가"
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =jadf_ch[selected_dosi], 
@@ -425,11 +435,12 @@ def run_jeon_index(selected_dosi, jadf, jadf_ch):
     fig.update_yaxes(title_text="평단가 증감%", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def run_jeon_ratio(selected_dosi, jratio_df):
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-    title = "["+selected_dosi+"] KB 평균 가격 전세가율"
+    title = "<b>["+selected_dosi+"]</b> KB 평균 가격 전세가율"
     if selected_dosi == "제주서귀포":
         selected_dosi ="제주" 
     titles = dict(text= title, x=0.5, y = 0.95) 
@@ -442,6 +453,7 @@ def run_jeon_ratio(selected_dosi, jratio_df):
     fig.add_hline(y=70.0, line_width=2, line_dash="solid", line_color="blue", annotation_text="70%", annotation_position="bottom right")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 
@@ -452,21 +464,23 @@ def run_buy_index(selected_dosi, org_df):
     #마지막 달
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
-    title = last_month + "월까지 ["+selected_dosi+"] 매입자별 전체 거래량"
+    title = last_month + "월까지 <b>["+selected_dosi+"]</b> 매입자별 전체 거래량"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def run_buy_ratio(selected_dosi, org_df):
     selected_df = org_df.xs(selected_dosi, axis=1, level=0)
     per_df = round(selected_df.div(selected_df['합계'], axis=0)*100,1)
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
-    title = last_month + "월까지 ["+selected_dosi+"] 매입자별 비중"
+    title = last_month + "월까지 <b>["+selected_dosi+"]</b> 매입자별 비중"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def run_trade_index(selected_dosi, org_df, mdf):
@@ -477,7 +491,7 @@ def run_trade_index(selected_dosi, org_df, mdf):
         selected_dosi ="제주서귀포"
     selected_df = org_df.xs(selected_dosi, axis=1, level=0)
     x_data = selected_df.index
-    title = "["+selected_dosi+"] <b>KB 매매지수와 거래량</b>"
+    title = "<b>["+selected_dosi+"]</b> KB 매매지수와 거래량"
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매거래량", x = x_data, y =selected_df['합계'], 
@@ -493,12 +507,13 @@ def run_trade_index(selected_dosi, org_df, mdf):
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
    
-    titles = dict(text= '('+selected_city2 +') 월간 매매-전세 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_city2 +']</b> 월간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -512,6 +527,7 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -562,7 +578,7 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
 
 def run_bubble(selected_city2, bubble_df2, m_power):
     #bubble index chart
-    titles = dict(text= '('+selected_city2 +') 월간 버블 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_city2 +']</b> 월간 버블 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = '버블지수', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[3]), secondary_y = True)
@@ -573,6 +589,7 @@ def run_bubble(selected_city2, bubble_df2, m_power):
     fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='blue',  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
     
     with st.beta_expander("See explanation"):
