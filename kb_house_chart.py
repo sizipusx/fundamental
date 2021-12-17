@@ -134,8 +134,8 @@ def load_one_data():
     last_odf.dropna(inplace=True)
     last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
     last_odf = last_odf.reset_index()
-    basic_df = get_basic_df()
-    odf = pd.merge(last_odf, basic_df, how='inner', left_on='index', right_on='short')
+    basic_odf = get_basic_df()
+    odf = pd.merge(last_odf, basic_odf, how='inner', left_on='index', right_on='short')
 
     with urlopen(geo_source) as response:
         one_geo_data = json.load(response)
