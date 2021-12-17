@@ -203,7 +203,7 @@ def load_index_data():
     last_df = last_df.reset_index()
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
+    kb_df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
     
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
@@ -261,7 +261,7 @@ def load_index_data():
         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return df, kb_geo_data, last_df, mdf
+    return kb_df, kb_geo_data, last_df, mdf
 
 @st.cache
 def load_senti_data():
