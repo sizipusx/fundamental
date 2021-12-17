@@ -239,10 +239,10 @@ def load_index_data():
     power_df = power_df.sort_values('rank', ascending=True)
 
     with urlopen(geo_source) as response:
-        geo_data = json.load(response)
+        kb_geo_data = json.load(response)
     
     #geojson file 변경
-    for idx, sigun_dict in enumerate(geo_data['features']):
+    for idx, sigun_dict in enumerate(kb_geo_data['features']):
         sigun_id = sigun_dict['properties']['SIG_CD']
         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
         try:
@@ -256,12 +256,12 @@ def load_index_data():
         txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
         # print(txt)
         
-        geo_data['features'][idx]['id'] = sigun_id
-        geo_data['features'][idx]['properties']['sell_change'] = sell_change
-        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
-        geo_data['features'][idx]['properties']['tooltip'] = txt
+        kb_geo_data['features'][idx]['id'] = sigun_id
+        kb_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return df, geo_data, last_df, mdf
+    return df, kb_geo_data, last_df, mdf
 
 @st.cache
 def load_senti_data():
