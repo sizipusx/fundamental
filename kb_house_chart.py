@@ -404,11 +404,10 @@ def draw_basic(df, geo_data, last_df):
 
             for col in df.columns:
                 df[col] = df[col].astype(str)
-            
                 df['text'] = '<b>' + df['index'] + '</b> <br>' + \
                                 '매매증감:' + df['매매증감'] + '<br>' + \
                                 '전세증감:' + df['전세증감']
-            title = dict(text='<b> 부동산원 주요 시/구 주간 매매지수 증감</b>',  x=0.5, y = 0.9) 
+            title = dict(text='<b> KB 주요 시/구 주간 매매지수 증감</b>',  x=0.5, y = 0.9) 
             fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['매매증감'].astype(float),
                                                 colorscale="Bluered", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
             fig.update_traces(autocolorscale=True,
@@ -428,7 +427,7 @@ def draw_basic(df, geo_data, last_df):
             df['text'] = '<b>' + df['index'] + '</b> <br>' + \
                                 '매매증감:' + df['매매증감'] + '<br>' + \
                                 '전세증감:' + df['전세증감'] 
-            title = dict(text='<b>주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
+            title = dict(text='<b> KB 주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
             fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
                                             colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
             fig.update_traces(autocolorscale=True,
