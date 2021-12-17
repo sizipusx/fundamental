@@ -93,6 +93,8 @@ header_excel = pd.ExcelFile(header_path)
 #geojson file open
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
+
+@st.cache
 def get_basic_df():
     #2021-7-30 코드 추가
     # header 파일
@@ -134,8 +136,8 @@ def load_one_data():
     last_odf.dropna(inplace=True)
     last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
     last_odf = last_odf.reset_index()
-    basic_odf = get_basic_df()
-    odf = pd.merge(last_odf, basic_odf, how='inner', left_on='index', right_on='short')
+    basic_df = get_basic_df()
+    odf = pd.merge(last_odf, basic_df, how='inner', left_on='index', right_on='short')
 
     with urlopen(geo_source) as response:
         one_geo_data = json.load(response)
@@ -173,7 +175,7 @@ def load_index_data():
     header = header_excel.parse('KB')
     # code_df = header_excel.parse('code', index_col=1)
     # code_df.index = code_df.index.str.strip()
-    kb_basic_df = get_basic_df()
+    basic_df = get_basic_df()
 
     mdf.columns = header.columns
     mdf = mdf.iloc[1:]
@@ -203,7 +205,7 @@ def load_index_data():
     kb_last_df = kb_last_df.reset_index()
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    kb_df = pd.merge(kb_last_df, kb_basic_df, how='inner', left_on='index', right_on='short')
+    kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_on='index', right_on='short')
     
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
