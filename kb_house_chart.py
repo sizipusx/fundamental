@@ -37,9 +37,9 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
- <h2 style="color:#008080; font-family:Georgia"> 지역분석 </h3> <br>
- <hr style= "  display: block;
+<h2 style="font-size:300%; color:#008080; font-family:Georgia"> 부동산 주간 시계열 분석 <br>
+<h3 style="color:#008080; font-family:Georgia"> 전체 지역 현황 </h3> <br>
+<hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   margin-left: auto;
@@ -48,7 +48,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="House Analysis Dashboard", page_icon="", layout="wide")
+st.set_page_config(page_title="Weekly House Analysis Dashboard", page_icon="", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -507,7 +507,7 @@ def draw_basic(df, geo_data, last_df):
 
 
 if __name__ == "__main__":
-    st.title("KB 부동산 주간 시계열 분석")
+    #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
     mdf, jdf, geo_data, basic_df = load_index_data()
     data_load_state.text("index Data Done! (using st.cache)")
