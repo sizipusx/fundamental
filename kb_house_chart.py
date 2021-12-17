@@ -89,8 +89,8 @@ kb_file_path = 'https://github.com/sizipusx/fundamental/blob/c0d6a4c2f3e8f358df0
 header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
 
-@st.cache
-def load_one_data():
+#@st.cache
+#def load_one_data():
 
 
 @st.cache
