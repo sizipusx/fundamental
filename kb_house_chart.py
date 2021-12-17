@@ -173,7 +173,7 @@ def load_index_data():
     header = header_excel.parse('KB')
     # code_df = header_excel.parse('code', index_col=1)
     # code_df.index = code_df.index.str.strip()
-    basic_df = get_basic_df()
+    kb_basic_df = get_basic_df()
 
     mdf.columns = header.columns
     mdf = mdf.iloc[1:]
@@ -195,15 +195,15 @@ def load_index_data():
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
     #일주일 간 상승률 순위
-    last_df = mdf_change.iloc[-1].T.to_frame()
-    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
-    last_df.columns = ['매매증감', '전세증감']
-    last_df.dropna(inplace=True)
-    last_df = last_df.astype(float).fillna(0).round(decimals=2)
-    last_df = last_df.reset_index()
+    kb_last_df = mdf_change.iloc[-1].T.to_frame()
+    kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+    kb_last_df.columns = ['매매증감', '전세증감']
+    kb_last_df.dropna(inplace=True)
+    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
+    kb_last_df = kb_last_df.reset_index()
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    kb_df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
+    kb_df = pd.merge(kb_last_df, kb_basic_df, how='inner', left_on='index', right_on='short')
     
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
@@ -261,7 +261,7 @@ def load_index_data():
         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return kb_df, kb_geo_data, last_df, mdf
+    return kb_df, kb_geo_data, kb_last_df, mdf
 
 @st.cache
 def load_senti_data():
@@ -578,11 +578,11 @@ def draw_basic(df, geo_data, last_df, odf, one_geo_data, last_odf):
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    df, kb_geo_data, last_df, mdf = load_index_data()
-    odf, one_geo_data, last_odf = load_one_data()
+    df, k_geo_data, last_df, kb_mdf = load_index_data()
+    one_df, o_geo_data, one_last_odf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
-    kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
+    kb_last_week = pd.to_datetime(str(kb_mdf.index.values[-1])).strftime('%Y.%m.%d')
     st.subheader("KB last update date: " + kb_last_week)
 
     org = df['지역']
@@ -597,7 +597,7 @@ if __name__ == "__main__":
         #st.table(power_df.iloc[:50])
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            draw_basic(df, kb_geo_data, last_df, odf, one_geo_data, last_odf)
+            draw_basic(df, k_geo_data, last_df, one_df, o_geo_data, one_last_odf)
             # st.dataframe(df)
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
@@ -607,7 +607,7 @@ if __name__ == "__main__":
         city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
 
-        column_list = mdf.columns.to_list()
+        column_list = kb_mdf.columns.to_list()
         city_series = pd.Series(column_list)
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도-시', city_list
