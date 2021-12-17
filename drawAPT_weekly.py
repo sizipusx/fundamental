@@ -131,3 +131,47 @@ def draw_power_table(power_df):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def draw_Choroplethmapbox(df, geo_data, flag):
+    #choroplethmapbax
+    token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
+    for col in df.columns:
+        df[col] = df[col].astype(str)
+    df['text'] = '<b>' + df['index'] + '</b> <br>' + \
+                    '매매증감:' + df['매매증감'] + '<br>' + \
+                    '전세증감:' + df['전세증감']
+    title = dict(text='<b>'+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9) 
+    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
+                                        colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=0))
+    fig.update_traces(autocolorscale=True,
+                        text=df['text'], # hover text
+                        marker_line_color='black', # line markers between states
+                        colorbar_title=flag[1])
+    # fig.update_traces(hovertext=df['index'])
+    fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+                    mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
+    fig.update_layout(title = title, titlefont_size=15)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    st.plotly_chart(fig)
+
+def draw_index_change_with_bar(last_df, flag):
+    title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
+    fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
+                text=last_df['index'])
+    fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
+    # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_traces(texttemplate='%{label}', textposition='outside')
+    fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
+    fig.update_yaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    st.plotly_chart(fig)
+
+def draw_index_change_with_bubble(last_df, flag):
+    #매매/전세 증감률 Bubble Chart
+    title = dict(text='<b>'+flag[0]+' 주요 시-구 주간 지수 증감</b>', x=0.5, y = 0.9) 
+    fig = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
+                        text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)

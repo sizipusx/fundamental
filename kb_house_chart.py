@@ -85,12 +85,83 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
 kb_file_path = 'https://github.com/sizipusx/fundamental/blob/c0d6a4c2f3e8f358df023cf0ccb9c8eee37a5fd9/files/kb_weekly.xlsx?raw=True'
+#감정원 데이터
+one_path = r"https://github.com/sizipusx/fundamental/blob/944d794e3364d00c6e0af800ec6869ab79a86980/files/one_weekly.xlsxraw=True"
 #헤더 변경
 header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
+#geojson file open
+geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
-#@st.cache
-#def load_one_data():
+def get_basic_df():
+    #2021-7-30 코드 추가
+    # header 파일
+    basic_df = header_excel.parse('city')
+    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    basic_df.dropna(inplace=True)
+    basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
+
+    return basic_df
+
+@st.cache
+def load_one_data():
+    #감정원 주간 데이터
+    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    # one header 변경
+    oneh = header_excel.parse('one')
+    omdf = one_dict['매매지수']
+    ojdf = one_dict['전세지수']
+    omdf.columns = oneh.columns
+    ojdf.columns = oneh.columns
+    omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
+    ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
+     #주간 증감률
+    omdf_change = omdf.pct_change()*100
+    omdf_change = omdf_change.iloc[1:]
+    omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    omdf_change = omdf_change.astype(float).fillna(0)
+    ojdf_change = ojdf.pct_change()*100
+    ojdf_change = ojdf_change.iloc[1:]
+    ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    ojdf_change = ojdf_change.astype(float).fillna(0)
+    omdf_change = omdf_change.round(decimals=3)
+    ojdf_change = ojdf_change.round(decimals=3)
+    #일주일 간 상승률 순위
+    last_odf = omdf_change.iloc[-1].T.to_frame()
+    last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
+    last_odf.columns = ['매매증감', '전세증감']
+    last_odf.dropna(inplace=True)
+    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+    last_odf = last_odf.reset_index()
+    basic_df = get_basic_df()
+    odf = pd.merge(last_odf, basic_df, how='inner', left_on='index', right_on='short')
+
+    with urlopen(geo_source) as response:
+        geo_data = json.load(response)
+    
+    #geojson file 변경
+    for idx, sigun_dict in enumerate(geo_data['features']):
+        sigun_id = sigun_dict['properties']['SIG_CD']
+        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+        try:
+            sell_change = odf.loc[(df.code == sigun_id), '매매증감'].iloc[0]
+            jeon_change = odf.loc[(df.code == sigun_id), '전세증감'].iloc[0]
+        except:
+            sell_change = 0
+            jeon_change =0
+        # continue
+        
+        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+        # print(txt)
+        
+        geo_data['features'][idx]['id'] = sigun_id
+        geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        geo_data['features'][idx]['properties']['tooltip'] = txt
+   
+    return odf, geo_data, last_odf
+
 
 
 @st.cache
@@ -100,15 +171,9 @@ def load_index_data():
     jdf = kb_dict.parse("전세지수", skiprows=1, index_col=0, parse_dates=True)
     
     header = header_excel.parse('KB')
-    code_df = header_excel.parse('code', index_col=1)
-    code_df.index = code_df.index.str.strip()
-    #2021-7-30 코드 추가
-    # header 파일
-    basic_df = header_excel.parse('city')
-    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
-    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
-    basic_df.dropna(inplace=True)
-    basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
+    # code_df = header_excel.parse('code', index_col=1)
+    # code_df.index = code_df.index.str.strip()
+    basic_df = get_basic_df()
 
     mdf.columns = header.columns
     mdf = mdf.iloc[1:]
@@ -119,9 +184,60 @@ def load_index_data():
     jdf = jdf.iloc[1:]
     jdf.index = pd.to_datetime(jdf.index)
     jdf = jdf.round(decimals=2)
+    #======== 여기 변경 ==============
+    #주간 증감률
+    mdf_change = mdf.pct_change()*100
+    mdf_change = mdf_change.iloc[1:]
+    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    mdf_change = mdf_change.astype(float).fillna(0)
+    jdf_change = jdf.pct_change()*100
+    jdf_change = jdf_change.iloc[1:]
+    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf_change = jdf_change.astype(float).fillna(0)
+    #일주일 간 상승률 순위
+    last_df = mdf_change.iloc[-1].T.to_frame()
+    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+    last_df.columns = ['매매증감', '전세증감']
+    last_df.dropna(inplace=True)
+    last_df = last_df.astype(float).fillna(0).round(decimals=2)
+    last_df = last_df.reset_index()
+    #마지막달 dataframe에 지역 코드 넣어 합치기
+    # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+    df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
+    
+    # df.columns = ['매매증감', '전세증감', 'SIG_CD']
+    # df['SIG_CD']= df['SIG_CD'].astype(str)
 
-    #geojson file open
-    geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
+    #버블 지수 만들어 보자
+    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df = bubble_df*100
+    bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df2 = bubble_df2
+    
+    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+    bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df3 = bubble_df3.astype(float).fillna(0).round(decimals=5)*100
+    # st.dataframe(bubble_df3)
+
+    #전세 파워 만들기
+    cum_ch = (mdf_change/100 +1).cumprod()
+    jcum_ch = (jdf_change/100 +1).cumprod()
+    m_power = (jcum_ch - cum_ch)*100
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '버블지수']
+    # power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+    power_df['score'] = power_df['jrank'] + power_df['brank']
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+    power_df = power_df.sort_values('rank', ascending=True)
+
     with urlopen(geo_source) as response:
         geo_data = json.load(response)
     
@@ -145,7 +261,7 @@ def load_index_data():
         geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return mdf, jdf, geo_data, basic_df
+    return df, geo_data, last_df, mdf
 
 @st.cache
 def load_senti_data():
@@ -394,52 +510,33 @@ def run_sentimental_index(mdf_change):
 
 
 
-def draw_basic(df, geo_data, last_df):
+def draw_basic(df, geo_data, last_df, odf, one_geo_data, last_odf):
     ### Block 0#########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
-            #choroplethmapbax
-            token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
-            for col in df.columns:
-                df[col] = df[col].astype(str)
-            df['text'] = '<b>' + df['index'] + '</b> <br>' + \
-                            '매매증감:' + df['매매증감'] + '<br>' + \
-                            '전세증감:' + df['전세증감']
-            title = dict(text='<b> KB 주요 시/구 주간 매매지수 증감</b>',  x=0.5, y = 0.9) 
-            fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['매매증감'].astype(float),
-                                                colorscale="Bluered", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
-            fig.update_traces(autocolorscale=True,
-                                text=df['text'], # hover text
-                                marker_line_color='black', # line markers between states
-                                colorbar_title="매매증감")
-            # fig.update_traces(hovertext=df['index'])
-            fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
-                            mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-            fig.update_layout(title = title, titlefont_size=15)
-            fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-            st.plotly_chart(fig)
+            flag = ['KB','매매증감']
+            drawAPT_weekly.draw_Choroplethmapbox(df, geo_data, flag)
         with col2:
             st.write("")
         with col3:
-            for col in df.columns:
-                df[col] = df[col].astype(str)
-            df['text'] = '<b>' + df['index'] + '</b> <br>' + \
-                            '매매증감:' + df['매매증감'] + '<br>' + \
-                            '전세증감:' + df['전세증감'] 
-            title = dict(text='<b> KB 주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
-            fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
-                                            colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
-            fig.update_traces(autocolorscale=True,
-                                    text=df['text'], # hover text
-                                    marker_line_color='black', # line markers between states
-                                    colorbar_title="전세증감")
-            # fig.update_traces(hovertext=df['index'])
-            fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
-                                mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-            fig.update_layout(title = title, titlefont_size=15)
-            fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-            st.plotly_chart(fig)
+            flag = ['KB','전세증감']
+            drawAPT_weekly.draw_Choroplethmapbox(df, geo_data, flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 0#########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            flag = ['부동산원','매매증감']
+            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag)
+        with col2:
+            st.write("")
+        with col3:
+            flag = ['부동산원','전세증감']
+            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag)
     html_br="""
     <br>
     """
@@ -448,29 +545,13 @@ def draw_basic(df, geo_data, last_df):
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
-            title = dict(text='KB 시/구 주간 매매지수 증감',  x=0.5, y = 0.9) 
-            fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
-                        text=last_df['index'])
-            fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
-            # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
-            fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-            fig.update_traces(texttemplate='%{label}', textposition='outside')
-            fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
-            fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-            st.plotly_chart(fig)
+            flag = ['KB','매매증감']
+            drawAPT_weekly.draw_index_change_with_bar(last_df, flag)
         with col2:
             st.write("")
         with col3:
-            title = dict(text='부동산원 시/구 주간 매매지수 증감',  x=0.5, y = 0.9) 
-            fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
-                        text=last_df['index'])
-            fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
-            # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
-            fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-            fig.update_traces(texttemplate='%{label}', textposition='outside')
-            fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
-            fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-            st.plotly_chart(fig)              
+            flag = ['부동산원','매매증감']
+            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag)        
     html_br="""
     <br>
     """
@@ -479,26 +560,14 @@ def draw_basic(df, geo_data, last_df):
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
-            #매매/전세 증감률 Bubble Chart
-            title = dict(text='KB 주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
-            fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                                text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
-            fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-            fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-            fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-            st.plotly_chart(fig1)
+            flag = ['KB','매매증감']
+            drawAPT_weekly.draw_index_change_with_bubble(last_df, flag)
 
         with col2:
             st.write("")
         with col3:
-            #매매/전세 증감률 Bubble Chart
-            title = dict(text='부동산원 주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
-            fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                                text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
-            fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-            fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-            fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-            st.plotly_chart(fig1)
+            flag = ['부동산원','매매증감']
+            drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag)
             
     html_br="""
     <br>
@@ -509,74 +578,13 @@ def draw_basic(df, geo_data, last_df):
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    mdf, jdf, geo_data, basic_df = load_index_data()
+    df, kb_geo_data, last_df, mdf = load_index_data()
+    odf, one_geo_data, last_odf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     st.subheader("KB last update date: " + kb_last_week)
 
-    #주간 증감률
-    mdf_change = mdf.pct_change()*100
-    mdf_change = mdf_change.iloc[1:]
-    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    mdf_change = mdf_change.astype(float).fillna(0)
-    jdf_change = jdf.pct_change()*100
-    jdf_change = jdf_change.iloc[1:]
-    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change = jdf_change.astype(float).fillna(0)
-    #일주일 간 상승률 순위
-    last_df = mdf_change.iloc[-1].T.to_frame()
-    last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
-    last_df.columns = ['매매증감', '전세증감']
-    last_df.dropna(inplace=True)
-    last_df = last_df.astype(float).fillna(0).round(decimals=2)
-    last_df = last_df.reset_index()
-    #마지막달 dataframe에 지역 코드 넣어 합치기
-    # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    df = pd.merge(last_df, basic_df, how='inner', left_on='index', right_on='short')
-    
-    # df.columns = ['매매증감', '전세증감', 'SIG_CD']
-    # df['SIG_CD']= df['SIG_CD'].astype(str)
-
-    #버블 지수 만들어 보자
-    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
-    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
-    bubble_df = bubble_df*100
-    bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
-    bubble_df2 = bubble_df2
-    
-    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
-    bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
-    bubble_df3 = bubble_df3.astype(float).fillna(0).round(decimals=5)*100
-    # st.dataframe(bubble_df3)
-
-    #전세 파워 만들기
-    cum_ch = (mdf_change/100 +1).cumprod()
-    jcum_ch = (jdf_change/100 +1).cumprod()
-    m_power = (jcum_ch - cum_ch)*100
-    m_power = m_power.astype(float).fillna(0).round(decimals=2)
-
-    #마지막 데이터만 
-    power_df = m_power.iloc[-1].T.to_frame()
-    power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
-    power_df.columns = ['전세파워', '버블지수']
-    # power_df.dropna(inplace=True)
-    power_df = power_df.astype(float).fillna(0).round(decimals=2)
-    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
-    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
-    power_df['score'] = power_df['jrank'] + power_df['brank']
-    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
-    power_df = power_df.sort_values('rank', ascending=True)
-    # st.dataframe(power_df)
-    # st.table(power_df)
-
-    # #function 불러 보자
-    # path = 'https://github.com/sizipusx/fundamental/blob/9abf900fe8527ff491c5daabd9f3bd6279821425/files/city_info.xlsx?raw=true'
-    # header_excel = pd.ExcelFile(path)
-    # df1 = header_excel.parse('basic', index_col=0)
-    # df1['총인구수'] = df1['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
-    # df1['세대수'] = df1['세대수'].apply(lambda x: x.replace(',','')).astype(float)
-    # df1.dropna(inplace=True)
     org = df['지역']
     org = org.str.split(" ", expand=True)
 
@@ -589,7 +597,7 @@ if __name__ == "__main__":
         #st.table(power_df.iloc[:50])
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            draw_basic(df, geo_data, last_df)
+            draw_basic(df, kb_geo_data, last_df, odf, one_geo_data, last_odf)
             # st.dataframe(df)
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
