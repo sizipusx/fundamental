@@ -407,27 +407,27 @@ def draw_basic(df, geo_data, last_df):
             
                 df['text'] = '<b>' + df['index'] + '</b> <br>' + \
                                 '매매증감:' + df['매매증감'] + '<br>' + \
-                                '전세증감:' + df['전세증감'].str 
-                title = dict(text='<b> 부동산원 주요 시/구 주간 매매지수 증감</b>',  x=0.5, y = 0.9) 
-                fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['매매증감'].astype(float),
-                                                    colorscale="Bluered", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
-                fig.update_traces(autocolorscale=True,
-                                    text=df['text'], # hover text
-                                    marker_line_color='white', # line markers between states
-                                    colorbar_title="매매증감")
-                # fig.update_traces(hovertext=df['index'])
-                fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
-                                mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-                fig.update_layout(title = title, titlefont_size=15)
-                fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-                st.plotly_chart(fig)
+                                '전세증감:' + df['전세증감']
+            title = dict(text='<b> 부동산원 주요 시/구 주간 매매지수 증감</b>',  x=0.5, y = 0.9) 
+            fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['매매증감'].astype(float),
+                                                colorscale="Bluered", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
+            fig.update_traces(autocolorscale=True,
+                                text=df['text'], # hover text
+                                marker_line_color='white', # line markers between states
+                                colorbar_title="매매증감")
+            # fig.update_traces(hovertext=df['index'])
+            fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+                            mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
+            fig.update_layout(title = title, titlefont_size=15)
+            fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+            st.plotly_chart(fig)
         with col2:
             st.write("")
         with col3:
             df[col] = df[col].astype(str)
             df['text'] = '<b>' + df['index'] + '</b> <br>' + \
                                 '매매증감:' + df['매매증감'] + '<br>' + \
-                                '전세증감:' + df['전세증감'].str 
+                                '전세증감:' + df['전세증감'] 
             title = dict(text='<b>주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
             fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
                                             colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
