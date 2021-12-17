@@ -164,7 +164,7 @@ def load_one_data():
 
 
 
-#@st.cache
+@st.cache
 def load_index_data():
     kb_dict = pd.ExcelFile(kb_file_path)
     mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
@@ -510,18 +510,20 @@ def run_sentimental_index(mdf_change):
 
 
 
-def draw_basic(df, geo_data, last_df, odf, one_geo_data, last_odf):
+def draw_basic():
+    # kb_df, k_geo_data, last_df, kb_mdf = load_index_data()
+    # one_df, o_geo_data, one_last_odf = load_one_data()
     ### Block 0#########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(df, geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(df, k_geo_data, flag)
         with col2:
             st.write("")
         with col3:
             flag = ['KB','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(df, geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(df, k_geo_data, flag)
     html_br="""
     <br>
     """
@@ -531,12 +533,12 @@ def draw_basic(df, geo_data, last_df, odf, one_geo_data, last_odf):
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
             flag = ['부동산원','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(odf, o_geo_data, flag)
         with col2:
             st.write("")
         with col3:
             flag = ['부동산원','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(odf, o_geo_data, flag)
     html_br="""
     <br>
     """
@@ -579,7 +581,7 @@ if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
     df, k_geo_data, last_df, kb_mdf = load_index_data()
-    one_df, o_geo_data, one_last_odf = load_one_data()
+    odf, o_geo_data, last_odf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(kb_mdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -597,8 +599,8 @@ if __name__ == "__main__":
         #st.table(power_df.iloc[:50])
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            draw_basic(df, k_geo_data, last_df, one_df, o_geo_data, one_last_odf)
-            #draw_basic()
+            #draw_basic(df, k_geo_data, last_df, one_df, o_geo_data, one_last_odf)
+            draw_basic()
             # st.dataframe(df)
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
