@@ -27,6 +27,34 @@ from matplotlib import font_manager, rc
 pd.set_option('display.float_format', '{:.2f}'.format)
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
+#############html 영역####################
+html_header="""
+<head>
+<title>PControlDB</title>
+<meta charset="utf-8">
+<meta name="keywords" content="project control, dashboard, management, EVA">
+<meta name="description" content="project control dashboard">
+<meta name="author" content="indiesoul">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
+ <h2 style="color:#008080; font-family:Georgia"> 지역분석 </h3> <br>
+ <hr style= "  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1.5px;"></h1>
+"""
+
+st.set_page_config(page_title="House Analysis Dashboard", page_icon="", layout="wide")
+st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
+st.markdown(html_header, unsafe_allow_html=True)
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
 
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,0,255)', 'rgb(153,204,0)', \
                        'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,69,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
@@ -56,16 +84,21 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-file_path = 'https://github.com/sizipusx/fundamental/blob/c0d6a4c2f3e8f358df023cf0ccb9c8eee37a5fd9/files/kb_weekly.xlsx?raw=True'
+kb_file_path = 'https://github.com/sizipusx/fundamental/blob/c0d6a4c2f3e8f358df023cf0ccb9c8eee37a5fd9/files/kb_weekly.xlsx?raw=True'
+#헤더 변경
+header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
+header_excel = pd.ExcelFile(header_path)
+
+@st.cache
+def load_one_data():
+
 
 @st.cache
 def load_index_data():
-    kb_dict = pd.ExcelFile(file_path)
+    kb_dict = pd.ExcelFile(kb_file_path)
     mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
     jdf = kb_dict.parse("전세지수", skiprows=1, index_col=0, parse_dates=True)
-    #헤더 변경
-    path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
-    header_excel = pd.ExcelFile(path)
+    
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
@@ -116,7 +149,7 @@ def load_index_data():
 
 @st.cache
 def load_senti_data():
-    kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+    kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
     js = kb_dict['매수매도']
     js = js.set_index("Unnamed: 0")
@@ -362,25 +395,38 @@ def run_sentimental_index(mdf_change):
 
 
 def draw_basic():
-    #버블지수/전세파워 table 추가
-    title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
-    fig = go.Figure(data=[go.Table(
-                        header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
-                                            '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
-                                    fill_color='royalblue',
-                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
-                                    font=dict(color='white', size=12),
-                                    height=40),
-                        cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
-                                            power_df['brank'], power_df['score'], power_df['rank']], 
-                                    fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
-                                    align=['right','left', 'left', 'left', 'left', 'left', 'left'],
-                                    font_size=12,
-                                    height=30))
-                    ])
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
-    fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+    ### Block 0#########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            #버블지수/전세파워 table 추가
+            title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
+            fig = go.Figure(data=[go.Table(
+                                header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
+                                                    '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
+                                            fill_color='royalblue',
+                                            align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+                                            font=dict(color='white', size=12),
+                                            height=40),
+                                cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
+                                                    power_df['brank'], power_df['score'], power_df['rank']], 
+                                            fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
+                                            align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+                                            font_size=12,
+                                            height=30))
+                            ])
+            fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_update.draw_company_info(selected_dosi, basic_df, bigc, smc)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    
 
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
