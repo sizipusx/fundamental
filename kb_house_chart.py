@@ -248,8 +248,8 @@ def load_index_data():
         sigun_id = sigun_dict['properties']['SIG_CD']
         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
         try:
-            sell_change = df.loc[(df.code == sigun_id), '매매증감'].iloc[0]
-            jeon_change = df.loc[(df.code == sigun_id), '전세증감'].iloc[0]
+            sell_change = kb_df.loc[(kb_df.code == sigun_id), '매매증감'].iloc[0]
+            jeon_change = kb_df.loc[(kb_df.code == sigun_id), '전세증감'].iloc[0]
         except:
             sell_change = 0
             jeon_change =0
@@ -263,9 +263,9 @@ def load_index_data():
         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change
+    return kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3
 
-#@st.cache
+@st.cache(allow_output_mutation=True)
 def load_senti_data():
     kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
@@ -396,27 +396,7 @@ def run_price_index() :
         )
     st.plotly_chart(fig)
 
-    #bubble index chart
-    titles = dict(text= '<b>['+selected_dosi2 +']</b> 주간 전세파워-버블지수', x=0.5, y = 0.9) 
-
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    
-    # fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
-    # fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-
-    
-    fig.add_trace(go.Scatter(mode='lines', name = '전세파워', x =  m_power.index, y= m_power[selected_dosi2], marker_color = marker_colors[0]), secondary_y = True)
-    # fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[1]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df3.index, y= bubble_df3[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
-
-    fig.update_layout(hovermode="x unified")
-    fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='blue', secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+    #drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble3)
 
 def run_sentimental_index(mdf_change):
     titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위지수 지수', x=0.5, y = 0.9) 
@@ -582,7 +562,7 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change = load_index_data()
+    kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change , m_power, bubble3= load_index_data()
     odf, o_geo_data, last_odf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
