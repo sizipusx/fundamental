@@ -9,6 +9,7 @@ from pandas.io.json import json_normalize
 
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
@@ -23,6 +24,22 @@ marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,
                              'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
                                  'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="graph by 기하급수적",
+            textangle=0,
+            opacity=0.2,
+            font=dict(color="black", size=20),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=-0.2,
+            showarrow=False,
+        )
+    ]
+)
 
 def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, city3, city_series) :
     if city3 in draw_list:
@@ -50,6 +67,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(template="myID")
     fig.update_layout(
             showlegend=True,
             legend=dict(

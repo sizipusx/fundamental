@@ -12,6 +12,7 @@ from urllib.request import urlopen
 
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
@@ -23,13 +24,33 @@ from matplotlib import font_manager, rc
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
 
-plt.rc('font', family='DejaVu Sans') 
-font = {'color':  'darkred',
-        'weight': 'normal',
-        'size': 16,
-        }
-
 pd.set_option('display.float_format', '{:.2f}'.format)
+# 챠트 기본 설정 
+# marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
+
+marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,0,255)', 'rgb(153,204,0)', \
+                       'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,69,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
+                        'rgb(255,153,204)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
+                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
+                             'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
+                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
+template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="graph by 기하급수적",
+            textangle=0,
+            opacity=0.2,
+            font=dict(color="black", size=20),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=-0.2,
+            showarrow=False,
+        )
+    ]
+)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
@@ -121,17 +142,6 @@ def load_senti_data():
 
 
 def run_price_index() :
-   
-    # 챠트 기본 설정 
-    # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(153,204,0)', \
-                       'rgb(153,51,102)', 'rgb(255,0,0)', 'rgb(0,255,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
-                        'rgb(255,0,255)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
-                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
-                             'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
-                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
-
     #같이 그려보자
     gu_city = ['부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
@@ -158,14 +168,11 @@ def run_price_index() :
 
     
 
-    titles = dict(text= '('+selected_dosi2 +') 주간 매매-전세 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
     fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-
-    
     fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
@@ -174,7 +181,8 @@ def run_price_index() :
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    # fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
+    fig.update_layout(template="myID")
+    #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
     #             annotation_position="bottom right")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
@@ -238,7 +246,7 @@ def run_price_index() :
     st.plotly_chart(fig)
 
     #bubble index chart
-    titles = dict(text= '('+selected_dosi2 +') 주간 전세파워-버블지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> 주간 전세파워-버블지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -256,16 +264,11 @@ def run_price_index() :
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='blue', secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def run_sentimental_index(mdf_change):
-    # st.dataframe(senti_df)
-     # 챠트 기본 설정 
-    # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
-    marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,255,255)', 'rgb(237,234,255)']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
-
-    titles = dict(text= '('+selected_dosi +') 매수우위지수 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위지수 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -273,9 +276,9 @@ def run_sentimental_index(mdf_change):
     fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["100>매수자많음"], mode="text"))
     fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
-    # fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(template="myID")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
@@ -339,7 +342,7 @@ def run_sentimental_index(mdf_change):
     st.plotly_chart(fig)
 
     x_data = mdf_change.index
-    title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
+    title = "<b>["+selected_dosi+"]</b> 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =round(mdf_change[selected_dosi],2), 
@@ -353,6 +356,7 @@ def run_sentimental_index(mdf_change):
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m-%d')
     fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 
@@ -375,6 +379,7 @@ def draw_basic():
                                     height=30))
                     ])
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
     #choroplethmapbax
@@ -388,7 +393,7 @@ def draw_basic():
                     '전세증감:' + df['전세증감'] 
     title = dict(text='<b>주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
-                                        colorscale="Reds", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
+                                        colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=True,
                         text=df['text'], # hover text
                         marker_line_color='white', # line markers between states
@@ -401,7 +406,6 @@ def draw_basic():
     st.plotly_chart(fig)
 
     title = dict(text='주요 시-구 주간 매매지수 증감',  x=0.5, y = 0.9) 
-    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
     fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
                 text=last_df['index'])
     fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
