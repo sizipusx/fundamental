@@ -175,6 +175,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
     fig.update_layout(title = title, titlefont_size=15)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_index_change_with_bar(last_df, flag):
@@ -187,6 +188,7 @@ def draw_index_change_with_bar(last_df, flag):
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_yaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_index_change_with_bubble(last_df, flag):
@@ -197,6 +199,7 @@ def draw_index_change_with_bubble(last_df, flag):
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change):
@@ -361,7 +364,8 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
                         marker_color= marker_colors[0]), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=mdf_change[selected_dosi].mean(), line=dict(color="MediumPurple",width=2, dash="dot"))
+    #fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m-%d')
