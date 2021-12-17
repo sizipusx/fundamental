@@ -164,7 +164,7 @@ def load_one_data():
 
 
 
-@st.cache
+#@st.cache
 def load_index_data():
     kb_dict = pd.ExcelFile(kb_file_path)
     mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
@@ -263,7 +263,7 @@ def load_index_data():
    
     return kb_df, kb_geo_data, kb_last_df, mdf
 
-@st.cache
+#@st.cache
 def load_senti_data():
     kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
@@ -598,6 +598,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
             draw_basic(df, k_geo_data, last_df, one_df, o_geo_data, one_last_odf)
+            #draw_basic()
             # st.dataframe(df)
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
