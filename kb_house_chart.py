@@ -104,7 +104,7 @@ def get_basic_df():
 
     return basic_df
 
-@st.cache
+#@st.cache
 def load_one_data():
     #감정원 주간 데이터
     one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
@@ -164,7 +164,7 @@ def load_one_data():
 
 
 
-@st.cache
+#@st.cache
 def load_index_data():
     kb_dict = pd.ExcelFile(kb_file_path)
     mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
