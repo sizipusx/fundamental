@@ -401,7 +401,6 @@ def draw_basic(df, geo_data, last_df):
         with col1:
             #choroplethmapbax
             token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
-            st.dataframe(df)
             for col in df.columns:
                 df[col] = df[col].astype(str)
             df['text'] = '<b>' + df['index'] + '</b> <br>' + \
