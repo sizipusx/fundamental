@@ -401,7 +401,7 @@ def draw_basic(df, geo_data, last_df):
         with col1:
             #choroplethmapbax
             token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
-
+            st.dataframe(df)
             for col in df.columns:
                 df[col] = df[col].astype(str)
                 df['text'] = '<b>' + df['index'] + '</b> <br>' + \
@@ -423,8 +423,9 @@ def draw_basic(df, geo_data, last_df):
         with col2:
             st.write("")
         with col3:
-            df[col] = df[col].astype(str)
-            df['text'] = '<b>' + df['index'] + '</b> <br>' + \
+            for col in df.columns:
+                df[col] = df[col].astype(str)
+                df['text'] = '<b>' + df['index'] + '</b> <br>' + \
                                 '매매증감:' + df['매매증감'] + '<br>' + \
                                 '전세증감:' + df['전세증감'] 
             title = dict(text='<b> KB 주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
