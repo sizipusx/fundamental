@@ -138,15 +138,15 @@ def load_one_data():
     odf = pd.merge(last_odf, basic_df, how='inner', left_on='index', right_on='short')
 
     with urlopen(geo_source) as response:
-        geo_data = json.load(response)
+        one_geo_data = json.load(response)
     
     #geojson file 변경
-    for idx, sigun_dict in enumerate(geo_data['features']):
+    for idx, sigun_dict in enumerate(one_geo_data['features']):
         sigun_id = sigun_dict['properties']['SIG_CD']
         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
         try:
-            sell_change = odf.loc[(df.code == sigun_id), '매매증감'].iloc[0]
-            jeon_change = odf.loc[(df.code == sigun_id), '전세증감'].iloc[0]
+            sell_change = odf.loc[(odf.code == sigun_id), '매매증감'].iloc[0]
+            jeon_change = odf.loc[(odf.code == sigun_id), '전세증감'].iloc[0]
         except:
             sell_change = 0
             jeon_change =0
@@ -155,12 +155,12 @@ def load_one_data():
         txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
         # print(txt)
         
-        geo_data['features'][idx]['id'] = sigun_id
-        geo_data['features'][idx]['properties']['sell_change'] = sell_change
-        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
-        geo_data['features'][idx]['properties']['tooltip'] = txt
+        one_geo_data['features'][idx]['id'] = sigun_id
+        one_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        one_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return odf, geo_data, last_odf
+    return odf, one_geo_data, last_odf
 
 
 
