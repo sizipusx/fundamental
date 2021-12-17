@@ -394,57 +394,62 @@ def run_sentimental_index(mdf_change):
 
 
 
-def draw_basic():
+def draw_basic(df, geo_data, last_df):
     ### Block 0#########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
-            #버블지수/전세파워 table 추가
-            title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
-            fig = go.Figure(data=[go.Table(
-                                header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
-                                                    '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
-                                            fill_color='royalblue',
-                                            align=['right','left', 'left', 'left', 'left', 'left', 'left'],
-                                            font=dict(color='white', size=12),
-                                            height=40),
-                                cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
-                                                    power_df['brank'], power_df['score'], power_df['rank']], 
-                                            fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
-                                            align=['right','left', 'left', 'left', 'left', 'left', 'left'],
-                                            font_size=12,
-                                            height=30))
-                            ])
-            fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
-            fig.update_layout(template="myID")
-            st.plotly_chart(fig)
-        with col2:
-            st.write("")
-        with col3:
             #choroplethmapbax
             token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
 
             for col in df.columns:
                 df[col] = df[col].astype(str)
             
+                df['text'] = '<b>' + df['index'] + '</b> <br>' + \
+                                '매매증감:' + df['매매증감'] + '<br>' + \
+                                '전세증감:' + df['전세증감'] 
+                title = dict(text='<b> 부동산원 주요 시/구 주간 매매지수 증감</b>',  x=0.5, y = 0.9) 
+                fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['매매증감'].astype(float),
+                                                    colorscale="Bluered", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
+                fig.update_traces(autocolorscale=True,
+                                    text=df['text'], # hover text
+                                    marker_line_color='white', # line markers between states
+                                    colorbar_title="매매증감")
+                # fig.update_traces(hovertext=df['index'])
+                fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+                                mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
+                fig.update_layout(title = title, titlefont_size=15)
+                fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+                st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3:
+            df[col] = df[col].astype(str)
             df['text'] = '<b>' + df['index'] + '</b> <br>' + \
-                            '매매증감:' + df['매매증감'] + '<br>' + \
-                            '전세증감:' + df['전세증감'] 
+                                '매매증감:' + df['매매증감'] + '<br>' + \
+                                '전세증감:' + df['전세증감'] 
             title = dict(text='<b>주요 시/구 주간 전세지수 증감</b>',  x=0.5, y = 0.9) 
             fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df['전세증감'].astype(float),
-                                                colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
+                                            colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
             fig.update_traces(autocolorscale=True,
-                                text=df['text'], # hover text
-                                marker_line_color='white', # line markers between states
-                                colorbar_title="전세증감")
+                                    text=df['text'], # hover text
+                                    marker_line_color='white', # line markers between states
+                                    colorbar_title="전세증감")
             # fig.update_traces(hovertext=df['index'])
             fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
-                            mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
+                                mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
             fig.update_layout(title = title, titlefont_size=15)
             fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
             st.plotly_chart(fig)
-
-            title = dict(text='주요 시-구 주간 매매지수 증감',  x=0.5, y = 0.9) 
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 1#########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            title = dict(text='KB 시/구 주간 매매지수 증감',  x=0.5, y = 0.9) 
             fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
                         text=last_df['index'])
             fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
@@ -454,26 +459,53 @@ def draw_basic():
             fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
             fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
             st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3:
+            title = dict(text='부동산원 시/구 주간 매매지수 증감',  x=0.5, y = 0.9) 
+            fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
+                        text=last_df['index'])
+            fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
+            # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
+            fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+            fig.update_traces(texttemplate='%{label}', textposition='outside')
+            fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
+            fig.update_yaxes(title_text='주간 매매지수 증감률', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+            st.plotly_chart(fig)              
     html_br="""
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    
-
-    
-    # st.datafrasme(last_df.T.style.highlight_max(axis=1))
-
-
-    
+    ### Block 2#########################################################################################
     with st.beta_container():
-        #매매/전세 증감률 Bubble Chart
-        title = dict(text='주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
-        fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                            text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
-        fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-        fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-        fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig1)
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            #매매/전세 증감률 Bubble Chart
+            title = dict(text='KB 주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
+            fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
+                                text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
+            fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+            fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+            fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+            st.plotly_chart(fig1)
+
+        with col2:
+            st.write("")
+        with col3:
+            #매매/전세 증감률 Bubble Chart
+            title = dict(text='부동산원 주요 시-구 주간 매매/전세지수 증감', x=0.5, y = 0.9) 
+            fig1 = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
+                                text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
+            fig1.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+            fig1.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+            fig1.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+            st.plotly_chart(fig1)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     st.title("KB 부동산 주간 시계열 분석")
@@ -558,7 +590,7 @@ if __name__ == "__main__":
         st.table(power_df.iloc[:50])
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            draw_basic()
+            draw_basic(df, geo_data, last_df)
             # st.dataframe(df)
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
