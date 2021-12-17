@@ -411,7 +411,7 @@ def draw_basic(df, geo_data, last_df):
                                                 colorscale="Bluered", zmin=df['매매증감'].astype(float).min(), zmax=df['매매증감'].astype(float).max(), marker_line_width=0))
             fig.update_traces(autocolorscale=True,
                                 text=df['text'], # hover text
-                                marker_line_color='white', # line markers between states
+                                marker_line_color='black', # line markers between states
                                 colorbar_title="매매증감")
             # fig.update_traces(hovertext=df['index'])
             fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
@@ -432,7 +432,7 @@ def draw_basic(df, geo_data, last_df):
                                             colorscale="Bluered", zmin=df['전세증감'].astype(float).min(), zmax=df['전세증감'].astype(float).max(), marker_line_width=0))
             fig.update_traces(autocolorscale=True,
                                     text=df['text'], # hover text
-                                    marker_line_color='white', # line markers between states
+                                    marker_line_color='black', # line markers between states
                                     colorbar_title="전세증감")
             # fig.update_traces(hovertext=df['index'])
             fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
