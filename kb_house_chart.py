@@ -104,7 +104,7 @@ def get_basic_df():
 
     return basic_df
 
-#@st.cache
+@st.cache
 def load_one_data():
     #감정원 주간 데이터
     one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
@@ -164,7 +164,7 @@ def load_one_data():
 
 
 
-#@st.cache
+@st.cache
 def load_index_data():
     kb_dict = pd.ExcelFile(kb_file_path)
     mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
@@ -261,7 +261,7 @@ def load_index_data():
         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return kb_df, kb_geo_data, kb_last_df, mdf
+    return kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change
 
 #@st.cache
 def load_senti_data():
@@ -518,12 +518,12 @@ def draw_basic():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(df, k_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag)
         with col2:
             st.write("")
         with col3:
             flag = ['KB','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(df, k_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag)
     html_br="""
     <br>
     """
@@ -548,7 +548,7 @@ def draw_basic():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
-            drawAPT_weekly.draw_index_change_with_bar(last_df, flag)
+            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
         with col2:
             st.write("")
         with col3:
@@ -563,7 +563,7 @@ def draw_basic():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
-            drawAPT_weekly.draw_index_change_with_bubble(last_df, flag)
+            drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag)
 
         with col2:
             st.write("")
@@ -580,14 +580,14 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    df, k_geo_data, last_df, kb_mdf = load_index_data()
+    kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change = load_index_data()
     odf, o_geo_data, last_odf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
-    kb_last_week = pd.to_datetime(str(kb_mdf.index.values[-1])).strftime('%Y.%m.%d')
+    kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     st.subheader("KB last update date: " + kb_last_week)
 
-    org = df['지역']
+    org = kb_df['지역']
     org = org.str.split(" ", expand=True)
 
     #여기서부터는 선택
@@ -610,7 +610,7 @@ if __name__ == "__main__":
         city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
 
-        column_list = kb_mdf.columns.to_list()
+        column_list = mdf.columns.to_list()
         city_series = pd.Series(column_list)
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도-시', city_list
