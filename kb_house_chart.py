@@ -451,8 +451,8 @@ if __name__ == "__main__":
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     one_last_week = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m.%d')
-    st.caption("KB last update date: " + kb_last_week)
-    st.caption("부동산원 last update date: " + one_last_week)
+    st.write("KB last update date: " + kb_last_week)
+    st.write("부동산원 last update date: " + one_last_week)
 
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
