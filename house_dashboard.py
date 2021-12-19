@@ -57,7 +57,7 @@ not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9f
 #년단위
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
 #상시 : 평단가 업데이트로 header 업데이트 2021. 12. 16
-header_path = 'https://github.com/sizipusx/fundamental/blob/2288b85df1ad5fa0541e2f5d7d09a2a021d6c08c/files/header.xlsx?raw=True'
+header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=True'
 
 
 
