@@ -499,6 +499,8 @@ if __name__ == "__main__":
             small_list = ['제주, 서귀포']
         elif selected_dosi == '세종':
             small_list = ['세종']
+        else:
+            small_list = [selected_dosi]
         
         second_list = city_series[city_series.str.contains(selected_dosi)].to_list()
         selected_dosi2 = st.sidebar.selectbox(
