@@ -456,8 +456,8 @@ if __name__ == "__main__":
 
     elif my_choice == 'Price Index':
         
-        city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
-                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
+        city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '지방', '제주도']
 
         column_list = mdf.columns.to_list()
         city_series = pd.Series(column_list)
@@ -469,13 +469,15 @@ if __name__ == "__main__":
         small_list = []
         mirco_list = []
         if selected_dosi == '전국':
-            small_list = ['전국', '수도권', '기타지방']
-        elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '대구' or selected_dosi == '인천' or selected_dosi == '광주' \
+            small_list = ['전국', '수도권', '지방']
+        elif selected_dosi == '서울' or selected_dosi == '부산' or selected_dosi == '인천' or selected_dosi == '광주' \
             or selected_dosi == '대전' or selected_dosi == '울산' :
             small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        elif selected_dosi == '대구':
+            small_list = ['대구','대구 수성구', '대구 중구', '대구 동구', '대구 서구', '대구 남구', '대구 북구', '대구 달서구', '대구 달성군'] 
         elif selected_dosi == '경기':
             small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
-                        '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+                        '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기 광주', '화성']
         elif selected_dosi == '강원':
             small_list = ['강원', '춘천','강릉', '원주']
         elif selected_dosi == '충북':
@@ -490,8 +492,8 @@ if __name__ == "__main__":
             small_list = ['경북','포항','구미', '경산', '안동','김천']
         elif selected_dosi == '충북':
             small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
-        elif selected_dosi == '제주서귀포':
-            small_list = ['제주서귀포']
+        elif selected_dosi == '제주도':
+            small_list = ['제주, 서귀포']
         elif selected_dosi == '세종':
             small_list = ['세종']
         
@@ -536,8 +538,8 @@ if __name__ == "__main__":
         senti_df = load_senti_data()
         data_load_state.text("매수매도 index Data Done! (using st.cache)")
 
-        city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
-                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '기타지방', '제주서귀포']
+        city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '지방', '제주도']
 
         js_1 = senti_df.xs("매도자많음", axis=1, level=1)
         js_1.columns = city_list
