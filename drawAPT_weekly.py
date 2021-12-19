@@ -217,6 +217,7 @@ def run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change):
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
+    fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
     #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
     #             annotation_position="bottom right")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
