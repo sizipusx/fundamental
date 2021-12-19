@@ -315,6 +315,22 @@ def run_price_index() :
         draw_list = ['경기', '경기 경부1권', '경기 경부2권', '경기 서해안권', '경기 동부1권', '경기 동부2권', '경기 경의권', '경기 경원권']
     elif selected_dosi == '지방':
         draw_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+    elif selected_dosi == '강원':
+        draw_list = ['강원', '춘천','강릉', '원주']
+    elif selected_dosi == '충북':
+        draw_list = ['충북','청주', '충주','제천']
+    elif selected_dosi == '충남':
+        draw_list = ['충남','천안', '공주','아산', '논산', '계룡','당진','서산']
+    elif selected_dosi == '전북':
+        draw_list = ['전북', '전주', '익산', '군산']
+    elif selected_dosi == '전남':
+        draw_list = ['전남', '목포','순천','여수','광양']
+    elif selected_dosi == '경북':
+        draw_list = ['경북','포항','구미', '경산', '안동','김천']
+    elif selected_dosi == '충북':
+        draw_list = ['경남','창원', '양산','거제','진주', '김해','통영']
+    elif selected_dosi == '제주도':
+        draw_list = ['제주, 서귀포']
     
     ### Block KB #########################################################################################
     with st.beta_container():
