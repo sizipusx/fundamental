@@ -46,7 +46,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
         draw_list = city_series[city_series.str.contains(city3)].to_list()
     if city3 in gu_city:
         draw_list = city_series[city_series.str.contains(city3)].to_list()
-    if "경기" in draw_list:
+    if ("경기" in draw_list) and (len(draw_list) == 1):
         draw_list = ['경기', '수원', '안양','성남', '용인', '고양', '안산']
     try:
         title = "<b>KB 매매지수 변화 같이 보기</b>"
