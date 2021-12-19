@@ -69,6 +69,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
         fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
         fig.update_layout(template="myID")
+        fig.update_layout(hovermode="x unified")
         fig.update_layout(
                 showlegend=True,
                 legend=dict(
