@@ -47,7 +47,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
     if city3 in gu_city:
         draw_list = city_series[city_series.str.contains(city3)].to_list()
     if "경기" in draw_list:
-        draw_list = ['경기', '수원', '안양','성남', '용인', '고양시', '안산']
+        draw_list = ['경기', '수원', '안양','성남', '용인', '고양', '안산']
     try:
         title = "<b>KB 매매지수 변화 같이 보기</b>"
         titles = dict(text= title, x=0.5, y = 0.85) 
@@ -112,7 +112,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
             )
         st.plotly_chart(fig)
     except KeyError as keys:
-        st.write(f"KB에는 없음 {keys}")
+        st.write(f" {keys} KB에는 없음")
 
 def draw_power(selected_dosi2, m_power, bubble_df3):
     #bubble index chart
