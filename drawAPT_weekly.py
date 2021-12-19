@@ -47,8 +47,6 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
     if city3 in gu_city:
         draw_list = city_series[city_series.str.contains(city3)].to_list()
 
-    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
-   
     title = "<b>KB 매매지수 변화 같이 보기</b>"
     titles = dict(text= title, x=0.5, y = 0.85) 
 
