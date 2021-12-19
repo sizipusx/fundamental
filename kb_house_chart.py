@@ -37,8 +37,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h2 style="font-size:300%; color:#008080; font-family:Georgia"> 부동산 주간 시계열 분석 <br>
-<h3 style="color:#008080; font-family:Georgia"> 전체 지역 현황 </h3> <br>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 부동산 주간 시계열 분석 <br>
 <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
