@@ -162,7 +162,7 @@ def load_one_data():
         one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         one_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return odf, one_geo_data, last_odf
+    return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change
 
 @st.cache(allow_output_mutation=True)
 def load_index_data():
@@ -313,7 +313,7 @@ def run_price_index() :
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
              '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
     
-    ### Block 0#########################################################################################
+    ### Block KB #########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
@@ -322,6 +322,19 @@ def run_price_index() :
             st.write("")
         with col3:
             drawAPT_weekly.run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 부동산원 #########################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            drawAPT_weekly.run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, selected_dosi3, city_series)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_weekly.run_one_index(selected_dosi2, omdf, ojdf, omdf_change, ojdf_change)
     html_br="""
     <br>
     """
@@ -415,11 +428,13 @@ if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
     kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change , m_power, bubble3= load_index_data()
-    odf, o_geo_data, last_odf = load_one_data()
+    odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
+    one_last_week = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m.%d')
     st.subheader("KB last update date: " + kb_last_week)
+    st.subheader("부동산원 last update date: " + one_last_week)
 
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
