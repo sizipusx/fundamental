@@ -300,18 +300,18 @@ def run_price_index() :
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
         # draw_list = [selected_dosi]
     elif selected_dosi == '전국':
-        draw_list = ['전국', '수도권', '기타지방']
+        draw_list = ['전국', '수도권', '지방']
     elif selected_dosi == '서울':
         draw_list = ['서울 강북', '서울 강남']
     elif selected_dosi == '수도권':
         draw_list = ['서울', '경기', '인천']
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         draw_list = ['부산', '대구', '광주', '대전', '울산']
     elif selected_dosi == '경기':
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
-             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기 광주', '화성']
     
     ### Block KB #########################################################################################
     with st.beta_container():
