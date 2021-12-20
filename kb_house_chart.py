@@ -579,3 +579,7 @@ if __name__ == "__main__":
     else :
         citys = odf['short'].to_list()
         options = st.multiselect('Select City to Compare index', citys, citys[:2])
+        submit = st.sidebar.button('Draw Index chart togethger')
+        if submit:
+            drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
+            #drawAPT_weekly.run_price_index_all(options, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
