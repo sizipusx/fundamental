@@ -459,7 +459,7 @@ if __name__ == "__main__":
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis')
+                    "What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together')
                     )
     if my_choice == 'Basic':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
@@ -555,7 +555,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Price Index together')
         if submit:
             run_price_index()
-    else:
+    elif my_choice == 'Sentiment analysis':
         data_load_state = st.text('Loading 매수매도 index Data...')
         senti_df = load_senti_data()
         data_load_state.text("매수매도 index Data Done! (using st.cache)")
@@ -578,3 +578,6 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             run_sentimental_index(mdf_change)
+    else :
+        citys = odf['short'].to_list()
+        options = st.multiselect('Select City to Compare index', citys, citys[:2])
