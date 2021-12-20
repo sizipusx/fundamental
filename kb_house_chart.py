@@ -577,7 +577,8 @@ if __name__ == "__main__":
         if submit:
             run_sentimental_index(mdf_change)
     else :
-        citys = odf['short'].to_list()
+        #citys = odf['short'].to_list()
+        citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:2])
         submit = st.sidebar.button('Draw Index chart togethger')
         if submit:
