@@ -362,7 +362,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
 def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
     do_city = ['경기','강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
     gu_city = ['서울', '부산', '대구', '대전', '울산', '인천', '광주']
-    etc_city = ['강남', '강북', '6개광역시', '5개광역시', '기타지방']
+    etc_city = ['강남', '강북', '6대광역시', '5대광역시', '지방']
 
     if selected_city == '전국' and selected_city2 == '전국':
         city = '전국 합계'
@@ -706,10 +706,10 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '기타지방':
+    elif selected_dosi == '지방':
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
-        title = '기타지방 인구 동향'
+        title = '지방 인구 동향'
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
@@ -864,10 +864,10 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '기타지방':
+    elif selected_dosi == '지방':
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
-        title =  "기타지방 기업체 수"
+        title =  "지방 기업체 수"
         titles = dict(text= title, x=0.5, y = 0.95) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
@@ -1024,11 +1024,11 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '기타지방':
+    elif selected_dosi == '지방':
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
         
-        title =  "기타지방 연말정산 현황"
+        title =  "지방 연말정산 현황"
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_line = [('원천징수지/주소지',           '비율')]
@@ -1184,11 +1184,11 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '기타지방':
+    elif selected_dosi == '지방':
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
         
-        title =  "기타지방 건강보험료 현황"
+        title =  "지방 건강보험료 현황"
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
@@ -1251,14 +1251,14 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     if selected_dosi in gu_city:
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()
     elif selected_dosi == '전국':
-        draw_list = ['전국', '수도권', '기타지방']
+        draw_list = ['전국', '수도권', '지방']
     elif selected_dosi == '서울':
         draw_list = ['서울 강북', '서울 강남']
     elif selected_dosi == '수도권':
         draw_list = ['서울', '경기', '인천']
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         draw_list = ['부산', '대구', '광주', '대전', '울산', '인천']
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         draw_list = ['부산', '대구', '광주', '대전', '울산']
     elif selected_dosi == '경기':
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
@@ -1279,7 +1279,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
         draw_list = ['창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구', '양산', '거제', '진주', '김해', '통영']
     elif selected_dosi == '제주':
         draw_list = ['제주서귀포']
-    elif selected_dosi == '기타지방':
+    elif selected_dosi == '지방':
         draw_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
        
     title = "<b>KB 매매지수 변화 같이 보기</b>"
@@ -1367,9 +1367,9 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
                         '경남', '경북', '제주도']
     elif selected_dosi == '수도권':
         draw_list = ['전국', '서울', '경기', '인천']
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         draw_list = ['전국', '부산', '대구', '광주', '대전', '울산', '인천']
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         draw_list = ['전국', '부산', '대구', '광주', '대전', '울산']
     elif selected_dosi == '경기':
         draw_list = ['전국', '경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
@@ -1388,10 +1388,10 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
         draw_list = ['전국', '포항 남구', '포항 북구', '구미', '경산', '안동', '김천']
     elif selected_dosi == '경남':
         draw_list = ['전국', '창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구', '양산', '거제', '진주', '김해', '통영']
-    elif selected_dosi == '제주':
+    elif selected_dosi == '제주도':
         draw_list = ['전국', '제주', '서귀포']
-    elif selected_dosi == '기타지방':
-        draw_list = ['전국', '강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주서귀포']
+    elif selected_dosi == '지방':
+        draw_list = ['전국', '강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주도']
         
     draw_df = last_df.loc[draw_list,:]
 
