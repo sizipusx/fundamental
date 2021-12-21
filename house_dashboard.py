@@ -452,7 +452,10 @@ sub_df = sub_df.sort_values('전세가율', ascending=False )
 
 ### first select box ----
 senti_dfs, df_as, df_bs = load_senti_data()
-do_list = senti_dfs[0].columns.to_list()
+#do_list = senti_dfs[0].columns.to_list()
+#도시명 변경
+do_list = ['전국', '수도권', '지방', '6대광역시', '5대광역시', '서울', '경기', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
 
 selected_dosi = st.selectbox(' Select 광역시도', do_list)
 html_br="""
