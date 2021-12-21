@@ -91,8 +91,8 @@ def load_ratio_data():
     ojdf = ojdf.T
     omdf = omdf.astype(str).applymap(lambda x: x.replace('-','0'))
     ojdf = ojdf.astype(str).applymap(lambda x: x.replace('-','0'))
-    omdf = omdf.astype(float)
-    ojdf = ojdf.astype(float)
+    omdf = omdf.astype(float)*3.306
+    ojdf = ojdf.astype(float)*3.306
     omdf_ch = omdf.pct_change()*100
     omdf_ch = omdf_ch.round(decimals=2)
     ojdf_ch = ojdf.pct_change()*100
