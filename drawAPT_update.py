@@ -19,7 +19,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473']
 
-marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,0,255)', 'rgb(153,204,0)', \
+marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(244,201,107)', 'rgb(153,204,0)', \
                        'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,69,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
                         'rgb(255,153,204)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
                          'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
@@ -1300,6 +1300,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.add_vline(x="2019-1-1", line_dash="dash", line_color="gray")
     fig.update_layout(template="myID")
     fig.update_layout(
             showlegend=True,
@@ -1349,8 +1350,8 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     last_df = peong_df.iloc[-1].T.to_frame()
     last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
     last_df.columns = ['평균매매가', '평균전세가']
-    #last_df.dropna(inplace=True)
-    last_df = last_df.round(decimals=2)
+    last_df = last_df/10
+    last_df = last_df.round(decimals=1)
     #같이 그려보자
     gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
                  '천안', '청주', '전주', '포항', '창원']
@@ -1397,7 +1398,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
 
     # 사분면 그래프로 그려보자.
     #매매/전세 증감률 Bubble Chart
-    title = dict(text='주요 시-구 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
+    title = dict(text='부동산원 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
     # fig = go.Figure(data=go.Scatter(
     #     x=draw_df.loc[:,'평균매매가'], y=draw_df.loc[:,'평균전세가'], 
     #     mode='markers',
