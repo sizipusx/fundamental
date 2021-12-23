@@ -83,9 +83,9 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-kb_file_path = 'https://github.com/sizipusx/fundamental/blob/c0d6a4c2f3e8f358df023cf0ccb9c8eee37a5fd9/files/kb_weekly.xlsx?raw=True'
+kb_file_path = 'https://github.com/sizipusx/fundamental/blob/1b7c9f38dbd5c5cb9d885c8106410a80f0b7c6b8/files/kb_weekly.xlsx?raw=True'
 #감정원 데이터
-one_path = r"https://github.com/sizipusx/fundamental/blob/944d794e3364d00c6e0af800ec6869ab79a86980/files/one_weekly.xlsx?raw=True"
+one_path = r"https://github.com/sizipusx/fundamental/blob/cd391cc8eb99bf10b2c334d704cb20a98e7ded3a/files/one_weekly.xlsx?raw=True"
 #헤더 변경
 header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
