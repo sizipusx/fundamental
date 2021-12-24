@@ -83,7 +83,7 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-kb_file_path = 'https://github.com/sizipusx/fundamental/blob/0fa01eb4d350a077cb047956fb25af0f99cbc7fb/files/kb_weekly.xlsx?raw=True'
+kb_file_path = 'https://github.com/sizipusx/fundamental/blob/b40d5856a6a2d7c6b789c8255714591e81243674/files/kb_weekly.xlsx?raw=True'
 #감정원 데이터
 one_path = r"https://github.com/sizipusx/fundamental/blob/0fa01eb4d350a077cb047956fb25af0f99cbc7fb/files/one_weekly.xlsx?raw=True"
 #헤더 변경
