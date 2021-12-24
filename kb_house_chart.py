@@ -489,10 +489,15 @@ def draw_basic():
             flag = ['부동산원','매매증감']
             rank_odf = pd.DataFrame()
             rank_odf['1w'] = last_odf['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1w%'] = last_odf['1w'].round(decimals=2)
             rank_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['2w%'] = last_odf['2w'].round(decimals=2)
             rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['3w%'] = last_odf['3w'].round(decimals=2)
             rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1m%'] = last_odf['1m'].round(decimals=2)
             rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.write("KB 매매지수 기간별 순위")
