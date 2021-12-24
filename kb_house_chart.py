@@ -183,12 +183,12 @@ def load_index_data():
 
     mdf.columns = header.columns
     mdf = mdf.iloc[1:]
-    mdf.index = pd.to_datetime(mdf.index)
+    mdf.index = pd.to_datetime(mdf.index.dt.strftime('%Y-%m-%d'))
     mdf = mdf.round(decimals=2)
 
     jdf.columns = header.columns
     jdf = jdf.iloc[1:]
-    jdf.index = pd.to_datetime(jdf.index)
+    jdf.index = pd.to_datetime(jdf.index.dt.strftime('%Y-%m-%d'))
     jdf = jdf.round(decimals=2)
     #======== 여기 변경 ==============
     #주간 증감률
@@ -654,12 +654,14 @@ if __name__ == "__main__":
             drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
     else:
         period_ = omdf.index.tolist()
+        st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
             options = period_,
             value = (period_[-13], period_[-1]))
         st.write("시작: ", start_date)
         st.write("끝: ", end_date)
+        st.dataframe(omdf)
         submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
             drawAPT_weekly.run_one_index_together(period_, omdf, omdf_change)
