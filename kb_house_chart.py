@@ -212,6 +212,7 @@ def load_index_data():
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_index=True, right_on='short')
+    st.dataframe(kb_df)
     
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
