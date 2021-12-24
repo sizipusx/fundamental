@@ -465,11 +465,10 @@ def draw_basic():
             kb_last_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
-            st.dataframe(kb_last_df.style.bar(align='mid',color=['blue','red']))
-            #kb_last_df.style.format(precision=0, na_rep='MISSING', thousands=" ", formatter={('매매증감', '전세증감'): "{:.2f}"})
-            #kb_last_df.style.set_precision(2)
-            #st.table(kb_last_df)
-            #drawAPT_weekly.draw_index_table(kb_last_df, flag)
+            #st.dataframe(kb_last_df.style.bar(align='mid',color=['blue','red']))
+            import seaborn as sns
+            cm = sns.light_palette("green", as_cmap=True)
+            st.dataframe(kb_last_df.style.background_gradient(cmap=cm))
 
         with col2:
             st.write("")
