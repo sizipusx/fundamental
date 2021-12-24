@@ -185,7 +185,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     for col in df.columns:
         df[col] = df[col].astype(str)
-    df['text'] = '<b>' + df['index'] + '</b> <br>' + \
+    df['text'] = '<b>' + df['short'] + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감']
     title = dict(text='<b>'+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9) 
@@ -205,9 +205,9 @@ def draw_Choroplethmapbox(df, geo_data, flag):
 
 def draw_index_change_with_bar(last_df, flag):
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
-    fig = px.bar(last_df, x= 'index', y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
-                text=last_df['index'])
-    fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
+    fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
+                text=last_df.index)
+    fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {str(last_df.iloc[0,0])}", annotation_position="bottom right")
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_traces(texttemplate='%{label}', textposition='outside')
@@ -220,7 +220,7 @@ def draw_index_change_with_bubble(last_df, flag):
     #매매/전세 증감률 Bubble Chart
     title = dict(text='<b>'+flag[0]+' 주요 시-구 주간 지수 증감</b>', x=0.5, y = 0.9) 
     fig = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']), 
-                        text= last_df['index'], hover_name=last_df.index, color_continuous_scale='Bluered')
+                        text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
