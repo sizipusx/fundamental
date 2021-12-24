@@ -462,7 +462,7 @@ def draw_basic():
             kb_last_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
-            kb_last_df['매매증감'] = kb_last_df['매매증감'].round(decimals=2)
+            kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
             st.write(type(kb_last_df['매매증감']))
             st.dataframe(kb_last_df)
