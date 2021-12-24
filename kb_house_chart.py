@@ -660,4 +660,4 @@ if __name__ == "__main__":
             value = (period_[-13], period_[-1]))
         submit = st.sidebar.button('Draw Index chart togethger')
         if submit:
-            drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
+            drawAPT_weekly.run_one_index_together(period_, omdf, omdf_change)
