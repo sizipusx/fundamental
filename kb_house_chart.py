@@ -528,7 +528,7 @@ if __name__ == "__main__":
     org = org.str.split(" ", expand=True)
 
     #여기서부터는 선택
-    my_choice = st.sidebar.radio("What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together'))
+    my_choice = st.sidebar.radio("What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together', '기간증감분석'))
     if my_choice == 'Basic':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         #st.table(power_df.iloc[:50])
