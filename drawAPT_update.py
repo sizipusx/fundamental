@@ -624,7 +624,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
         title = '5광역시도 인구 동향'
@@ -652,7 +652,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
         
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
         title = '6광역시도 인구 동향'
@@ -1263,7 +1263,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
         draw_list = ['부산', '대구', '광주', '대전', '울산']
     elif selected_dosi == '경기':
         draw_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', \
-             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성']
+             '용인', '시흥', '군포', '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기 광주', '화성']
     elif selected_dosi == '충북':
         draw_list = ['청주 흥덕구', '청주 청원구', '청주 상당구', '청주 서원구', '충주', '제천']
     elif selected_dosi == '강원':
@@ -1278,7 +1278,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
         draw_list = ['포항 남구', '포항 북구', '구미', '경산', '안동', '김천']
     elif selected_dosi == '경남':
         draw_list = ['창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구', '양산', '거제', '진주', '김해', '통영']
-    elif selected_dosi == '제주':
+    elif selected_dosi == '제주도':
         draw_list = ['제주서귀포']
     elif selected_dosi == '지방':
         draw_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주도']
