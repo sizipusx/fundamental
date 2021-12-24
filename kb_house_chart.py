@@ -130,13 +130,15 @@ def load_one_data():
     omdf_change = omdf_change.round(decimals=3)
     ojdf_change = ojdf_change.round(decimals=3)
     #일주일 간 상승률 순위
-    last_odf = omdf_change.iloc[-1].T.to_frame()
+    last_odf = pd.DataFrame()
+    last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
     last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
-    last_odf['2w'] = ojdf_change.iloc[-2].T.to_frame()
-    last_odf['3w'] = ojdf_change.iloc[-3].T.to_frame()
-    last_odf['1m'] = ojdf_change.iloc[-4].T.to_frame()
-    last_odf['1y'] = ojdf_change.iloc[-51].T.to_frame()
-    last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
+    last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
+    last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
+    last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
+    last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
+    last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
+    #last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
     #last_odf.dropna(inplace=True)
     last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
     #last_odf = last_odf.reset_index()
@@ -199,13 +201,14 @@ def load_index_data():
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
     #일주일 간 상승률 순위
-    kb_last_df = mdf_change.iloc[-1].T.to_frame()
+    kb_last_df  = pd.DataFrame()
+    kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
     kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
-    kb_last_df['2w'] = jdf_change.iloc[-2].T.to_frame()
-    kb_last_df['3w'] = jdf_change.iloc[-3].T.to_frame()
-    kb_last_df['1m'] = jdf_change.iloc[-4].T.to_frame()
-    kb_last_df['1y'] = jdf_change.iloc[-51].T.to_frame()
-    kb_last_df.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
+    kb_last_df['1w'] = mdf_change.iloc[-1].T.to_frame() 
+    kb_last_df['2w'] = mdf_change.iloc[-2].T.to_frame()
+    kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
+    kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
+    kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
 #    kb_last_df.dropna(inplace=True)
     kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
 #    kb_last_df = kb_last_df.reset_index()
@@ -458,33 +461,35 @@ def draw_basic():
             flag = ['KB','매매증감']
             #kb_last_df = kb_last_df.set_index("index")
             #kb_last_df = round(kb_last_df,2)
-            kb_last_df['1w'] = kb_last_df['매매증감'].rank(ascending=True, method='min').round(decimals=1)
-            kb_last_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
-            kb_last_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
-            kb_last_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
-            kb_last_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df = pd.DataFrame()
+            rank_df['1w'] = kb_last_df['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
             import seaborn as sns
             cmap = cmap=sns.diverging_palette(5, 250, as_cmap=True)
-            st.dataframe(kb_last_df.style.background_gradient(cmap, axis=1)\
+            st.dataframe(rank_df.style.background_gradient(cmap, axis=1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}", '전세증감': "{:.2f}"})\
                 .bar(align='mid',color=['blue','red'])) 
             cm = sns.light_palette((260, 75, 60), input="husl", as_cmap=True)
-            st.dataframe(kb_last_df.style.background_gradient(cmap=cm))
+            st.dataframe(rank_df.style.background_gradient(cmap=cm))
 
 
         with col2:
             st.write("")
         with col3:
             flag = ['부동산원','매매증감']
-            last_odf['1w'] = last_odf['매매증감'].rank(ascending=True, method='min').round(decimals=1)
-            last_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
-            last_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
-            last_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
-            last_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            st.dataframe(last_odf.style.format(precision=0, na_rep='MISSING', thousands=",", formatter={'매매증감': "{:.2f}"}))
-            st.dataframe(last_odf.style.bar(align='mid',color=['blue','red']))
+            rank_odf = pd.DataFrame()
+            rank_odf['1w'] = last_odf['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
+            st.dataframe(rank_odf.style.format(precision=0, na_rep='MISSING', thousands=",", formatter={'매매증감': "{:.2f}"}))
+            st.dataframe(rank_odf.style.bar(align='mid',color=['blue','red']))
             #drawAPT_weekly.draw_index_table(last_odf, flag)
             
     html_br="""
