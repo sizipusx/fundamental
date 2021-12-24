@@ -465,12 +465,14 @@ def draw_basic():
             kb_last_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
-            #st.dataframe(kb_last_df.style.bar(align='mid',color=['blue','red']))
             import seaborn as sns
             cmap = cmap=sns.diverging_palette(5, 250, as_cmap=True)
             st.dataframe(kb_last_df.style.background_gradient(cmap, axis=1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}", '전세증감': "{:.2f}"})\
                 .bar(align='mid',color=['blue','red'])) 
+            cm = sns.light_palette("coolwarm", as_cmap=True)
+            st.dataframe(kb_last_df.style.background_gradient(cmap=cm))
+
 
         with col2:
             st.write("")
