@@ -137,8 +137,8 @@ def load_one_data():
     last_odf['1y'] = ojdf_change.iloc[-51].T.to_frame()
     last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
     #last_odf.dropna(inplace=True)
-    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
     last_odf = last_odf.reset_index()
+    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
     basic_df = get_basic_df()
     odf = pd.merge(last_odf, basic_df, how='inner', left_on='index', right_on='short')
 
@@ -206,8 +206,8 @@ def load_index_data():
     kb_last_df['1y'] = jdf_change.iloc[-51].T.to_frame()
     kb_last_df.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
 #    kb_last_df.dropna(inplace=True)
-    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
     kb_last_df = kb_last_df.reset_index()
+    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
     kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_on='index', right_on='short')
@@ -453,6 +453,8 @@ def draw_basic():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
+            #kb_last_df = kb_last_df.set_index("index")
+            #kb_last_df = round(kb_last_df,2)
             kb_last_df['1w'] = kb_last_df['매매증감'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
@@ -466,6 +468,10 @@ def draw_basic():
         with col3:
             flag = ['부동산원','매매증감']
             last_odf['1w'] = last_odf['매매증감'].rank(ascending=True, method='min').round(decimals=1)
+            last_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            last_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            last_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            last_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
             st.dataframe(last_odf)
             #drawAPT_weekly.draw_index_table(last_odf, flag)
             
