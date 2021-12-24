@@ -480,7 +480,7 @@ def draw_basic():
             last_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
             last_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
             last_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            st.dataframe(last_odf.style.format(precision=2, na_rep='MISSING', thousands=" ", formatter={('매매증감', '전세증감'): "{:.2f}"}))
+            st.dataframe(last_odf.style.format(precision=2, na_rep='MISSING', thousands=" ", formatter={['매매증감', '전세증감']: "{:.2f}"}))
             st.dataframe(last_odf.style.bar(align='mid',color=['blue','red']))
             #drawAPT_weekly.draw_index_table(last_odf, flag)
             
