@@ -480,7 +480,9 @@ def draw_basic():
                 .format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}", '전세증감': "{:.2f}"})\
                 .bar(align='mid',color=['blue','red'])) 
             cm = sns.light_palette((260, 75, 60), input="husl", as_cmap=True)
-            st.dataframe(rank_df.style.background_gradient(cmap=cm))
+            st.dataframe(rank_df.style.background_gradient(cmap=cm)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}", '전세증감': "{:.2f}"})\
+                .bar(align='mid',color=['blue','red'])) 
 
 
         with col2:
