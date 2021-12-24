@@ -465,7 +465,7 @@ def draw_basic():
             kb_last_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
             kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
-            st.dataframe(kb_last_df.style.bar(align='mid',color=['#a103fc','#03e3fc']))
+            st.dataframe(kb_last_df.style.bar(align='mid',color=['blue','red']))
             #kb_last_df.style.format(precision=0, na_rep='MISSING', thousands=" ", formatter={('매매증감', '전세증감'): "{:.2f}"})
             #kb_last_df.style.set_precision(2)
             #st.table(kb_last_df)
@@ -480,7 +480,7 @@ def draw_basic():
             last_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
             last_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
             last_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            st.dataframe(last_odf)
+            last_odf.style.format(precision=0, na_rep='MISSING', thousands=" ", formatter={('매매증감', '전세증감'): "{:.2f}"})
             #drawAPT_weekly.draw_index_table(last_odf, flag)
             
     html_br="""
