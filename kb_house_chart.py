@@ -475,11 +475,20 @@ def draw_basic():
             kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
             import seaborn as sns
-            cmap = cmap=sns.diverging_palette(5, 250, as_cmap=True)
+            cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.write("KB 매매지수 기간별 순위")
-            st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
+            index_names = {
+                'selector': '.index_name',
+                'props': 'font-style: italic; color: darkgrey; font-weight:normal;'
+            }
+            headers = {
+                'selector': 'th:not(.index_name)',
+                'props': 'background-color: #000066; color: white;'
+            }
+            st.dataframe(rank_df.set_table_styles([index_names, headers])
+                .style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
                 .bar(subset=slice_2, align='mid',color=['blue','red']))
