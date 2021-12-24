@@ -470,7 +470,7 @@ def draw_basic():
             st.dataframe(kb_last_df.style.background_gradient(cmap, axis=1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}", '전세증감': "{:.2f}"})\
                 .bar(align='mid',color=['blue','red'])) 
-            cm = sns.light_palette("coolwarm", as_cmap=True)
+            cm = sns.light_palette((260, 75, 60), input="husl", as_cmap=True)
             st.dataframe(kb_last_df.style.background_gradient(cmap=cm))
 
 
