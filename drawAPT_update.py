@@ -788,7 +788,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
 
@@ -815,7 +815,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
         
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
         title = '6광역시도 기업체 수'
@@ -945,7 +945,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
 
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
 
@@ -972,7 +972,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
         
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
 
@@ -1105,7 +1105,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
-    elif selected_dosi == '5개광역시':
+    elif selected_dosi == '5대광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
 
@@ -1132,7 +1132,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
         
-    elif selected_dosi == '6개광역시':
+    elif selected_dosi == '6대광역시':
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
 
@@ -1351,7 +1351,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     last_df = peong_df.iloc[-1].T.to_frame()
     last_df['평균전세가'] = peongj_df.iloc[-1].T.to_frame()
     last_df.columns = ['평균매매가', '평균전세가']
-    last_df = last_df/10
+    #last_df = last_df/10
     last_df = last_df.round(decimals=1)
     #같이 그려보자
     gu_city = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '수원', '성남', '안양', '용인', '고양', '안산', \
