@@ -159,6 +159,27 @@ def draw_power_table(power_df):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
+# def draw_index_table(power_df):
+    #버블지수/전세파워 table 추가
+    # title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
+    # fig = go.Figure(data=[go.Table(
+    #                     header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
+    #                                         '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
+    #                                 fill_color='royalblue',
+    #                                 align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+    #                                 font=dict(color='white', size=12),
+    #                                 height=40),
+    #                     cells=dict(values=[power_df.index, power_df['전세파워'], power_df['버블지수'], power_df['jrank'], \
+    #                                         power_df['brank'], power_df['score'], power_df['rank']], 
+    #                                 fill=dict(color=['paleturquoise', 'white', 'white','white', 'white', 'white', 'white']),
+    #                                 align=['right','left', 'left', 'left', 'left', 'left', 'left'],
+    #                                 font_size=12,
+    #                                 height=30))
+    #                 ])
+    # fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
+    # fig.update_layout(template="myID")
+    # st.plotly_chart(fig)
+
 def draw_Choroplethmapbox(df, geo_data, flag):
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
