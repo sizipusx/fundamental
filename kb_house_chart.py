@@ -487,7 +487,7 @@ def draw_basic():
                 'selector': 'th:not(.index_name)',
                 'props': 'background-color: #000066; color: white;'
             }
-            st.dataframe(rank_df.set_table_styles([index_names, headers])
+            st.dataframe(rank_df.style.set_table_styles([index_names, headers])\
                 .style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
