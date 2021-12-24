@@ -479,14 +479,6 @@ def draw_basic():
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.write("KB 매매지수 기간별 순위")
-            index_names = {
-                'selector': '.index_name',
-                'props': 'font-style: italic; color: darkgrey; font-weight:normal;'
-            }
-            headers = {
-                'selector': 'th:not(.index_name)',
-                'props': 'background-color: #000066; color: white;'
-            }
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
@@ -501,9 +493,13 @@ def draw_basic():
             rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
             rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
             rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            st.dataframe(rank_odf.style.format(precision=0, na_rep='MISSING', thousands=",", formatter={'매매증감': "{:.2f}"}))
-            st.dataframe(rank_odf.style.bar(align='mid',color=['blue','red']))
-            #drawAPT_weekly.draw_index_table(last_odf, flag)
+            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            st.write("KB 매매지수 기간별 순위")
+            st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
+                .bar(subset=slice_2, align='mid',color=['blue','red']))
             
     html_br="""
     <br>
