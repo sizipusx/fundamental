@@ -467,8 +467,10 @@ def draw_basic():
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
             #st.dataframe(kb_last_df.style.bar(align='mid',color=['blue','red']))
             import seaborn as sns
-            cm = sns.light_palette("green", as_cmap=True)
-            st.dataframe(kb_last_df.style.background_gradient(cmap=cm))
+            cmap = cmap=sns.diverging_palette(5, 250, as_cmap=True)
+            st.dataframe(kb_last_df.style.background_gradient(cmap, axis=1)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}", '전세증감': "{:.2f}"})\
+                .bar(align='mid',color=['blue','red'])) 
 
         with col2:
             st.write("")
@@ -479,7 +481,7 @@ def draw_basic():
             last_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
             last_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
             last_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            st.dataframe(last_odf.style.format(precision=0, na_rep='MISSING', thousands=" ", formatter={'매매증감': "{:.2f}"}))
+            st.dataframe(last_odf.style.format(precision=0, na_rep='MISSING', thousands=",", formatter={'매매증감': "{:.2f}"}))
             st.dataframe(last_odf.style.bar(align='mid',color=['blue','red']))
             #drawAPT_weekly.draw_index_table(last_odf, flag)
             
