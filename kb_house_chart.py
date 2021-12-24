@@ -479,10 +479,10 @@ def draw_basic():
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.write("KB 매매지수 기간별 순위")
-            st.dataframe(rank_df.style.background_gradient(cmap, axis=0)\
+            st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .bar(align='mid',color=['blue','red'])) 
+                .bar(subset=slice_2, align='mid',color=['blue','red']))
         with col2:
             st.write("")
         with col3:
