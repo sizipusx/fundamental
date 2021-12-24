@@ -4,6 +4,7 @@ import drawAPT_weekly
 
 import numpy as np
 import pandas as pd
+from pandas.io.formats import style
 
 import requests
 import json
@@ -342,8 +343,8 @@ def run_price_index() :
         draw_list = ['제주, 서귀포']
     
     ### Block KB #########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             drawAPT_weekly.run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
         with col2:
@@ -355,8 +356,8 @@ def run_price_index() :
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### Block 부동산원 #########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             drawAPT_weekly.run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, selected_dosi3, city_series)
         with col2:
@@ -371,8 +372,8 @@ def run_price_index() :
 
 def run_sentimental_index(mdf_change):
     ### Block 0#########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             drawAPT_weekly.draw_sentiment(selected_dosi, js_1, js_2, js_index)
         with col2:
@@ -389,8 +390,8 @@ def draw_basic():
     # kb_df, k_geo_data, last_df, kb_mdf = load_index_data()
     # one_df, o_geo_data, one_last_odf = load_one_data()
     ### Block 0#########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
             drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag)
@@ -404,8 +405,8 @@ def draw_basic():
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### Draw 전국 지도 chart #########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['부동산원','매매증감']
             drawAPT_weekly.draw_Choroplethmapbox(odf, o_geo_data, flag)
@@ -419,8 +420,8 @@ def draw_basic():
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### Draw 매매증감 bar chart #########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
             drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
@@ -434,8 +435,8 @@ def draw_basic():
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### Draw Bubble chart #########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
             drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag)
@@ -451,8 +452,8 @@ def draw_basic():
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### draw Index Table ######################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,2,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
             #kb_last_df = kb_last_df.set_index("index")
