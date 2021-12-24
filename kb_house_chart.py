@@ -500,7 +500,7 @@ def draw_basic():
             rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.write("KB 매매지수 기간별 순위")
+            st.write("부동산원 매매지수 기간별 순위")
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
@@ -646,11 +646,18 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             run_sentimental_index(mdf_change)
-    else :
-        #citys = odf['short'].to_list()
+    elif my_choice == 'Together':
         citys = omdf.columns.tolist()
-        options = st.multiselect('Select City to Compare index', citys, citys[:2])
+        options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.sidebar.button('Draw Index chart togethger')
         if submit:
             drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
-            #drawAPT_weekly.run_price_index_all(options, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
+    else:
+        period_ = omdf.index.tolist()
+        start_date, end_date = st.select_slider(
+            'Select Date to Compare index change', 
+            options = period_,
+            value = (period_[-13], period_[-1]))
+        submit = st.sidebar.button('Draw Index chart togethger')
+        if submit:
+            drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
