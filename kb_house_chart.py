@@ -468,7 +468,7 @@ def draw_basic():
             kb_last_df.style.bar(align='mid',color=['#a103fc','#03e3fc'])
             kb_last_df.style.format(precision=0, na_rep='MISSING', thousands=" ", formatter={('매매증감', '전세증감'): "{:.2f}"})
             #kb_last_df.style.set_precision(2)
-            st.dataframe(kb_last_df)
+            st.table(kb_last_df)
             #drawAPT_weekly.draw_index_table(kb_last_df, flag)
 
         with col2:
