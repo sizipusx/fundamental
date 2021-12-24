@@ -137,8 +137,8 @@ def load_one_data():
     last_odf['1y'] = ojdf_change.iloc[-51].T.to_frame()
     last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
     #last_odf.dropna(inplace=True)
-    last_odf = last_odf.reset_index()
     last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+    last_odf = last_odf.reset_index()
     basic_df = get_basic_df()
     odf = pd.merge(last_odf, basic_df, how='inner', left_on='index', right_on='short')
 
@@ -206,11 +206,12 @@ def load_index_data():
     kb_last_df['1y'] = jdf_change.iloc[-51].T.to_frame()
     kb_last_df.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
 #    kb_last_df.dropna(inplace=True)
-    kb_last_df = kb_last_df.reset_index()
     kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
+#    kb_last_df = kb_last_df.reset_index()
+
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_on='index', right_on='short')
+    kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_index=True, right_on='short')
     
     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
     # df['SIG_CD']= df['SIG_CD'].astype(str)
