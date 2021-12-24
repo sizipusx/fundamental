@@ -51,13 +51,13 @@ file_path = 'https://github.com/sizipusx/fundamental/blob/1cd9833730322c39290f7f
 buy_path = r'https://github.com/sizipusx/fundamental/blob/669cd865342b20c29da4ff689a309fe5edc24f38/files/apt_buy.xlsx?raw=true'
 # 2021. 11월부터 KB 데이터에서 기타지방 평균가격 제공하지 않음 => 다시 부동산원 데이터로 변경: 2021. 12. 16
 #p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
-p_path = r"https://github.com/sizipusx/fundamental/blob/ef97bef5926a26664701158df800d15ea9fe5224/files/one_apt_price.xlsx?raw=True"
+p_path = r"https://github.com/sizipusx/fundamental/blob/ae1fa2efbc5261dcbdd4937164f618ef0efe408f/files/one_apt_price.xlsx?raw=True"
 pop_path = r"https://github.com/sizipusx/fundamental/blob/c982621f8cb42abfd6d07a7cf6f928767c17772e/files/pop.xlsx?raw=True"
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
 #년단위
 basic_path = 'https://github.com/sizipusx/fundamental/blob/2f2d6225b1ec3b1c80d26b7169d5d026bc784494/files/local_basic.xlsx?raw=True'
 #상시 : 평단가 업데이트로 header 업데이트 2021. 12. 16
-header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=True'
+header_path = 'https://github.com/sizipusx/fundamental/blob/ae1fa2efbc5261dcbdd4937164f618ef0efe408f/files/header.xlsx?raw=True'
 
 
 
@@ -76,32 +76,73 @@ def read_source_excel():
 @st.cache
 def load_ratio_data():
     header_dict = pd.read_excel(header_path, sheet_name=None)
-    header = header_dict['one_price']
-    ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
-    one_dict = pd.read_excel(p_path, sheet_name=None, header=10)
+    header = header_dict['one']
+    ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경 -> 21. 12. 24 다시 부동산원으로 변경
+    # one_dict = pd.read_excel(p_path, sheet_name=None, header=10)
+    # omdf = one_dict['sell']
+    # ojdf = one_dict['jeon']
+    # omdf['지역명'] = header['지역명'].str.strip()
+    # ojdf['지역명'] = header['지역명'].str.strip()
+    # omdf = omdf.set_index('지역명')
+    # ojdf = ojdf.set_index('지역명')
+    # omdf = omdf.iloc[:,4:]
+    # ojdf = ojdf.iloc[:,4:]
+    # omdf = omdf.T
+    # ojdf = ojdf.T
+    # omdf = omdf.astype(str).applymap(lambda x: x.replace('-','0'))
+    # ojdf = ojdf.astype(str).applymap(lambda x: x.replace('-','0'))
+    # omdf = omdf.astype(float)*3.306
+    # ojdf = ojdf.astype(float)*3.306
+    # omdf_ch = omdf.pct_change()*100
+    # omdf_ch = omdf_ch.round(decimals=2)
+    # ojdf_ch = ojdf.pct_change()*100
+    # ojdf_ch = ojdf_ch.round(decimals=2)
+    one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
     omdf = one_dict['sell']
     ojdf = one_dict['jeon']
-    omdf['지역명'] = header['지역명'].str.strip()
-    ojdf['지역명'] = header['지역명'].str.strip()
-    omdf = omdf.set_index('지역명')
-    ojdf = ojdf.set_index('지역명')
-    omdf = omdf.iloc[:,4:]
-    ojdf = ojdf.iloc[:,4:]
-    omdf = omdf.T
-    ojdf = ojdf.T
-    omdf = omdf.astype(str).applymap(lambda x: x.replace('-','0'))
-    ojdf = ojdf.astype(str).applymap(lambda x: x.replace('-','0'))
-    omdf = omdf.astype(float)*3.306
-    ojdf = ojdf.astype(float)*3.306
-    omdf_ch = omdf.pct_change()*100
-    omdf_ch = omdf_ch.round(decimals=2)
-    ojdf_ch = ojdf.pct_change()*100
-    ojdf_ch = ojdf_ch.round(decimals=2)
+    mdf = omdf.iloc[4:,:]
+    jdf = ojdf.iloc[4:,:]
+    #컬럼 변경
+    s1 = mdf.columns
+    new_s1 = []
+    for num, gu_data in enumerate(s1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(s1[check])
+    mdf.columns =[new_s1, omdf.iloc[1]]
+    jdf.columns = [new_s1, ojdf.iloc[1]]
+    #필요 시트만 슬라이스
+    smdf = mdf.xs('평균매매',axis=1, level=1)
+    sadf = mdf.xs('평균단위매매', axis=1, level=1)
+    jmdf = jdf.xs('평균전세',axis=1, level=1)
+    jadf = jdf.xs('평균단위전세', axis=1, level=1)
+    smdf.columns = header.columns
+    sadf.columns = header.columns
+    jmdf.columns = header.columns
+    jadf.columns = header.columns
+
+    sadf = (sadf.astype(float)*3.306)/10
+    smdf = smdf.astype(float)/10
+    jadf = (jadf.astype(float)*3.306)/10
+    jmdf = jmdf.astype(float)/10
+
+    sadf = sadf.round(decimals=1) #평균매매가
+    smdf = smdf.round(decimals=1) #
+    jadf = jadf.round(decimals=1)
+    jmdf = jmdf.round(decimals=1)
+
+    sadf_ch = sadf.pct_change()*100
+    sadf_ch = sadf_ch.round(decimals=2)
+    jadf_ch = jadf.pct_change()*100
+    jadf_ch = jadf_ch.round(decimals=2)
+
     ######################### 여기부터는 전세가율
-    jratio = round(ojdf/omdf*100,1)
+    jratio = round(jmdf/smdf*100,1)
     
 
-    return omdf, omdf_ch, ojdf, ojdf_ch, jratio
+    return sadf, sadf_ch, jadf, jadf_ch, jratio
 
 
 @st.cache
