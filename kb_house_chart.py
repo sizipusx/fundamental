@@ -393,7 +393,7 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### Block 0#########################################################################################
+    ### Draw 전국 지도 chart #########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
@@ -408,7 +408,7 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### Block 1#########################################################################################
+    ### Draw 매매증감 bar chart #########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
@@ -423,7 +423,7 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### Block 2#########################################################################################
+    ### Draw Bubble chart #########################################################################################
     with st.beta_container():
         col1, col2, col3 = st.beta_columns([30,2,30])
         with col1:
@@ -435,6 +435,25 @@ def draw_basic():
         with col3:
             flag = ['부동산원','매매증감']
             drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### draw Index Table ######################################################################################
+    with st.beta_container():
+        col1, col2, col3 = st.beta_columns([30,2,30])
+        with col1:
+            flag = ['KB','매매증감']
+            st.dataframe(kb_last_df)
+            #drawAPT_weekly.draw_index_table(kb_last_df, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = ['부동산원','매매증감']
+            st.dataframe(last_odf)
+            #drawAPT_weekly.draw_index_table(last_odf, flag)
             
     html_br="""
     <br>
