@@ -657,7 +657,10 @@ if __name__ == "__main__":
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
             options = period_,
-            value = (period_[-13], period_[-1]))
-        submit = st.sidebar.button('Draw Index chart togethger')
+            value = (datetime(period_[-13]), datetime(period_[-1])),
+            format="YYYY/MM/DD")
+        st.write("시작: ", start_date)
+        st.write("끝: ", end_date)
+        submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
             drawAPT_weekly.run_one_index_together(period_, omdf, omdf_change)
