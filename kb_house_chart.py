@@ -671,8 +671,11 @@ if __name__ == "__main__":
             'Select Date to Compare index change', 
             options = period_,
             value = (period_[-13], period_[-1]))
-        st.write("시작: ", start_date)
-        st.write("끝: ", end_date)
+        # convert the dates to string
+        start = start_date.strftime("%Y-%m-%d")
+        end = end_date.strftime("%Y-%m-%d")
+        st.write("시작: ", start)
+        st.write("끝: ", end)
         slice_df = omdf.loc[start_date:end_date]
         test_df = slice_df.reset_index()
         test_df = test_df.style.format({'date': lambda x: "{}".format(x.strftime('%Y-%m-%d'))}).set_table_styles('styles')
