@@ -126,8 +126,8 @@ def load_one_data():
     ojdf = ojdf.iloc[:,1:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
-    omdf = omdf.round(decimals=2)
-    ojdf = ojdf.round(decimals=2)
+    omdf = omdf.astype(float).round(decimals=2)
+    ojdf = ojdf.astype(float).round(decimals=2)
      #주간 증감률
     omdf_change = omdf.pct_change()*100
     omdf_change = omdf_change.iloc[1:]
