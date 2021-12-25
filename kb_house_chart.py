@@ -665,7 +665,8 @@ if __name__ == "__main__":
         if submit:
             drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
     else:
-        flag = ['부동산원','매매증감']
+        flag = ['KB','매매증감']
+        flag1 = ['부동산원','매매증감']
         period_ = omdf.index.strftime("%Y-%m-%d").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
@@ -674,8 +675,11 @@ if __name__ == "__main__":
             value = (period_[-13], period_[-1]))
         st.write("시작: ", start_date)
         st.write("끝: ", end_date)
+        #부동산원 / KB
         slice_om = omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
+        slice_m = mdf.loc[start_date:end_date]
+        slice_j = jdf.loc[start_date:end_date]
         diff = slice_om.index[-1] - slice_om.index[0]
         st.write(f"전체 기간: {round(diff.days/365,1)} 년")
         #st.dataframe(slice_om)
@@ -684,7 +688,30 @@ if __name__ == "__main__":
         change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
         change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
         change_odf = change_odf.dropna().round(decimals=2)
+        change_df = pd.DataFrame()
+        change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
+        change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
+        change_df = change_df.dropna().round(decimals=2)
         #st.dataframe(change_odf)
-        submit = st.sidebar.button('Draw 기간 증감 chart')
+        submit = st.sbutton('Draw 기간 증감 chart')
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         if submit:
-            drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
+            ### Draw Bubble chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = ['KB','매매증감']
+                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = ['부동산원','매매증감']
+                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag1)
+                    
+            html_br="""
+            <br>
+            """
