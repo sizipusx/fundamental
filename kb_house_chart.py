@@ -21,6 +21,8 @@ import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
+import seaborn as sns
+cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
@@ -486,8 +488,7 @@ def draw_basic():
             rank_df['1y%'] = kb_last_df['1y'].round(decimals=2)
             kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
-            import seaborn as sns
-            cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
+            
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.write("KB 매매지수 기간별 순위")
@@ -692,8 +693,6 @@ if __name__ == "__main__":
         change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
         change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
         change_df = change_df.dropna().astype(float).round(decimals=2)
-        #st.dataframe(change_df)
-        #st.dataframe(change_odf)
         submit = st.button('Draw 기간 증감 chart')
         html_br="""
         <br>
@@ -713,6 +712,22 @@ if __name__ == "__main__":
                     flag = ['부동산원','매매증감']
                     drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag1)
                     
+            html_br="""
+            <br>
+            """
+             ### Draw Bubble chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
+                                     .format(precision=2, na_rep='MISSING', thousands=","))
+                            
+
+                with col2:
+                    st.write("")
+                with col3:
+                    st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
+                                         .format(precision=2, na_rep='MISSING', thousands=","))
             html_br="""
             <br>
             """
