@@ -675,6 +675,7 @@ if __name__ == "__main__":
         st.write("끝: ", end_date)
         slice_df = omdf.loc[start_date:end_date]
         test_df = slice_df.reset_index()
+        test_df['date'] = test_df['date'].str.slice(start=0, stop=10)
         st.dataframe(test_df)
         submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
