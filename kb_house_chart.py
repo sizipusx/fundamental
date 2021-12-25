@@ -687,11 +687,11 @@ if __name__ == "__main__":
         change_odf = pd.DataFrame()
         change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
         change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
-        change_odf = change_odf.dropna().round(decimals=2)
+        change_odf = change_odf.dropna().astype(float).round(decimals=2)
         change_df = pd.DataFrame()
         change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
         change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
-        change_df = change_df.dropna().round(decimals=2)
+        change_df = change_df.dropna().astype(float).round(decimals=2)
         st.dataframe(change_df)
         st.dataframe(change_odf)
         submit = st.button('Draw 기간 증감 chart')
