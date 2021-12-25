@@ -183,6 +183,7 @@ def load_index_data():
     mdf = mdf.iloc[1:]
     mdf['구분'].str.slice(start=0, stop=10)
     mdf.index = pd.to_datetime(mdf['구분'])
+    mdf = mdf.iloc[:,1:]
     mdf.columns = header.columns
     mdf = mdf.round(decimals=2)
 
@@ -190,6 +191,7 @@ def load_index_data():
     jdf = jdf.iloc[1:]
     jdf['구분'].str.slice(start=0, stop=10)
     jdf.index = pd.to_datetime(jdf['구분'])
+    jdf = jdf.iloc[:,1:]
     jdf = jdf.round(decimals=2)
     #======== 여기 변경 ==============
     #주간 증감률
