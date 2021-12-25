@@ -665,7 +665,7 @@ if __name__ == "__main__":
         if submit:
             drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
     else:
-        period_ = omdf.index.tolist()
+        period_ = omdf.index.strftime("%Y-%m-%d").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
@@ -678,8 +678,6 @@ if __name__ == "__main__":
         st.write("끝: ", end)
         slice_df = omdf.loc[start_date:end_date]
         test_df = slice_df.reset_index()
-        test_df = test_df.style.format({'date': lambda x: "{}".format(x.strftime('%Y-%m-%d'))}).set_table_styles('styles')
-        #test_df['date'] = test_df['date'].str.slice(start=0, stop=10)
         st.dataframe(test_df)
         submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
