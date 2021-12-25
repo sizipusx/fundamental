@@ -692,7 +692,7 @@ if __name__ == "__main__":
         change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
         change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
         change_df = change_df.dropna().round(decimals=2)
-        #st.dataframe(change_odf)
+        st.dataframe(change_df)
         submit = st.button('Draw 기간 증감 chart')
         html_br="""
         <br>
