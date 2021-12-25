@@ -672,10 +672,10 @@ if __name__ == "__main__":
             options = period_,
             value = (period_[-13], period_[-1]))
         # convert the dates to string
-        start = start_date.strftime("%Y-%m-%d")
-        end = end_date.strftime("%Y-%m-%d")
-        st.write("시작: ", start)
-        st.write("끝: ", end)
+        #start = start_date.strftime("%Y-%m-%d")
+        #end = end_date.strftime("%Y-%m-%d")
+        st.write("시작: ", start_date)
+        st.write("끝: ", end_date)
         slice_df = omdf.loc[start_date:end_date]
         test_df = slice_df.reset_index()
         st.dataframe(test_df)
