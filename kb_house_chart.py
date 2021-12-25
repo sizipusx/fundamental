@@ -109,15 +109,25 @@ def get_basic_df():
 @st.cache(allow_output_mutation=True)
 def load_one_data():
     #감정원 주간 데이터
-    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, dtype={'       지역\n\n\n\n\n 날짜': str})
     # one header 변경
     oneh = header_excel.parse('one')
     omdf = one_dict['매매지수']
     ojdf = one_dict['전세지수']
-    omdf.columns = oneh.columns
-    ojdf.columns = oneh.columns
     omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
     ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
+    omdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'})
+    omdf['date'] = ['date'].str.slice(start=0, stop=10)
+    omdf.index = pd.to_datetime(omdf['date'])
+    omdf = omdf.iloc[:,1:]
+    ojdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'})
+    ojdf['date'] = ['date'].str.slice(start=0, stop=10)
+    ojdf.index = pd.to_datetime(ojdf['date'])
+    ojdf = ojdf.iloc[:,1:]
+    omdf.columns = oneh.columns
+    ojdf.columns = oneh.columns
+    omdf = omdf.round(decimals=2)
+    ojdf = ojdf.round(decimals=2)
      #주간 증감률
     omdf_change = omdf.pct_change()*100
     omdf_change = omdf_change.iloc[1:]
