@@ -676,13 +676,15 @@ if __name__ == "__main__":
         st.write("끝: ", end_date)
         slice_om = omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
-        st.dataframe(slice_om)
+        diff = slice_om.index[-1] - slice_om.index[0]
+        st.write(f"전체 기간: {diff.days/365} 년")
+        #st.dataframe(slice_om)
         st.write("기간 증감률")
         change_odf = pd.DataFrame()
-        change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()
-        change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()
+        change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
+        change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
         change_odf = change_odf.dropna().round(decimals=2)
-        st.dataframe(change_odf)
+        #st.dataframe(change_odf)
         submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
             drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
