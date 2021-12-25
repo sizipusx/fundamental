@@ -116,11 +116,11 @@ def load_one_data():
     ojdf = one_dict['전세지수']
     omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
     ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
-    omdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'})
+    omdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)
     omdf['date'] = omdf['date'].str.slice(start=0, stop=10)
     omdf.index = pd.to_datetime(omdf['date'])
     omdf = omdf.iloc[:,1:]
-    ojdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'})
+    ojdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)
     ojdf['date'] = ojdf['date'].str.slice(start=0, stop=10)
     ojdf.index = pd.to_datetime(ojdf['date'])
     ojdf = ojdf.iloc[:,1:]
