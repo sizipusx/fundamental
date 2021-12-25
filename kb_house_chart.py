@@ -677,7 +677,7 @@ if __name__ == "__main__":
         slice_om = omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
         diff = slice_om.index[-1] - slice_om.index[0]
-        st.write(f"전체 기간: {diff.days/365} 년")
+        st.write(f"전체 기간: {round(diff.days/365,1)} 년")
         #st.dataframe(slice_om)
         st.write("기간 증감률")
         change_odf = pd.DataFrame()
