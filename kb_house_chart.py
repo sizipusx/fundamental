@@ -693,6 +693,7 @@ if __name__ == "__main__":
         change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
         change_df = change_df.dropna().round(decimals=2)
         st.dataframe(change_df)
+        st.dataframe(change_odf)
         submit = st.button('Draw 기간 증감 chart')
         html_br="""
         <br>
@@ -704,7 +705,7 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = ['KB','매매증감']
-                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
+                    #drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
 
                 with col2:
                     st.write("")
