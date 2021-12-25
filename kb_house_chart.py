@@ -665,6 +665,7 @@ if __name__ == "__main__":
         if submit:
             drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
     else:
+        flag = ['부동산원','매매증감']
         period_ = omdf.index.strftime("%Y-%m-%d").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
@@ -673,11 +674,15 @@ if __name__ == "__main__":
             value = (period_[-13], period_[-1]))
         st.write("시작: ", start_date)
         st.write("끝: ", end_date)
-        slice_df = omdf.loc[start_date:end_date]
-        st.dataframe(slice_df)
+        slice_om = omdf.loc[start_date:end_date]
+        slice_oj = ojdf.loc[start_date:end_date]
+        st.dataframe(slice_om)
         st.write("기간 증감률")
-        change_df = slice_df.iloc[-1]/slice_df.iloc[0]-1
-        st.dataframe(change_df)
+        change_odf = pd.DataFrame()
+        change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()
+        change_odf['전매증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()
+
+        st.dataframe(change_odf)
         submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
-            drawAPT_weekly.run_one_index_together(period_, omdf, omdf_change)
+            drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
