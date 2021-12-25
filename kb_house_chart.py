@@ -180,11 +180,10 @@ def load_index_data():
     # code_df = header_excel.parse('code', index_col=1)
     # code_df.index = code_df.index.str.strip()
     basic_df = get_basic_df()
-
-    mdf.columns = header.columns
     mdf = mdf.iloc[1:]
     mdf['구분'].str.slice(start=0, stop=10)
     mdf.index = pd.to_datetime(mdf['구분'])
+    mdf.columns = header.columns
     mdf = mdf.round(decimals=2)
 
     jdf.columns = header.columns
