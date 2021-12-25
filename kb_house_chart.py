@@ -680,7 +680,7 @@ if __name__ == "__main__":
         st.write("기간 증감률")
         change_odf = pd.DataFrame()
         change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()
-        change_odf['전매증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()
+        change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()
 
         st.dataframe(change_odf)
         submit = st.sidebar.button('Draw 기간 증감 chart')
