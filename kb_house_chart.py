@@ -705,7 +705,7 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = ['KB','매매증감']
-                    #drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
+                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
 
                 with col2:
                     st.write("")
