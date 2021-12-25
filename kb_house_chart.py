@@ -118,11 +118,11 @@ def load_one_data():
     ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
     omdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)
     omdf['date'] = omdf['date'].str.slice(start=0, stop=10)
-    omdf.index = pd.to_datetime(omdf['date'])
+    omdf.index = pd.to_datetime(omdf['date'], format='%Y-%m-%d')
     omdf = omdf.iloc[:,1:]
     ojdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)
     ojdf['date'] = ojdf['date'].str.slice(start=0, stop=10)
-    ojdf.index = pd.to_datetime(ojdf['date'])
+    ojdf.index = pd.to_datetime(ojdf['date'], format='%Y-%m-%d')
     ojdf = ojdf.iloc[:,1:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
@@ -192,13 +192,13 @@ def load_index_data():
     basic_df = get_basic_df()
     mdf = mdf.iloc[1:]
     mdf['구분'].str.slice(start=0, stop=10)
-    mdf.index = pd.to_datetime(mdf['구분'])
+    mdf.index = pd.to_datetime(mdf['구분'], format='%Y-%m-%d')
     mdf = mdf.iloc[:,1:]
     mdf.columns = header.columns
     mdf = mdf.round(decimals=2)
     jdf = jdf.iloc[1:]
     jdf['구분'].str.slice(start=0, stop=10)
-    jdf.index = pd.to_datetime(jdf['구분'])
+    jdf.index = pd.to_datetime(jdf['구분'], format='%Y-%m-%d'))
     jdf = jdf.iloc[:,1:]
     jdf.columns = header.columns
     jdf = jdf.round(decimals=2)
