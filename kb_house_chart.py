@@ -173,8 +173,8 @@ def load_one_data():
 @st.cache(allow_output_mutation=True)
 def load_index_data():
     kb_dict = pd.ExcelFile(kb_file_path)
-    mdf = kb_dict.parse("매매지수", skiprows=1, index_col=0, parse_dates=True)
-    jdf = kb_dict.parse("전세지수", skiprows=1, index_col=0, parse_dates=True)
+    mdf =  kb_dict.parse("매매지수", skiprows=1, parse_dates=False, dtype={'구분': str})
+    jdf =  kb_dict.parse("전세지수", skiprows=1, parse_dates=False, dtype={'구분': str})
     
     header = header_excel.parse('KB')
     # code_df = header_excel.parse('code', index_col=1)
@@ -183,12 +183,14 @@ def load_index_data():
 
     mdf.columns = header.columns
     mdf = mdf.iloc[1:]
-    mdf.index = pd.to_datetime(mdf.index.dt.strftime('%Y-%m-%d'))
+    mdf['구분'].str.slice(start=0, stop=10)
+    mdf.index = pd.to_datetime(mdf['구분'])
     mdf = mdf.round(decimals=2)
 
     jdf.columns = header.columns
     jdf = jdf.iloc[1:]
-    jdf.index = pd.to_datetime(jdf.index.dt.strftime('%Y-%m-%d'))
+    jdf['구분'].str.slice(start=0, stop=10)
+    jdf.index = pd.to_datetime(jdf['구분'])
     jdf = jdf.round(decimals=2)
     #======== 여기 변경 ==============
     #주간 증감률
