@@ -673,7 +673,8 @@ if __name__ == "__main__":
             value = (period_[-13], period_[-1]))
         st.write("시작: ", start_date)
         st.write("끝: ", end_date)
-        st.dataframe(omdf)
+        slice_df = omdf.loc[start_date:end_date]
+        st.dataframe(slice_df)
         submit = st.sidebar.button('Draw 기간 증감 chart')
         if submit:
             drawAPT_weekly.run_one_index_together(period_, omdf, omdf_change)
