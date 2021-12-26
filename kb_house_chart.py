@@ -141,6 +141,10 @@ def load_one_data():
     ojdf_change = ojdf_change.astype(float).fillna(0)
     omdf_change = omdf_change.round(decimals=3)
     ojdf_change = ojdf_change.round(decimals=3)
+    cum_omdf = (1+omdf_change).cumprod() -1
+    cum_omdf = cum_omdf.round(decimals=3)
+    cum_ojdf = (1+ojdf_change).cumprod() -1
+    cum_ojdf = cum_ojdf.round(decimals=3)
     #일주일 간 상승률 순위
     last_odf = pd.DataFrame()
     last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
@@ -180,7 +184,7 @@ def load_one_data():
         one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         one_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change
+    return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
 
 @st.cache(allow_output_mutation=True)
 def load_index_data():
@@ -214,6 +218,10 @@ def load_index_data():
     jdf_change = jdf_change.iloc[1:]
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
+    cum_mdf = (1+mdf_change).cumprod() -1
+    cum_mdf = cum_mdf.round(decimals=3)
+    cum_jdf = (1+jdf_change).cumprod() -1
+    cum_jdf = cum_jdf.round(decimals=3)
     #일주일 간 상승률 순위
     kb_last_df  = pd.DataFrame()
     kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
@@ -288,7 +296,7 @@ def load_index_data():
         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3
+    return kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
 
 @st.cache(allow_output_mutation=True)
 def load_senti_data():
@@ -385,7 +393,21 @@ def run_price_index() :
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-        
+    ### Block 플라워차트 추가 2021. 12. 26 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = "KB"
+            drawAPT_weekly.draw_flower(selected_dosi2, cummdf, cumjdf, flag)
+        with col2:
+            st.write("")
+        with col3:
+            flag = "부동산원"
+            drawAPT_weekly.draw_flower(selected_dosi2, cumomdf, cumojdf, flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
 
 def run_sentimental_index(mdf_change):
     ### Block 0#########################################################################################
@@ -524,7 +546,7 @@ def draw_basic():
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                .set_properties(subset=[rank_odf.index], **{'width': '100px'})\
+                #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
                 .set_table_styles(
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
@@ -540,8 +562,8 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change , m_power, bubble3= load_index_data()
-    odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change = load_one_data()
+    kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
+    odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')

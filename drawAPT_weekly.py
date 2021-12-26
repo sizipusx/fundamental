@@ -611,3 +611,21 @@ def run_one_index_together(draw_list, omdf, omdf_change):
             )      
         )
     st.plotly_chart(fig)
+
+def draw_flower( select_city, cum_mdf, cum_jdf, flag):
+    #매매/전세 증감률 flower Chart
+    title = dict(text=f'<b>'+flag+ '['+ select_city+'] 지수 누적 증감</b>', x=0.5, y = 0.9)
+    fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city], y = cum_jdf[select_city],
+        mode='markers',
+        marker=dict(
+            size=abs(cum_jdf[select_city]),
+            color=cum_mdf[select_city], #set color equal to a variable
+            colorscale='bluered', # one of plotly colorscales
+            showscale=True
+        )
+    )) 
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
