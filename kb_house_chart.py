@@ -141,9 +141,9 @@ def load_one_data():
     ojdf_change = ojdf_change.astype(float).fillna(0)
     omdf_change = omdf_change.round(decimals=3)
     ojdf_change = ojdf_change.round(decimals=3)
-    cum_omdf = (1+omdf_change).cumprod() -1
+    cum_omdf = (1+omdf_change/100).cumprod() -1
     cum_omdf = cum_omdf.round(decimals=3)
-    cum_ojdf = (1+ojdf_change).cumprod() -1
+    cum_ojdf = (1+ojdf_change/100).cumprod() -1
     cum_ojdf = cum_ojdf.round(decimals=3)
     #일주일 간 상승률 순위
     last_odf = pd.DataFrame()
@@ -218,9 +218,9 @@ def load_index_data():
     jdf_change = jdf_change.iloc[1:]
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
-    cum_mdf = (1+mdf_change).cumprod() -1
+    cum_mdf = (1+mdf_change/100).cumprod() -1
     cum_mdf = cum_mdf.round(decimals=3)
-    cum_jdf = (1+jdf_change).cumprod() -1
+    cum_jdf = (1+jdf_change/100).cumprod() -1
     cum_jdf = cum_jdf.round(decimals=3)
     #일주일 간 상승률 순위
     kb_last_df  = pd.DataFrame()
