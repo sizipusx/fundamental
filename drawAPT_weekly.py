@@ -23,7 +23,7 @@ marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(244,
                          'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
                              'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
                                  'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
-template = 'plotly_white' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
+template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 pio.templates["myID"] = go.layout.Template(
     layout_annotations=[
         dict(
@@ -232,8 +232,8 @@ def run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change):
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[3]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
@@ -405,8 +405,8 @@ def run_one_index(selected_dosi2, omdf, ojdf, omdf_change, ojdf_change):
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = omdf.index, y = omdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = ojdf.index, y = ojdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  omdf.index, y= omdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = ojdf.index, y = ojdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[3]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  omdf.index, y= omdf[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  ojdf.index, y= ojdf[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
