@@ -615,10 +615,10 @@ def run_one_index_together(draw_list, omdf, omdf_change):
 def draw_flower( select_city, cum_mdf, cum_jdf, flag):
     #매매/전세 증감률 flower Chart
     title = dict(text=f'<b>'+flag+ '['+ select_city+'] 지수 누적 증감</b>', x=0.5, y = 0.9)
-    fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city], y = cum_jdf[select_city],
+    fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
         mode='markers',
         marker=dict(
-            size=abs(cum_jdf[select_city]),
+            size=abs(cum_jdf[select_city])*10,
             color=cum_mdf[select_city], #set color equal to a variable
             colorscale='bluered', # one of plotly colorscales
             showscale=True
