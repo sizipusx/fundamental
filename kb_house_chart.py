@@ -524,7 +524,7 @@ def draw_basic():
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                .style.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
+                .set_properties(subset=[rank_odf.index], **{'width': '100px'})\
                 .set_table_styles(
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
