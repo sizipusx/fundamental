@@ -31,7 +31,7 @@ pio.templates["myID"] = go.layout.Template(
             text="graph by 기하급수적",
             textangle=0,
             opacity=0.2,
-            font=dict(color="black", size=20),
+            font=dict(color="white", size=20),
             xref="paper",
             yref="paper",
             x=0.9,
@@ -614,7 +614,7 @@ def run_one_index_together(draw_list, omdf, omdf_change):
 
 def draw_flower( select_city, cum_mdf, cum_jdf, flag):
     #매매/전세 증감률 flower Chart
-    title = dict(text=f'<b>'+flag+ ' ['+ select_city+'] 지수 누적 증감</b>', x=0.5, y = 0.9)
+    title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.9)
     fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
         mode='markers+lines',
         hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
