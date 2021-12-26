@@ -495,6 +495,10 @@ def draw_basic():
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col',
+                        'props': [('background-color', '#67c5a4')]},
+                        ])\
                 .bar(subset=slice_2, align='mid',color=['blue','red']))
         with col2:
             st.write("")
@@ -517,6 +521,10 @@ def draw_basic():
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col',
+                        'props': [('background-color', '#67c5a4')]},
+                        ]) \
                 .bar(subset=slice_2, align='mid',color=['blue','red']))
             
     html_br="""
