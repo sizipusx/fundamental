@@ -491,12 +491,15 @@ def draw_basic():
             
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            ## 칼럼 헤더 셀 배경색 바꾸기
+            column = '1w' ## 원하는 칼럼이름
+            col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.write("KB 매매지수 기간별 순위")
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
                 .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col',
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
                 .bar(subset=slice_2, align='mid',color=['blue','red']))
@@ -522,7 +525,7 @@ def draw_basic():
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
                 .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col',
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ]) \
                 .bar(subset=slice_2, align='mid',color=['blue','red']))
