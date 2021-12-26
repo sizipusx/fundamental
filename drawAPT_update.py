@@ -32,8 +32,8 @@ pio.templates["myID"] = go.layout.Template(
             name="draft watermark",
             text="graph by 기하급수적",
             textangle=0,
-            opacity=0.2,
-            font=dict(color="black", size=20),
+            opacity=0.5,
+            font=dict(color="red", size=20),
             xref="paper",
             yref="paper",
             x=0.9,
@@ -520,8 +520,8 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
     
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
     fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)  
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2], marker_color = marker_colors[2]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)

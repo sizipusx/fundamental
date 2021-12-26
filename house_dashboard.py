@@ -504,8 +504,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 0#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
     with col1:
         drawAPT_update.draw_basic_info(selected_dosi, basic_df, bigc, smc)
     with col2:
@@ -517,8 +517,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 0.5#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
     with col1:
         drawAPT_update.draw_pay_info(selected_dosi, basic_df, bigc, smc)
     with col2:
@@ -530,8 +530,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 0.6#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
     with col1:
         drawAPT_update.run_local_analysis(mdf, mdf_change, selected_dosi)
     with col2:
@@ -544,8 +544,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 1#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
     with col1:
         drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
     with col2:
@@ -559,8 +559,8 @@ st.markdown(html_br, unsafe_allow_html=True)
 
 
 ### Block 2#########################################################################################
-with st.beta_container():
-    col1, col2, col3, col4, col5 = st.beta_columns([20,1,20,1,20])
+with st.container():
+    col1, col2, col3, col4, col5 = st.columns([20,1,20,1,20])
     with col1:
         drawAPT_update.draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs)
     with col2:
@@ -581,8 +581,8 @@ if selected_dosi == '6대광역시' or '5대광역시' or '지방':
     st.write("No Data")
 else :
     ### Block 3 KB 전망지수 #########################################################################################
-    with st.beta_container():
-        col1, col2, col3 = st.beta_columns([30,1,30])
+    with st.container():
+        col1, col2, col3 = st.columns([30,1,30])
         with col1:
             drawAPT_update.draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs)
         with col2:
@@ -643,8 +643,8 @@ else:
     st.write("No Data")
   
 ### Select Block #########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
     with col1:
         selected_city = st.selectbox(' Select city', small_list)
     with col2:
@@ -683,8 +683,8 @@ html_br="""
 
 
 ### Block 5#########################################################################################
-with st.beta_container():
-    col1, col2, col3 = st.beta_columns([30,2,30])
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
     with col1:
         drawAPT_update.run_pop_index(selected_city, popdf, popdf_change, saedf, saedf_change)
     with col2:
@@ -697,8 +697,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 6#########################################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
+with st.container():
+    col2, col3, col4 = st.columns([30,2,30])
     with col2:
         drawAPT_update.run_sell_index(selected_city, peong_df, peong_ch)
     with col3:
@@ -708,8 +708,8 @@ with st.beta_container():
 
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 6-1#########################################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
+with st.container():
+    col2, col3, col4 = st.columns([30,2,30])
     with col2:
         drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
     with col3:
@@ -722,8 +722,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 #################block 7###########################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
+with st.container():
+    col2, col3, col4 = st.columns([30,2,30])
     with col2:
         drawAPT_update.run_buy_index(selected_city, org_df)
     with col3:
@@ -736,8 +736,8 @@ html_br="""
 """
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 8#########################################################################################
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
+with st.container():
+    col2, col3, col4 = st.columns([30,2,30])
     with col2:
         drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change)
     with col3:
@@ -753,8 +753,8 @@ df_dic = pd.ExcelFile(local_path)
 dmf = df_dic.parse("KB매매", index_col=0)
 djf = df_dic.parse("KB전세", index_col=0)
 
-with st.beta_container():
-    col2, col3, col4 = st.beta_columns([30,2,30])
+with st.container():
+    col2, col3, col4 = st.columns([30,2,30])
     with col2:
         st.table(dmf[selected_city].dropna())
     with col3:
