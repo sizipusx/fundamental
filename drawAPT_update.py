@@ -353,7 +353,7 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     st.plotly_chart(fig)
 
 
-    with st.beta_expander("See explanation"):
+    with st.expander("See explanation"):
             st.markdown(f'인구-세대수 최종업데이트: **{last_month}월**')
             st.write("인구수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3 ")
             st.write("세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
@@ -572,7 +572,7 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
         )
     st.plotly_chart(fig)
 
-    with st.beta_expander("See explanation"):
+    with st.expander("See explanation"):
             st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
             st.write("Source : https://onland.kbstar.com/quics?page=C060737 ")
 
@@ -593,7 +593,7 @@ def run_bubble(selected_city2, bubble_df2, m_power):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
     
-    with st.beta_expander("See explanation"):
+    with st.expander("See explanation"):
             #st.markdown('아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)')
             st.write("곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)")
 
