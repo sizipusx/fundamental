@@ -625,6 +625,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
         select_city = selected_dosi3
     #매매/전세 증감률 flower Chart
     title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.9)
+    fig = go.F
     fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
         mode='markers+lines',
         hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
@@ -635,6 +636,31 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
             showscale=True
         )
     )) 
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
+
+    #매매/전세 증감률 flower Chart
+    title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.9)
+    fig = make_subplots(specs=[[{'secondary_y': False}]]) 
+    for index, value in enumerate(citys):
+        fig.add_trace(
+            go.Scatter(
+                cum_mdf[value]*100, y = cum_jdf[value]*100,
+                mode='markers+lines',
+                hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
+                marker=dict(
+                    size=abs(cum_jdf[value])*10,
+                    color=cum_mdf[value], #set color equal to a variable
+                    colorscale='bluered', # one of plotly colorscales
+                    showscale=True
+                )
+            )
+        )
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
