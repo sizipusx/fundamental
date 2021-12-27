@@ -702,7 +702,7 @@ if __name__ == "__main__":
         if submit:
             drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
             flag = "부동산원"
-            drawAPT_weekly.draw_flower(options, cumomdf, cumojdf, flag)
+            drawAPT_weekly.draw_flower_together(options, cumomdf, cumojdf, flag)
     else:
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']
