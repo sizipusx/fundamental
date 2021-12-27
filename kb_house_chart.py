@@ -398,12 +398,12 @@ def run_price_index() :
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = "KB"
-            drawAPT_weekly.draw_flower(selected_dosi2, cummdf, cumjdf, flag)
+            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cummdf, cumjdf, flag)
         with col2:
             st.write("")
         with col3:
             flag = "부동산원"
-            drawAPT_weekly.draw_flower(selected_dosi2, cumomdf, cumojdf, flag)
+            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cumomdf, cumojdf, flag)
     html_br="""
     <br>
     """
