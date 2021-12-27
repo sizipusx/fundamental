@@ -367,7 +367,7 @@ def run_price_index() :
     elif selected_dosi == '제주도':
         draw_list = ['제주, 서귀포']
     
-    ### Block KB #########################################################################################
+    ### Block 매매전세지수 같이 보기 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -375,16 +375,16 @@ def run_price_index() :
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change)
+            drawAPT_weekly.run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, selected_dosi3, city_series)
     html_br="""
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### Block 부동산원 #########################################################################################
+    ### Block 매매 전세 지수 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, selected_dosi3, city_series)
+            drawAPT_weekly.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change)
         with col2:
             st.write("")
         with col3:
