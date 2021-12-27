@@ -632,3 +632,22 @@ def draw_flower( select_city, cum_mdf, cum_jdf, flag):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def draw_change_table(change_df,flag):
+    #버블지수/전세파워 table 추가
+    title = dict(text=f'<b>{flag} 기간 상승률 분석</b>', x=0.5, y = 0.9) 
+    fig = go.Figure(data=[go.Table(
+                        header=dict(values=['<b>지역</b>','<b>매매증감</b>', '<b>전세증감</b>'],
+                                    fill_color='royalblue',
+                                    align=['right','left'],
+                                    font=dict(color='white', size=12),
+                                    height=40),
+                        cells=dict(values=[change_df.index, change_df['매매증감'], change_df['전세증감']], 
+                                    fill=dict(color=['paleturquoise', 'white', 'white']),
+                                    align=['right','left', 'left'],
+                                    font_size=12,
+                                    height=30))
+                    ])
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
