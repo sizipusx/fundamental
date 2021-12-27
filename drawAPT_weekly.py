@@ -657,7 +657,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
                     color=cum_mdf[value], #set color equal to a variable
                     colorscale='bluered', # one of plotly colorscales
                     showscale=True
-                )
+                ),
             ), secondary_y=False,
         )
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
