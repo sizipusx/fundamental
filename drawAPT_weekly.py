@@ -15,6 +15,8 @@ from plotly.subplots import make_subplots
 import streamlit as st
 
 pd.set_option('display.float_format', '{:.2f}'.format)
+pd.set_option('display.max.colwidth', 50)
+
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473'] #'rgb(255,69,0)'
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(244,201,107)', 'rgb(153,204,0)', \
