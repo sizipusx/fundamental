@@ -375,7 +375,7 @@ def run_price_index() :
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change)
+            drawAPT_weekly.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change)
     html_br="""
     <br>
     """

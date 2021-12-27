@@ -3,6 +3,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
+from pandas.core.dtypes.missing import notnull
 
 
 from pandas.io.json import json_normalize
@@ -229,7 +230,9 @@ def draw_index_change_with_bubble(last_df, flag):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change):
+def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change):
+    if selected_dosi3.notnull():
+        selected_dosi2 = selected_dosi3
     titles = dict(text= '<b>['+selected_dosi2 +']</b> 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
