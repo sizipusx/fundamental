@@ -649,7 +649,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
     for index, value in enumerate(citys):
         fig.add_trace(
             go.Scatter(
-                x = cum_mdf[value]*100, y = cum_jdf[value]*100,
+                x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
                 mode='markers+lines',
                 hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
                 marker=dict(
