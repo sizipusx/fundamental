@@ -715,10 +715,10 @@ if __name__ == "__main__":
         slice_m = mdf.loc[start_date:end_date]
         slice_j = jdf.loc[start_date:end_date]
         diff = slice_om.index[-1] - slice_om.index[0]
-        st.write()
+        #information display
         cols = st.columns(4)
-        cols[0].write("시작: ", start_date)
-        cols[1].write("끝: ", end_date)
+        cols[0].write(f"시작: {start_date}")
+        cols[1].write(f"끝: {end_date}")
         cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
         cols[3].write("")
         #st.dataframe(slice_om)
