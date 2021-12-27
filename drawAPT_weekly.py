@@ -1,3 +1,4 @@
+from math import nan
 import time
 from datetime import datetime
 
@@ -231,7 +232,7 @@ def draw_index_change_with_bubble(last_df, flag):
     st.plotly_chart(fig)
 
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change):
-    if selected_dosi3.notnull():
+    if selected_dosi3 is not nan:
         selected_dosi2 = selected_dosi3
     titles = dict(text= '<b>['+selected_dosi2 +']</b> 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
