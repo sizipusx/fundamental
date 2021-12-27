@@ -517,6 +517,7 @@ def draw_basic():
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.write("KB 매매지수 기간별 순위")
+            rank_df = rank_df.reset_index()
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
@@ -543,6 +544,7 @@ def draw_basic():
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.write("부동산원 매매지수 기간별 순위")
+            rank_odf = rank_odf.reset_index()
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
@@ -761,7 +763,8 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     #flag = "KB"  
-                    st.write("KB 기간 증감")             
+                    st.write("KB 기간 증감") 
+                    change_df = change_df.reset_index()            
                     st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
                                     .format(precision=2, na_rep='MISSING', thousands=","))  
                     #drawAPT_weekly.draw_change_table(change_df, flag)  
@@ -770,6 +773,7 @@ if __name__ == "__main__":
                 with col3:
                     flag = "부동산원"
                     st.write("부동사원 기간 증감")
+                    change_odf = change_odf.reset_index()
                     st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
                                           .format(precision=2, na_rep='MISSING', thousands=","))
                     #drawAPT_weekly.draw_change_table(change_df, flag) 
