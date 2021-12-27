@@ -708,17 +708,20 @@ if __name__ == "__main__":
             'Select Date to Compare index change', 
             options = period_,
             value = (period_[-13], period_[-1]))
-        st.write("시작: ", start_date)
-        st.write("끝: ", end_date)
+        
         #부동산원 / KB
         slice_om = omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
         slice_m = mdf.loc[start_date:end_date]
         slice_j = jdf.loc[start_date:end_date]
         diff = slice_om.index[-1] - slice_om.index[0]
-        st.write(f"전체 기간: {round(diff.days/365,1)} 년")
+        st.write()
+        cols = st.columns(4)
+        cols[0].write("시작: ", start_date)
+        cols[1].write("끝: ", end_date)
+        cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
+        cols[3].write("")
         #st.dataframe(slice_om)
-        st.write("기간 증감률")
         change_odf = pd.DataFrame()
         change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
         change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
