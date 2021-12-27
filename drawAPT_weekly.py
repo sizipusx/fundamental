@@ -639,11 +639,11 @@ def draw_change_table(change_df,flag):
     fig = go.Figure(data=[go.Table(
                         header=dict(values=['<b>지역</b>','<b>매매증감</b>', '<b>전세증감</b>'],
                                     fill_color='royalblue',
-                                    align=['right','left'],
+                                    align=['right','left', 'left'],
                                     font=dict(color='white', size=12),
                                     height=40),
                         cells=dict(values=[change_df.index, change_df['매매증감'], change_df['전세증감']], 
-                                    fill=dict(color=['paleturquoise', 'white', 'white']),
+                                    fill=dict(color=['black', 'gray', 'gray']),
                                     align=['right','left', 'left'],
                                     font_size=12,
                                     height=30))
