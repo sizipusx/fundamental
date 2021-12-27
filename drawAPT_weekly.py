@@ -625,7 +625,6 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
         select_city = selected_dosi3
     #매매/전세 증감률 flower Chart
     title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.9)
-    fig = go.F
     fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
         mode='markers+lines',
         hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
