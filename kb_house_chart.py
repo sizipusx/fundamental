@@ -753,15 +753,17 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
-                                     .format(precision=2, na_rep='MISSING', thousands=","))
-                            
-
+                    flag = "KB"               
+                    #st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
+                     #                .format(precision=2, na_rep='MISSING', thousands=","))  
+                    drawAPT_weekly.draw_change_table(change_df, flag)  
                 with col2:
                     st.write("")
                 with col3:
-                    st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
-                                         .format(precision=2, na_rep='MISSING', thousands=","))
+                    flag = "부동산원"
+                    # st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
+                    #                      .format(precision=2, na_rep='MISSING', thousands=","))
+                    drawAPT_weekly.draw_change_table(change_df, flag) 
             html_br="""
             <br>
             """
