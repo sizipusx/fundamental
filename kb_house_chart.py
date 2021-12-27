@@ -388,7 +388,7 @@ def run_price_index() :
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.run_one_index(selected_dosi2, omdf, ojdf, omdf_change, ojdf_change)
+            drawAPT_weekly.run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_change)
     html_br="""
     <br>
     """

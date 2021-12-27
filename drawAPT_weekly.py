@@ -406,7 +406,9 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def run_one_index(selected_dosi2, omdf, ojdf, omdf_change, ojdf_change):
+def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_change):
+    if selected_dosi3 is not None:
+        selected_dosi2 = selected_dosi3
     titles = dict(text= '<b>['+selected_dosi2 +']</b> 부동산원 주간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
