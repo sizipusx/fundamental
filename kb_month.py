@@ -25,7 +25,7 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
 file_path = 'https://github.com/sizipusx/fundamental/blob/c62be06cba70aef3e8d5647bd2f9464c31006702/files/202111_monthly.xlsx?raw=true'
-p_path = r"https://github.com/sizipusx/fundamental/blob/c62be06cba70aef3e8d5647bd2f9464c31006702/files/kb_price.xlsx?raw=True"
+p_path = r"https://github.com/sizipusx/fundamental/blob/ae1fa2efbc5261dcbdd4937164f618ef0efe408f/files/one_apt_price.xlsx?raw=True"
 buy_path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
 p_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
@@ -48,49 +48,55 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    #header_path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
-    header_excel = pd.ExcelFile(header_path)
-    kb_header = header_excel.parse('KB')
-    ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경
-    #p_path = r"https://github.com/sizipusx/fundamental/blob/c62be06cba70aef3e8d5647bd2f9464c31006702/files/kb_price.xlsx?raw=True"
-    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-
-    for k in kb_dict.keys():
-        print(k)
-    mdf = kb_dict['sell']
-    jdf = kb_dict['jeon']
-    mdf = mdf.iloc[2:mdf['서울'].count()+1]
-    jdf = jdf.iloc[2:jdf['서울'].count()+1]
-    #index 날짜 변경
-    index_list = list(mdf.index)
-
-    new_index = []
-
-    for num, raw_index in enumerate(index_list):
-        temp = str(raw_index).split('.')
-        if int(temp[0]) > 12 :
-            if len(temp[0]) == 2:
-                new_index.append('19' + temp[0] + '.' + temp[1])
-            else:
-                new_index.append(temp[0] + '.' + temp[1])
+    header_dict = pd.read_excel(header_path, sheet_name=None)
+    header = header_dict['one']
+    one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    omdf = one_dict['sell']
+    ojdf = one_dict['jeon']
+    mdf = omdf.iloc[4:,:]
+    jdf = ojdf.iloc[4:,:]
+    #컬럼 변경
+    s1 = mdf.columns
+    new_s1 = []
+    for num, gu_data in enumerate(s1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
         else:
-            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
-    mdf.set_index(pd.to_datetime(new_index), inplace=True)
-    jdf.set_index(pd.to_datetime(new_index), inplace=True)
-    mdf.columns = kb_header.columns
-    jdf.columns = kb_header.columns
-    mdf = round(mdf.replace('-','0').astype(float)*3.3,2)
-    jdf = round(jdf.replace('-','0').astype(float)*3.3,2)
-    mdf_ch = mdf.pct_change()*100
-    mdf_ch = mdf_ch.round(decimals=2)
-    jdf_ch = jdf.pct_change()*100
-    jdf_ch = jdf_ch.round(decimals=2)
-        
+            new_s1.append(s1[check])
+    mdf.columns =[new_s1, omdf.iloc[1]]
+    jdf.columns = [new_s1, ojdf.iloc[1]]
+    #필요 시트만 슬라이스
+    smdf = mdf.xs('평균매매',axis=1, level=1)
+    sadf = mdf.xs('평균단위매매', axis=1, level=1)
+    jmdf = jdf.xs('평균전세',axis=1, level=1)
+    jadf = jdf.xs('평균단위전세', axis=1, level=1)
+    smdf.columns = header.columns
+    sadf.columns = header.columns
+    jmdf.columns = header.columns
+    jadf.columns = header.columns
+
+    sadf = (sadf.astype(float)*3.306)/10
+    smdf = smdf.astype(float)/10
+    jadf = (jadf.astype(float)*3.306)/10
+    jmdf = jmdf.astype(float)/10
+
+    sadf = sadf.round(decimals=1) #평균매매가
+    smdf = smdf.round(decimals=1) #
+    jadf = jadf.round(decimals=1)
+    jmdf = jmdf.round(decimals=1)
+
+    sadf_ch = sadf.pct_change()*100
+    sadf_ch = sadf_ch.round(decimals=2)
+    jadf_ch = jadf.pct_change()*100
+    jadf_ch = jadf_ch.round(decimals=2)
+
     ######################### 여기부터는 전세가율
-    jratio = round(jdf/mdf*100,1)
+    jratio = round(jmdf/smdf*100,1)
     
 
-    return mdf, mdf_ch, jdf, jdf_ch, jratio
+    return sadf, sadf_ch, jadf, jadf_ch, jratio
+
 
 
 @st.cache
