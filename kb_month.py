@@ -460,11 +460,10 @@ if __name__ == "__main__":
     pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
     buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
-            st.markdown(f'KB 최종업데이트: **{kb_last_month}월**')
-            cols = st.columns(3)
-            cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
-            cols[1].markdown(f'부동산원 최종업데이트: **{pop_last_month}월**')
-            cols[2].markdown(f'아파트 매입자 거주지별 현황 최종데이트: **{buy_last_month}월**')
+        cols = st.columns(3)
+        cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
+        cols[1].markdown(f'부동산원 최종업데이트: **{pop_last_month}월**')
+        cols[2].markdown(f'아파트 매입자 거주지별 현황 최종데이트: **{buy_last_month}월**')
 
     #월간 증감률
     mdf_change = mdf.pct_change()*100

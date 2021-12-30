@@ -405,7 +405,7 @@ def load_local_basic():
     smc.loc[:,('보험료', '직장월급여')]
 
     return df, bigc, smc
-########################################## data 불러오기 ######################
+############ data 불러오기 ######################
 mdf, jdf, code_df, geo_data = load_index_data()
 popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
 b_df, org_df = load_buy_data()
@@ -416,9 +416,11 @@ basic_df, bigc, smc = load_local_basic()
 kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
 pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
 buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
-st.write("KB last month: " + kb_last_month+"월")
-st.write("인구수 last month: " + pop_last_month+"월")
-st.write("매입자 거주지별 매매현황 last month: " + buy_last_month+"월")
+with st.expander("See recently Data Update"):
+    cols = st.columns(3)
+    cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
+    cols[1].markdown(f'인구수 최종업데이트: **{pop_last_month}월**')
+    cols[2].markdown(f'아파트 매입자 거주지별 현황 최종데이트: **{buy_last_month}월**')
 
 #월간 증감률
 mdf_change = mdf.pct_change()*100
