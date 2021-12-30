@@ -670,6 +670,8 @@ if __name__ == "__main__":
                 with col1:
                     flag = '부동산원 월간'
                     drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
+                    st.dataframe(omdf)
+                    st.dataframe(omdf_change)
                 with col2:
                     st.write("")
                 with col3:
@@ -677,12 +679,26 @@ if __name__ == "__main__":
                     drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)    
             html_br="""
             <br>
-            """          
+            """ 
+            ### Draw Bubble chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = '부동산원 월간'
+                    drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = '부동산원 월간'
+                    drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)    
+            html_br="""
+            <br>
+            """              
     else:
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']
         period_ = omdf.index.tolist()
-        # period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+        # period_ = omdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
