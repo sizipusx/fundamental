@@ -672,8 +672,6 @@ if __name__ == "__main__":
                 with col1:
                     flag = '부동산원 월간'
                     drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
-                    st.dataframe(omdf)
-                    st.dataframe(omdf_change)
                 with col2:
                     st.write("")
                 with col3:
