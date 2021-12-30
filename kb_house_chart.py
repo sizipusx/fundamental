@@ -88,7 +88,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
 kb_file_path = 'https://github.com/sizipusx/fundamental/blob/b40d5856a6a2d7c6b789c8255714591e81243674/files/kb_weekly.xlsx?raw=True'
 #감정원 데이터
-one_path = r"https://github.com/sizipusx/fundamental/blob/11b8db4b658bedd051b9a2bb813646428a7c912f/files/one_weekly.xlsx?raw=True"
+one_path = r"https://github.com/sizipusx/fundamental/blob/9dfcb5a5de327c4f73fc33544f1cfb8c94259eae/files/one_data.xlsx?raw=True"
 #헤더 변경
 header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
@@ -114,8 +114,8 @@ def load_one_data():
     one_dict = pd.read_excel(one_path, sheet_name=None, header=1, dtype={'       지역\n\n\n\n\n 날짜': str})
     # one header 변경
     oneh = header_excel.parse('one')
-    omdf = one_dict['매매지수']
-    ojdf = one_dict['전세지수']
+    omdf = one_dict['sell_index']
+    ojdf = one_dict['jeon_index']
     omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
     ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
     omdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)

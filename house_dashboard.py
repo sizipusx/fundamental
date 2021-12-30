@@ -48,6 +48,7 @@ footer {visibility: hidden;}
 local_path = 'https://github.com/sizipusx/fundamental/blob/d9ea8a2cfa20bb3847affe562598c8792fdaf8cf/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/d6cba110aee4c5cba420e629009114ac8e47dd62/files/kb_monthly.xlsx?raw=true'
+one_path = r'https://github.com/sizipusx/fundamental/blob/9dfcb5a5de327c4f73fc33544f1cfb8c94259eae/files/one_data.xlsx?raw=true'
 buy_path = r'https://github.com/sizipusx/fundamental/blob/669cd865342b20c29da4ff689a309fe5edc24f38/files/apt_buy.xlsx?raw=true'
 # 2021. 11월부터 KB 데이터에서 기타지방 평균가격 제공하지 않음 => 다시 부동산원 데이터로 변경: 2021. 12. 16
 #p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
@@ -77,29 +78,9 @@ def read_source_excel():
 def load_ratio_data():
     header_dict = pd.read_excel(header_path, sheet_name=None)
     header = header_dict['one']
-    ################# 여기느 평단가 소스: 2021. 9. 17. One data -> KB data 변경 -> 21. 12. 24 다시 부동산원으로 변경
-    # one_dict = pd.read_excel(p_path, sheet_name=None, header=10)
-    # omdf = one_dict['sell']
-    # ojdf = one_dict['jeon']
-    # omdf['지역명'] = header['지역명'].str.strip()
-    # ojdf['지역명'] = header['지역명'].str.strip()
-    # omdf = omdf.set_index('지역명')
-    # ojdf = ojdf.set_index('지역명')
-    # omdf = omdf.iloc[:,4:]
-    # ojdf = ojdf.iloc[:,4:]
-    # omdf = omdf.T
-    # ojdf = ojdf.T
-    # omdf = omdf.astype(str).applymap(lambda x: x.replace('-','0'))
-    # ojdf = ojdf.astype(str).applymap(lambda x: x.replace('-','0'))
-    # omdf = omdf.astype(float)*3.306
-    # ojdf = ojdf.astype(float)*3.306
-    # omdf_ch = omdf.pct_change()*100
-    # omdf_ch = omdf_ch.round(decimals=2)
-    # ojdf_ch = ojdf.pct_change()*100
-    # ojdf_ch = ojdf_ch.round(decimals=2)
-    one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-    omdf = one_dict['sell']
-    ojdf = one_dict['jeon']
+    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+    omdf = one_dict['sell_price']
+    ojdf = one_dict['jeon_price']
     mdf = omdf.iloc[4:,:]
     jdf = ojdf.iloc[4:,:]
     #컬럼 변경
@@ -149,8 +130,8 @@ def load_ratio_data():
 def load_buy_data():
     #년 증감 계산을 위해 최소 12개월치 데이터 필요
     # path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
-    data_type = 'Sheet1' 
-    df = pd.read_excel(buy_path, sheet_name=data_type, header=10)
+    data_type = 'apt_buy' 
+    df = pd.read_excel(one_path, sheet_name=data_type, header=10)
     # path1 = r'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
     header = pd.read_excel(header_path, sheet_name='buyer')
     df['지 역'] = header['local'].str.strip()
