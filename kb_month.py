@@ -490,7 +490,7 @@ if __name__ == "__main__":
     
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', 'local Analysis')
+                    "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', '지역같이보기', '기간보기')
                     )
     if my_choice == 'Basic':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
@@ -659,7 +659,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
-    elif my_choice == 'Together':
+    elif my_choice == '지역같이보기':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.sidebar.button('analysis')
@@ -668,12 +668,12 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    flag = '부동산원','월간'
+                    flag = '부동산원 월간'
                     drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
                 with col2:
                     st.write("")
                 with col3:
-                    flag = '부동산원','월간'
+                    flag = '부동산원 월간'
                     drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)    
             html_br="""
             <br>
@@ -681,7 +681,8 @@ if __name__ == "__main__":
     else:
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']
-        period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+        period_ = omdf.index.tolist()
+        # period_ = omdf.index.strftime("%Y-%m-%d").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
