@@ -50,17 +50,17 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 header_path = 'https://github.com/sizipusx/fundamental/blob/ac28ce0cce4bbcf5892a7f2d1e566386944af9a3/files/header.xlsx?raw=True'
-file_path = 'https://github.com/sizipusx/fundamental/blob/51834c6c0c9101c9a51a565f1a96a50119c53a7d/files/kb_monthly.xlsx?raw=true'
+kb_file_path = 'https://github.com/sizipusx/fundamental/blob/51834c6c0c9101c9a51a565f1a96a50119c53a7d/files/kb_monthly.xlsx?raw=true'
 
 #return object
 def read_source(): 
-    kbm_dict = pd.ExcelFile(file_path)
+    kbm_dict = pd.ExcelFile(kb_file_path)
 
     return kbm_dict
 
  #return dic
 def read_source_excel():
-    kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+    kbm_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
     return kbm_dict
 
