@@ -700,7 +700,7 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    flag = '부동산원','주간'
+                    flag = '부동산원 주간'
                     drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
 
                 with col2:
