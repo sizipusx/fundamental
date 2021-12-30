@@ -10,6 +10,8 @@ from plotly.subplots import make_subplots
 import streamlit as st
 import drawAPT_weekly 
 import drawAPT_update
+import seaborn as sns
+cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 #############html 영역####################
 html_header="""
@@ -664,7 +666,7 @@ if __name__ == "__main__":
     elif my_choice == '지역같이보기':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
-        submit = st.sidebar.button('analysis')
+        submit = st.button('analysis')
         if submit:
             ### Draw Bubble chart #########################################################################################
             with st.container():
@@ -695,8 +697,6 @@ if __name__ == "__main__":
             <br>
             """              
     else:
-        flag = ['KB','매매증감']
-        flag1 = ['부동산원','매매증감']
         period_ = omdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
@@ -735,14 +735,14 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    flag = ['KB','매매증감']
+                    flag = 'KB 월간'
                     drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
 
                 with col2:
                     st.write("")
                 with col3:
-                    flag = ['부동산원','매매증감']
-                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag1)
+                    flag = '부동산원 월간'
+                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
                     
             html_br="""
             <br>

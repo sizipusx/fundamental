@@ -753,13 +753,13 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    flag = ['KB','매매증감']
+                    flag = 'KB 주간'
                     drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
 
                 with col2:
                     st.write("")
                 with col3:
-                    flag = ['부동산원','매매증감']
+                    flag = '부동산원 주간'
                     drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag1)
                     
             html_br="""
