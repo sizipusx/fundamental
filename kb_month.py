@@ -686,13 +686,11 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    flag = '부동산원 월간'
-                    drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
+                    st.dataframe(cum_omdf)
                 with col2:
                     st.write("")
                 with col3:
-                    flag = '부동산원 월간'
-                    drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)    
+                    st.dataframe(cum_ojdf)
             html_br="""
             <br>
             """              
@@ -751,7 +749,6 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    #flag = "KB"  
                     st.write("KB 기간 증감") 
                     change_df = change_df.reset_index()            
                     st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
@@ -760,8 +757,7 @@ if __name__ == "__main__":
                 with col2:
                     st.write("")
                 with col3:
-                    flag = "부동산원"
-                    st.write("부동사원 기간 증감")
+                    st.write("부동산원 기간 증감")
                     change_odf = change_odf.reset_index()
                     st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
                                           .format(precision=2, na_rep='MISSING', thousands=","))

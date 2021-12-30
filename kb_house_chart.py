@@ -779,7 +779,7 @@ if __name__ == "__main__":
                     st.write("")
                 with col3:
                     flag = "부동산원"
-                    st.write("부동사원 기간 증감")
+                    st.write("부동산원 기간 증감")
                     change_odf = change_odf.reset_index()
                     st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
                                           .format(precision=2, na_rep='MISSING', thousands=","))
