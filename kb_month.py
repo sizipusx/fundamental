@@ -148,16 +148,8 @@ def load_one_data():
     oneh = header_excel.parse('one')
     omdf = one_dict['msell_index']
     ojdf = one_dict['mjeon_index']
-    omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
-    ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
-    omdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)
-    omdf['date'] = omdf['date'].str.slice(start=0, stop=10)
-    omdf.index = pd.to_datetime(omdf['date'], format='%Y-%m-%d')
-    omdf = omdf.iloc[:,1:]
-    ojdf.rename(columns={'       지역\n\n\n\n\n 날짜':'date'}, inplace=True)
-    ojdf['date'] = ojdf['date'].str.slice(start=0, stop=10)
-    ojdf.index = pd.to_datetime(ojdf['date'], format='%Y-%m-%d')
-    ojdf = ojdf.iloc[:,1:]
+    omdf = omdf.iloc[3:,:]
+    ojdf = ojdf.iloc[3:,:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
     omdf = omdf.astype(float).round(decimals=2)
@@ -672,9 +664,20 @@ if __name__ == "__main__":
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.sidebar.button('analysis')
         if submit:
-            drawAPT_weekly.run_one_index_together(options, omdf, omdf_change)
-            flag = "부동산원"
-            drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)
+            ### Draw Bubble chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = '부동산원','월간'
+                    drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = '부동산원','월간'
+                    drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)    
+            html_br="""
+            <br>
+            """          
     else:
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']

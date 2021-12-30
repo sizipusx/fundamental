@@ -556,8 +556,8 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
         )
     st.plotly_chart(fig)
 
-def run_one_index_together(draw_list, omdf, omdf_change):
-    title = "<b>부동산원 매매지수 변화 같이 보기</b>"
+def run_one_index_together(draw_list, omdf, omdf_change, flag):
+    title = f"<b>{flag} 매매지수 변화 같이 보기</b>"
     titles = dict(text= title, x=0.5, y = 0.85) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
