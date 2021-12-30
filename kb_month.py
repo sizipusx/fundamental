@@ -152,6 +152,8 @@ def load_one_data():
     ojdf = ojdf.iloc[3:,:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
+    omdf.index = pd.to_datetime(omdf.index)
+    ojdf.index = pd.to_datetime(ojdf.index)
     omdf = omdf.astype(float).round(decimals=2)
     ojdf = ojdf.astype(float).round(decimals=2)
      #주간 증감률
@@ -697,8 +699,7 @@ if __name__ == "__main__":
     else:
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']
-        period_ = omdf.index.tolist()
-        # period_ = omdf.index.strftime("%Y-%m").tolist()
+        period_ = omdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
