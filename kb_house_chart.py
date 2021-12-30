@@ -116,8 +116,8 @@ def load_one_data():
     oneh = header_excel.parse('one')
     omdf = one_dict['sell_index']
     ojdf = one_dict['jeon_index']
-    omdf = omdf.iloc[3:,:]
-    ojdf = ojdf.iloc[3:,:]
+    omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
+    ojdf = ojdf.iloc[3:omdf['전국'].count()+1,:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
     omdf = omdf.astype(float).round(decimals=2)
