@@ -56,6 +56,8 @@ one_path = r"https://github.com/sizipusx/fundamental/blob/9dfcb5a5de327c4f73fc33
 #헤더 변경
 header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
+#geojson file open
+geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
 #return object
 def read_source(): 
@@ -68,6 +70,18 @@ def read_source_excel():
     kbm_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
     return kbm_dict
+
+@st.cache
+def get_basic_df():
+    #2021-7-30 코드 추가
+    # header 파일
+    basic_df = header_excel.parse('city')
+    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    basic_df.dropna(inplace=True)
+    basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
+
+    return basic_df
 
 @st.cache
 def load_index_data():

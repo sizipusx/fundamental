@@ -554,7 +554,7 @@ def run_trade_index(selected_dosi, org_df, mdf):
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3
-    titles = dict(text= flag +'<b> ['+selected_dosi2 +']</b> 월간 매매-전세 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b> ['+selected_dosi2 +']'+flag +' 월간 매매-전세 지수</b>', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
