@@ -552,11 +552,11 @@ if __name__ == "__main__":
     power_df = power_df.sort_values('rank', ascending=True)
     
     #KB 전세가율 마지막 데이터
-    one_last_df = ratio_df.iloc[-1].T.to_frame()
-    sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
+    #one_last_df = ratio_df.iloc[-1].T.to_frame()
+    #sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
     # st.dataframe(sub_df)
-    sub_df.columns = ['전세가율']
-    sub_df = sub_df.sort_values('전세가율', ascending=False )
+    #sub_df.columns = ['전세가율']
+    #sub_df = sub_df.sort_values('전세가율', ascending=False )
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
