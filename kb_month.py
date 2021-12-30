@@ -28,8 +28,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
- <h2 style="color:#008080; font-family:Georgia"> 월간 부동산 시계열 분석 </h3> <br>
+<h1 style="font-size:200%; color:#008080; font-family:Georgia">  월간 부동산 시계열 분석 <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -476,7 +475,7 @@ if __name__ == "__main__":
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
     b_df, org_df = load_buy_data()
-    peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
+    #peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
