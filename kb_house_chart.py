@@ -33,14 +33,14 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #############html 영역####################
 html_header="""
 <head>
-<title>PControlDB</title>
+<title>Korea house analysis chart</title>
 <meta charset="utf-8">
-<meta name="keywords" content="project control, dashboard, management, EVA">
-<meta name="description" content="project control dashboard">
+<meta name="keywords" content="chart, analysis">
+<meta name="description" content="House data analysis">
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 부동산 주간 시계열 분석 <br>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 주간 부동산 시계열 분석 <br>
 <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;

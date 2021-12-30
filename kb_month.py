@@ -18,6 +18,34 @@ import FinanceDataReader as fdr
 
 import drawAPT
 
+#############html 영역####################
+html_header="""
+<head>
+<title>Korea local house analysis</title>
+<meta charset="utf-8">
+<meta name="keywords" content="house data, dashboard, analysis, EVA">
+<meta name="description" content="house data dashboard">
+<meta name="author" content="indiesoul">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
+ <h2 style="color:#008080; font-family:Georgia"> 월간 부동산 시계열 분석 </h3> <br>
+ <hr style= "  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1.5px;"></h1>
+"""
+
+st.set_page_config(page_title="Monthly House Analysis", page_icon="", layout="wide")
+st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
+st.markdown(html_header, unsafe_allow_html=True)
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
