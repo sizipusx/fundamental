@@ -631,10 +631,6 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
             )      
         )
     st.plotly_chart(fig)
-    with st.expander("See explanation"):
-            st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
-            st.write("Source : https://onland.kbstar.com/quics?page=C060737 ")
-
 
 def run_bubble(selected_city2, bubble_df2, m_power):
     #bubble index chart
