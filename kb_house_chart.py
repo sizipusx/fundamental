@@ -694,7 +694,7 @@ if __name__ == "__main__":
     elif my_choice == 'Together':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
-        submit = st.sidebar.button('Draw Index chart togethger')
+        submit = st.button('Draw Index chart togethger')
         if submit:
             ### Draw Bubble chart #########################################################################################
             with st.container():
