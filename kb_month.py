@@ -462,7 +462,7 @@ if __name__ == "__main__":
                 '구', mirco_list
             )
         
-        submit = st.button('Draw Price Index')
+        submit = st.sidebar.button('Draw Price Index')
 
         if submit:
             ### Block 플라워차트 추가 2021. 12. 26 #########################################################################################
@@ -470,7 +470,7 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = "KB"
-                    drawAPT_update.run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
+                    drawAPT_update.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag)
                 with col2:
                     st.write("")
                 with col3:

@@ -551,23 +551,44 @@ def run_trade_index(selected_dosi, org_df, mdf):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
-    kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
-   
-    titles = dict(text= '<b>['+selected_city2 +']</b> 월간 매매-전세 지수', x=0.5, y = 0.9) 
+def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag):
+    if selected_dosi3 is not None:
+        selected_dosi2 = selected_dosi3
+    titles = dict(text= flag +'<b> ['+selected_dosi2 +']</b> 월간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)  
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2], marker_color = marker_colors[2]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
+    fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
+    #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
+    #             annotation_position="bottom right")
+    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+              annotation_text="8.2 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+              annotation_text="9.13 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+              annotation_text="12.16/2.24 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+              annotation_text="6.17/7.10 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+              annotation_text="8.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
+              annotation_text="2.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -610,7 +631,6 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
             )      
         )
     st.plotly_chart(fig)
-
     with st.expander("See explanation"):
             st.markdown(f'매매-전세 지수 최종업데이트: **{kb_last_month}월**')
             st.write("Source : https://onland.kbstar.com/quics?page=C060737 ")

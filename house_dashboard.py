@@ -741,7 +741,8 @@ st.markdown(html_br, unsafe_allow_html=True)
 with st.container():
     col2, col3, col4 = st.columns([30,2,30])
     with col2:
-        drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change)
+        flag = 'KB'
+        drawAPT_update.run_price_index(selected_city, mdf, jdf, mdf_change, jdf_change, flag)
     with col3:
         st.write("")
     with col4:
