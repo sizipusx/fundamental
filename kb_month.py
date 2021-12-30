@@ -49,7 +49,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
-header_path = 'https://github.com/sizipusx/fundamental/blob/e5fbc72771b5750ef5250531e0f8c16c4804c366/files/header.xlsx?raw=True'
+header_path = 'https://github.com/sizipusx/fundamental/blob/ac28ce0cce4bbcf5892a7f2d1e566386944af9a3/files/header.xlsx?raw=True'
 file_path = 'https://github.com/sizipusx/fundamental/blob/c62be06cba70aef3e8d5647bd2f9464c31006702/files/202111_monthly.xlsx?raw=true'
 p_path = r"https://github.com/sizipusx/fundamental/blob/3cc8b25aa82b0e823bec78f16eb9424efbfd9101/files/one_apt_price.xlsx?raw=True"
 buy_path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
