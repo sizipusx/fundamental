@@ -419,20 +419,52 @@ if __name__ == "__main__":
             st.write("나중에 구현--그냥 테이블로 보여주기")
             #drawAPT_update.draw_basic(last_df, df, geo_data, last_ps, power_df)
     elif my_choice == 'Price Index':
-        city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
-                    '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
-                    '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
-                    '충북','청주', '충주','제천', '충남','천안', '공주','아산', '논산', '계룡','당진','서산', '전북', '전주', '익산', '군산', \
-                    '전남', '목포','순천','여수','광양','경북','포항','구미', '경산', '안동','김천','경남','창원', '양산','거제','진주', \
-                    '김해','통영', '제주서귀포','기타지방']
+        city_list = ['전국', '수도권', '지방', '6대광역시', '5대광역시', '서울', '경기', '부산', '대구', '인천', '광주', '대전',
+                  '울산', '세종', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
         column_list = mdf.columns.to_list()
         city_series = pd.Series(column_list)
-        selected_city = st.sidebar.selectbox(
-                '광역시-도-시', city_list
+        selected_dosi = st.sidebar.selectbox(
+                '광역시-도', city_list
             )
-        second_list = city_series[city_series.str.contains(selected_city)].to_list()
+
+        #두번째 도시
+        small_list = []
+        if selected_dosi == '전국':
+            small_list = ['전국', '수도권', '지방', '6대광역시']
+        elif selected_dosi == '서울':
+            small_list = ['서울', '서울 강북권역', '서울 강남권역']
+        elif selected_dosi == '부산' or selected_dosi == '인천' or selected_dosi == '광주' \
+            or selected_dosi == '대전' or selected_dosi == '울산' :
+            small_list = city_series[city_series.str.contains(selected_dosi)].to_list()
+        elif selected_dosi == '대구':
+            small_list = ['대구','대구 수성구', '대구 중구', '대구 동구', '대구 서구', '대구 남구', '대구 북구', '대구 달서구', '대구 달성군'] 
+        elif selected_dosi == '경기':
+            small_list = ['경기', '수원', '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
+                        '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기 광주', '화성']
+        elif selected_dosi == '강원':
+            small_list = ['강원', '춘천','강릉', '원주']
+        elif selected_dosi == '충북':
+            small_list = ['충북','청주', '충주','제천']
+        elif selected_dosi == '충남':
+            small_list = ['충남','천안', '공주','아산', '논산', '계룡','당진','서산']
+        elif selected_dosi == '전북':
+            small_list = ['전북', '전주', '익산', '군산']
+        elif selected_dosi == '전남':
+            small_list = ['전남', '목포','순천','여수','광양']
+        elif selected_dosi == '경북':
+            small_list = ['경북','포항','구미', '경산', '안동','김천']
+        elif selected_dosi == '충북':
+            small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
+        elif selected_dosi == '제주도':
+            small_list = ['제주, 서귀포']
+        elif selected_dosi == '세종':
+            small_list = ['세종']
+        else:
+            small_list = [selected_dosi]
+        
+        second_list = city_series[city_series.str.contains(selected_dosi)].to_list()
         selected_dosi2 = st.sidebar.selectbox(
-                '구-시', second_list
+                '구-시', small_list
             )
         mirco_list = []
         if selected_dosi2 == '수원':
