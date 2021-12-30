@@ -32,16 +32,12 @@ not_sell_path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1
 
 #return object
 def read_source(): 
-    # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    # file_path = 'https://github.com/sizipusx/fundamental/blob/1abd0cd5d82057c0546fd4a2d038428b99f2366d/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.ExcelFile(file_path)
 
     return kbm_dict
 
  #return dic
 def read_source_excel():
-    # file_path = 'G:/내 드라이브/code/data/★(월간)KB주택가격동향_시계열(2021.04)_A지수통계.xlsx'
-    # file_path = 'https://github.com/sizipusx/fundamental/blob/1abd0cd5d82057c0546fd4a2d038428b99f2366d/files/KB_monthlyA.xlsx?raw=true'
     kbm_dict = pd.read_excel(file_path, sheet_name=None, header=1)
 
     return kbm_dict
