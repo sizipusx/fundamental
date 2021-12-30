@@ -43,6 +43,46 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 
+def draw_pir(selected_city2, pir_df, income_df, price_df):
+    titles = dict(text= '('+selected_city2 +') 분기 PIR 지수', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Scatter(mode='lines', name = 'PIR', x =  pir_df.index, y= pir_df[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '가구소득', x = income_df.index, y = income_df[selected_city2], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
+    fig.add_trace(go.Bar(name = '주택가격', x = price_df.index, y = price_df[selected_city2], marker_color=  marker_colors[1], opacity=0.3), secondary_y = True)
+    fig.update_layout(barmode='stack')
+    
+    # fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_city2], marker_color = marker_colors[3]), secondary_y = False)
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='PIR', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='가구소득-주택가격', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+
+def draw_hai(city, hai_df, info_df):
+    titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.9) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
+    fig.add_trace(go.Scatter(x=[hai_df.index[-2]], y=[99.0], text=["100>무리없이구입가능"], mode="text"))
+    fig.add_shape(type="line", x0=hai_df.index[0], y0=100.0, x1=hai_df.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
+    fig.update_layout(hovermode="x unified")
+    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    st.plotly_chart(fig)
+    
+    titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.9) 
+    fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
+    # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
+    fig.add_hline(y=info_df['주담대금리'].mean(axis=0))
+    fig.update_yaxes(title_text='금리', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="%") #tickprefix="$", 
+    st.plotly_chart(fig)
+
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
@@ -517,7 +557,6 @@ def run_price_index(selected_city2, mdf,jdf, mdf_change, jdf_change) :
     titles = dict(text= '<b>['+selected_city2 +']</b> 월간 매매-전세 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
     fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)  
     fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_city2], marker_color = marker_colors[2]), secondary_y = False)
@@ -1406,6 +1445,52 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
     fig.add_vline(x=draw_df.loc['전국','평균매매가'], line_width=1, line_color="red", line_dash="dot", secondary_y = False)
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
     #fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="만원")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
+    if selected_dosi3 is not None:
+        select_city = selected_dosi3
+    #매매/전세 증감률 flower Chart
+    title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.9)
+    fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
+        mode='markers+lines',
+        hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
+        marker=dict(
+            size=abs(cum_jdf[select_city])*10,
+            color=cum_mdf[select_city], #set color equal to a variable
+            colorscale='bluered', # one of plotly colorscales
+            showscale=True
+        )
+    )) 
+    fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
+
+    #매매/전세 증감률 flower Chart
+    title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.9)
+    fig = go.Figure()
+    for index, value in enumerate(citys):
+        fig.add_trace(
+            go.Scatter(
+                x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
+                mode='markers+lines',
+                hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
+                marker=dict(
+                    size=abs(cum_jdf[value])*10,
+                    color=cum_mdf[value], #set color equal to a variable
+                    colorscale='bluered', # one of plotly colorscales
+                    showscale=True
+                )
+            )
+        )
+    fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
     st.plotly_chart(fig)

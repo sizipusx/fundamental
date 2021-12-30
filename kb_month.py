@@ -15,8 +15,7 @@ from plotly.subplots import make_subplots
 
 import streamlit as st
 import FinanceDataReader as fdr
-
-import drawAPT
+import drawAPT_update
 
 #############html 영역####################
 html_header="""
@@ -156,9 +155,6 @@ def load_buy_data():
 @st.cache
 def load_index_data():
     kbm_dict = read_source()
-    # kbm_dict = pd.ExcelFile(file_path)
-    #헤더 변경
-    #path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
     header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
@@ -221,8 +217,6 @@ def load_index_data():
 
 @st.cache
 def load_pop_data():
-    #인구수 파일 변경
-    #p_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
     kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, parse_dates=True)
     pdf = kb_dict['pop']
     sae = kb_dict['sae']
@@ -470,12 +464,11 @@ def load_hai_data():
 
 
 if __name__ == "__main__":
-    st.title("KB 부동산 월간 시계열 분석")
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
     b_df, org_df = load_buy_data()
-    #peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
+    peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
@@ -500,21 +493,31 @@ if __name__ == "__main__":
     
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
-    # jdf = jdf.mask(np.isinf(jdf))
+    cum_mdf = (1+mdf_change/100).cumprod() -1
+    cum_mdf = cum_mdf.round(decimals=3)
+    cum_jdf = (1+jdf_change/100).cumprod() -1
+    cum_jdf = cum_jdf.round(decimals=3)
+    #일주일 간 상승률 순위
+    kb_last_df  = pd.DataFrame()
+    kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
+    kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+    kb_last_df['1w'] = mdf_change.iloc[-1].T.to_frame() 
+    kb_last_df['2w'] = mdf_change.iloc[-2].T.to_frame()
+    kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
+    kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
+    kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
+#    kb_last_df.dropna(inplace=True)
+    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
     #일주일 간 상승률 순위
     last_df = mdf_change.iloc[-1].T.to_frame()
     last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
-    # st.dataframe(last_df.style.highlight_max(axis=0))
-    #인구, 세대수 마지막 데이터
-    #인구, 세대수 마지막 데이터
     last_pop = popdf_change.iloc[-1].T.to_frame()
     last_sae = saedf_change.iloc[-1].T.to_frame()
     last_ps = pd.merge(last_pop, last_sae, how='inner', left_index=True, right_index=True)
     last_ps.columns = ['인구증감', '세대증감']
-    # last_pop.dropna(inplace=True)
     last_ps = last_ps.round(decimals=2) 
 
     #마지막달 dataframe에 지역 코드 넣어 합치기
@@ -534,8 +537,8 @@ if __name__ == "__main__":
     # st.dataframe(mdf)
 
     #전세 파워 만들기
-    cum_ch = (mdf_change/100 +1).cumprod()
-    jcum_ch = (jdf_change/100 +1).cumprod()
+    cum_ch = (mdf_change/100 +1).cumprod()-1
+    jcum_ch = (jdf_change/100 +1).cumprod()-1
     m_power = (jcum_ch - cum_ch)*100
     m_power = m_power.astype(float).fillna(0).round(decimals=2)
 
@@ -552,11 +555,11 @@ if __name__ == "__main__":
     power_df = power_df.sort_values('rank', ascending=True)
     
     #KB 전세가율 마지막 데이터
-    #one_last_df = ratio_df.iloc[-1].T.to_frame()
-    #sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
+    one_last_df = ratio_df.iloc[-1].T.to_frame()
+    sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
     # st.dataframe(sub_df)
-    #sub_df.columns = ['전세가율']
-    #sub_df = sub_df.sort_values('전세가율', ascending=False )
+    sub_df.columns = ['전세가율']
+    sub_df = sub_df.sort_values('전세가율', ascending=False )
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
@@ -569,8 +572,8 @@ if __name__ == "__main__":
         st.table(sub_df.iloc[:50])
         submit = st.sidebar.button('Draw Basic chart')
         if submit:
-            drawAPT.draw_basic(last_df, df, geo_data, last_ps, power_df)
-            drawAPT.run_buy_basic(b_df, org_df)
+            drawAPT_update.draw_basic(last_df, df, geo_data, last_ps, power_df)
+            drawAPT_update.run_buy_basic(b_df, org_df)
     elif my_choice == 'Price Index':
         
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
@@ -585,20 +588,55 @@ if __name__ == "__main__":
                 '광역시-도-시', city_list
             )
         second_list = city_series[city_series.str.contains(selected_city)].to_list()
-        selected_city2 = st.sidebar.selectbox(
+        selected_dosi2 = st.sidebar.selectbox(
                 '구-시', second_list
             )
-        # if  st.checkbox('Show 매매지수 data'):
-        # st.dataframe(mdf.style.highlight_max(axis=0))
-        # st.dataframe(org_df.style.highlight_max(axis=0))
+
+        if selected_dosi2 == '수원':
+            mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
+        elif selected_dosi2 == '성남':
+            mirco_list = ['성남', '성남 수정구', '성남 중원구', '성남 분당구']
+        elif selected_dosi2 == '고양':
+            mirco_list = ['고양', '고양 덕양구', '고양 일산동구', '고양 일산서구']
+        elif selected_dosi2 == '안양':
+            mirco_list = ['안양', '안양 만안구', '안양 동안구']
+        elif selected_dosi2 == '안산':
+            mirco_list = ['안산', '안산 단원구', '안산 상록구']
+        elif selected_dosi2 == '용인':
+            mirco_list = ['용인', '용인 처인구', '용인 기흥구', '용인 수지구']
+        elif selected_dosi2 == '천안':
+            mirco_list = ['천안', '천안 서북구', '천안 동남구']
+        elif selected_dosi2 == '청주':
+            mirco_list = ['청주', '청주 청원구', '청주 흥덕구', '청주 서원구', '청주 상당구']
+        elif selected_dosi2 == '전주':
+            mirco_list = ['전주', '전주 덕진구', '전주 완산구']
+        elif selected_dosi2 == '포항':
+            mirco_list = ['포항', '포항 남구', '포항 북구']
+        elif selected_dosi2 == '창원':
+            mirco_list = ['창원', '창원 마산합포구', '창원 마산회원구', '창원 성산구', '창원 의창구', '창원 진해구']
+
+        selected_dosi3 = st.sidebar.selectbox(
+                '구', mirco_list
+            )
         
-        submit = st.sidebar.button('Draw Price Index chart')
+        submit = st.button('Draw Price Index')
 
         if submit:
-            drawAPT.run_pop_index(selected_city2, popdf, popdf_change, saedf, saedf_change, not_sell)
-            drawAPT.run_ratio_index(selected_city2, peong_df, peong_ch, peongj_df, peongj_ch, ratio_df)
-            drawAPT.run_buy_index(selected_city2, org_df, mdf)
-            drawAPT.run_price_index(selected_city2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
+            ### Block 플라워차트 추가 2021. 12. 26 #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = "KB"
+                    drawAPT_update.run_price_index(selected_dosi2, mdf, jdf, mdf_change, jdf_change, bubble_df2, m_power)
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = "KB"
+                    drawAPT_update.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()
@@ -616,7 +654,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw PIR chart')
         if submit:
-            drawAPT.draw_pir(selected_city, pir_df, income_df, price_df)
+            drawAPT_update.draw_pir(selected_city, pir_df, income_df, price_df)
     elif my_choice == 'HAI':
         data_load_state = st.text('Loading HAI index Data...')
         hai_df, info_df = load_hai_data()
@@ -636,7 +674,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw HAI chart')
         if submit:
-            drawAPT.draw_hai(selected_city, hai_df, info_df)
+            drawAPT_update.draw_hai(selected_city, hai_df, info_df)
     elif my_choice == 'Sentiment' :
         data_load_state = st.text('Loading Sentimental index Data...')
         senti_dfs, df_as, df_bs = load_senti_data()
@@ -649,7 +687,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
-            drawAPT.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
+            drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
     else :
 
         city_list = ['전국', '서울', '강북', '강남', '6개광역시', '5개광역시', '부산', '대구', '인천', '광주', '대전',
@@ -726,5 +764,5 @@ if __name__ == "__main__":
         
         submit = st.sidebar.button('Analize local index chart')
         if submit:
-            drawAPT.run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_dosi3, small_list)
-            drawAPT.run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi, selected_dosi2, selected_dosi3, small_list)
+            drawAPT_update.run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_dosi3, small_list)
+            drawAPT_update.run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi, selected_dosi2, selected_dosi3, small_list)
