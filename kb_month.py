@@ -69,90 +69,6 @@ def read_source_excel():
     return kbm_dict
 
 @st.cache
-def load_ratio_data():
-    header_dict = pd.read_excel(header_path, sheet_name=None)
-    header = header_dict['one']
-    one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-    omdf = one_dict['sell']
-    ojdf = one_dict['jeon']
-    mdf = omdf.iloc[4:,:]
-    jdf = ojdf.iloc[4:,:]
-    #컬럼 변경
-    s1 = mdf.columns
-    new_s1 = []
-    for num, gu_data in enumerate(s1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(s1[check])
-    mdf.columns =[new_s1, omdf.iloc[1]]
-    jdf.columns = [new_s1, ojdf.iloc[1]]
-    #필요 시트만 슬라이스
-    smdf = mdf.xs('평균매매',axis=1, level=1)
-    sadf = mdf.xs('평균단위매매', axis=1, level=1)
-    jmdf = jdf.xs('평균전세',axis=1, level=1)
-    jadf = jdf.xs('평균단위전세', axis=1, level=1)
-    smdf.columns = header.columns
-    sadf.columns = header.columns
-    jmdf.columns = header.columns
-    jadf.columns = header.columns
-
-    sadf = (sadf.astype(float)*3.306)/10
-    smdf = smdf.astype(float)/10
-    jadf = (jadf.astype(float)*3.306)/10
-    jmdf = jmdf.astype(float)/10
-
-    sadf = sadf.round(decimals=1) #평균매매가
-    smdf = smdf.round(decimals=1) #
-    jadf = jadf.round(decimals=1)
-    jmdf = jmdf.round(decimals=1)
-
-    sadf_ch = sadf.pct_change()*100
-    sadf_ch = sadf_ch.round(decimals=2)
-    jadf_ch = jadf.pct_change()*100
-    jadf_ch = jadf_ch.round(decimals=2)
-
-    ######################### 여기부터는 전세가율
-    jratio = round(jmdf/smdf*100,1)
-    
-
-    return sadf, sadf_ch, jadf, jadf_ch, jratio
-
-
-
-@st.cache
-def load_buy_data():
-    #년 증감 계산을 위해 최소 12개월치 데이터 필요
-    #buy_path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
-    data_type = 'Sheet1' 
-    df = pd.read_excel(buy_path, sheet_name=data_type, header=10)
-    #path1 = r'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
-    header = pd.read_excel(header_path, sheet_name='buyer')
-    df['지 역'] = header['local'].str.strip()
-    df = df.rename({'지 역':'지역명'}, axis='columns')
-    df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    df = df.set_index("지역명")
-    df = df.T
-    df.columns = [df.columns, df.iloc[0]]
-    df = df.iloc[1:]
-    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    df.index = pd.to_datetime(df.index)
-    df = df.apply(lambda x: x.replace('-','0'))
-    df = df.astype(float)
-    org_df = df.copy()
-    drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종 세종','충남', '충북']
-    drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
-    # big_city = df.iloc[:,drop_list]
-    df.drop(drop_list, axis=1, level=0, inplace=True)
-    df.drop(drop_list2, axis=1, level=0, inplace=True)
-    # drop_list3 = df.columns[df.columns.get_level_values(0).str.endswith('군')]
-    # df.drop(drop_list3, axis=1, inplace=True)
-    # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
-    
-    return df, org_df
-
-@st.cache
 def load_index_data():
     kbm_dict = read_source()
     header_excel = pd.ExcelFile(header_path)
@@ -214,59 +130,6 @@ def load_index_data():
         geo_data['features'][idx]['properties']['tooltip'] = txt
    
     return mdf, jdf, code_df, geo_data
-
-@st.cache
-def load_pop_data():
-    kb_dict = pd.read_excel(p_path, sheet_name=None, header=1, parse_dates=True)
-    pdf = kb_dict['pop']
-    sae = kb_dict['sae']
-
-    #header file: 인구수와 세대수가 약간 다르다.
-    psdf = pd.read_excel(header_path, sheet_name='pop', header=0)
-  
-    pdf['행정구역'] = psdf['pop']
-    pdf = pdf.set_index("행정구역")
-    pdf = pdf.iloc[:,3:]
-    test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
-    pdf.columns = test
-    df = pdf.T
-    # df = df.iloc[:-1]
-    df.index = pd.to_datetime(df.index)
-    df_change = df.pct_change()*100
-    df_change = df_change.round(decimals=2)
-    #세대수
-    sae['행정구역'] =  psdf['sae']
-    sae = sae.set_index("행정구역")
-    sae = sae.iloc[:,3:]
-    sae.columns = test
-    sdf = sae.T
-    # sdf = sdf.iloc[:-1]
-    sdf.index = pd.to_datetime(sdf.index)
-    sdf_change = sdf.pct_change()*100
-    sdf_change = sdf_change.round(decimals=2)
-
-    ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
-    #not_sell_path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
-    data_type = 'Sheet1' 
-    df1 = pd.read_excel(not_sell_path, sheet_name=data_type, index_col=0, parse_dates=True)
-
-    #컬럼명 바꿈
-    j1 = df1.columns
-    new_s1 = []
-    for num, gu_data in enumerate(j1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(j1[check])
-
-    #컬럼 설정
-    df1.columns = [new_s1,df1.iloc[0]]
-    df1 = df1.iloc[2:]
-    df1 = df1.sort_index()
-    df1 = df1.astype(int)
-
-    return df, df_change, sdf, sdf_change, df1
 
 @st.cache
 def load_senti_data():
@@ -466,20 +329,15 @@ def load_hai_data():
 if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
-    popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
-    b_df, org_df = load_buy_data()
-    peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
     data_load_state.text("index & pop Data Done! (using st.cache)")
 
     #마지막 달
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
-    pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
-    buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
         cols = st.columns(3)
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
-        cols[1].markdown(f'부동산원 최종업데이트: **{pop_last_month}월**')
-        cols[2].markdown(f'아파트 매입자 거주지별 현황 최종데이트: **{buy_last_month}월**')
+        cols[1].markdown("")
+        cols[2].markdown("")
 
     #월간 증감률
     mdf_change = mdf.pct_change()*100
@@ -514,11 +372,6 @@ if __name__ == "__main__":
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
-    last_pop = popdf_change.iloc[-1].T.to_frame()
-    last_sae = saedf_change.iloc[-1].T.to_frame()
-    last_ps = pd.merge(last_pop, last_sae, how='inner', left_index=True, right_index=True)
-    last_ps.columns = ['인구증감', '세대증감']
-    last_ps = last_ps.round(decimals=2) 
 
     #마지막달 dataframe에 지역 코드 넣어 합치기
     df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
@@ -554,28 +407,18 @@ if __name__ == "__main__":
     power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
     power_df = power_df.sort_values('rank', ascending=True)
     
-    #KB 전세가율 마지막 데이터
-    one_last_df = ratio_df.iloc[-1].T.to_frame()
-    sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
-    # st.dataframe(sub_df)
-    sub_df.columns = ['전세가율']
-    sub_df = sub_df.sort_values('전세가율', ascending=False )
-
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
                     "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', 'local Analysis')
                     )
     if my_choice == 'Basic':
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
-        st.table(power_df.iloc[:50])
-        st.subheader("전세가율이 70% 이상 전국 상위 50곳")
-        st.table(sub_df.iloc[:50])
-        submit = st.sidebar.button('Draw Basic chart')
+        st.dataframe(power_df.iloc[:50])
+        submit = st.button('Draw Basic chart')
         if submit:
-            drawAPT_update.draw_basic(last_df, df, geo_data, last_ps, power_df)
-            drawAPT_update.run_buy_basic(b_df, org_df)
+            st.write("나중에 구현--그냥 테이블로 보여주기")
+            #drawAPT_update.draw_basic(last_df, df, geo_data, last_ps, power_df)
     elif my_choice == 'Price Index':
-        
         city_list = ['전국', '서울', '6개광역시','부산','대구','인천','광주','대전','울산','5개광역시','수도권','세종','경기', '수원', \
                     '성남','고양', '안양', '부천', '의정부', '광명', '평택','안산', '과천', '구리', '남양주', '용인', '시흥', '군포', \
                     '의왕','하남','오산','파주','이천','안성','김포', '양주','동두천','경기광주', '화성','강원', '춘천','강릉', '원주', \
@@ -765,4 +608,3 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Analize local index chart')
         if submit:
             drawAPT_update.run_local_analysis(mdf, mdf_change, selected_dosi, selected_dosi2, selected_dosi3, small_list)
-            drawAPT_update.run_local_price(peong_df, peong_ch, peongj_df, peongj_ch, ratio_df, selected_dosi, selected_dosi2, selected_dosi3, small_list)
