@@ -111,7 +111,7 @@ def get_basic_df():
 @st.cache(allow_output_mutation=True)
 def load_one_data():
     #감정원 주간 데이터
-    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, dtype={'       지역\n\n\n\n\n 날짜': str})
+    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
     # one header 변경
     oneh = header_excel.parse('one')
     omdf = one_dict['sell_index']
