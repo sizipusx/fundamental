@@ -434,7 +434,7 @@ if __name__ == "__main__":
         selected_dosi2 = st.sidebar.selectbox(
                 '구-시', second_list
             )
-
+        mirco_list = []
         if selected_dosi2 == '수원':
             mirco_list = ['수원', '수원 장안구', '수원 권선구', '수원 팔달구', '수원 영통구']
         elif selected_dosi2 == '성남':
