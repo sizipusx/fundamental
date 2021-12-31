@@ -137,7 +137,7 @@ def load_one_data():
     cum_omdf = cum_omdf.round(decimals=3)
     cum_ojdf = (1+ojdf_change/100).cumprod() -1
     cum_ojdf = cum_ojdf.round(decimals=3)
-    #일주일 간 상승률 순위
+    #일주일 간 매매지수 상승률 순위
     last_odf = pd.DataFrame()
     last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
     last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
@@ -146,10 +146,15 @@ def load_one_data():
     last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
     last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
     last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
-    #last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
-    #last_odf.dropna(inplace=True)
     last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
-    #last_odf = last_odf.reset_index()
+    #일주일 간 전세지수 상승률 순위
+    last_ojdf = pd.DataFrame()
+    last_ojdf['1w'] = ojdf_change.iloc[-1].T.to_frame()
+    last_ojdf['2w'] = ojdf_change.iloc[-2].T.to_frame()
+    last_ojdf['3w'] = ojdf_change.iloc[-3].T.to_frame()
+    last_ojdf['1m'] = ojdf_change.iloc[-4].T.to_frame()
+    last_ojdf['1y'] = ojdf_change.iloc[-51].T.to_frame()
+    last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=3)
     basic_df = get_basic_df()
     odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
 
@@ -176,7 +181,7 @@ def load_one_data():
         one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         one_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
+    return odf, one_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
 
 @st.cache(allow_output_mutation=True)
 def load_index_data():
@@ -214,7 +219,7 @@ def load_index_data():
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
     cum_jdf = cum_jdf.round(decimals=3)
-    #일주일 간 상승률 순위
+    #일주일 간 매매지수 상승률 순위
     kb_last_df  = pd.DataFrame()
     kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
     kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
@@ -223,9 +228,16 @@ def load_index_data():
     kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
     kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
     kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
-#    kb_last_df.dropna(inplace=True)
     kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
-#    kb_last_df = kb_last_df.reset_index()
+    #일주일 간 전세지수 상승률 순위
+    kb_last_jdf  = pd.DataFrame()
+    kb_last_jdf['1w'] = jdf_change.iloc[-1].T.to_frame() 
+    kb_last_jdf['2w'] = jdf_change.iloc[-2].T.to_frame()
+    kb_last_jdf['3w'] = jdf_change.iloc[-3].T.to_frame()
+    kb_last_jdf['1m'] = jdf_change.iloc[-4].T.to_frame()
+    kb_last_jdf['1y'] = jdf_change.iloc[-51].T.to_frame()
+    kb_last_jdf = kb_last_jdf.astype(float).fillna(0).round(decimals=2)
+
 
     #마지막달 dataframe에 지역 코드 넣어 합치기
     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
@@ -288,7 +300,7 @@ def load_index_data():
         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
+    return kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
 
 @st.cache(allow_output_mutation=True)
 def load_senti_data():
@@ -482,7 +494,7 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### draw Index Table ######################################################################################
+    ### draw 매매지수 Table ######################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -508,7 +520,7 @@ def draw_basic():
             ## 칼럼 헤더 셀 배경색 바꾸기
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.write("KB 매매지수 기간별 순위")
+            st.write("KB 매매지수 변화율 기간별 순위")
             rank_df = rank_df.reset_index()
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
@@ -535,9 +547,76 @@ def draw_basic():
             rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.write("부동산원 매매지수 기간별 순위")
+            st.write("부동산원 매매지수 변화율 기간별 순위")
             rank_odf = rank_odf.reset_index()
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
+                #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ]) \
+                .bar(subset=slice_2, align='mid',color=['blue','red']))
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### draw 전세지수 Table ######################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = ['KB','전세증감']
+            #kb_last_df = kb_last_df.set_index("index")
+            #kb_last_df = round(kb_last_df,2)
+            rank_jdf = pd.DataFrame()
+            rank_jdf['1w'] = kb_last_jdf['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['2w'] = kb_last_jdf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['3w'] = kb_last_jdf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['1m'] = kb_last_jdf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['1y'] = kb_last_jdf['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['1w%'] = kb_last_jdf['1w'].round(decimals=2)
+            rank_jdf['2w%'] = kb_last_jdf['2w'].round(decimals=2)
+            rank_jdf['3w%'] = kb_last_jdf['3w'].round(decimals=2)
+            rank_jdf['1m%'] = kb_last_jdf['1m'].round(decimals=2)
+            rank_jdf['1y%'] = kb_last_jdf['1y'].round(decimals=2)
+            
+            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            ## 칼럼 헤더 셀 배경색 바꾸기
+            column = '1w' ## 원하는 칼럼이름
+            col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
+            st.write("KB 전세지수  기간별 순위")
+            rank_jdf = rank_jdf.reset_index()
+            st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ])\
+                .bar(subset=slice_2, align='mid',color=['blue','red']))
+        with col2:
+            st.write("")
+        with col3:
+            flag = ['부동산원','매매증감']
+            rank_ojdf = pd.DataFrame()
+            rank_ojdf['1w'] = last_ojdf['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_ojdf['2w'] = last_ojdf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_ojdf['3w'] = last_ojdf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_ojdf['1m'] = last_ojdf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_ojdf['1y'] = last_ojdf['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_ojdf['1w%'] = last_ojdf['1w'].round(decimals=2)
+            rank_ojdf['2w%'] = last_ojdf['2w'].round(decimals=2)
+            rank_ojdf['3w%'] = last_ojdf['3w'].round(decimals=2)
+            rank_ojdf['1m%'] = last_ojdf['1m'].round(decimals=2)
+            rank_ojdf['1y%'] = last_ojdf['1y'].round(decimals=2)
+            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            st.write("부동산원 매매지수 기간별 순위")
+            rank_ojdf = rank_ojdf.reset_index()
+            st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
                 #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
@@ -556,8 +635,8 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    kb_df, kb_geo_data, kb_last_df, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
-    odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
+    kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
+    odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
