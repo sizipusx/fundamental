@@ -520,7 +520,7 @@ def draw_basic():
             ## 칼럼 헤더 셀 배경색 바꾸기
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.write("KB 매매지수 변화율 기간별 순위")
+            st.markdown("KB <u>**_매매지수_**</u> 변화율 기간별 순위")
             rank_df = rank_df.reset_index()
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
@@ -547,7 +547,7 @@ def draw_basic():
             rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.write("부동산원 매매지수 변화율 기간별 순위")
+            st.markdown("부동산원 <u>**_매매지수_**</u> 변화율 기간별 순위")
             rank_odf = rank_odf.reset_index()
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
@@ -587,7 +587,7 @@ def draw_basic():
             ## 칼럼 헤더 셀 배경색 바꾸기
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB **_전세지수_**  기간별 순위")
+            st.markdown("KB <u>**_전세지수_**</u>  기간별 순위")
             rank_jdf = rank_jdf.reset_index()
             st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
@@ -614,7 +614,7 @@ def draw_basic():
             rank_ojdf['1y%'] = last_ojdf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.write("부동산원 <span stype=color:blue>전세지수</span> 기간별 순위")
+            st.markdown("부동산원 <u>**_전세지수_**</u> 기간별 순위")
             rank_ojdf = rank_ojdf.reset_index()
             st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
