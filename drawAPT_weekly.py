@@ -192,7 +192,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     df['text'] = '<b>' + df['short'] + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감']
-    title = dict(text='<b>'+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9) 
+    title = dict(text='<b>'+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9, xanchor = 'center', yanchor = 'top', color="RebeccaPurple") 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
                                         colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=0))
     fig.update_traces(autocolorscale=True,

@@ -469,13 +469,13 @@ def draw_basic():
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            flag = ['KB','매매증감']
+            flag = 'KB'
             drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag)
 
         with col2:
             st.write("")
         with col3:
-            flag = ['부동산원','매매증감']
+            flag = '부동산원'
             drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag)
             
     html_br="""
