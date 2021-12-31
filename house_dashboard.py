@@ -45,7 +45,7 @@ footer {visibility: hidden;}
 
 ### data 가져오기 영역 ##########################
 #매주 지역별 시황
-local_path = 'https://github.com/sizipusx/fundamental/blob/d9ea8a2cfa20bb3847affe562598c8792fdaf8cf/files/local_issue.xlsx?raw=true'
+local_path = 'https://github.com/sizipusx/fundamental/blob/130a76f1473cd00ea9fa46c1cf359c0a6594fe72/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/d6cba110aee4c5cba420e629009114ac8e47dd62/files/kb_monthly.xlsx?raw=true'
 one_path = r'https://github.com/sizipusx/fundamental/blob/9dfcb5a5de327c4f73fc33544f1cfb8c94259eae/files/one_data.xlsx?raw=true'
