@@ -477,6 +477,21 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+     ### Draw 전세증감 bar chart #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = ['KB','전세증감']
+            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
+        with col2:
+            st.write("")
+        with col3:
+            flag = ['부동산원','전세증감']
+            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag)        
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     ### Draw Bubble chart #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
