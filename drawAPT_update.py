@@ -478,19 +478,23 @@ def run_jeon_index(selected_dosi, jadf, jadf_ch):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def run_jeon_ratio(selected_dosi, jratio_df):
+def run_jeon_ratio(selected_dosi, mr_df, ar_df):
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-    title = "<b>["+selected_dosi+"]</b> KB 평균 가격 전세가율"
-    if selected_dosi == "제주서귀포":
-        selected_dosi ="제주" 
+    title = "<b>["+selected_dosi+"]</b> 부동산원 전세가율"
     titles = dict(text= title, x=0.5, y = 0.95) 
     fig = make_subplots(specs=[[{'secondary_y': False}]]) 
     # fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
-    fig.add_trace(go.Scatter(mode='lines', 
-                                    name = "전세가율", x =  jratio_df.index, y=jratio_df[selected_dosi],  
-                                    text= jratio_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[2]),
+    fig.add_trace(go.Scatter(mode='markers', 
+                                    name = "중위전세가율", x =  mr_df.index, y=mr_df[selected_dosi],  
+                                    text= mr_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
                                     secondary_y = False)
-    fig.add_hline(y=70.0, line_width=2, line_dash="solid", line_color="blue", annotation_text="70%", annotation_position="bottom right")
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "평균전세가율", x =  ar_df.index, y=ar_df[selected_dosi],  
+                                    text= ar_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[1]),
+                                    secondary_y = False)
+    fig.add_hline(y=round(ar_df[selected_dosi].mean(),1), line_width=2, line_dash="solid", line_color=marker_colors[1], annotation_text=round(ar_df[selected_dosi].mean(),1), annotation_position="bottom right")
+    fig.add_hline(y=round(mr_df[selected_dosi].mean(),1), line_width=2, line_dash="dot", line_color=marker_colors[0], annotation_text=round(mr_df[selected_dosi].mean(),1), annotation_position="bottom right")
+
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template)
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
     fig.update_layout(template="myID")
