@@ -487,11 +487,11 @@ def run_jeon_ratio(selected_dosi, mr_df, ar_df):
     fig = make_subplots(specs=[[{'secondary_y': False}]]) 
     # fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
     fig.add_trace(go.Scatter(mode='markers', 
-                                    name = "중위전세가율", x =  mr_df.index, y=round(mr_df[selected_dosi],1),  
+                                    name = "중위전세가율", x =  mr_df.index, y=mr_df[selected_dosi].round(1),  
                                     text= mr_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
                                     secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', 
-                                    name = "평균전세가율", x =  ar_df.index, y=round(ar_df[selected_dosi],1),  
+                                    name = "평균전세가율", x =  ar_df.index, y=ar_df[selected_dosi].round(deciamls=1),  
                                     text= ar_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[1]),
                                     secondary_y = False)
     fig.add_hline(y=round(ar_df[selected_dosi].mean(),1), line_width=2, line_dash="solid", line_color=marker_colors[1], annotation_text=round(ar_df[selected_dosi].mean(),1), annotation_position="bottom right")
