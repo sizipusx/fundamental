@@ -48,7 +48,7 @@ footer {visibility: hidden;}
 local_path = 'https://github.com/sizipusx/fundamental/blob/130a76f1473cd00ea9fa46c1cf359c0a6594fe72/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/d6cba110aee4c5cba420e629009114ac8e47dd62/files/kb_monthly.xlsx?raw=true'
-one_path = r'https://github.com/sizipusx/fundamental/blob/9dfcb5a5de327c4f73fc33544f1cfb8c94259eae/files/one_data.xlsx?raw=true'
+one_path = r'https://github.com/sizipusx/fundamental/blob/191d1be15f6cd0a2f864edbdeb425ed3e698814c/files/one_data.xlsx?raw=true'
 buy_path = r'https://github.com/sizipusx/fundamental/blob/669cd865342b20c29da4ff689a309fe5edc24f38/files/apt_buy.xlsx?raw=true'
 # 2021. 11월부터 KB 데이터에서 기타지방 평균가격 제공하지 않음 => 다시 부동산원 데이터로 변경: 2021. 12. 16
 #p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
@@ -697,19 +697,19 @@ with st.container():
 
 st.markdown(html_br, unsafe_allow_html=True)
 ### Block 6-1#########################################################################################
-with st.container():
-    col2, col3, col4 = st.columns([30,2,30])
-    with col2:
-        drawAPT_update.run_jeon_ratio(selected_city, mr_df, ar_df)
-    with col3:
-        st.write("")
-    with col4:
-        drawAPT_update.run_trade_index(selected_city, org_df, mdf)
+# with st.container():
+#     col2, col3, col4 = st.columns([30,2,30])
+#     with col2:
+#         drawAPT_update.run_jeon_ratio(selected_city, mr_df, ar_df)
+#     with col3:
+#         st.write("")
+#     with col4:
+#         drawAPT_update.run_trade_index(selected_city, org_df, mdf)
     
-html_br="""
-<br>
-"""
-st.markdown(html_br, unsafe_allow_html=True)
+# html_br="""
+# <br>
+# """
+# st.markdown(html_br, unsafe_allow_html=True)
 #################block 7###########################################################################
 with st.container():
     col2, col3, col4 = st.columns([30,2,30])
