@@ -501,7 +501,12 @@ def run_jeon_ratio(selected_dosi, mr_df, ar_df):
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
-
+    with st.expander("See explanation"):
+            st.markdown("동 통계에서 보조지표인 평균가격은 표본의 가격 분포에 민감하게 반응하므로 지수의 변동률과 다를 수 있으며,")
+            st.markdown("정기표본조정, 표본확대(15.1월, 15.7월, 16.9월, 19.1월, 20.1월 및 ")
+            st.markdown("표본전명 재설계(17.12월, 21.7월)에 의한 표본구성 및 재고량 변화에 따른 가중치 조정, 평균중위가격 상위단위 선정 방식 변경 등으로 변동이 발생되어 시계열 해석 시 유의해야 함")
+            st.markdown("그러므로 **평균가격은 지역 내 가격 변동률을 산정하는데 활용하는 것은 적절하지 않으며,**")
+            st.markdown("**_당월의 지역 간 가격 수준 비교를 위해 활용하는 것이 적절함_**")
 
 def run_buy_index(selected_dosi, org_df):
     if selected_dosi == "제주서귀포":
