@@ -23,7 +23,6 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h1 style="font-size:300%; color:#008080; font-family:Georgia"> Korea Local House Index <br>
  <h2 style="color:#008080; font-family:Georgia"> 지역분석 </h3> <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
@@ -96,6 +95,7 @@ def load_ratio_data():
             new_s1.append(s1[check])
     mdf.columns =[new_s1, omdf.iloc[1]]
     jdf.columns = [new_s1, ojdf.iloc[1]]
+    rdf.columns =[new_s1, r_df.iloc[1]]
     #필요 시트만 슬라이스
     smdf = mdf.xs('평균매매',axis=1, level=1)
     sadf = mdf.xs('평균단위매매', axis=1, level=1)
