@@ -81,8 +81,10 @@ def load_ratio_data():
     one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
     omdf = one_dict['sell_price']
     ojdf = one_dict['jeon_price']
+    r_df = one_dict['ratio']
     mdf = omdf.iloc[4:,:]
     jdf = ojdf.iloc[4:,:]
+    rdf = r_df.iloc[4:,:]
     #컬럼 변경
     s1 = mdf.columns
     new_s1 = []
@@ -99,20 +101,24 @@ def load_ratio_data():
     sadf = mdf.xs('평균단위매매', axis=1, level=1)
     jmdf = jdf.xs('평균전세',axis=1, level=1)
     jadf = jdf.xs('평균단위전세', axis=1, level=1)
+    m_df = rdf.xs('중위', axis=1, level=1)
+    a_df = rdf.xs('평균', axis=1, level=1)
     smdf.columns = header.columns
     sadf.columns = header.columns
     jmdf.columns = header.columns
     jadf.columns = header.columns
+    m_df.columns = header.columns
+    a_df.columns = header.columns
 
     sadf = (sadf.astype(float)*3.306)/10
     smdf = smdf.astype(float)/10
     jadf = (jadf.astype(float)*3.306)/10
     jmdf = jmdf.astype(float)/10
 
-    sadf = sadf.round(decimals=1) #평균매매가
-    smdf = smdf.round(decimals=1) #
-    jadf = jadf.round(decimals=1)
-    jmdf = jmdf.round(decimals=1)
+    sadf = sadf.round(decimals=2) #평균매매가
+    smdf = smdf.round(decimals=2) #
+    jadf = jadf.round(decimals=2)
+    jmdf = jmdf.round(decimals=2)
 
     sadf_ch = sadf.pct_change()*100
     sadf_ch = sadf_ch.round(decimals=2)
@@ -123,7 +129,7 @@ def load_ratio_data():
     jratio = round(jmdf/smdf*100,1)
     
 
-    return sadf, sadf_ch, jadf, jadf_ch, jratio
+    return sadf, sadf_ch, jadf, jadf_ch, m_df, a_df
 
 
 @st.cache
@@ -390,7 +396,7 @@ def load_local_basic():
 mdf, jdf, code_df, geo_data = load_index_data()
 popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
 b_df, org_df = load_buy_data()
-peong_df, peong_ch, peongj_df, peongj_ch, ratio_df = load_ratio_data()
+peong_df, peong_ch, peongj_df, peongj_ch, mr_df, ar_df = load_ratio_data()
 basic_df, bigc, smc = load_local_basic()
 
 #마지막 달
@@ -448,8 +454,8 @@ bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
 # st.dataframe(mdf)
 
 #전세 파워 만들기
-cum_ch = (mdf_change/100 +1).cumprod()
-jcum_ch = (jdf_change/100 +1).cumprod()
+cum_ch = (mdf_change/100 +1).cumprod() -1
+jcum_ch = (jdf_change/100 +1).cumprod() -1
 m_power = (jcum_ch - cum_ch)*100
 m_power = m_power.astype(float).fillna(0).round(decimals=2)
 
@@ -465,8 +471,8 @@ power_df['score'] = power_df['jrank'] + power_df['brank']
 power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
 power_df = power_df.sort_values('rank', ascending=True)
 
-#KB 전세가율 마지막 데이터
-one_last_df = ratio_df.iloc[-1].T.to_frame()
+#부동산원 평균 전세가율 마지막 데이터
+one_last_df = ar_df.iloc[-1].T.to_frame()
 sub_df = one_last_df[one_last_df.iloc[:,0] >= 70.0]
 # st.dataframe(sub_df)
 sub_df.columns = ['전세가율']
@@ -694,7 +700,7 @@ st.markdown(html_br, unsafe_allow_html=True)
 with st.container():
     col2, col3, col4 = st.columns([30,2,30])
     with col2:
-        drawAPT_update.run_jeon_ratio(selected_city, ratio_df)
+        drawAPT_update.run_jeon_ratio(selected_city, mr_df, ar_df)
     with col3:
         st.write("")
     with col4:
