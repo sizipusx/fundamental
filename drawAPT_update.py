@@ -430,7 +430,7 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
     fig.update_yaxes(title_text='호', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = True)
     fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    # fig.add_hline(y=100.0, line_color="pink", annotation_text="100>매수자많음", annotation_position="bottom right")
+    fig.add_hline(y=slice_df['소계'].mean(), line_width=2, line_dash="solid", line_color=marker_colors[0], annotation_text=f"소계 평균: {slice_df['소계'].mean()}", annotation_position="bottom right")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -494,8 +494,8 @@ def run_jeon_ratio(selected_dosi, mr_df, ar_df):
                                     name = "평균전세가율", x =  ar_df.index, y=ar_df[selected_dosi],  
                                     text= ar_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[1]),
                                     secondary_y = False)
-    fig.add_hline(y=round(ar_df[selected_dosi].mean(),1), line_width=2, line_dash="solid", line_color=marker_colors[1], annotation_text=round(ar_df[selected_dosi].mean(),1), annotation_position="bottom right")
-    fig.add_hline(y=round(mr_df[selected_dosi].mean(),1), line_width=2, line_dash="dot", line_color=marker_colors[0], annotation_text=round(mr_df[selected_dosi].mean(),1), annotation_position="bottom right")
+    fig.add_hline(y=round(ar_df[selected_dosi].mean(),1), line_width=2, line_dash="solid", line_color=marker_colors[1], annotation_text=f"평균 평균: {round(ar_df[selected_dosi].mean(),1)}", annotation_position="bottom right")
+    fig.add_hline(y=round(mr_df[selected_dosi].mean(),1), line_width=2, line_dash="dot", line_color=marker_colors[0], annotation_text=f"중위 평균: {round(mr_df[selected_dosi].mean(),1)}", annotation_position="bottom right")
 
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template, xaxis_tickformat = '%Y-%m')
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
