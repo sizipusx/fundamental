@@ -93,9 +93,18 @@ def load_ratio_data():
             new_s1.append(new_s1[check-1])
         else:
             new_s1.append(s1[check])
+    #전세가율은 다른가?
+    s2 = rdf.columns
+    new_s2 = []
+    for num, gu_data in enumerate(s2):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s2.append(new_s2[check-1])
+        else:
+            new_s2.append(s2[check])
     mdf.columns =[new_s1, omdf.iloc[1]]
     jdf.columns = [new_s1, ojdf.iloc[1]]
-    rdf.columns =[new_s1, r_df.iloc[1]]
+    rdf.columns =[new_s2, r_df.iloc[1]]
     #필요 시트만 슬라이스
     smdf = mdf.xs('평균매매',axis=1, level=1)
     sadf = mdf.xs('평균단위매매', axis=1, level=1)
