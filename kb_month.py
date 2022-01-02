@@ -49,6 +49,7 @@ header_path = 'https://github.com/sizipusx/fundamental/blob/ac28ce0cce4bbcf5892a
 kb_file_path = 'https://github.com/sizipusx/fundamental/blob/51834c6c0c9101c9a51a565f1a96a50119c53a7d/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
 one_path = r"https://github.com/sizipusx/fundamental/blob/9dfcb5a5de327c4f73fc33544f1cfb8c94259eae/files/one_data.xlsx?raw=True"
+not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
 #헤더 변경
 header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
@@ -78,6 +79,34 @@ def get_basic_df():
     basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
 
     return basic_df
+
+@st.cache
+def get_not_sell_apt():
+    ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
+    # path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
+    data_type = 'Sheet1' 
+    df1 = pd.read_excel(not_sell_path, sheet_name=data_type, index_col=0, parse_dates=True)
+
+    #컬럼명 바꿈
+    j1 = df1.columns
+    new_s1 = []
+    for num, gu_data in enumerate(j1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(j1[check])
+
+    #컬럼 설정
+    df1.columns = [new_s1,df1.iloc[0]]
+    df1 = df1.iloc[1:,:]
+    df1 = df1.fillna(0)
+    df1 = df1.astype(int)
+    df1 = df1.sort_index()
+    df1 = df1.sort_index(axis=1)
+    df1.index = pd.to_datetime(df1.index)
+
+    return df1
 
 @st.cache
 def load_index_data():
@@ -413,9 +442,10 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
+    not_sell_apt = get_not_sell_apt()
 
     data_load_state.text("index & pop Data Done! (using st.cache)")
-
+    
     #마지막 달
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
@@ -423,7 +453,14 @@ if __name__ == "__main__":
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
         cols[1].markdown("")
         cols[2].markdown("")
+    
+    not_total = not_sell_apt.xs('소계', axis=1, level=1) 
+    not_df = not_total.T
+    not_df_apt = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-2]].T
+    not_df_apt = not_df_apt.iloc[-13:-1]
 
+    st.subheader("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
+    st.dataframe(not_df_apt)
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
@@ -497,6 +534,7 @@ if __name__ == "__main__":
                     "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', '지역같이보기', '기간보기')
                     )
     if my_choice == 'Basic':
+        st.dataframe(power_df.iloc[:50])
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         st.dataframe(power_df.iloc[:50])
         submit = st.button('Draw Basic chart')
