@@ -1309,7 +1309,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     elif selected_dosi == '전국':
         draw_list = ['전국', '수도권', '지방']
     elif selected_dosi == '서울':
-        draw_list = ['서울 강북', '서울 강남']
+        draw_list = ['서울 강북권역', '서울 강남권역']
     elif selected_dosi == '수도권':
         draw_list = ['서울', '경기', '인천']
     elif selected_dosi == '6대광역시':
