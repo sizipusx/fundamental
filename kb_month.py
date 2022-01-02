@@ -456,11 +456,13 @@ if __name__ == "__main__":
     
     not_total = not_sell_apt.xs('소계', axis=1, level=1) 
     not_df = not_total.T
+    not_df_1y = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-13]].T
     not_df_apt = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-2]].T
-    not_df_apt = not_df_apt.iloc[-13:]
 
-    st.subheader("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
-    st.dataframe(not_df_apt)
+    st.write("1년 전보다 준공 후 미분양 증가 지역 1년 데이터")
+    st.dataframe(not_df_1y.iloc[-13:])
+    st.write("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
+    st.dataframe(not_df_apt.iloc[-13:])
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
