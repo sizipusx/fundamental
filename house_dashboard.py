@@ -110,8 +110,8 @@ def load_ratio_data():
     sadf = mdf.xs('평균단위매매', axis=1, level=1)
     jmdf = jdf.xs('평균전세',axis=1, level=1)
     jadf = jdf.xs('평균단위전세', axis=1, level=1)
-    m_df = rdf.xs('중위', axis=1, level=1)
-    a_df = rdf.xs('평균', axis=1, level=1)
+    m_df = rdf.xs('중위', axis=1, level=1) # 중위가격 전세가율
+    a_df = rdf.xs('평균', axis=1, level=1) # 평균가격 전세가율
     smdf.columns = header.columns
     sadf.columns = header.columns
     jmdf.columns = header.columns
@@ -128,6 +128,8 @@ def load_ratio_data():
     smdf = smdf.round(decimals=2) #
     jadf = jadf.round(decimals=2)
     jmdf = jmdf.round(decimals=2)
+    m_df = m_df.round(decimals=1)
+    a_df = a_df.round(decimals=1)
 
     sadf_ch = sadf.pct_change()*100
     sadf_ch = sadf_ch.round(decimals=2)
