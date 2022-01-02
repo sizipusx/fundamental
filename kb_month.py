@@ -457,7 +457,7 @@ if __name__ == "__main__":
     not_total = not_sell_apt.xs('소계', axis=1, level=1) 
     not_df = not_total.T
     not_df_apt = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-2]].T
-    not_df_apt = not_df_apt.iloc[-13:-1]
+    not_df_apt = not_df_apt.iloc[-13:]
 
     st.subheader("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
     st.dataframe(not_df_apt)
@@ -534,7 +534,6 @@ if __name__ == "__main__":
                     "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', '지역같이보기', '기간보기')
                     )
     if my_choice == 'Basic':
-        st.dataframe(power_df.iloc[:50])
         st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         st.dataframe(power_df.iloc[:50])
         submit = st.button('Draw Basic chart')
