@@ -272,10 +272,10 @@ def load_pop_data():
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
 
-    ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
-    # path = 'https://github.com/sizipusx/fundamental/blob/a6f1a49d1f29dfb8d1234f8ca1fc88bbbacb0532/files/not_sell_7.xlsx?raw=true'
-    data_type = 'Sheet1' 
-    df1 = pd.read_excel(not_sell_path, sheet_name=data_type, index_col=0, parse_dates=True)
+    ## 2022. 1. 5 완공 후 미분양 데이터 가져오기 from one file
+    data_type = 'not_sell' 
+    df1 = pd.read_excel(one_path, sheet_name=data_type, index_col=0, parse_dates=True)
+    #df1 = one_dict['not_sell']
 
     #컬럼명 바꿈
     j1 = df1.columns
@@ -292,8 +292,9 @@ def load_pop_data():
     df1 = df1.iloc[1:,:]
     df1 = df1.fillna(0)
     df1 = df1.astype(int)
-    df1 = df1.sort_index()
+    #df1 = df1.sort_index()
     df1 = df1.sort_index(axis=1)
+    df1.index = pd.to_datetime(df1.index)
     
     return df, df_change, sdf, sdf_change, df1
 
