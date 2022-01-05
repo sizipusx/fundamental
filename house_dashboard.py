@@ -291,9 +291,7 @@ def load_pop_data():
     df1.columns = [new_s1,df1.iloc[0]]
     df1 = df1.iloc[1:,:]
     df1 = df1.fillna(0)
-    df1 = df1.set_index(df1.iloc[:,0])
-    df1.index.name = 'date'
-    df1 = df1.iloc[:,1:]
+    #df1.index = pd.to_datetime(df1.index)
     df1 = df1.astype(int)
     
     return df, df_change, sdf, sdf_change, df1
