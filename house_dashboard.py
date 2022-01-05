@@ -415,7 +415,7 @@ basic_df, bigc, smc = load_local_basic()
 kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
 pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
 buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
-not_sell_month = pd.to_datetime(str(not_sell.index.values[-1])).strftime('%Y.%m')
+not_sell_month = str(not_sell.index.values[-1])
 with st.expander("See recently Data Update"):
     cols = st.columns(4)
     cols[0].markdown(f'KB 월간: **{kb_last_month}월**')
