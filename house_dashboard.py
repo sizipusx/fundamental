@@ -47,7 +47,7 @@ footer {visibility: hidden;}
 local_path = 'https://github.com/sizipusx/fundamental/blob/130a76f1473cd00ea9fa46c1cf359c0a6594fe72/files/local_issue.xlsx?raw=true'
 #매월 데이타
 file_path = 'https://github.com/sizipusx/fundamental/blob/d6cba110aee4c5cba420e629009114ac8e47dd62/files/kb_monthly.xlsx?raw=true'
-one_path = r'https://github.com/sizipusx/fundamental/blob/a1305f1e9d88a847910e397d147c80df8a0ce921/files/one_data.xlsx?raw=true'
+one_path = r'https://github.com/sizipusx/fundamental/blob/c482b7d21ae74cc7e08388ed28a41fccddb4ac39/files/one_data.xlsx?raw=true'
 buy_path = r'https://github.com/sizipusx/fundamental/blob/669cd865342b20c29da4ff689a309fe5edc24f38/files/apt_buy.xlsx?raw=true'
 # 2021. 11월부터 KB 데이터에서 기타지방 평균가격 제공하지 않음 => 다시 부동산원 데이터로 변경: 2021. 12. 16
 #p_path = r"https://github.com/sizipusx/fundamental/blob/85abf3c89fd35256caa84d3d216208408634686f/files/kb_price.xlsx?raw=True"
