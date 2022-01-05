@@ -106,6 +106,7 @@ def get_not_sell_apt():
     #df1 = df1.sort_index(axis=1)
     #df1.index = pd.to_datetime(df1.index)
     df1 = df1.set_index(df1.iloc[:,0])
+    df1.index.name = 'date'
     df1 = df1.iloc[:,1:]
     df1 = df1.astype(int)
 
