@@ -84,7 +84,8 @@ def get_basic_df():
 def get_not_sell_apt():
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
     data_type = 'not_sell' 
-    df1 = pd.read_excel(one_path, sheet_name=data_type, index_col=0, parse_dates=True)
+    #df1 = pd.read_excel(one_path, sheet_name=data_type, index_col=0, parse_dates=True)
+    df1 = pd.read_excel(one_path, sheet_name=data_type)
     #df1 = one_dict['not_sell']
 
     #컬럼명 바꿈
@@ -101,10 +102,10 @@ def get_not_sell_apt():
     df1.columns = [new_s1,df1.iloc[0]]
     df1 = df1.iloc[1:,:]
     df1 = df1.fillna(0)
-    df1 = df1.astype(int)
+    #df1 = df1.astype(int)
     #df1 = df1.sort_index()
-    df1 = df1.sort_index(axis=1)
-    df1.index = pd.to_datetime(df1.index)
+    #df1 = df1.sort_index(axis=1)
+    #df1.index = pd.to_datetime(df1.index)
 
     return df1
 
