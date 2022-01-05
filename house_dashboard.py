@@ -406,6 +406,7 @@ def load_local_basic():
 ############ data 불러오기 ######################
 mdf, jdf, code_df, geo_data = load_index_data()
 popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
+st.dataframe(not_sell)
 b_df, org_df = load_buy_data()
 peong_df, peong_ch, peongj_df, peongj_ch, mr_df, ar_df = load_ratio_data()
 basic_df, bigc, smc = load_local_basic()
