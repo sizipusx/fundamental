@@ -419,7 +419,7 @@ with st.expander("See recently Data Update"):
     cols[0].markdown(f'KB 월간: **{kb_last_month}월**')
     cols[1].markdown(f'인구세대수 : **{pop_last_month}월**')
     cols[2].markdown(f'아파트 매입자 거주지별 현황: **{buy_last_month}월**')
-    cols[2].markdown(f'준공 후 미분양: **{buy_last_month}월**')
+    cols[3].markdown(f'준공 후 미분양: **{buy_last_month}월**')
 
 #월간 증감률
 mdf_change = mdf.pct_change()*100
