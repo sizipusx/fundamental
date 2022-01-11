@@ -413,8 +413,10 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
     elif (selected_city in do_city) and (selected_city == selected_city2):
         city = selected_city + ' 계' 
     elif (selected_city in do_city) and (selected_city != selected_city2):
-        #city = selected_city + ' '+ selected_city2+ '시'
-        city = selected_city2+ '시'
+        if selected_city2 == '경기 광주':
+            city = selected_city2+ '시'
+        else:
+            city = selected_city + ' '+ selected_city2+ '시'
     else:
         city = '전국 계'
 
