@@ -48,7 +48,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 header_path = 'https://github.com/sizipusx/fundamental/blob/ac28ce0cce4bbcf5892a7f2d1e566386944af9a3/files/header.xlsx?raw=True'
 kb_file_path = 'https://github.com/sizipusx/fundamental/blob/51834c6c0c9101c9a51a565f1a96a50119c53a7d/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
-one_path = r'https://github.com/sizipusx/fundamental/blob/fb0ed1009f51755c83611847720fee3f19845762/files/one_data.xlsx?raw=true'
+one_path = r'https://github.com/sizipusx/fundamental/blob/9ed78289936640f9bc210c35a12425e5d0eb2aec/files/one_data.xlsx?raw=true'
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
 #헤더 변경
 header_path = 'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=true'
