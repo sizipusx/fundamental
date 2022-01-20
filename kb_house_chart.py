@@ -1,3 +1,4 @@
+from re import S
 import time
 from datetime import datetime
 import drawAPT_weekly
@@ -857,6 +858,15 @@ if __name__ == "__main__":
         slice_oj = ojdf.loc[start_date:end_date]
         slice_m = mdf.loc[start_date:end_date]
         slice_j = jdf.loc[start_date:end_date]
+        #기간 변화 누적 계산
+        slice_om_ch = omdf_change.loc[start_date:end_date]
+        slice_oj_ch = ojdf_change.loc[start_date:end_date]
+        slice_m_ch = mdf_change.loc[start_date:end_date]
+        slice_j_ch= jdf_change.loc[start_date:end_date]
+        S_cum_om = (1+slice_om_ch/100).cumprod() -1
+        S_cum_oj = (1+slice_oj_ch/100).cumprod() -1
+        S_cum_m = (1+slice_m_ch/100).cumprod() -1
+        S_cum_j = (1+slice_j_ch/100).cumprod() -1
         diff = slice_om.index[-1] - slice_om.index[0]
         #information display
         cols = st.columns(4)
@@ -917,3 +927,39 @@ if __name__ == "__main__":
             html_br="""
             <br>
             """
+            ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = 'KB'
+                    citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
+                    drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = '부동산원'
+                    drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
+                    
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+            ### Draw 도 전체 기간 누적 차트 #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = 'KB'
+                    citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+                    drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = '부동산원'
+                    drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
+                    
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
