@@ -851,7 +851,7 @@ if __name__ == "__main__":
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
             options = period_,
-            value = (period_[-104], period_[-1]))
+            value = (period_[-105], period_[-1]))
         
         #부동산원 / KB
         slice_om = omdf.loc[start_date:end_date]
