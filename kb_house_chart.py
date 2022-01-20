@@ -645,6 +645,42 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산']
+            drawAPT_weekly.draw_flower_together(citys, cummdf, cumjdf, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_flower_together(citys, cumomdf, cumojdf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 도 전체 기간 누적 차트 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+            drawAPT_weekly.draw_flower_together(citys, cummdf, cumjdf, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_flower_together(citys, cumomdf, cumojdf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
