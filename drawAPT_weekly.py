@@ -692,3 +692,18 @@ def draw_change_table(change_df,flag):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def draw_senti_together(to_df):
+    #매매/전세 증감률 Bubble Chart
+    flag = "KB 주간 시계열"
+    title = dict(text='<b>'+flag+'매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
+    template = "ggplot2"
+    fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
+                        text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink')#, ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink')#, ticksuffix="%")
+    fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
+    fig.add_vline(x=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="전세수급지수가 100을 초과할수록 '매수자가 많다'를, 100 미만일 경우 '매도자가 많다'를 의미 ", annotation_position="top left")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)

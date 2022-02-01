@@ -307,9 +307,13 @@ def load_index_data():
 def load_senti_data():
     kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
-    js = kb_dict['매수매도']
+    js = kb_dict['전세수급']
+    ms = kb_dict['매수매도']
+
     js = js.set_index("Unnamed: 0")
+    ms = ms.set_index("Unnamed: 0")
     js.index.name="날짜"
+    ms.index.name="날짜"
 
     #컬럼명 바꿈
     j1 = js.columns.map(lambda x: x.split(' ')[0])
@@ -324,10 +328,13 @@ def load_senti_data():
 
     #컬럼 설정
     js.columns = [new_s1,js.iloc[0]]
-    js = js.iloc[2:js[('전국', '매수우위지수')].count()]
+    ms.columns = [new_s1,ms.iloc[0]]
+    js = js.iloc[2:js[('전국', '전세수급지수')].count()]
+    ms = ms.iloc[2:ms[('전국', '매수우위지수')].count()]
     js = js.astype(float).fillna(0).round(decimals=2)
+    ms = ms.astype(float).fillna(0).round(decimals=2)
 
-    return js
+    return ms, js
 
 
 def run_price_index() :
@@ -682,6 +689,15 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
+    with st.container():
+
+        drawAPT_weekly.draw_senti_together(jeon_su_df)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
@@ -801,7 +817,7 @@ if __name__ == "__main__":
             run_price_index()
     elif my_choice == 'Sentiment analysis':
         data_load_state = st.text('Loading 매수매도 index Data...')
-        senti_df = load_senti_data()
+        senti_df, jeon_su_df = load_senti_data()
         data_load_state.text("매수매도 index Data Done! (using st.cache)")
 
         city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
