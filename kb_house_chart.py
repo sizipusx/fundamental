@@ -705,6 +705,7 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index Data...')
     kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
     odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
+    senti_df, jeon_su_df = load_senti_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -816,10 +817,6 @@ if __name__ == "__main__":
         if submit:
             run_price_index()
     elif my_choice == 'Sentiment analysis':
-        data_load_state = st.text('Loading 매수매도 index Data...')
-        senti_df, jeon_su_df = load_senti_data()
-        data_load_state.text("매수매도 index Data Done! (using st.cache)")
-
         city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '지방', '제주도']
 
