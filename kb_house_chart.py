@@ -334,7 +334,13 @@ def load_senti_data():
     js = js.astype(float).fillna(0).round(decimals=2)
     ms = ms.astype(float).fillna(0).round(decimals=2)
 
-    return ms, js
+    js_index = js.xs("전세수급지수", axis=1, level=1)
+    ms_index = ms.xs("매수우위지수", axis=1, level=1)
+    index_df = pd.DataFrame()
+    index_df['매수우위지수'] = ms_index.iloc[-1]
+    index_df['전세수급지수'] = js_index.iloc[-1]
+
+    return ms, index_df
 
 
 def run_price_index() :
