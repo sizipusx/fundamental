@@ -428,7 +428,7 @@ def run_price_index() :
     st.markdown(html_br, unsafe_allow_html=True)
 
 def run_sentimental_index(mdf_change, jdf_change):
-    ### Block 0#########################################################################################
+    ### Block 매수우위지수#########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -441,7 +441,7 @@ def run_sentimental_index(mdf_change, jdf_change):
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### Block 0#########################################################################################
+    ### Block 전세수급지수#########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
