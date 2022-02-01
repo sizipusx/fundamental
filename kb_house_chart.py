@@ -340,7 +340,7 @@ def load_senti_data():
     index_df['매수우위지수'] = ms_index.iloc[-1]
     index_df['전세수급지수'] = js_index.iloc[-1]
 
-    return ms, index_df
+    return ms, js, index_df
 
 
 def run_price_index() :
@@ -427,7 +427,20 @@ def run_price_index() :
     """
     st.markdown(html_br, unsafe_allow_html=True)
 
-def run_sentimental_index(mdf_change):
+def run_sentimental_index(mdf_change, jdf_change):
+    ### Block 0#########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            drawAPT_weekly.draw_sentiment(selected_dosi, ms_1, ms_2, ms_index)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_weekly.draw_sentiment_change(selected_dosi, mdf_change, ms_index)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     ### Block 0#########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
@@ -436,7 +449,7 @@ def run_sentimental_index(mdf_change):
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.draw_sentiment_change(selected_dosi, mdf_change, js_index)
+            drawAPT_weekly.draw_sentiment_change(selected_dosi, jdf_change, js_index)
     html_br="""
     <br>
     """
@@ -711,7 +724,7 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index Data...')
     kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
     odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
-    senti_df, jeon_su_df = load_senti_data()
+    senti_df, jeon_senti, jeon_su_df = load_senti_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -826,11 +839,19 @@ if __name__ == "__main__":
         city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '지방', '제주도']
 
-        js_1 = senti_df.xs("매도자많음", axis=1, level=1)
+        ms_1 = senti_df.xs("매도자많음", axis=1, level=1)
+        ms_1.columns = city_list
+        ms_2 = senti_df.xs("매수자많음", axis=1, level=1)
+        ms_2.columns = city_list
+        ms_index = senti_df.xs("매수우위지수", axis=1, level=1)
+        ms_index.columns = city_list
+        ms_index = ms_index.round(decimals=2)
+        #전세수급지수
+        js_1 = jeon_senti.xs("수요>공급", axis=1, level=1)
         js_1.columns = city_list
-        js_2 = senti_df.xs("매수자많음", axis=1, level=1)
+        js_2 = jeon_senti.xs("수요<공급", axis=1, level=1)
         js_2.columns = city_list
-        js_index = senti_df.xs("매수우위지수", axis=1, level=1)
+        js_index = jeon_senti.xs("전세수급지수", axis=1, level=1)
         js_index.columns = city_list
         js_index = js_index.round(decimals=2)
         # st.dataframe(js_index)     
@@ -840,7 +861,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
-            run_sentimental_index(mdf_change)
+            run_sentimental_index(mdf_change, jdf_change)
     elif my_choice == 'Together':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
