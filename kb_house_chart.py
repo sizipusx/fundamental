@@ -445,11 +445,11 @@ def run_sentimental_index(mdf_change, jdf_change):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_sentiment(selected_dosi, js_1, js_2, js_index)
+            drawAPT_weekly.draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index)
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.draw_sentiment_change(selected_dosi, jdf_change, js_index)
+            drawAPT_weekly.draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index)
     html_br="""
     <br>
     """
