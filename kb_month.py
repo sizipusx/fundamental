@@ -45,8 +45,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
-header_path = 'https://github.com/sizipusx/fundamental/blob/ac28ce0cce4bbcf5892a7f2d1e566386944af9a3/files/header.xlsx?raw=True'
-kb_file_path = 'https://github.com/sizipusx/fundamental/blob/51834c6c0c9101c9a51a565f1a96a50119c53a7d/files/kb_monthly.xlsx?raw=true'
+kb_file_path = 'https://github.com/sizipusx/fundamental/blob/b7b1d6c230028fa79e4214f4e52d1ec4ce24fe7f/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
 one_path = r'https://github.com/sizipusx/fundamental/blob/9ed78289936640f9bc210c35a12425e5d0eb2aec/files/one_data.xlsx?raw=true'
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
@@ -177,7 +176,7 @@ def load_index_data():
 
 @st.cache(allow_output_mutation=True)
 def load_one_data():
-    #감정원 주간 데이터
+    #감정원 월간 데이터
     one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
     # one header 변경
     oneh = header_excel.parse('one')
