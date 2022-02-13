@@ -45,7 +45,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
-kb_file_path = 'https://github.com/sizipusx/fundamental/blob/b7b1d6c230028fa79e4214f4e52d1ec4ce24fe7f/files/kb_monthly.xlsx?raw=true'
+kb_file_path = 'https://github.com/sizipusx/fundamental/blob/fba1373c2ad6074211e9686529b22313b66f93f8/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
 one_path = r'https://github.com/sizipusx/fundamental/blob/9ed78289936640f9bc210c35a12425e5d0eb2aec/files/one_data.xlsx?raw=true'
 not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
