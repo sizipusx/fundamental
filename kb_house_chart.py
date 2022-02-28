@@ -575,40 +575,6 @@ def draw_basic():
         with col2:
             st.write("")
         with col3:
-            flag = ['부동산원','매매증감']
-            rank_odf = pd.DataFrame()
-            rank_odf['1w'] = last_odf['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['1w%'] = last_odf['1w'].round(decimals=2)
-            rank_odf['2w%'] = last_odf['2w'].round(decimals=2)
-            rank_odf['3w%'] = last_odf['3w'].round(decimals=2)
-            rank_odf['1m%'] = last_odf['1m'].round(decimals=2)
-            rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.markdown("_부동산원 **매매지수_** 변화율 기간별 순위")
-            rank_odf = rank_odf.reset_index()
-            st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ]) \
-                .bar(subset=slice_2, align='mid',color=['blue','red']))
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### draw 전세지수 Table ######################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
             flag = ['KB','전세증감']
             #kb_last_df = kb_last_df.set_index("index")
             #kb_last_df = round(kb_last_df,2)
@@ -638,11 +604,44 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']))
+                .bar(subset=slice_2, align='mid',color=['blue','red']))            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### draw 전세지수 Table ######################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = ['부동산원','매매증감']
+            rank_odf = pd.DataFrame()
+            rank_odf['1w'] = last_odf['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_odf['1w%'] = last_odf['1w'].round(decimals=2)
+            rank_odf['2w%'] = last_odf['2w'].round(decimals=2)
+            rank_odf['3w%'] = last_odf['3w'].round(decimals=2)
+            rank_odf['1m%'] = last_odf['1m'].round(decimals=2)
+            rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
+            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            st.markdown("_부동산원 **매매지수_** 변화율 기간별 순위")
+            rank_odf = rank_odf.reset_index()
+            st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
+                #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ]) \
+                .bar(subset=slice_2, align='mid',color=['blue','red']))   
         with col2:
             st.write("")
         with col3:
-            flag = ['부동산원','매매증감']
+            flag = ['부동산원','전세증감']
             rank_ojdf = pd.DataFrame()
             rank_ojdf['1w'] = last_ojdf['1w'].rank(ascending=True, method='min').round(decimals=1)
             rank_ojdf['2w'] = last_ojdf['2w'].rank(ascending=True, method='min').round(decimals=1)
