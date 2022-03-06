@@ -195,7 +195,8 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     title = dict(text='<b>'+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9, xanchor = 'center', yanchor = 'top') 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
                                         colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=2))
-    fig.update_traces(autocolorscale=True,
+    fig.update_traces(  bgcolor = 'black',
+                        autocolorscale=True,
                         text=df['text'], # hover text
                         marker_line_color='black', # line markers between states
                         colorbar_title=flag[1])
