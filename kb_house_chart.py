@@ -995,7 +995,7 @@ if __name__ == "__main__":
 
                 with col2:
                     #st.write("")
-                    st.dataframe(ojdf_change)
+                    st.dataframe(ojdf)
                 with col3:
                     flag = '부동산원'
                     drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
