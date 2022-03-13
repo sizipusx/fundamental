@@ -118,7 +118,7 @@ def load_one_data():
     omdf = one_dict['매매지수']
     ojdf = one_dict['전세지수']
     omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
-    ojdf = ojdf.iloc[3:omdf['전국'].count()+1,:]
+    ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
     omdf = omdf.astype(float).round(decimals=2)
