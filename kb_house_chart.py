@@ -975,8 +975,7 @@ if __name__ == "__main__":
                     drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
 
                 with col2:
-                    #st.write("")
-                    st.dataframe(S_cum_om)
+                    st.write("")
                 with col3:
                     flag = '부동산원'
                     drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
@@ -994,8 +993,7 @@ if __name__ == "__main__":
                     drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
 
                 with col2:
-                    #st.write("")
-                    st.dataframe(ojdf)
+                    st.write("")
                 with col3:
                     flag = '부동산원'
                     drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
