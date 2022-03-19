@@ -903,9 +903,13 @@ if __name__ == "__main__":
         so_m = pd.DataFrame()
         so_j = pd.DataFrame()
         s_m[start_date] = slice_m.iloc[0].T
-        s_j[end_date] = slice_j.iloc[0].T
-        so_m[start_date] = slice_m.iloc[-1].T
-        so_j[end_date] = slice_j.iloc[-1].T
+        s_m[end_date] = slice_m.iloc[-1].T
+        s_j[start_date] = slice_j.iloc[0].T
+        s_j[end_date] = slice_j.iloc[-1].T
+        so_m[start_date] = slice_om.iloc[0].T
+        so_m[end_date] = slice_om.iloc[-1].T
+        so_j[start_date] = slice_oj.iloc[0].T
+        so_j[end_date] = slice_oj.iloc[-1].T
         condition1 = s_m.iloc[:,0] > s_m.iloc[:,-1]
         condition2 = s_j.iloc[:,0] <= s_j.iloc[:,-1]
         condition3 = so_m.iloc[:,0] > so_m.iloc[:,-1]
