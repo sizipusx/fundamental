@@ -897,6 +897,25 @@ if __name__ == "__main__":
         slice_oj = ojdf.loc[start_date:end_date]
         slice_m = mdf.loc[start_date:end_date]
         slice_j = jdf.loc[start_date:end_date]
+        #기간 동안 매매지수는 하락하고 전세 지수는 증가한 지역 찾기
+        s_m = pd.DataFrame()
+        s_j = pd.DataFrame()
+        so_m = pd.DataFrame()
+        so_j = pd.DataFrame()
+        s_m[start_date] = slice_m.iloc[0].T
+        s_j[end_date] = slice_j.iloc[0].T
+        so_m[start_date] = slice_m.iloc[-1].T
+        so_j[end_date] = slice_j.iloc[-1].T
+        condition1 = s_m.iloc[:,0] > s_m.iloc[:,-1]
+        condition2 = s_j.iloc[:,0] <= s_j.iloc[:,-1]
+        condition3 = so_m.iloc[:,0] > so_m.iloc[:,-1]
+        condition4 = so_j.iloc[:,0] <= so_j.iloc[:,-1]
+        m_de = s_m.loc[condition1]
+        j_in = s_j.loc[condition2]
+        mo_de = so_m.loc[condition3]
+        jo_in = so_j.loc[condition4]
+        inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
+        inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
         #기간 변화 누적 계산
         slice_om_ch = omdf_change.loc[start_date:end_date]
         slice_oj_ch = ojdf_change.loc[start_date:end_date]
@@ -928,6 +947,24 @@ if __name__ == "__main__":
         """
         st.markdown(html_br, unsafe_allow_html=True)
         if submit:
+            ### 기간동안 전세지수는 증가하고 매매지수는 감소한 지역############################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    #flag = "KB"  
+                    st.write("KB 매매 감소-전세 증가") 
+                    st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))  
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = "부동산원"
+                    st.write("부동산원 매매 감소-전세 증가")
+                    st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
+                                          .format(precision=2, na_rep='MISSING', thousands=","))
+            html_br="""
+            <br>
+            """
             ### Draw Bubble chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
