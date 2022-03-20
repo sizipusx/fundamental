@@ -437,7 +437,24 @@ if __name__ == "__main__":
     odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
     not_sell_apt = get_not_sell_apt() #준공후 미분양
     un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
-    in_df = one_dict.parse("apt_buy", header=0) #매입자 거주지별 거래현황
+    #매입자 거주지별 거래현황
+    in_df = one_dict.parse("apt_buy", header=0) 
+    bheader = pd.read_excel(header_path, sheet_name='buyer')
+    in_df['지 역'] = bheader['local'].str.strip()
+    in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
+    in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    in_df = in_df.set_index("지역명")
+    in_df = in_df.T
+    in_df.columns = [in_df.columns, in_df.iloc[0]]
+    in_df = in_df.iloc[1:]
+    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    in_df.index = pd.to_datetime(in_df.index)
+    in_df = in_df.apply(lambda x: x.replace('-','0'))
+    in_df = in_df.astype(int)
+    out_city = in_df.xs('관할시도외_기타', axis=1, level=1)
+    seoul_buyer = in_df.xs('관할시도외_서울', axis=1, level=1)
+    invest_total = out_city.add(seoul_buyer)
+    ### 여기까지 매입자 거주지별 
 
     data_load_state.text("index & pop Data Done! (using st.cache)")
     
@@ -446,7 +463,7 @@ if __name__ == "__main__":
     one_last_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
     af_last_month = pd.to_datetime(str(not_sell_apt.index.values[-1])).strftime('%Y.%m')
     un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
-    in_last_month = pd.to_datetime(str(in_df.index.values[-1])).strftime('%Y.%m')
+    in_last_month = pd.to_datetime(str(invest_total.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
         cols = st.columns(2)
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
@@ -647,21 +664,7 @@ if __name__ == "__main__":
     st.markdown(html_br, unsafe_allow_html=True)
     ### 매입자별 거주지별: 투자자 증감 ###################################################################################
     
-    bheader = pd.read_excel(header_path, sheet_name='buyer')
-    in_df['지 역'] = bheader['local'].str.strip()
-    in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
-    in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    in_df = in_df.set_index("지역명")
-    in_df = in_df.T
-    in_df.columns = [in_df.columns, in_df.iloc[0]]
-    in_df = in_df.iloc[1:]
-    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    in_df.index = pd.to_datetime(in_df.index)
-    in_df = in_df.apply(lambda x: x.replace('-','0'))
-    in_df = in_df.astype(int)
-    out_city = in_df.xs('관할시도외_기타', axis=1, level=1)
-    seoul_buyer = in_df.xs('관할시도외_서울', axis=1, level=1)
-    invest_total = out_city.add(seoul_buyer)
+    
     #필요 날짜만 slice
     slice_iv = invest_total.loc[start_date:end_date]
     s_iv = pd.DataFrame()
