@@ -858,6 +858,8 @@ if __name__ == "__main__":
                 #버블지수/전세파워 table 추가
                 title = dict(text=f'<b> 하락 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
                 fig = go.Figure(data=[go.Table(
+                                    columnorder = [1,2],
+                                    columnwidth = [80,400],
                                     header=dict(values=['<b>항목</b>','<b>지역</b>'],
                                                 fill_color='royalblue',
                                                 align=['right','left'],
