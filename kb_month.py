@@ -722,10 +722,10 @@ if __name__ == "__main__":
     jadf = (jadf.astype(float)*3.306)/10
     jmdf = jmdf.astype(float)/10
 
-    sadf = sadf.astype(int) #평균매매가
-    smdf = smdf.astype(int) #
-    jadf = jadf.astype(int)
-    jmdf = jmdf.astype(int)
+    sadf = sadf.astype(float).round(decimals=0) #평균매매가
+    smdf = smdf.astype(float).round(decimals=0) #
+    jadf = jadf.astype(float).round(decimals=0)
+    jmdf = jmdf.astype(float).round(decimals=0)
     m_df = m_df.round(decimals=1)
     a_df = a_df.round(decimals=1)
     #평균 가격으로 필요 날짜만 slice
