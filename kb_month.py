@@ -446,16 +446,6 @@ if __name__ == "__main__":
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
         cols[1].markdown("")
         cols[2].markdown("")
-    
-    not_total = not_sell_apt.xs('소계', axis=1, level=1) 
-    not_df = not_total.T
-    not_df_1y = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-13]].T
-    not_df_apt = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-2]].T
-
-    #st.write("1년 전보다 준공 후 미분양 증가 지역 1년 데이터")
-    #st.dataframe(not_df_1y.iloc[-13:].T)
-    #st.write("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
-    #st.dataframe(not_df_apt.iloc[-13:].T)
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
@@ -559,6 +549,8 @@ if __name__ == "__main__":
     jo_in = so_j.loc[condition4]
     inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
     inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
+    inter_kb_list = inter_df.index.to_list()
+    inter_one_list = inter_odf.index.to_list()
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -568,19 +560,287 @@ if __name__ == "__main__":
             st.write("")
         with col3:
             st.subheader("부동산원 매매지수 하락 전세지수 상승 지역")
-            st.dataframe(inter_df)
+            st.dataframe(inter_odf)
     html_br="""
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    
+    ### 미분양 증가 하락 지역 #########################################################################################
+    un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True)
+    un_df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    un_df = un_df.astype(float).fillna(0)
+    un_df = un_df.astype(int)
+    #필요 날짜만 slice
+    last_date = un_df.index[-1]
+    slice_un = un_df.loc[start_date:last_date]
+    s_un = pd.DataFrame()
+    un_de = pd.DataFrame()
+    un_in = pd.DataFrame()
+    s_un[start_date] = slice_un.iloc[0].T
+    s_un[last_date] = slice_un.iloc[-1].T
+    condition_un = s_un.iloc[:,0] <= s_un.iloc[:,-1]
+    un_in = s_un.loc[condition_un]
+    condition_un_de = s_un.iloc[:,0] > s_un.iloc[:,-1]
+    un_de = s_un.loc[condition_un_de]
+    un_in_final = un_in[un_in.iloc[:,1] != 0]
+    un_in_list = un_in_final.index.to_list()
+    un_de_list = un_de.index.to_list()
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader("미분양 증가 지역")
+            st.dataframe(un_in_final)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("미분양 감소 지역")
+            st.dataframe(un_de)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### 완공 후 미분양 증가 하락 지역 #########################################################################################
+    not_total = not_sell_apt.xs('소계', axis=1, level=1) 
+    #필요 날짜만 slice
+    last_date_af = not_total.index[-1]
+    slice_af = not_total.loc[start_date:last_date_af]
+    s_af = pd.DataFrame()
+    af_de = pd.DataFrame()
+    af_in = pd.DataFrame()
+    s_af[start_date] = slice_af.iloc[0].T
+    s_af[last_date_af] = slice_af.iloc[-1].T
+    condition_af = s_af.iloc[:,0] <= s_af.iloc[:,-1]
+    af_in = s_af.loc[condition_af]
+    condition_af_de = s_af.iloc[:,0] > s_af.iloc[:,-1]
+    af_de = s_af.loc[condition_af_de]
+    af_in_final = af_in[af_in.iloc[:,1] != 0]
+    af_in_list = af_in_final.index.to_list()
+    af_de_list = af_de.index.to_list()
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader("완공 후 미분양 증가 지역")
+            st.dataframe(af_in_final)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("완공 후 미분양 감소 지역")
+            st.dataframe(af_de)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### 매입자별 거주지별: 투자자 증감 ###################################################################################
+    in_df = one_dict.parse("apt_buy", header=0)
+    bheader = pd.read_excel(header_path, sheet_name='buyer')
+    in_df['지 역'] = bheader['local'].str.strip()
+    in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
+    in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    in_df = in_df.set_index("지역명")
+    in_df = in_df.T
+    in_df.columns = [in_df.columns, in_df.iloc[0]]
+    in_df = in_df.iloc[1:]
+    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    in_df.index = pd.to_datetime(in_df.index)
+    in_df = in_df.apply(lambda x: x.replace('-','0'))
+    in_df = in_df.astype(int)
+    out_city = in_df.xs('관할시도외_기타', axis=1, level=1)
+    seoul_buyer = in_df.xs('관할시도외_서울', axis=1, level=1)
+    invest_total = out_city.add(seoul_buyer)
+    #필요 날짜만 slice
+    slice_iv = invest_total.loc[start_date:end_date]
+    s_iv = pd.DataFrame()
+    iv_de = pd.DataFrame()
+    iv_in = pd.DataFrame()
+    s_iv[start_date] = slice_iv.iloc[0].T
+    s_iv[end_date] = slice_iv.iloc[-1].T
+    condition_iv = s_iv.iloc[:,0] <= s_iv.iloc[:,-1]
+    iv_in = s_iv.loc[condition_iv]
+    condition_iv_de = s_iv.iloc[:,0] > s_iv.iloc[:,-1]
+    iv_de = s_iv.loc[condition_iv_de]
+    iv_final = iv_in[iv_in.iloc[:,1] != 0]
+    iv_in_list = iv_final.index.to_list()
+    iv_de_list = iv_de.index.to_list()
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader("투자자 증가 지역")
+            st.dataframe(iv_final)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("투자자 감소 지역")
+            st.dataframe(iv_de)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### 평균매매가격 증가 하락 지역 #########################################################################################
+    omp_df = one_dict.parse("sell_price", header=1, index_col=0)
+    ojp_df = one_dict.parse("jeon_price", header=1, index_col=0)
+    r_df = one_dict.parse("ratio", header=1, index_col=0)
+    omp = omp_df.iloc[4:,:]
+    ojp = ojp_df.iloc[4:,:]
+    rdf = r_df.iloc[4:,:]
+    #컬럼 변경
+    s1 = omp.columns
+    new_s1 = []
+    for num, gu_data in enumerate(s1):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s1.append(new_s1[check-1])
+        else:
+            new_s1.append(s1[check])
+    #전세가율은 다른가?
+    s2 = rdf.columns
+    new_s2 = []
+    for num, gu_data in enumerate(s2):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s2.append(new_s2[check-1])
+        else:
+            new_s2.append(s2[check])
+    omp.columns =[new_s1, omp_df.iloc[1]]
+    ojp.columns = [new_s1, ojp_df.iloc[1]]
+    rdf.columns =[new_s2, r_df.iloc[1]]
+    #필요 시트만 슬라이스
+    smdf = omp.xs('평균매매',axis=1, level=1)
+    sadf = omp.xs('평균단위매매', axis=1, level=1)
+    jmdf = ojp.xs('평균전세',axis=1, level=1)
+    jadf = ojp.xs('평균단위전세', axis=1, level=1)
+    m_df = rdf.xs('중위', axis=1, level=1) # 중위가격 전세가율
+    a_df = rdf.xs('평균', axis=1, level=1) # 평균가격 전세가율
+    smdf.columns = oneh.columns
+    sadf.columns = oneh.columns
+    jmdf.columns = oneh.columns
+    jadf.columns = oneh.columns
+    m_df.columns = oneh.columns
+    a_df.columns = oneh.columns
+
+    sadf = (sadf.astype(float)*3.306)/10
+    smdf = smdf.astype(float)/10
+    jadf = (jadf.astype(float)*3.306)/10
+    jmdf = jmdf.astype(float)/10
+
+    sadf = sadf.astype(int) #평균매매가
+    smdf = smdf.astype(int) #
+    jadf = jadf.astype(int)
+    jmdf = jmdf.astype(int)
+    m_df = m_df.round(decimals=1)
+    a_df = a_df.round(decimals=1)
+    #평균 가격으로 필요 날짜만 slice
+    smdf.index = pd.to_datetime(smdf.index, format='%Y-%m-%d')
+    last_date = smdf.index[-1]
+    slice_pr = smdf.loc[start_date:last_date]
+    s_pr = pd.DataFrame()
+    pr_de = pd.DataFrame()
+    pr_in = pd.DataFrame()
+    s_pr[start_date] = slice_pr.iloc[0].T
+    s_pr[last_date] = slice_pr.iloc[-1].T
+    condition_pr = s_pr.iloc[:,0] <= s_pr.iloc[:,-1]
+    pr_in = s_pr.loc[condition_pr]
+    condition_pr_de = s_pr.iloc[:,0] > s_pr.iloc[:,-1]
+    pr_de = s_pr.loc[condition_pr_de]
+    pr_de_list = pr_de.index.to_list()
+    pr_in_list = pr_in.index.to_list()
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader("평균 매매가격 증가 지역")
+            st.dataframe(pr_in)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("평균 매매가격 감소 지역")
+            st.dataframe(pr_de)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### 평균 전세 가격 증가 하락 지역 #########################################################################################
+    jmdf.index = pd.to_datetime(jmdf.index, format='%Y-%m-%d')
+    last_date = jmdf.index[-1]
+    slice_jpr = jmdf.loc[start_date:last_date]
+    s_jpr = pd.DataFrame()
+    jpr_de = pd.DataFrame()
+    jpr_in = pd.DataFrame()
+    s_jpr[start_date] = slice_jpr.iloc[0].T
+    s_jpr[last_date] = slice_jpr.iloc[-1].T
+    condition_jpr = s_jpr.iloc[:,0] <= s_jpr.iloc[:,-1]
+    jpr_in = s_jpr.loc[condition_jpr]
+    condition_jpr_de = s_jpr.iloc[:,0] > s_jpr.iloc[:,-1]
+    jpr_de = s_jpr.loc[condition_jpr_de]
+    jpr_de_list = jpr_de.index.to_list()
+    jpr_in_list = jpr_in.index.to_list()
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader("평균 전세가격 증가 지역")
+            st.dataframe(jpr_in)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("평균 전세가격 감소 지역")
+            st.dataframe(jpr_de)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### 미분양 증가 하락 지역 #########################################################################################
+    a_df.index = pd.to_datetime(a_df.index, format='%Y-%m-%d')
+    last_date = a_df.index[-1]
+    slice_jr = a_df.loc[start_date:last_date]
+    s_jr = pd.DataFrame()
+    jr_de = pd.DataFrame()
+    jr_in = pd.DataFrame()
+    s_jr[start_date] = slice_jr.iloc[0].T
+    s_jr[last_date] = slice_jr.iloc[-1].T
+    condition_jr = s_jr.iloc[:,0] <= s_jr.iloc[:,-1]
+    jr_in = s_jr.loc[condition_jr]
+    condition_jr_de = s_jr.iloc[:,0] > s_jr.iloc[:,-1]
+    jr_de = s_jr.loc[condition_jr_de]
+    jr_in = jr_in.astype(float).round(decimals=1)
+    jr_de = jr_de.astype(float).round(decimals=1)
+    jr_de_list = jr_de.index.to_list()
+    jr_in_list = jr_in.index.to_list()
+    with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                st.subheader("전세가율 증가 지역")
+                st.dataframe(jr_in)
+            with col2:
+                st.write("")
+            with col3:
+                st.subheader("전세가율 감소 지역")
+                st.dataframe(jr_de)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ######## 전제 지역 데이터프레임 ####################################################################################
+    index_name = ['지수KB', '지수one', '미분양증가', '준공후미분양증가', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
+    de_citys = np.array([inter_kb_list, inter_one_list, un_in_list, af_in_list, iv_in_list, iv_de_list, pr_de_list, jpr_in_list, jr_in_list])
+    down_df = pd.DataFrame(de_citys, index_name)
+    with st.container():
+            col1, col2, col3 = st.columns([2,30,2])
+            with col1:
+                st.write("")
+            with col2:
+                st.subheader("하락 지표 나타나는 지역")
+                st.dataframe(down_df)
+            with col3:
+                st.write("")
+    html_br="""
+    <br>
+    """
+######## 전제 지역 데이터프레임 ####################################################################################
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
                     "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', '지역같이보기', '기간보기')
                     )
     if my_choice == 'Basic':
-        st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
-        st.dataframe(power_df.iloc[:50])
+        #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
+        #st.dataframe(power_df.iloc[:50])
         submit = st.button('Draw Basic chart')
         if submit:
             st.write("나중에 구현--그냥 테이블로 보여주기")
