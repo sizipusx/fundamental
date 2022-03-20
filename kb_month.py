@@ -847,14 +847,30 @@ if __name__ == "__main__":
     de_citys = np.array([inter_kb_list, inter_one_list, un_in_list, af_in_list, iv_in_list, iv_de_list, pr_de_list, jpr_in_list, jr_in_list])
     down_df = pd.DataFrame(de_citys, index_name)
     with st.container():
-            col1, col2, col3 = st.columns([2,30,2])
+            col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                st.write("")
-            with col2:
                 st.subheader("하락 지표 나타나는 지역")
                 st.dataframe(down_df)
+            with col2:
+                st.write("")
             with col3:
                 st.write("")
+                #버블지수/전세파워 table 추가
+                title = dict(text=f'<b> 하락 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
+                fig = go.Figure(data=[go.Table(
+                                    header=dict(values=['<b>항목</b>','<b>지역</b>'],
+                                                fill_color='royalblue',
+                                                align=['right','left'],
+                                                font=dict(color='white', size=12),
+                                                height=40),
+                                    cells=dict(values=[down_df.index, down_df.iloc[:,0]], 
+                                                fill=dict(color=['black', 'gray']),
+                                                align=['right','left'],
+                                                font_size=12,
+                                                height=30))
+                                ])
+                fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2")
+                st.plotly_chart(fig)
     html_br="""
     <br>
     """
