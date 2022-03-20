@@ -677,8 +677,7 @@ if __name__ == "__main__":
             st.write("")
         with col3:
             st.subheader("투자자 감소 지역")
-            st.dataframe(iv_de.style.background_gradient(cmap, axis=0)\
-                                          .format(na_rep='MISSING', thousands=","))
+            st.dataframe(iv_de)
     html_br="""
     <br>
     """
