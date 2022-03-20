@@ -435,17 +435,26 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
-    not_sell_apt = get_not_sell_apt()
+    not_sell_apt = get_not_sell_apt() #준공후 미분양
+    un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
+    in_df = one_dict.parse("apt_buy", header=0) #매입자 거주지별 거래현황
 
     data_load_state.text("index & pop Data Done! (using st.cache)")
     
     #마지막 달
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+    one_last_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
+    af_last_month = pd.to_datetime(str(not_sell_apt.index.values[-1])).strftime('%Y.%m')
+    un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
+    in_last_month = pd.to_datetime(str(in_df.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
-        cols = st.columns(3)
+        cols = st.columns(2)
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
-        cols[1].markdown("")
-        cols[2].markdown("")
+        cols[1].markdown(f'부동산원 최종업데이트: **{one_last_month}월**')
+        cols = st.columns(3)
+        cols[0].markdown(f'미분양 최종업데이트: **{af_last_month}월**')
+        cols[1].markdown(f'준공후 미분양 최종업데이트: **{un_last_month}월**')
+        cols[2].markdown(f'투자자 최종업데이트: **{in_last_month}월**')
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
@@ -568,7 +577,7 @@ if __name__ == "__main__":
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### 미분양 증가 하락 지역 #########################################################################################
-    un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True)
+    
     un_df.replace([np.inf, -np.inf], np.nan, inplace=True)
     un_df = un_df.astype(float).fillna(0)
     un_df = un_df.astype(int)
@@ -637,7 +646,7 @@ if __name__ == "__main__":
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### 매입자별 거주지별: 투자자 증감 ###################################################################################
-    in_df = one_dict.parse("apt_buy", header=0)
+    
     bheader = pd.read_excel(header_path, sheet_name='buyer')
     in_df['지 역'] = bheader['local'].str.strip()
     in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
