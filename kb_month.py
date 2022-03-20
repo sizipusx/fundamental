@@ -786,7 +786,7 @@ if __name__ == "__main__":
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### 미분양 증가 하락 지역 #########################################################################################
+    ### 전세가율 증가 하락 지역 #########################################################################################
     a_df.index = pd.to_datetime(a_df.index, format='%Y-%m-%d')
     last_date = a_df.index[-1]
     slice_jr = a_df.loc[start_date:last_date]
