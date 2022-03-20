@@ -45,27 +45,26 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
-kb_file_path = 'https://github.com/sizipusx/fundamental/blob/36f9c6ee1fb5cce0c81207131de9635beebfa74f/files/kb_monthly.xlsx?raw=true'
+kb_path = 'https://github.com/sizipusx/fundamental/blob/fc57954b59fc2d1076957d450c1cfab8071fbca6/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
-one_path = r'https://github.com/sizipusx/fundamental/blob/36f9c6ee1fb5cce0c81207131de9635beebfa74f/files/one_data.xlsx?raw=true'
-#not_sell_path = 'https://github.com/sizipusx/fundamental/blob/8f2753b1fd827ced9fd20e11e6355756b6954657/files/not_selling_apt.xlsx?raw=true'
+one_path = r'https://github.com/sizipusx/fundamental/blob/fc57954b59fc2d1076957d450c1cfab8071fbca6/files/one_data.xlsx?raw=true'
 #헤더 변경
-header_path = 'https://github.com/sizipusx/fundamental/blob/36f9c6ee1fb5cce0c81207131de9635beebfa74f/files/header.xlsx?raw=true'
+header_path = r'https://github.com/sizipusx/fundamental/blob/36f9c6ee1fb5cce0c81207131de9635beebfa74f/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
+kbh = header_excel.parse('KB')
+oneh = header_excel.parse('one')
+# KB 데이터
+kbm_dict = pd.ExcelFile(kb_path)
+one_dict = pd.ExcelFile(one_path)
 #geojson file open
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
-#return object
-def read_source(): 
-    kbm_dict = pd.ExcelFile(kb_file_path)
-
-    return kbm_dict
-
  #return dic
 def read_source_excel():
-    kbm_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
+    kbm_dict = pd.read_excel(kb_path, sheet_name=None, header=1)
 
     return kbm_dict
+
 
 @st.cache
 def get_basic_df():
@@ -82,10 +81,7 @@ def get_basic_df():
 @st.cache
 def get_not_sell_apt():
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
-    data_type = 'not_sell' 
-    #df1 = pd.read_excel(one_path, sheet_name=data_type, index_col=0, parse_dates=True)
-    df1 = pd.read_excel(one_path, sheet_name=data_type)
-    #df1 = one_dict['not_sell']
+    df1 = one_dict.parse("not_sell_after")
 
     #컬럼명 바꿈
     j1 = df1.columns
@@ -101,9 +97,6 @@ def get_not_sell_apt():
     df1.columns = [new_s1,df1.iloc[0]]
     df1 = df1.iloc[1:,:]
     df1 = df1.fillna(0)
-    #df1 = df1.sort_index()
-    #df1 = df1.sort_index(axis=1)
-    #df1.index = pd.to_datetime(df1.index)
     df1 = df1.set_index(df1.iloc[:,0])
     df1.index.name = 'date'
     df1 = df1.iloc[:,1:]
@@ -113,17 +106,14 @@ def get_not_sell_apt():
 
 @st.cache
 def load_index_data():
-    kbm_dict = read_source()
-    header_excel = pd.ExcelFile(header_path)
-    header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
 
     #주택가격지수
     mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0, convert_float=True)
     jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0, convert_float=True)
-    mdf.columns = header.columns
-    jdf.columns = header.columns
+    mdf.columns = kbh.columns
+    jdf.columns = kbh.columns
     #index 날짜 변경
     
     mdf = mdf.iloc[2:]
@@ -144,6 +134,8 @@ def load_index_data():
 
     mdf.set_index(pd.to_datetime(new_index), inplace=True)
     jdf.set_index(pd.to_datetime(new_index), inplace=True)
+    mdf.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf.replace([np.inf, -np.inf], np.nan, inplace=True)
     mdf = mdf.astype(float).fillna(0).round(decimals=2)
     jdf = jdf.astype(float).fillna(0).round(decimals=2)
 
@@ -177,17 +169,17 @@ def load_index_data():
 @st.cache(allow_output_mutation=True)
 def load_one_data():
     #감정원 월간 데이터
-    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
     # one header 변경
-    oneh = header_excel.parse('one')
-    omdf = one_dict['msell_index']
-    ojdf = one_dict['mjeon_index']
+    omdf = one_dict.parse("msell_index", header=1,index_col=0, parse_dates=True, convert_float=True)
+    ojdf = one_dict.parse("mjeon_index", header=1,index_col=0, parse_dates=True, convert_float=True)
     omdf = omdf.iloc[3:,:]
     ojdf = ojdf.iloc[3:,:]
     omdf.columns = oneh.columns
     ojdf.columns = oneh.columns
     omdf.index = pd.to_datetime(omdf.index)
     ojdf.index = pd.to_datetime(ojdf.index)
+    omdf.replace([np.inf, -np.inf], np.nan, inplace=True)
+    ojdf.replace([np.inf, -np.inf], np.nan, inplace=True)
     omdf = omdf.astype(float).round(decimals=2)
     ojdf = ojdf.astype(float).round(decimals=2)
      #주간 증감률
@@ -338,7 +330,6 @@ def load_senti_data():
 
 @st.cache
 def load_pir_data():
-    kbm_dict = read_source()
     pir = kbm_dict.parse('13.KB아파트담보대출PIR', skiprows=1)
     # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
     # kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
@@ -395,7 +386,6 @@ def load_pir_data():
 
 @st.cache
 def load_hai_data():
-    kbm_dict = read_source()
     hai = kbm_dict.parse('14.NEW_HAI', skiprows=1)
     hai_old = hai.iloc[:135,2:]
     hai_old = hai_old.set_index("지역")
@@ -462,10 +452,10 @@ if __name__ == "__main__":
     not_df_1y = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-13]].T
     not_df_apt = not_df[not_df.iloc[:,-1] > not_df.iloc[:,-2]].T
 
-    st.write("1년 전보다 준공 후 미분양 증가 지역 1년 데이터")
-    st.dataframe(not_df_1y.iloc[-13:].T)
-    st.write("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
-    st.dataframe(not_df_apt.iloc[-13:].T)
+    #st.write("1년 전보다 준공 후 미분양 증가 지역 1년 데이터")
+    #st.dataframe(not_df_1y.iloc[-13:].T)
+    #st.write("전달에 비해 준공 후 미분양 증가 지역 1년 데이터")
+    #st.dataframe(not_df_apt.iloc[-13:].T)
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
@@ -533,6 +523,56 @@ if __name__ == "__main__":
     power_df['score'] = power_df['jrank'] + power_df['brank']
     power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
     power_df = power_df.sort_values('rank', ascending=True)
+
+    ##기간 증감 지역 알아보기 2022. 3. 20 추가
+    period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+    st.subheader("기간 증감 지역 분석")
+    start_date, end_date = st.select_slider(
+        'Select Date to Compare index change', 
+        options = period_,
+        value = (period_[-24], period_[-1]))
+    ### 매매지수 하락 전세지수 상승 #########################################################################################
+    #필요 날짜만 slice
+    slice_om = omdf.loc[start_date:end_date]
+    slice_oj = ojdf.loc[start_date:end_date]
+    slice_m = mdf.loc[start_date:end_date]
+    slice_j = jdf.loc[start_date:end_date]
+    s_m = pd.DataFrame()
+    s_j = pd.DataFrame()
+    so_m = pd.DataFrame()
+    so_j = pd.DataFrame()
+    s_m[start_date] = slice_m.iloc[0].T
+    s_m[end_date] = slice_m.iloc[-1].T
+    s_j[start_date] = slice_j.iloc[0].T
+    s_j[end_date] = slice_j.iloc[-1].T
+    so_m[start_date] = slice_om.iloc[0].T
+    so_m[end_date] = slice_om.iloc[-1].T
+    so_j[start_date] = slice_oj.iloc[0].T
+    so_j[end_date] = slice_oj.iloc[-1].T
+    condition1 = s_m.iloc[:,0] > s_m.iloc[:,-1]
+    condition2 = s_j.iloc[:,0] <= s_j.iloc[:,-1]
+    condition3 = so_m.iloc[:,0] > so_m.iloc[:,-1]
+    condition4 = so_j.iloc[:,0] <= so_j.iloc[:,-1]
+    m_de = s_m.loc[condition1]
+    j_in = s_j.loc[condition2]
+    mo_de = so_m.loc[condition3]
+    jo_in = so_j.loc[condition4]
+    inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
+    inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader("KB 매매지수 하락 전세지수 상승 지역")
+            st.dataframe(inter_df)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("부동산원 매매지수 하락 전세지수 상승 지역")
+            st.dataframe(inter_df)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
