@@ -672,13 +672,13 @@ if __name__ == "__main__":
         with col1:
             st.subheader("투자자 증가 지역")
             st.dataframe(iv_final.style.background_gradient(cmap, axis=0)\
-                                          .format(precision=2, na_rep='MISSING', thousands=","))
+                                          .format(na_rep='MISSING', thousands=","))
         with col2:
             st.write("")
         with col3:
             st.subheader("투자자 감소 지역")
             st.dataframe(iv_de.style.background_gradient(cmap, axis=0)\
-                                          .format(precision=2, na_rep='MISSING', thousands=","))
+                                          .format(na_rep='MISSING', thousands=","))
     html_br="""
     <br>
     """
