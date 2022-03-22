@@ -436,6 +436,7 @@ if __name__ == "__main__":
     mdf, jdf, code_df, geo_data = load_index_data()
     odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
     not_sell_apt = get_not_sell_apt() #준공후 미분양
+    st.dataframe(not_sell_apt.tail())
     un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     in_df = one_dict.parse("apt_buy", header=0) 
