@@ -549,7 +549,7 @@ if __name__ == "__main__":
     if my_choice == 'Basic':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         #st.dataframe(power_df.iloc[:50])
-        period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+        period_ = omdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 지역 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
