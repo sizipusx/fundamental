@@ -47,7 +47,7 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 kb_path = 'https://github.com/sizipusx/fundamental/blob/fc57954b59fc2d1076957d450c1cfab8071fbca6/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
-one_path = r'https://github.com/sizipusx/fundamental/blob/32bc46ca72ebe13f68ebc25d2152c8fc85bbf7cb/files/one_data.xlsx?raw=true'
+one_path = r'https://github.com/sizipusx/fundamental/blob/7ee0b680613d159e5e69972474e11c961089eaa0/files/one_data.xlsx?raw=true'
 #헤더 변경
 header_path = r'https://github.com/sizipusx/fundamental/blob/36f9c6ee1fb5cce0c81207131de9635beebfa74f/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
