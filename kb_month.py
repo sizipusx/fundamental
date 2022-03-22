@@ -652,7 +652,6 @@ if __name__ == "__main__":
             ### 완공 후 미분양 증가 하락 지역 #########################################################################################
             not_total = not_sell_apt.xs('소계', axis=1, level=1) 
             #필요 날짜만 slice
-            st.dataframe(not_total)
             last_date_af = not_total.index[-1]
             slice_af = not_total.loc[start_date:last_date_af]
             s_af = pd.DataFrame()
