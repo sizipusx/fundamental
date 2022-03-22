@@ -468,10 +468,11 @@ if __name__ == "__main__":
         cols = st.columns(3)
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
         cols[1].markdown(f'부동산원 최종업데이트: **{one_last_month}월**')
+        cols[2].markdown(f'투자자 최종업데이트: **{in_last_month}월**')
         cols = st.columns(3)
         cols[0].markdown(f'미분양 최종업데이트: **{un_last_month}월**')
         cols[1].markdown(f'준공후 미분양 최종업데이트: **{af_last_month}월**')
-        cols[2].markdown(f'투자자 최종업데이트: **{in_last_month}월**')
+        cols[2].markdown()
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
