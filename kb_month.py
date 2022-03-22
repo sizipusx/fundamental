@@ -549,16 +549,14 @@ if __name__ == "__main__":
     if my_choice == 'Basic':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         #st.dataframe(power_df.iloc[:50])
+        period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+        st.subheader("기간 지역 분석")
+        start_date, end_date = st.select_slider(
+            'Select Date to Compare index change', 
+            options = period_,
+            value = (period_[-24], period_[-1]))
         submit = st.button('Analize Local situation')
         if submit:
-            ##기간 증감 지역 알아보기 2022. 3. 20 추가
-            period_ = omdf.index.strftime("%Y-%m-%d").tolist()
-            st.subheader("기간 증감 지역 분석")
-            start_date, end_date = st.select_slider(
-                'Select Date to Compare index change', 
-                options = period_,
-                value = (period_[-24], period_[-1]))
-            
             ### 매매지수 하락 전세지수 상승 #########################################################################################
             #필요 날짜만 slice
             slice_om = omdf.loc[start_date:end_date]
