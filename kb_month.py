@@ -863,11 +863,11 @@ if __name__ == "__main__":
             <br>
             """
             st.markdown(html_br, unsafe_allow_html=True)
-            ######## 전제 지역 데이터프레임 ####################################################################################
-            index_name = ['지수KB', '지수one', '미분양증가', '준공후미분양증가', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
+            ######## 하략 지역 데이터프레임 ####################################################################################
+            down_index_name = ['KB지수', 'one지수', '미분양증가', '준공후미분양증가', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
             de_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(un_in_list), ', '.join(af_in_list), ', '.join(iv_in_list), \
                  ', '.join(iv_de_list), ', '.join(pr_de_list), ', '.join(jpr_in_list), ', '.join(jr_in_list)])
-            down_df = pd.DataFrame(de_citys, index_name)
+            down_df = pd.DataFrame(de_citys, down_index_name)
             with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
@@ -888,6 +888,41 @@ if __name__ == "__main__":
                                                         font=dict(color='white', size=12),
                                                         height=40),
                                             cells=dict(values=[down_df.index, down_df.iloc[:,0]], 
+                                                        fill=dict(color=['black', 'gray']),
+                                                        align=['right','left'],
+                                                        font_size=12,
+                                                        height=30))
+                                        ])
+                        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2")
+                        st.plotly_chart(fig)
+            html_br="""
+            <br>
+            """
+             ######## 상승 지역 데이터프레임 ####################################################################################
+            up_index_name = ['KB지수', 'one지수', '미분양감소', '준공후미분양감소', '투자자증가', '투자자감소', '평균매매가격증가', '평균전세가격감소', '전세가율감소']
+            in_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(un_de_list), ', '.join(af_de_list), ', '.join(iv_in_list), \
+                 ', '.join(iv_de_list), ', '.join(pr_in_list), ', '.join(jpr_de_list), ', '.join(jr_de_list)])
+            in_df = pd.DataFrame(in_citys, up_index_name)
+            with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        st.subheader("상승 지표 나타나는 지역")
+                        st.dataframe(in_df)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        st.write("")
+                        #버블지수/전세파워 table 추가
+                        title = dict(text=f'<b> 상승 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
+                        fig = go.Figure(data=[go.Table(
+                                            columnorder = [1,2],
+                                            columnwidth = [80,400],
+                                            header=dict(values=['<b>항목</b>','<b>지역</b>'],
+                                                        fill_color='royalblue',
+                                                        align=['right','left'],
+                                                        font=dict(color='white', size=12),
+                                                        height=40),
+                                            cells=dict(values=[in_df.index, in_df.iloc[:,0]], 
                                                         fill=dict(color=['black', 'gray']),
                                                         align=['right','left'],
                                                         font_size=12,
