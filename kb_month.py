@@ -555,6 +555,13 @@ if __name__ == "__main__":
             'Select Date to Compare index change', 
             options = period_,
             value = (period_[-24], period_[-1]))
+        #information display
+        diff = slice_om.index[-1] - slice_om.index[0]
+        cols = st.columns(4)
+        cols[0].write(f"시작: {start_date}")
+        cols[1].write(f"끝: {end_date}")
+        cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
+        cols[3].write("")
         submit = st.button('Analize Local situation')
         if submit:
             ### 매매지수 하락 전세지수 상승 #########################################################################################
@@ -563,13 +570,6 @@ if __name__ == "__main__":
             slice_oj = ojdf.loc[start_date:end_date]
             slice_m = mdf.loc[start_date:end_date]
             slice_j = jdf.loc[start_date:end_date]
-            #information display
-            diff = slice_om.index[-1] - slice_om.index[0]
-            cols = st.columns(4)
-            cols[0].write(f"시작: {start_date}")
-            cols[1].write(f"끝: {end_date}")
-            cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
-            cols[3].write("")
             #############
             s_m = pd.DataFrame()
             s_j = pd.DataFrame()
