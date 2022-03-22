@@ -556,6 +556,11 @@ if __name__ == "__main__":
             options = period_,
             value = (period_[-24], period_[-1]))
         #information display
+        #필요 날짜만 slice
+        slice_om = omdf.loc[start_date:end_date]
+        slice_oj = ojdf.loc[start_date:end_date]
+        slice_m = mdf.loc[start_date:end_date]
+        slice_j = jdf.loc[start_date:end_date]
         diff = slice_om.index[-1] - slice_om.index[0]
         cols = st.columns(4)
         cols[0].write(f"시작: {start_date}")
@@ -564,12 +569,7 @@ if __name__ == "__main__":
         cols[3].write("")
         submit = st.button('Analize Local situation')
         if submit:
-            ### 매매지수 하락 전세지수 상승 #########################################################################################
-            #필요 날짜만 slice
-            slice_om = omdf.loc[start_date:end_date]
-            slice_oj = ojdf.loc[start_date:end_date]
-            slice_m = mdf.loc[start_date:end_date]
-            slice_j = jdf.loc[start_date:end_date]
+            ### 매매지수 하락 전세지수 상승 #########################################################################################            
             #############
             s_m = pd.DataFrame()
             s_j = pd.DataFrame()
