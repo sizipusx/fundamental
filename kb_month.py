@@ -768,7 +768,7 @@ if __name__ == "__main__":
             a_df = a_df.round(decimals=1)
             #평균 가격으로 필요 날짜만 slice
             smdf.index = pd.to_datetime(smdf.index, format='%Y-%m-%d')
-            last_date = smdf.index[-1]
+            last_date = smdf.index[-1].strftime("%Y-%m")
             slice_pr = smdf.loc[start_date:last_date]
             s_pr = pd.DataFrame()
             pr_de = pd.DataFrame()
@@ -799,7 +799,7 @@ if __name__ == "__main__":
             st.markdown(html_br, unsafe_allow_html=True)
             ### 평균 전세 가격 증가 하락 지역 #########################################################################################
             jmdf.index = pd.to_datetime(jmdf.index, format='%Y-%m-%d')
-            last_date = jmdf.index[-1]
+            last_date = jmdf.index[-1].strftime("%Y-%m")
             slice_jpr = jmdf.loc[start_date:last_date]
             s_jpr = pd.DataFrame()
             jpr_de = pd.DataFrame()
@@ -830,7 +830,7 @@ if __name__ == "__main__":
             st.markdown(html_br, unsafe_allow_html=True)
             ### 전세가율 증가 하락 지역 #########################################################################################
             a_df.index = pd.to_datetime(a_df.index, format='%Y-%m-%d')
-            last_date = a_df.index[-1]
+            last_date = a_df.index[-1].strftime("%Y-%m")
             slice_jr = a_df.loc[start_date:last_date]
             s_jr = pd.DataFrame()
             jr_de = pd.DataFrame()
