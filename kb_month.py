@@ -638,7 +638,8 @@ if __name__ == "__main__":
                     st.subheader("미분양 증가 지역")
                     #st.dataframe(un_in_final.style.background_gradient(cmap, axis=0)\
                     #                            .format(precision=2, na_rep='MISSING', thousands=","))
-                    st.table(un_in_final)
+                    st.table(un_in_final.style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
                 with col2:
                     st.write("")
                 with col3:
