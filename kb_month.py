@@ -465,7 +465,7 @@ if __name__ == "__main__":
     un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
     in_last_month = pd.to_datetime(str(invest_total.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
-        cols = st.columns(2)
+        cols = st.columns(3)
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
         cols[1].markdown(f'부동산원 최종업데이트: **{one_last_month}월**')
         cols = st.columns(3)
