@@ -645,7 +645,7 @@ if __name__ == "__main__":
                 with col3:
                     st.subheader("미분양 감소 지역")
                     st.dataframe(un_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 300, 300)
             html_br="""
             <br>
             """
