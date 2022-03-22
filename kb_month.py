@@ -618,7 +618,7 @@ if __name__ == "__main__":
             un_df = un_df.astype(float).fillna(0)
             un_df = un_df.astype(int)
             #필요 날짜만 slice
-            last_date = un_df.index[-1]
+            last_date = un_df.index[-1].strftime("%Y-%m")
             slice_un = un_df.loc[start_date:last_date]
             s_un = pd.DataFrame()
             un_de = pd.DataFrame()
