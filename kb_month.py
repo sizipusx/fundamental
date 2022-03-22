@@ -864,7 +864,8 @@ if __name__ == "__main__":
             st.markdown(html_br, unsafe_allow_html=True)
             ######## 전제 지역 데이터프레임 ####################################################################################
             index_name = ['지수KB', '지수one', '미분양증가', '준공후미분양증가', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
-            de_citys = np.array([inter_kb_list, inter_one_list, un_in_list, af_in_list, iv_in_list, iv_de_list, pr_de_list, jpr_in_list, jr_in_list])
+            de_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(un_in_list), ', '.join(af_in_list), ', '.join(iv_in_list), \
+                 ', '.join(iv_de_list), ', '.join(pr_de_list), ', '.join(jpr_in_list), ', '.join(jr_in_list)])
             down_df = pd.DataFrame(de_citys, index_name)
             with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
