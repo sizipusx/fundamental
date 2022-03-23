@@ -600,13 +600,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("KB 매매지수 하락 전세지수 상승 지역")
                     st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","), 800, 800)
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 600, 600)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("부동산원 매매지수 하락 전세지수 상승 지역")
                     st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","),800,800)
+                                                .format(precision=2, na_rep='MISSING', thousands=","),600,600)
             html_br="""
             <br>
             """
