@@ -600,13 +600,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("KB 매매지수 하락 전세지수 상승 지역")
                     st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 300, 300)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("부동산원 매매지수 하락 전세지수 상승 지역")
                     st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 300, 300)
             html_br="""
             <br>
             """
@@ -789,13 +789,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("평균 매매가격 증가 지역")
                     st.dataframe(pr_in.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=0, na_rep='MISSING', thousands=","))
+                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 350)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("평균 매매가격 감소 지역")
                     st.dataframe(pr_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=0, na_rep='MISSING', thousands=","))
+                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 350)
             html_br="""
             <br>
             """
@@ -820,13 +820,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("평균 전세가격 증가 지역")
                     st.dataframe(jpr_in.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=0, na_rep='MISSING', thousands=","))
+                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 350)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("평균 전세가격 감소 지역")
                     st.dataframe(jpr_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=0, na_rep='MISSING', thousands=","))
+                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 350)
             html_br="""
             <br>
             """
@@ -853,13 +853,13 @@ if __name__ == "__main__":
                     with col1:
                         st.subheader("전세가율 증가 지역")
                         st.dataframe(jr_in.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=1, na_rep='MISSING', thousands=","))
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 350, 350)
                     with col2:
                         st.write("")
                     with col3:
                         st.subheader("전세가율 감소 지역")
                         st.dataframe(jr_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=1, na_rep='MISSING', thousands=","))
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 350, 350)
             html_br="""
             <br>
             """
@@ -873,7 +873,7 @@ if __name__ == "__main__":
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
                         st.subheader("하락 지표 나타나는 지역")
-                        st.dataframe(down_df)
+                        st.table(down_df)
                     with col2:
                         st.write("")
                     with col3:
@@ -908,7 +908,7 @@ if __name__ == "__main__":
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
                         st.subheader("상승 지표 나타나는 지역")
-                        st.dataframe(in_df)
+                        st.table(in_df)
                     with col2:
                         st.write("")
                     with col3:
