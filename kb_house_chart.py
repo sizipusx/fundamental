@@ -571,7 +571,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 650, 650)
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 900, 900)
         with col2:
             st.write("")
         with col3:
@@ -604,7 +604,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 650, 650)            
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 900, 900)            
     html_br="""
     <br>
     """
@@ -655,7 +655,7 @@ def draw_basic():
             rank_ojdf['1y%'] = last_ojdf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.markdown("부동산원 235개 지역 _전세지수_** 기간별 순위")
+            st.markdown("부동산원 235개 지역 _전세지수_ 기간별 순위")
             #rank_ojdf = rank_ojdf.reset_index()
             st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
