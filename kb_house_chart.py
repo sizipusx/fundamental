@@ -571,7 +571,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 900, 900)
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
         with col2:
             st.write("")
         with col3:
@@ -604,7 +604,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 400, 400)            
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
     html_br="""
     <br>
     """
@@ -665,7 +665,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ]) \
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 600, 600)
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
             
     html_br="""
     <br>
