@@ -87,9 +87,9 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-kb_file_path = r'https://github.com/sizipusx/fundamental/blob/9aa99873d28ddc8e5e60850ca564d35c49e3f681/files/kb_weekly.xlsx?raw=True'
+kb_file_path = r'https://github.com/sizipusx/fundamental/blob/e1f78ac349b5f2fae558256bdccd2e9febc19b30/files/kb_weekly.xlsx?raw=True'
 #감정원 데이터
-one_path = r"https://github.com/sizipusx/fundamental/blob/9aa99873d28ddc8e5e60850ca564d35c49e3f681/files/one_weekly.xlsx?raw=True"
+one_path = r"https://github.com/sizipusx/fundamental/blob/595c4200fe7ed5f7ac8e7404839589762adc2f9e/files/one_weekly.xlsx?raw=True"
 #헤더 변경
 header_path = r'https://github.com/sizipusx/fundamental/blob/00c7db01dd87012174224f5b9e89c24da4268d13/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
@@ -571,7 +571,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 600, 600)
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 900, 900)
         with col2:
             st.write("")
         with col3:
@@ -637,7 +637,7 @@ def draw_basic():
                         [{'selector': f'th.col_heading.level0.col{col_loc}',
                         'props': [('background-color', '#67c5a4')]},
                         ]) \
-                .bar(subset=slice_2, align='mid',color=['blue','red']))   
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)   
         with col2:
             st.write("")
         with col3:
@@ -655,7 +655,7 @@ def draw_basic():
             rank_ojdf['1y%'] = last_ojdf['1y'].round(decimals=2)
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.markdown("부동산원 235개 지역 _전세지수_** 기간별 순위")
+            st.markdown("부동산원 235개 지역 _전세지수_ 기간별 순위")
             #rank_ojdf = rank_ojdf.reset_index()
             st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
