@@ -91,7 +91,7 @@ kb_file_path = r'https://github.com/sizipusx/fundamental/blob/b37219a83319635b8d
 #감정원 데이터
 one_path = r"https://github.com/sizipusx/fundamental/blob/6ca943fdebe4df5d08035bac5f5a32d03e8a6198/files/one_weekly.xlsx?raw=True"
 #헤더 변경
-header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400db00e75cf4e5521043be88/files/header.xlsx'
+header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400db00e75cf4e5521043be88/files/header.xlsx?raw=True'
 header_excel = pd.ExcelFile(header_path)
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
