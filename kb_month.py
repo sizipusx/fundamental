@@ -49,7 +49,7 @@ kb_path = 'https://github.com/sizipusx/fundamental/blob/d1268bcfbbca48adb1319348
 #감정원 데이터
 one_path = r'https://github.com/sizipusx/fundamental/blob/d1268bcfbbca48adb13193485d0b5990d599bc45/files/one_data.xlsx?raw=true'
 #헤더 변경
-header_path = r'https://github.com/sizipusx/fundamental/blob/36f9c6ee1fb5cce0c81207131de9635beebfa74f/files/header.xlsx?raw=true'
+header_path = r'https://github.com/sizipusx/fundamental/blob/bc990c892ec68351be5b45b79f3dbf6bd2590222/files/header.xlsx?raw=true'
 header_excel = pd.ExcelFile(header_path)
 kbh = header_excel.parse('KB')
 oneh = header_excel.parse('one')
