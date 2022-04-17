@@ -1143,8 +1143,8 @@ if __name__ == "__main__":
         st.subheader("투자자 비율 분석")
         ratio_value = st.slider(
             'Select ratio to Compare index change', 0, 100, 30)
-        investor_df = last_in[last_in['투자자비율'] >= last_in['비율평균']].reset_index()
-        investor_ratio = last_in[last_in['투자자비율'] >= ratio_value].reset_index()
+        investor_df = last_in[last_in['투자자%'] >= last_in['비율평균']].reset_index()
+        investor_ratio = last_in[last_in['투자자%'] >= ratio_value].reset_index()
         with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
