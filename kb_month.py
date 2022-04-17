@@ -551,7 +551,7 @@ if __name__ == "__main__":
     
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment', '지역같이보기', '기간보기')
+                    "Select Menu", ('Basic','Price Index', 'PIR','HAI', 'Sentiment','투자자별매매동향', '지역같이보기', '기간보기')
                     )
     if my_choice == 'Basic':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
