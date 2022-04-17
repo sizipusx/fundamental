@@ -1136,7 +1136,7 @@ if __name__ == "__main__":
     elif my_choice == '투자자별매매동향':
         st.subheader("투자자 비율 분석")
         ratio_value = st.select_slider(
-            'Select ratio to Compare index change', 0.0, 100.0, 30.0)
+            'Select ratio to Compare index change', 0.0, 100.0, (0.0,30.0))
         investor_df = last_in[last_in['투자자비율'] >= last_in['비율평균']]
         investor_ratio = last_in[last_in['투자자비율'] >= ratio_value]
         with st.container():
