@@ -459,6 +459,8 @@ if __name__ == "__main__":
     in_ratio  = invest_total/total_df * 100
     in_ratio = in_ratio.round(2)
     last_in = pd.DataFrame()
+    last_in['전체거래수'] = total_df.iloc[-1].T.to_frame()
+    last_in['투자자수'] = invest_total.iloc[-1].T.to_frame()
     last_in['투자자비율'] = in_ratio.iloc[-1].T.to_frame()
     last_in['비율평균'] = in_ratio.mean()
     ### 여기까지 매입자 거주지별 
@@ -1144,13 +1146,13 @@ if __name__ == "__main__":
                     with col1:
                         st.subheader("전체 평균 비율보다 이번달 투자자비율 높은 지역")
                         st.dataframe(investor_df.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=1, na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 400, 400)
                     with col2:
                         st.write("")
                     with col3:
                         st.subheader("내 마음대로 비율 살펴보기")
                         st.dataframe(investor_ratio.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=1, na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 400, 400)
         html_br="""
         <br>
         """
