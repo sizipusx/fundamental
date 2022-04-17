@@ -451,9 +451,16 @@ if __name__ == "__main__":
     in_df.index = pd.to_datetime(in_df.index)
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
+    total_df = in_df.xs('합계', axis=1, level=1)
     out_city = in_df.xs('관할시도외_기타', axis=1, level=1)
     seoul_buyer = in_df.xs('관할시도외_서울', axis=1, level=1)
     invest_total = out_city.add(seoul_buyer)
+    #투자자비율 만들어보자
+    in_ratio  = invest_total/total_df * 100
+    in_ratio = in_ratio.round(2)
+    last_in = pd.DataFrame()
+    last_in['투자자비율'] = in_ratio.iloc[-1].T.to_frame()
+    last_in['비율평균'] = in_ratio.mean()
     ### 여기까지 매입자 거주지별 
 
     data_load_state.text("index & pop Data Done! (using st.cache)")
@@ -1125,7 +1132,30 @@ if __name__ == "__main__":
                     st.dataframe(cum_ojdf)
             html_br="""
             <br>
-            """              
+            """
+    elif my_choice == '투자자별매매동향':
+        st.subheader("투자자 비율 분석")
+        ratio_value = st.select_slider(
+            'Select ratio to Compare index change', 0.0, 100.0, 30.0)
+        investor_df = last_in[last_in['투자자비율'] >= last_in['비율평균']]
+        investor_ratio = last_in[last_in['투자자비율'] >= ratio_value]
+        with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        st.subheader("전체 평균 비율보다 이번달 투자자비율 높은 지역")
+                        st.dataframe(investor_df.style.background_gradient(cmap, axis=0)\
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 350, 350)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        st.subheader("내 마음대로 비율 살펴보기")
+                        st.dataframe(investor_ratio.style.background_gradient(cmap, axis=0)\
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 350, 350)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+                       
     else:
         period_ = omdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 상승률 분석")
