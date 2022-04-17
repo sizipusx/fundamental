@@ -1152,7 +1152,7 @@ if __name__ == "__main__":
                     with col3:
                         st.subheader("내 마음대로 비율 살펴보기")
                         st.dataframe(investor_ratio.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=1, na_rep='MISSING', thousands=","), 600, 600)
+                                                .format(precision=1, na_rep='MISSING', thousands=","), 500, 500)
         html_br="""
         <br>
         """
