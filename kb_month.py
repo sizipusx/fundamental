@@ -649,14 +649,14 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     st.subheader("미분양 증가 지역")
-                    st.dataframe(un_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","), 500, 500)
+                    st.dataframe(un_in_final.style.background_gradient(cmap, axis=1)\
+                                                .format(na_rep='MISSING', thousands=","), 500, 500)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("미분양 감소 지역")
-                    st.dataframe(un_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","), 350, 500)
+                    st.dataframe(un_de.style.background_gradient(cmap, axis=1)\
+                                                .format(na_rep='MISSING', thousands=","), 350, 500)
             html_br="""
             <br>
             """
