@@ -710,7 +710,7 @@ if __name__ == "__main__":
             iv_in = s_iv.loc[condition_iv]
             condition_iv_de = s_iv.iloc[:,0] > s_iv.iloc[:,-1]
             iv_de = s_iv.loc[condition_iv_de]
-            iv_final = iv_in[iv_in.iloc[:,1] != 0]
+            iv_final = iv_in[iv_in.iloc[:,1] != 0].reset_index()
             iv_in_list = iv_final.index.to_list()
             iv_de_list = iv_de.index.to_list()
             with st.container():
@@ -725,6 +725,24 @@ if __name__ == "__main__":
                     st.subheader("투자자 감소 지역")
                     st.dataframe(iv_de.style.background_gradient(cmap, axis=0)\
                                                 .format(na_rep='MISSING', thousands=","), 350, 350)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+            investor_df = last_in[last_in['투자자%'] >= last_in['비율평균']].reset_index()
+            investor_ratio = last_in[last_in['투자자%'] >= 30.0].reset_index()
+            with st.container():
+                        col1, col2, col3 = st.columns([30,2,30])
+                        with col1:
+                            st.subheader("전체 평균 비율보다 투자자비율 높은 지역")
+                            st.dataframe(investor_df.style.background_gradient(cmap, axis=0)\
+                                                    .format(precision=1, na_rep='MISSING', thousands=","), 600, 600)
+                        with col2:
+                            st.write("")
+                        with col3:
+                            st.subheader("내 마음대로 비율 살펴보기")
+                            st.dataframe(investor_ratio.style.background_gradient(cmap, axis=0)\
+                                                    .format(precision=1, na_rep='MISSING', thousands=","), 600, 600)
             html_br="""
             <br>
             """
