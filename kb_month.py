@@ -645,12 +645,28 @@ if __name__ == "__main__":
             un_in_final = un_in[un_in.iloc[:,1] != 0]
             un_in_list = un_in_final.index.to_list()
             un_de_list = un_de.index.to_list()
+
+            #table styler 
+            s = un_in_final.style.background_gradient(cmap, axis=0)\
+                                                .format(na_rep='0', thousands=","), 500, 500
+            cell_hover = {  # for row hover use <tr> instead of <td>
+                'selector': 'td:hover',
+                'props': [('background-color', '#ffffb3')]
+            }
+            index_names = {
+                'selector': '.index_name',
+                'props': 'font-style: italic; color: darkgrey; font-weight:normal;'
+            }
+            headers = {
+                'selector': 'th:not(.index_name)',
+                'props': 'background-color: #000066; color: white;'
+            }
+            s.set_table_styles([cell_hover, index_names, headers])
             with st.container():
                 col1, col2, col3 = st.columns([50,1,50])
                 with col1:
                     st.subheader("미분양 증가 지역")
-                    st.dataframe(un_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='0', thousands=","), 500, 500)
+                    st.dataframe(s)
                 with col2:
                     st.write("")
                 with col3:
