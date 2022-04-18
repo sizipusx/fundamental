@@ -613,13 +613,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("KB 매매지수 하락 전세지수 상승 지역")
                     st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","), 600, 600)
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 600, 500)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("부동산원 매매지수 하락 전세지수 상승 지역")
                     st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","),600,600)
+                                                .format(precision=2, na_rep='MISSING', thousands=","),600,500)
             html_br="""
             <br>
             """
@@ -650,15 +650,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("미분양 증가 지역")
                     st.dataframe(un_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","), 350, 350)
-                    #st.table(un_in_final.style.background_gradient(cmap, axis=0)\
-                    #                            .format(precision=2, na_rep='MISSING', thousands=","))
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 350, 500)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("미분양 감소 지역")
                     st.dataframe(un_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 350, 500)
             html_br="""
             <br>
             """
@@ -685,20 +683,18 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("완공 후 미분양 증가 지역")
                     st.dataframe(af_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","),350,350)
+                                                .format(precision=2, na_rep='MISSING', thousands=","),350,500)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("완공 후 미분양 감소 지역")
                     st.dataframe(af_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","),350,350)
+                                                .format(precision=2, na_rep='MISSING', thousands=","),350,500)
             html_br="""
             <br>
             """
             st.markdown(html_br, unsafe_allow_html=True)
             ### 매입자별 거주지별: 투자자 증감 ###################################################################################
-            
-            
             #필요 날짜만 slice
             slice_iv = invest_total.loc[start_date:end_date]
             s_iv = pd.DataFrame()
@@ -718,13 +714,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("투자자 증가 지역")
                     st.dataframe(iv_final.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(na_rep='MISSING', thousands=","), 350, 500)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("투자자 감소 지역")
                     st.dataframe(iv_de.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(na_rep='MISSING', thousands=","), 350, 500)
             html_br="""
             <br>
             """
@@ -820,13 +816,13 @@ if __name__ == "__main__":
                 with col1:
                     st.subheader("평균 매매가격 증가 지역")
                     st.dataframe(pr_in.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 500)
                 with col2:
                     st.write("")
                 with col3:
                     st.subheader("평균 매매가격 감소 지역")
                     st.dataframe(pr_de.style.background_gradient(cmap, axis=0)\
-                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 350)
+                                                .format(precision=0, na_rep='MISSING', thousands=","), 350, 500)
             html_br="""
             <br>
             """
