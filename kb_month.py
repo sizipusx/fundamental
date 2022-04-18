@@ -648,7 +648,7 @@ if __name__ == "__main__":
 
             #table styler 
             s = un_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='0', thousands=","), 500, 500
+                                                .format(na_rep='0', thousands=",")
             cell_hover = {  # for row hover use <tr> instead of <td>
                 'selector': 'td:hover',
                 'props': [('background-color', '#ffffb3')]
@@ -666,7 +666,7 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([50,1,50])
                 with col1:
                     st.subheader("미분양 증가 지역")
-                    st.dataframe(s)
+                    st.dataframe(s,350,500)
                 with col2:
                     st.write("")
                 with col3:
