@@ -219,7 +219,7 @@ def draw_index_change_with_bar(last_df, flag):
     else:
         fig = px.bar(last_df, y= last_df.index, x=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
                     text=last_df.index, orientation='h')
-        fig.add_vline(x=last_df.iloc['전국','전세증감'], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
+        fig.add_vline(x=last_df.loc['전국','전세증감'], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
     
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
