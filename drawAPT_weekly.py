@@ -210,15 +210,16 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     st.plotly_chart(fig)
 
 def draw_index_change_with_bar(last_df, flag):
+    last_df = last_df.sort_values(by=flag, ascending=True)
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                     text=last_df.index, orientation='h')
-        fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,0])}", annotation_position="bottom right")
+        fig.add_Vline(x=last_df.iloc[0,0], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,0])}", annotation_position="bottom right")
     else:
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
                     text=last_df.index, orientation='h')
-        fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
+        fig.add_vline(x=last_df.iloc[0,1], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
     
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
