@@ -210,7 +210,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     st.plotly_chart(fig)
 
 def draw_index_change_with_bar(last_df, flag):
-    last_df = last_df.sort_values(by=flag, ascending=True)
+    last_df = last_df.sort_values(by=flag[1], ascending=True)
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
