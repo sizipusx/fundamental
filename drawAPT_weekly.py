@@ -215,7 +215,7 @@ def draw_index_change_with_bar(last_df, flag):
     if flag[1] == '매매증감':
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
                     text=last_df.index, orientation='h')
-        fig.add_Vline(x=last_df.iloc[0,0], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,0])}", annotation_position="bottom right")
+        fig.add_vline(x=last_df.iloc[0,0], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,0])}", annotation_position="bottom right")
     else:
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
                     text=last_df.index, orientation='h')
