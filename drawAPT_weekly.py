@@ -213,11 +213,11 @@ def draw_index_change_with_bar(last_df, flag):
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
-                    text=last_df.index)
+                    text=last_df.index, orientation='h')
         fig.add_hline(y=last_df.iloc[0,0], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,0])}", annotation_position="bottom right")
     else:
         fig = px.bar(last_df, x= last_df.index, y=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
-                    text=last_df.index)
+                    text=last_df.index, orientation='h')
         fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.iloc[0,1])}", annotation_position="bottom right")
     
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
