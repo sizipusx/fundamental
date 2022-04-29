@@ -102,8 +102,8 @@ def get_basic_df():
     #2021-7-30 코드 추가
     # header 파일
     basic_df = header_excel.parse('city')
-    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
-    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+    #basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+    #basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
     basic_df.dropna(inplace=True)
     basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
 
