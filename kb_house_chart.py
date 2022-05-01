@@ -472,7 +472,8 @@ def aggrid_interactive_table(df: pd.DataFrame):
     )
 
     options.configure_side_bar()
-
+    slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+    slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
     options.configure_selection("single")
     selection = AgGrid(
         df.style.background_gradient(cmap, axis=0, subset=slice_1),
