@@ -1033,7 +1033,7 @@ if __name__ == "__main__":
                     #flag = "KB"  
                     st.write("KB 기간 증감")
                     change_df = round(change_df,2)
-                    change_df = change_df.round(decimal=2)
+                    change_df = change_df.round(2)
                     response  = aggrid_interactive_table(df=change_df) 
                     #change_df = change_df.reset_index()            
                     #st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
