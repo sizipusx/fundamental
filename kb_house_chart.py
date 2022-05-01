@@ -98,7 +98,7 @@ header_excel = pd.ExcelFile(header_path)
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
-@st.catch
+@st.cache
 def aggrid_interactive_table(df: pd.DataFrame):
     """Creates an st-aggrid interactive table based on a dataframe.
 
