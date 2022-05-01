@@ -634,14 +634,15 @@ def draw_basic():
             col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _전세지수_ 기간별 순위")
             #rank_jdf = rank_jdf.reset_index()
-            st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
+            response  = aggrid_interactive_table(df=rank_jdf)
+            #st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+            #    .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+            #    .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+            #    .set_table_styles(
+            #            [{'selector': f'th.col_heading.level0.col{col_loc}',
+            #            'props': [('background-color', '#67c5a4')]},
+            #            ])\
+            #    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
     html_br="""
     <br>
     """
