@@ -478,10 +478,11 @@ def aggrid_interactive_table(df: pd.DataFrame):
     response  = AgGrid(
         df,
         editable=True,
-        gridOptions=gb.build(),
+        #gridOptions=gb.build(),
+        gridOptions=options.build(),
         data_return_mode="filtered_and_sorted",
         update_mode="no_update",
-        fit_columns_on_grid_load=True,
+        fit_columns_on_grid_load=False,
         theme="streamlit"
     )
 
