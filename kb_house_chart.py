@@ -478,8 +478,8 @@ def aggrid_interactive_table(df: pd.DataFrame):
     response  = AgGrid(
         df,
         editable=True,
-        #gridOptions=gb.build(),
-        gridOptions=options.build(),
+        gridOptions=gb.build(),
+        #gridOptions=options.build(),
         data_return_mode="filtered_and_sorted",
         update_mode="no_update",
         fit_columns_on_grid_load=False,
@@ -596,7 +596,7 @@ def draw_basic():
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
-            response  = aggrid_interactive_table(df=rank_df)
+            response  = aggrid_interactive_table(df=rank_df.style.background_gradient(cmap, axis=0, subset=slice_1))
             #rank_df = rank_df.reset_index()
             #st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 # .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
