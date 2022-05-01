@@ -476,11 +476,12 @@ def aggrid_interactive_table(df: pd.DataFrame):
     options.configure_selection("single")
     selection = AgGrid(
         df,
-        enable_enterprise_modules=True,
-        gridOptions=options.build(),
-        theme="light",
-        update_mode=GridUpdateMode.MODEL_CHANGED,
-        allow_unsafe_jscode=True,
+        editable=True,
+        gridOptions=gb.build(),
+        data_return_mode="filtered_and_sorted",
+        update_mode="no_update",
+        fit_columns_on_grid_load=True,
+        theme="streamlit"
     )
 
     return selection
@@ -539,8 +540,7 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','전세증감']
-            #drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
-            selection = aggrid_interactive_table(df=kb_last_df)
+            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
         with col2:
             st.write("")
         with col3:
@@ -594,15 +594,16 @@ def draw_basic():
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
+            selection = aggrid_interactive_table(df=rank_df)
             #rank_df = rank_df.reset_index()
-            st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+            #st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                # .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                # .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                # .set_table_styles(
+                #         [{'selector': f'th.col_heading.level0.col{col_loc}',
+                #         'props': [('background-color', '#67c5a4')]},
+                #         ])\
+                # .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
         with col2:
             st.write("")
         with col3:
