@@ -467,6 +467,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
     Returns:
         dict: The selected row
     """
+    df = df.reset_index()
     options = GridOptionsBuilder.from_dataframe(
         df, enableRowGroup=True, enableValue=True, enablePivot=True
     )
