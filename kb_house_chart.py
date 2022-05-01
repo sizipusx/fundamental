@@ -469,13 +469,13 @@ def aggrid_interactive_table(df: pd.DataFrame):
     """
     df = df.reset_index()
     #gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_pagination()
+    
     gb = GridOptionsBuilder.from_dataframe(
         df, enableRowGroup=True, enableValue=True, enablePivot=True
     )
-
-    options.configure_side_bar()
-    options.configure_selection("single")
+    gb.configure_pagination()
+    gb.configure_side_bar()
+    gb.configure_selection("single")
     response  = AgGrid(
         df,
         editable=True,
