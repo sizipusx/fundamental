@@ -468,9 +468,9 @@ def aggrid_interactive_table(df: pd.DataFrame):
         dict: The selected row
     """
     df = df.reset_index()
-    gb = GridOptionsBuilder.from_dataframe(df)
+    #gb = GridOptionsBuilder.from_dataframe(df)
     gb.configure_pagination()
-    options = GridOptionsBuilder.from_dataframe(
+    gb = GridOptionsBuilder.from_dataframe(
         df, enableRowGroup=True, enableValue=True, enablePivot=True
     )
 
@@ -480,7 +480,6 @@ def aggrid_interactive_table(df: pd.DataFrame):
         df,
         editable=True,
         gridOptions=gb.build(),
-        gridOptions=options.build(),
         data_return_mode="filtered_and_sorted",
         update_mode="no_update",
         fit_columns_on_grid_load=False,
