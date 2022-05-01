@@ -476,7 +476,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
     options.configure_side_bar()
     options.configure_selection("single")
     response  = AgGrid(
-        df.style.background_gradient(cmap, axis=0),
+        df,
         editable=True,
         gridOptions=gb.build(),
         #gridOptions=options.build(),
