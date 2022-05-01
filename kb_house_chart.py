@@ -996,6 +996,8 @@ if __name__ == "__main__":
                 with col1:
                     #flag = "KB"  
                     st.write("KB 매매 감소-전세 증가")
+                    inter_df = round(inter_df,2)
+                    inter_df = inter_df.astype(float).round(2)
                     response  = aggrid_interactive_table(df=inter_df)
                     #st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
                     #                .format(precision=2, na_rep='MISSING', thousands=","))  
