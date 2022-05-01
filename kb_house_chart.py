@@ -538,7 +538,8 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','전세증감']
-            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
+            #drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
+            selection = aggrid_interactive_table(df=kb_last_df)
         with col2:
             st.write("")
         with col3:
