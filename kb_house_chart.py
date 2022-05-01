@@ -479,11 +479,15 @@ def aggrid_interactive_table(df: pd.DataFrame):
     response  = AgGrid(
         df,
         editable=True,
+        enable_enterprise_modules=True,
         gridOptions=gb.build(),
         data_return_mode="filtered_and_sorted",
+        width='100%',
         update_mode="no_update",
         fit_columns_on_grid_load=False,
-        theme="streamlit"
+        theme="streamlit",
+        update_mode=GridUpdateMode.MODEL_CHANGED,
+        allow_unsafe_jscode=True
     )
 
     return response
