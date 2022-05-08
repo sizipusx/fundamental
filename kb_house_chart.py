@@ -1,12 +1,14 @@
 from re import S
 import time
 from datetime import datetime
-from unicodedata import decimal
 import drawAPT_weekly
 
 import numpy as np
 import pandas as pd
 from pandas.io.formats import style
+
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 import requests
 import json
@@ -19,8 +21,6 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder
-from st_aggrid.shared import GridUpdateMode
 import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
@@ -98,7 +98,28 @@ header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400d
 header_excel = pd.ExcelFile(header_path)
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
+#gsheet
+gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
+
+def get_gsheet_df():
+    scope = [
+    'https://spreadsheets.google.com/feeds',
+    'https://www.googleapis.com/auth/drive',
+    ]
+
+    json_file_name = 'https://github.com/sizipusx/fundamental/blob/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+    gc = gspread.authorize(credentials)
+
+    spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq16Va-99yT3Hs-Rbl2TGOp1U/edit#gid=0'
+
+    doc = gc.open_by_url(spreadsheet_url)
+    m_d = doc.worksheet('mae')
+    j_d = doc.worksheet('jeon')
+
+    return m_d, j_d
 
 @st.cache
 def get_basic_df():
@@ -458,40 +479,6 @@ def run_sentimental_index(mdf_change, jdf_change):
     """
     st.markdown(html_br, unsafe_allow_html=True)
 
-#agg table
-def aggrid_interactive_table(df: pd.DataFrame):
-    """Creates an st-aggrid interactive table based on a dataframe.
-
-    Args:
-        df (pd.DataFrame]): Source dataframe
-
-    Returns:
-        dict: The selected row
-    """
-    df = df.reset_index()
-    #gb = GridOptionsBuilder.from_dataframe(df)
-    
-    gb = GridOptionsBuilder.from_dataframe(
-        df, enableRowGroup=True, enableValue=True, enablePivot=True
-    )
-    gb.configure_pagination()
-    gb.configure_side_bar()
-    gb.configure_selection("single")
-    response  = AgGrid(
-        df,
-        editable=True,
-        enable_enterprise_modules=True,
-        gridOptions=gb.build(),
-        data_return_mode="filtered_and_sorted",
-        width='100%',
-        update_mode="no_update",
-        fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
-        theme="streamlit",
-        allow_unsafe_jscode=True
-    )
-
-    return response
-
 
 def draw_basic():
     # kb_df, k_geo_data, last_df, kb_mdf = load_index_data()
@@ -600,16 +587,15 @@ def draw_basic():
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
-            response  = aggrid_interactive_table(df=rank_df)
             #rank_df = rank_df.reset_index()
-            #st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                # .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                # .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                # .set_table_styles(
-                #         [{'selector': f'th.col_heading.level0.col{col_loc}',
-                #         'props': [('background-color', '#67c5a4')]},
-                #         ])\
-                # .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+            st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ])\
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
         with col2:
             st.write("")
         with col3:
@@ -635,15 +621,14 @@ def draw_basic():
             col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _전세지수_ 기간별 순위")
             #rank_jdf = rank_jdf.reset_index()
-            response  = aggrid_interactive_table(df=rank_jdf)
-            #st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-            #    .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-            #    .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-            #    .set_table_styles(
-            #            [{'selector': f'th.col_heading.level0.col{col_loc}',
-            #            'props': [('background-color', '#67c5a4')]},
-            #            ])\
-            #    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
+            st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ])\
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
     html_br="""
     <br>
     """
@@ -760,6 +745,7 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
+    gm, gj = get_gsheet_df()
     kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
     odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     senti_df, jeon_senti, jeon_su_df = load_senti_data()
@@ -776,6 +762,7 @@ if __name__ == "__main__":
 
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
+    st.write(gm)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio("What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together', '기간증감분석'))
@@ -995,20 +982,16 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     #flag = "KB"  
-                    st.write("KB 매매 감소-전세 증가")
-                    inter_df = round(inter_df,2)
-                    inter_df = inter_df.astype(float).round(2)
-                    response  = aggrid_interactive_table(df=inter_df)
-                    #st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
-                    #                .format(precision=2, na_rep='MISSING', thousands=","))  
+                    st.write("KB 매매 감소-전세 증가") 
+                    st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))  
                 with col2:
                     st.write("")
                 with col3:
                     flag = "부동산원"
                     st.write("부동산원 매매 감소-전세 증가")
-                    response  = aggrid_interactive_table(df=inter_odf)
-                    #st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
-                    #                      .format(precision=2, na_rep='MISSING', thousands=","))
+                    st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
+                                          .format(precision=2, na_rep='MISSING', thousands=","))
             html_br="""
             <br>
             """
@@ -1033,23 +1016,19 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     #flag = "KB"  
-                    st.write("KB 기간 증감")
-                    change_df = round(change_df,2)
-                    change_df = change_df.round(2)
-                    response  = aggrid_interactive_table(df=change_df) 
-                    #change_df = change_df.reset_index()            
-                    #st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
-                    #                .format(precision=2, na_rep='MISSING', thousands=","))  
+                    st.write("KB 기간 증감") 
+                    change_df = change_df.reset_index()            
+                    st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))  
                     #drawAPT_weekly.draw_change_table(change_df, flag)  
                 with col2:
                     st.write("")
                 with col3:
                     flag = "부동산원"
                     st.write("부동산원 기간 증감")
-                    response  = aggrid_interactive_table(df=change_odf)
-                    #change_odf = change_odf.reset_index()
-                    #st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
-                    #                      .format(precision=2, na_rep='MISSING', thousands=","))
+                    change_odf = change_odf.reset_index()
+                    st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
+                                          .format(precision=2, na_rep='MISSING', thousands=","))
                     #drawAPT_weekly.draw_change_table(change_df, flag) 
             html_br="""
             <br>
