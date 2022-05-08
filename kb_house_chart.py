@@ -132,7 +132,7 @@ def get_gsheet_df():
 
     engine = create_engine("gsheets://", service_account_file="files/weekly-house-db-ac0a43b61ddd.json")
     inspector = inspect(engine)
-    print(inspector.get_table_names())
+    st.write(inspector.get_table_names())
     table_list = inspector.get_table_names()
     return table_list
 
