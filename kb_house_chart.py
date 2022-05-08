@@ -107,29 +107,34 @@ gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a
 
 def get_gsheet_df():
     # Create a connection object.
-    credentials = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"],
-        scopes=[
-            "https://www.googleapis.com/auth/spreadsheets",
-        ],
-    )
-    conn = connect(credentials=credentials)
+    # credentials = service_account.Credentials.from_service_account_info(
+    #     st.secrets["gcp_service_account"],
+    #     scopes=[
+    #         "https://www.googleapis.com/auth/spreadsheets",
+    #     ],
+    # )
+    # conn = connect(credentials=credentials)
 
-    # Perform SQL query on the Google Sheet.
-    # Uses st.cache to only rerun when the query changes or after 10 min.
-    @st.cache(ttl=600)
-    def run_query(query):
-        rows = conn.execute(query, headers=1)
-        rows = rows.fetchall()
-        return rows
+    # # Perform SQL query on the Google Sheet.
+    # # Uses st.cache to only rerun when the query changes or after 10 min.
+    # @st.cache(ttl=600)
+    # def run_query(query):
+    #     rows = conn.execute(query, headers=1)
+    #     rows = rows.fetchall()
+    #     return rows
 
-    sheet_url = st.secrets["private_gsheets_url"]
-    rows = run_query(f'SELECT * FROM "{sheet_url}"')
-    header, rows = rows[1], rows[2:]
-    mdf = pd.DataFrame(rows, columns=header)
+    # sheet_url = st.secrets["private_gsheets_url"]
+    # rows = run_query(f'SELECT * FROM "{sheet_url}"')
+    # header, rows = rows[1], rows[2:]
+    # mdf = pd.DataFrame(rows, columns=header)
+    from sqlalchemy.engine import create_engine
+    from sqlalchemy import inspect
 
-
-    return mdf
+    engine = create_engine("gsheets://", service_account_file="files/weekly-house-db-ac0a43b61ddd.json")
+    inspector = inspect(engine)
+    print(inspector.get_table_names())
+    table_list = inspector.get_table_names()
+    return table_list
 
 @st.cache
 def get_basic_df():
