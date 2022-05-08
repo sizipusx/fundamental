@@ -7,8 +7,9 @@ import numpy as np
 import pandas as pd
 from pandas.io.formats import style
 
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+import streamlit as st
+from google.oauth2 import service_account
+from gsheetsdb import connect
 
 import requests
 import json
@@ -102,24 +103,33 @@ geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigun
 gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
 
+
+
 def get_gsheet_df():
-    scope = [
-    'https://spreadsheets.google.com/feeds',
-    'https://www.googleapis.com/auth/drive',
-    ]
+    # Create a connection object.
+    credentials = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=[
+            "https://www.googleapis.com/auth/spreadsheets",
+        ],
+    )
+    conn = connect(credentials=credentials)
 
-    json_file_name = 'https://github.com/sizipusx/fundamental/blob/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+    # Perform SQL query on the Google Sheet.
+    # Uses st.cache to only rerun when the query changes or after 10 min.
+    @st.cache(ttl=600)
+    def run_query(query):
+        rows = conn.execute(query, headers=1)
+        rows = rows.fetchall()
+        return rows
 
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
-    gc = gspread.authorize(credentials)
+    sheet_url = st.secrets["private_gsheets_url"]
+    rows = run_query(f'SELECT * FROM "{sheet_url}"')
+    header, rows = rows[1], rows[2:]
+    mdf = pd.DataFrame(rows, columns=header)
 
-    spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq16Va-99yT3Hs-Rbl2TGOp1U/edit#gid=0'
 
-    doc = gc.open_by_url(spreadsheet_url)
-    m_d = doc.worksheet('mae')
-    j_d = doc.worksheet('jeon')
-
-    return m_d, j_d
+    return mdf
 
 @st.cache
 def get_basic_df():
