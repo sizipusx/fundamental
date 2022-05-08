@@ -123,6 +123,17 @@ def get_gsheet_df():
     m_d = doc.worksheet('mae')
     j_d = doc.worksheet('jeon')
 
+    #데이터 프레임으로 읽기
+    m_values = m_d.get_all_values()
+    header, rows = m_values[1], m_values[2:]
+    mdf = pd.DataFrame(rows, columns=header)
+
+    j_values = j_d.get_all_values()
+    jheader, jrows = j_values[1], j_values[2:]
+
+
+    jdf = pd.DataFrame(jrows, columns=jheader)
+
     # Create a connection object.
     # credentials = service_account.Credentials.from_service_account_info(
     #     st.secrets["gcp_service_account"],
@@ -152,7 +163,7 @@ def get_gsheet_df():
     # inspector = inspect(engine)
     # st.write(inspector.get_table_names())
     # table_list = inspector.get_table_names()
-    return m_d, j_d
+    return mdf, jdf
 
 @st.cache
 def get_basic_df():
@@ -795,7 +806,7 @@ if __name__ == "__main__":
 
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
-    st.write(gm)
+    st.dataframe(gm)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio("What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together', '기간증감분석'))
