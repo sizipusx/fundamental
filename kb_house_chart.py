@@ -144,7 +144,7 @@ def get_gsheet_df():
     # rows = run_query(f'SELECT * FROM "{sheet_url}"')
     # header, values = rows[1], rows[2:]
     # mdf = pd.DataFrame(values, columns=header)
-    st.dataframe(m_d)
+    #st.dataframe(m_d)
     # from sqlalchemy.engine import create_engine
     # from sqlalchemy import inspect
 
