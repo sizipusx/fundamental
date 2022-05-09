@@ -144,6 +144,31 @@ def get_gsheet_df():
     mdf = pd.DataFrame(kbm_rows, columns=kbm_header)
     jdf = pd.DataFrame(kbj_rows, columns=kbj_header)
 
+    #데이터타입 변경
+    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
+    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
+    basic_df['면적'] = basic_df['면적'].apply(lambda x: x.replace(',','').replace('#N/A','0')).astype(float)
+    basic_df['x'] = basic_df['x'].astype(int)
+    basic_df['y'] = basic_df['y'].astype(int)
+    #kb
+    mdf = mdf.set_index(keys='날짜')
+    mdf.index = pd.to_datetime(mdf.index)
+    mdf = mdf.apply(lambda x:x.replace('','0'))
+    jdf = jdf.set_index(keys='날짜')
+    jdf.index = pd.to_datetime(jdf.index)
+    jdf = jdf.apply(lambda x:x.replace('','0'))
+    mdf = mdf.astype(float).round(decimals=2)
+    jdf = jdf.astype(float).round(decimals=2)
+    #부동산원
+    omdf = omdf.set_index(keys='날짜')
+    omdf.index = pd.to_datetime(omdf.index)
+    ojdf = ojdf.set_index(keys='날짜')
+    ojdf.index = pd.to_datetime(ojdf.index)
+    omdf = omdf.apply(lambda x:x.replace('','0'))
+    ojdf = ojdf.apply(lambda x:x.replace('','0'))
+    omdf = omdf.astype(float).round(decimals=2)
+    ojdf = ojdf.astype(float).round(decimals=2)
+
     return mdf, jdf, omdf, ojdf, basic_df
 
 # @st.cache
