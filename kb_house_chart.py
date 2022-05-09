@@ -111,7 +111,7 @@ def get_gsheet_df():
     'https://www.googleapis.com/auth/drive',
     ]
 
-    json_file_name = '/content/weekly-house-db-ac0a43b61ddd.json'
+    json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
     gc = gspread.authorize(credentials)
@@ -896,7 +896,7 @@ if __name__ == "__main__":
     last_ojdf['1m'] = ojdf_change.iloc[-4].T.to_frame()
     last_ojdf['1y'] = ojdf_change.iloc[-51].T.to_frame()
     last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=3)
-    basic_df = get_basic_df()
+    #basic_df = get_basic_df()
     odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
 
     with urlopen(geo_source) as response:
