@@ -516,7 +516,7 @@ def load_senti_data():
     index_df['매수우위지수'] = s_df.iloc[-1]
     index_df['전세수급지수'] = js_df.iloc[-1]
 
-    return kbs_df, kbjs_df, index_df
+    return kbs_df, kbjs_df, index_df, s_df, js_df
 
 
 def run_price_index() :
@@ -889,8 +889,13 @@ def draw_basic():
     st.markdown(html_br, unsafe_allow_html=True)
     ### Draw 매수우위지수와 전세수급지수 #########################################################################################
     with st.container():
-
-        drawAPT_weekly.draw_senti_together(jeon_su_df)
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            drawAPT_weekly.draw_senti_last(jeon_su_df)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_weekly.draw_senti_together(maesu_df)
             
     html_br="""
     <br>
@@ -1055,7 +1060,7 @@ if __name__ == "__main__":
     # kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
-    senti_df, jeon_senti, jeon_su_df = load_senti_data()
+    senti_df, jeon_senti, jeon_su_df, maesu_df, jeon_s = load_senti_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')

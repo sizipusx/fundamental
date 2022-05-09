@@ -696,10 +696,10 @@ def draw_change_table(change_df,flag):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def draw_senti_together(to_df):
+def draw_senti_last(to_df):
     #매매/전세 증감률 Bubble Chart
     flag = "KB 주간 시계열"
-    title = dict(text='<b>'+flag+'매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
     template = "ggplot2"
     fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
                         text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
@@ -710,6 +710,21 @@ def draw_senti_together(to_df):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def draw_senti_together(maesu_index):
+    #매수우위지수 같이 보기
+    flag = "KB 주간 시계열"
+    titles = dict(text=f'<b>{flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9)
+    fig = go.Figure()
+
+    for index, value in enumerate(maesu_index.columns):
+        fig.add_trace(
+            go.Scatter(x=maesu_index.index, y=maesu_index.loc[:,value],  name=value, marker_color= marker_colors[index]),    
+            )
+    fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)    
 
 def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
     titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9) 
