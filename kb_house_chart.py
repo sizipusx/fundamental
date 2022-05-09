@@ -786,14 +786,14 @@ def draw_basic():
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-    with st.container():
+    # with st.container():
 
-        #drawAPT_weekly.draw_senti_together(jeon_su_df)
+    #     #drawAPT_weekly.draw_senti_together(jeon_su_df)
             
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
+    # html_br="""
+    # <br>
+    # """
+    # st.markdown(html_br, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
