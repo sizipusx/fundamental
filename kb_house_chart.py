@@ -1384,13 +1384,14 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = 'KB'
-                    citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+                    citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
                     drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
 
                 with col2:
                     st.write("")
                 with col3:
                     flag = '부동산원'
+                    citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
                     drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
                     
             html_br="""
