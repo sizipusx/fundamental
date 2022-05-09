@@ -145,6 +145,7 @@ def get_gsheet_df():
     jdf = pd.DataFrame(kbj_rows, columns=kbj_header)
 
     #데이터타입 변경
+    basic_df = basic_df[basic_df['x'] != '#N/A' ]
     basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
     basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
     basic_df['면적'] = basic_df['면적'].apply(lambda x: x.replace(',','').replace('#N/A','0')).astype(float)
