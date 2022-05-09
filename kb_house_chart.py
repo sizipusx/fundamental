@@ -416,7 +416,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
    
 #     return kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
 
-@st.cache(allow_output_mutation=True)
+@st.cache(ttl=6000)
 def load_senti_data():
     #구글시트에서 불러오기 2022-05-09
     kbs_doc= doc.worksheet('kbs')
