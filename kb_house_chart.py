@@ -91,20 +91,19 @@ now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 # file_path = 'G:/내 드라이브/code/data/WeeklySeriesTables(시계열)_20210419.xlsx'
-kb_file_path = r'https://github.com/sizipusx/fundamental/blob/87cf11504a146569ebd05d8cef780246ea7323a4/files/kb_weekly.xlsx?raw=True'
-#감정원 데이터
-one_path = r"https://github.com/sizipusx/fundamental/blob/87cf11504a146569ebd05d8cef780246ea7323a4/files/one_weekly.xlsx?raw=True"
-#헤더 변경
-header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400db00e75cf4e5521043be88/files/header.xlsx?raw=True'
-header_excel = pd.ExcelFile(header_path)
+# kb_file_path = r'https://github.com/sizipusx/fundamental/blob/87cf11504a146569ebd05d8cef780246ea7323a4/files/kb_weekly.xlsx?raw=True'
+# #감정원 데이터
+# one_path = r"https://github.com/sizipusx/fundamental/blob/87cf11504a146569ebd05d8cef780246ea7323a4/files/one_weekly.xlsx?raw=True"
+# #헤더 변경
+# header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400db00e75cf4e5521043be88/files/header.xlsx?raw=True'
+# header_excel = pd.ExcelFile(header_path)
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 #gsheet
 gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
 
-
-
+@st.cache(ttl=6000)
 def get_gsheet_df():
 
     scope = [
@@ -112,7 +111,7 @@ def get_gsheet_df():
     'https://www.googleapis.com/auth/drive',
     ]
 
-    json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
+    json_file_name = '/content/weekly-house-db-ac0a43b61ddd.json'
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
     gc = gspread.authorize(credentials)
@@ -122,254 +121,239 @@ def get_gsheet_df():
     doc = gc.open_by_url(spreadsheet_url)
     m_d = doc.worksheet('mae')
     j_d = doc.worksheet('jeon')
+    basic_city = doc.worksheet('city')
+    kb_m = doc.worksheet('kbm')
+    kb_j = doc.worksheet('kbj')
 
     #데이터 프레임으로 읽기
+    basic_values = basic_city.get_all_values()
     m_values = m_d.get_all_values()
-    header, rows = m_values[1], m_values[2:]
-    mdf = pd.DataFrame(rows, columns=header)
-
     j_values = j_d.get_all_values()
-    jheader, jrows = j_values[1], j_values[2:]
+    kbm_values = kb_m.get_all_values()
+    kbj_values = kb_j.get_all_values()
+
+    basic_header, basic_rows = basic_values[0], basic_values[1:]
+    m_header, m_rows = m_values[1], m_values[2:]
+    j_header, j_rows = j_values[1], j_values[2:]
+    kbm_header, kbm_rows = kbm_values[1], kbm_values[2:]
+    kbj_header, kbj_rows = kbj_values[1], kbj_values[2:]
+
+    basic_df= pd.DataFrame(basic_rows, columns=basic_header)
+    omdf = pd.DataFrame(m_rows, columns=m_header)
+    ojdf = pd.DataFrame(j_rows, columns=j_header)
+    mdf = pd.DataFrame(kbm_rows, columns=kbm_header)
+    jdf = pd.DataFrame(kbj_rows, columns=kbj_header)
+
+    return mdf, jdf, omdf, ojdf, basic_df
+
+# @st.cache
+# def get_basic_df():
+#     #2021-7-30 코드 추가
+#     # header 파일
+#     basic_df = header_excel.parse('city')
+#     #basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
+#     #basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
+#     basic_df.dropna(inplace=True)
+#     basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
+
+#     return basic_df
+
+# @st.cache(allow_output_mutation=True)
+# def load_one_data():
+#     #22년 5월 9일 구글시트에서 읽어오는 것으로 변경
 
 
-    jdf = pd.DataFrame(jrows, columns=jheader)
+#     #감정원 주간 데이터
+#     one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+#     # one header 변경
+#     oneh = header_excel.parse('one')
+#     omdf = one_dict['매매지수']
+#     ojdf = one_dict['전세지수']
+#     omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
+#     ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
+#     omdf.columns = oneh.columns
+#     ojdf.columns = oneh.columns
+#     omdf = omdf.astype(float).round(decimals=2)
+#     ojdf = ojdf.astype(float).round(decimals=2)
+#      #주간 증감률
+#     omdf_change = omdf.pct_change()*100
+#     omdf_change = omdf_change.iloc[1:]
+#     omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+#     omdf_change = omdf_change.astype(float).fillna(0)
+#     ojdf_change = ojdf.pct_change()*100
+#     ojdf_change = ojdf_change.iloc[1:]
+#     ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+#     ojdf_change = ojdf_change.astype(float).fillna(0)
+#     omdf_change = omdf_change.round(decimals=3)
+#     ojdf_change = ojdf_change.round(decimals=3)
+#     cum_omdf = (1+omdf_change/100).cumprod() -1
+#     cum_omdf = cum_omdf.round(decimals=3)
+#     cum_ojdf = (1+ojdf_change/100).cumprod() -1
+#     cum_ojdf = cum_ojdf.round(decimals=3)
+#     #일주일 간 매매지수 상승률 순위
+#     last_odf = pd.DataFrame()
+#     last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
+#     last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
+#     last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
+#     last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
+#     last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
+#     last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
+#     last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
+#     last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+#     #일주일 간 전세지수 상승률 순위
+#     last_ojdf = pd.DataFrame()
+#     last_ojdf['1w'] = ojdf_change.iloc[-1].T.to_frame()
+#     last_ojdf['2w'] = ojdf_change.iloc[-2].T.to_frame()
+#     last_ojdf['3w'] = ojdf_change.iloc[-3].T.to_frame()
+#     last_ojdf['1m'] = ojdf_change.iloc[-4].T.to_frame()
+#     last_ojdf['1y'] = ojdf_change.iloc[-51].T.to_frame()
+#     last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=3)
+#     basic_df = get_basic_df()
+#     odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
 
-    # Create a connection object.
-    # credentials = service_account.Credentials.from_service_account_info(
-    #     st.secrets["gcp_service_account"],
-    #     scopes=[
-    #         "https://www.googleapis.com/auth/spreadsheets",
-    #     ],
-    # )
-    # conn = connect(credentials=credentials)
-
-    # # # Perform SQL query on the Google Sheet.
-    # # # Uses st.cache to only rerun when the query changes or after 10 min.
-    # @st.cache(ttl=600)
-    # def run_query(query):
-    #     rows = conn.execute(query, headers=1)
-    #     rows = rows.fetchall()
-    #     return rows
-
-    # sheet_url = st.secrets["private_gsheets_url"]
-    # rows = run_query(f'SELECT * FROM "{sheet_url}"')
-    # header, values = rows[1], rows[2:]
-    # mdf = pd.DataFrame(values, columns=header)
-    #st.dataframe(m_d)
-    # from sqlalchemy.engine import create_engine
-    # from sqlalchemy import inspect
-
-    # engine = create_engine("gsheets://", service_account_file="files/weekly-house-db-ac0a43b61ddd.json")
-    # inspector = inspect(engine)
-    # st.write(inspector.get_table_names())
-    # table_list = inspector.get_table_names()
-    return mdf, jdf
-
-@st.cache
-def get_basic_df():
-    #2021-7-30 코드 추가
-    # header 파일
-    basic_df = header_excel.parse('city')
-    #basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','')).astype(float)
-    #basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','')).astype(float)
-    basic_df.dropna(inplace=True)
-    basic_df['밀도'] = basic_df['총인구수']/basic_df['면적']
-
-    return basic_df
-
-@st.cache(allow_output_mutation=True)
-def load_one_data():
-    #감정원 주간 데이터
-    one_dict = pd.read_excel(one_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-    # one header 변경
-    oneh = header_excel.parse('one')
-    omdf = one_dict['매매지수']
-    ojdf = one_dict['전세지수']
-    omdf = omdf.iloc[3:omdf['전국'].count()+1,:]
-    ojdf = ojdf.iloc[3:ojdf['전국'].count()+1,:]
-    omdf.columns = oneh.columns
-    ojdf.columns = oneh.columns
-    omdf = omdf.astype(float).round(decimals=2)
-    ojdf = ojdf.astype(float).round(decimals=2)
-     #주간 증감률
-    omdf_change = omdf.pct_change()*100
-    omdf_change = omdf_change.iloc[1:]
-    omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    omdf_change = omdf_change.astype(float).fillna(0)
-    ojdf_change = ojdf.pct_change()*100
-    ojdf_change = ojdf_change.iloc[1:]
-    ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    ojdf_change = ojdf_change.astype(float).fillna(0)
-    omdf_change = omdf_change.round(decimals=3)
-    ojdf_change = ojdf_change.round(decimals=3)
-    cum_omdf = (1+omdf_change/100).cumprod() -1
-    cum_omdf = cum_omdf.round(decimals=3)
-    cum_ojdf = (1+ojdf_change/100).cumprod() -1
-    cum_ojdf = cum_ojdf.round(decimals=3)
-    #일주일 간 매매지수 상승률 순위
-    last_odf = pd.DataFrame()
-    last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
-    last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
-    last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
-    last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
-    last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
-    last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
-    last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
-    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
-    #일주일 간 전세지수 상승률 순위
-    last_ojdf = pd.DataFrame()
-    last_ojdf['1w'] = ojdf_change.iloc[-1].T.to_frame()
-    last_ojdf['2w'] = ojdf_change.iloc[-2].T.to_frame()
-    last_ojdf['3w'] = ojdf_change.iloc[-3].T.to_frame()
-    last_ojdf['1m'] = ojdf_change.iloc[-4].T.to_frame()
-    last_ojdf['1y'] = ojdf_change.iloc[-51].T.to_frame()
-    last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=3)
-    basic_df = get_basic_df()
-    odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
-
-    with urlopen(geo_source) as response:
-        one_geo_data = json.load(response)
+#     with urlopen(geo_source) as response:
+#         one_geo_data = json.load(response)
     
-    #geojson file 변경
-    for idx, sigun_dict in enumerate(one_geo_data['features']):
-        sigun_id = sigun_dict['properties']['SIG_CD']
-        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
-        try:
-            sell_change = odf.loc[(odf.code == sigun_id), '매매증감'].iloc[0]
-            jeon_change = odf.loc[(odf.code == sigun_id), '전세증감'].iloc[0]
-        except:
-            sell_change = 0
-            jeon_change =0
-        # continue
+#     #geojson file 변경
+#     for idx, sigun_dict in enumerate(one_geo_data['features']):
+#         sigun_id = sigun_dict['properties']['SIG_CD']
+#         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+#         try:
+#             sell_change = odf.loc[(odf.code == sigun_id), '매매증감'].iloc[0]
+#             jeon_change = odf.loc[(odf.code == sigun_id), '전세증감'].iloc[0]
+#         except:
+#             sell_change = 0
+#             jeon_change =0
+#         # continue
         
-        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
-        # print(txt)
+#         txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+#         # print(txt)
         
-        one_geo_data['features'][idx]['id'] = sigun_id
-        one_geo_data['features'][idx]['properties']['sell_change'] = sell_change
-        one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
-        one_geo_data['features'][idx]['properties']['tooltip'] = txt
+#         one_geo_data['features'][idx]['id'] = sigun_id
+#         one_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+#         one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+#         one_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return odf, one_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
+#     return odf, one_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
 
-@st.cache(allow_output_mutation=True)
-def load_index_data():
-    kb_dict = pd.ExcelFile(kb_file_path)
-    mdf =  kb_dict.parse("매매지수", skiprows=1, parse_dates=False, dtype={'구분': str})
-    jdf =  kb_dict.parse("전세지수", skiprows=1, parse_dates=False, dtype={'구분': str})
+# @st.cache(allow_output_mutation=True)
+# def load_index_data():
+#     kb_dict = pd.ExcelFile(kb_file_path)
+#     mdf =  kb_dict.parse("매매지수", skiprows=1, parse_dates=False, dtype={'구분': str})
+#     jdf =  kb_dict.parse("전세지수", skiprows=1, parse_dates=False, dtype={'구분': str})
     
-    header = header_excel.parse('KB')
-    # code_df = header_excel.parse('code', index_col=1)
-    # code_df.index = code_df.index.str.strip()
-    basic_df = get_basic_df()
-    mdf = mdf.iloc[1:]
-    mdf['구분'].str.slice(start=0, stop=10)
-    mdf.index = pd.to_datetime(mdf['구분'], format='%Y-%m-%d')
-    mdf = mdf.iloc[:,1:]
-    mdf.columns = header.columns
-    mdf = mdf.round(decimals=2)
-    jdf = jdf.iloc[1:]
-    jdf['구분'].str.slice(start=0, stop=10)
-    jdf.index = pd.to_datetime(jdf['구분'], format='%Y-%m-%d')
-    jdf = jdf.iloc[:,1:]
-    jdf.columns = header.columns
-    jdf = jdf.round(decimals=2)
-    #======== 여기 변경 ==============
-    #주간 증감률
-    mdf_change = mdf.pct_change()*100
-    mdf_change = mdf_change.iloc[1:]
-    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    mdf_change = mdf_change.astype(float).fillna(0)
-    jdf_change = jdf.pct_change()*100
-    jdf_change = jdf_change.iloc[1:]
-    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change = jdf_change.astype(float).fillna(0)
-    cum_mdf = (1+mdf_change/100).cumprod() -1
-    cum_mdf = cum_mdf.round(decimals=3)
-    cum_jdf = (1+jdf_change/100).cumprod() -1
-    cum_jdf = cum_jdf.round(decimals=3)
-    #일주일 간 매매지수 상승률 순위
-    kb_last_df  = pd.DataFrame()
-    kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
-    kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
-    kb_last_df['1w'] = mdf_change.iloc[-1].T.to_frame() 
-    kb_last_df['2w'] = mdf_change.iloc[-2].T.to_frame()
-    kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
-    kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
-    kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
-    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
-    #일주일 간 전세지수 상승률 순위
-    kb_last_jdf  = pd.DataFrame()
-    kb_last_jdf['1w'] = jdf_change.iloc[-1].T.to_frame() 
-    kb_last_jdf['2w'] = jdf_change.iloc[-2].T.to_frame()
-    kb_last_jdf['3w'] = jdf_change.iloc[-3].T.to_frame()
-    kb_last_jdf['1m'] = jdf_change.iloc[-4].T.to_frame()
-    kb_last_jdf['1y'] = jdf_change.iloc[-51].T.to_frame()
-    kb_last_jdf = kb_last_jdf.astype(float).fillna(0).round(decimals=2)
+#     header = header_excel.parse('KB')
+#     # code_df = header_excel.parse('code', index_col=1)
+#     # code_df.index = code_df.index.str.strip()
+#     basic_df = get_basic_df()
+#     mdf = mdf.iloc[1:]
+#     mdf['구분'].str.slice(start=0, stop=10)
+#     mdf.index = pd.to_datetime(mdf['구분'], format='%Y-%m-%d')
+#     mdf = mdf.iloc[:,1:]
+#     mdf.columns = header.columns
+#     mdf = mdf.round(decimals=2)
+#     jdf = jdf.iloc[1:]
+#     jdf['구분'].str.slice(start=0, stop=10)
+#     jdf.index = pd.to_datetime(jdf['구분'], format='%Y-%m-%d')
+#     jdf = jdf.iloc[:,1:]
+#     jdf.columns = header.columns
+#     jdf = jdf.round(decimals=2)
+#     #======== 여기 변경 ==============
+#     #주간 증감률
+#     mdf_change = mdf.pct_change()*100
+#     mdf_change = mdf_change.iloc[1:]
+#     mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+#     mdf_change = mdf_change.astype(float).fillna(0)
+#     jdf_change = jdf.pct_change()*100
+#     jdf_change = jdf_change.iloc[1:]
+#     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+#     jdf_change = jdf_change.astype(float).fillna(0)
+#     cum_mdf = (1+mdf_change/100).cumprod() -1
+#     cum_mdf = cum_mdf.round(decimals=3)
+#     cum_jdf = (1+jdf_change/100).cumprod() -1
+#     cum_jdf = cum_jdf.round(decimals=3)
+#     #일주일 간 매매지수 상승률 순위
+#     kb_last_df  = pd.DataFrame()
+#     kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
+#     kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+#     kb_last_df['1w'] = mdf_change.iloc[-1].T.to_frame() 
+#     kb_last_df['2w'] = mdf_change.iloc[-2].T.to_frame()
+#     kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
+#     kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
+#     kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
+#     kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
+#     #일주일 간 전세지수 상승률 순위
+#     kb_last_jdf  = pd.DataFrame()
+#     kb_last_jdf['1w'] = jdf_change.iloc[-1].T.to_frame() 
+#     kb_last_jdf['2w'] = jdf_change.iloc[-2].T.to_frame()
+#     kb_last_jdf['3w'] = jdf_change.iloc[-3].T.to_frame()
+#     kb_last_jdf['1m'] = jdf_change.iloc[-4].T.to_frame()
+#     kb_last_jdf['1y'] = jdf_change.iloc[-51].T.to_frame()
+#     kb_last_jdf = kb_last_jdf.astype(float).fillna(0).round(decimals=2)
 
 
-    #마지막달 dataframe에 지역 코드 넣어 합치기
-    # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_index=True, right_on='short')
-    #st.dataframe(kb_df)
+#     #마지막달 dataframe에 지역 코드 넣어 합치기
+#     # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+#     kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_index=True, right_on='short')
+#     #st.dataframe(kb_df)
     
-    # df.columns = ['매매증감', '전세증감', 'SIG_CD']
-    # df['SIG_CD']= df['SIG_CD'].astype(str)
+#     # df.columns = ['매매증감', '전세증감', 'SIG_CD']
+#     # df['SIG_CD']= df['SIG_CD'].astype(str)
 
-    #버블 지수 만들어 보자
-    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
-    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
-    bubble_df = bubble_df*100
-    bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
-    bubble_df2 = bubble_df2
+#     #버블 지수 만들어 보자
+#     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+#     bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+#     bubble_df = bubble_df*100
+#     bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
+#     bubble_df2 = bubble_df2
     
-    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
-    bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
-    bubble_df3 = bubble_df3.astype(float).fillna(0).round(decimals=5)*100
-    # st.dataframe(bubble_df3)
+#     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+#     bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+#     bubble_df3 = bubble_df3.astype(float).fillna(0).round(decimals=5)*100
+#     # st.dataframe(bubble_df3)
 
-    #전세 파워 만들기
-    cum_ch = (mdf_change/100 +1).cumprod()
-    jcum_ch = (jdf_change/100 +1).cumprod()
-    m_power = (jcum_ch - cum_ch)*100
-    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+#     #전세 파워 만들기
+#     cum_ch = (mdf_change/100 +1).cumprod()
+#     jcum_ch = (jdf_change/100 +1).cumprod()
+#     m_power = (jcum_ch - cum_ch)*100
+#     m_power = m_power.astype(float).fillna(0).round(decimals=2)
 
-    #마지막 데이터만 
-    power_df = m_power.iloc[-1].T.to_frame()
-    power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
-    power_df.columns = ['전세파워', '버블지수']
-    # power_df.dropna(inplace=True)
-    power_df = power_df.astype(float).fillna(0).round(decimals=2)
-    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
-    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
-    power_df['score'] = power_df['jrank'] + power_df['brank']
-    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
-    power_df = power_df.sort_values('rank', ascending=True)
+#     #마지막 데이터만 
+#     power_df = m_power.iloc[-1].T.to_frame()
+#     power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
+#     power_df.columns = ['전세파워', '버블지수']
+#     # power_df.dropna(inplace=True)
+#     power_df = power_df.astype(float).fillna(0).round(decimals=2)
+#     power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+#     power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+#     power_df['score'] = power_df['jrank'] + power_df['brank']
+#     power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+#     power_df = power_df.sort_values('rank', ascending=True)
 
-    with urlopen(geo_source) as response:
-        kb_geo_data = json.load(response)
+#     with urlopen(geo_source) as response:
+#         kb_geo_data = json.load(response)
     
-    #geojson file 변경
-    for idx, sigun_dict in enumerate(kb_geo_data['features']):
-        sigun_id = sigun_dict['properties']['SIG_CD']
-        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
-        try:
-            sell_change = kb_df.loc[(kb_df.code == sigun_id), '매매증감'].iloc[0]
-            jeon_change = kb_df.loc[(kb_df.code == sigun_id), '전세증감'].iloc[0]
-        except:
-            sell_change = 0
-            jeon_change =0
-        # continue
+#     #geojson file 변경
+#     for idx, sigun_dict in enumerate(kb_geo_data['features']):
+#         sigun_id = sigun_dict['properties']['SIG_CD']
+#         sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+#         try:
+#             sell_change = kb_df.loc[(kb_df.code == sigun_id), '매매증감'].iloc[0]
+#             jeon_change = kb_df.loc[(kb_df.code == sigun_id), '전세증감'].iloc[0]
+#         except:
+#             sell_change = 0
+#             jeon_change =0
+#         # continue
         
-        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
-        # print(txt)
+#         txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+#         # print(txt)
         
-        kb_geo_data['features'][idx]['id'] = sigun_id
-        kb_geo_data['features'][idx]['properties']['sell_change'] = sell_change
-        kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
-        kb_geo_data['features'][idx]['properties']['tooltip'] = txt
+#         kb_geo_data['features'][idx]['id'] = sigun_id
+#         kb_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+#         kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+#         kb_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
+#     return kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
 
 @st.cache(allow_output_mutation=True)
 def load_senti_data():
@@ -789,10 +773,160 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    gm,jm = get_gsheet_df()
-    kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
-    odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
-    senti_df, jeon_senti, jeon_su_df = load_senti_data()
+    mdf, jdf, omdf, ojdf, basic_df = get_gsheet_df()
+    #여기서 만들어 보자!!!
+    #============KB주간 증감률=========================================
+    mdf_change = mdf.pct_change()*100
+    mdf_change = mdf_change.iloc[1:]
+    mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    mdf_change = mdf_change.astype(float).fillna(0)
+    jdf_change = jdf.pct_change()*100
+    jdf_change = jdf_change.iloc[1:]
+    jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf_change = jdf_change.astype(float).fillna(0)
+    cum_mdf = (1+mdf_change/100).cumprod() -1
+    cum_mdf = cum_mdf.round(decimals=3)
+    cum_jdf = (1+jdf_change/100).cumprod() -1
+    cum_jdf = cum_jdf.round(decimals=3)
+    #일주일 간 매매지수 상승률 순위
+    kb_last_df  = pd.DataFrame()
+    kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
+    kb_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
+    kb_last_df['1w'] = mdf_change.iloc[-1].T.to_frame() 
+    kb_last_df['2w'] = mdf_change.iloc[-2].T.to_frame()
+    kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
+    kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
+    kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
+    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
+    #일주일 간 전세지수 상승률 순위
+    kb_last_jdf  = pd.DataFrame()
+    kb_last_jdf['1w'] = jdf_change.iloc[-1].T.to_frame() 
+    kb_last_jdf['2w'] = jdf_change.iloc[-2].T.to_frame()
+    kb_last_jdf['3w'] = jdf_change.iloc[-3].T.to_frame()
+    kb_last_jdf['1m'] = jdf_change.iloc[-4].T.to_frame()
+    kb_last_jdf['1y'] = jdf_change.iloc[-51].T.to_frame()
+    kb_last_jdf = kb_last_jdf.astype(float).fillna(0).round(decimals=2)
+
+    #마지막달 dataframe에 지역 코드 넣어 합치기
+    kb_df = pd.merge(kb_last_df, basic_df, how='inner', left_index=True, right_on='short')
+
+    #버블 지수 만들어 보자
+    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df = bubble_df*100
+    bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df2 = bubble_df2
+    
+    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+    bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df3 = bubble_df3.astype(float).fillna(0).round(decimals=5)*100
+    # st.dataframe(bubble_df3)
+
+    #전세 파워 만들기
+    cum_ch = (mdf_change/100 +1).cumprod()
+    jcum_ch = (jdf_change/100 +1).cumprod()
+    m_power = (jcum_ch - cum_ch)*100
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df3.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '버블지수']
+    # power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+    power_df['score'] = power_df['jrank'] + power_df['brank']
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+    power_df = power_df.sort_values('rank', ascending=True)
+
+    with urlopen(geo_source) as response:
+        kb_geo_data = json.load(response)
+    
+    #geojson file 변경
+    for idx, sigun_dict in enumerate(kb_geo_data['features']):
+        sigun_id = sigun_dict['properties']['SIG_CD']
+        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+        try:
+            sell_change = kb_df.loc[(kb_df.code == sigun_id), '매매증감'].iloc[0]
+            jeon_change = kb_df.loc[(kb_df.code == sigun_id), '전세증감'].iloc[0]
+        except:
+            sell_change = 0
+            jeon_change =0
+        # continue
+        
+        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+        # print(txt)
+        
+        kb_geo_data['features'][idx]['id'] = sigun_id
+        kb_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        kb_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        kb_geo_data['features'][idx]['properties']['tooltip'] = txt
+    #==========부동산원==========================================================
+    #주간 증감률
+    omdf_change = omdf.pct_change()*100
+    omdf_change = omdf_change.iloc[1:]
+    omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    omdf_change = omdf_change.astype(float).fillna(0)
+    ojdf_change = ojdf.pct_change()*100
+    ojdf_change = ojdf_change.iloc[1:]
+    ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    ojdf_change = ojdf_change.astype(float).fillna(0)
+    omdf_change = omdf_change.round(decimals=3)
+    ojdf_change = ojdf_change.round(decimals=3)
+    cum_omdf = (1+omdf_change/100).cumprod() -1
+    cum_omdf = cum_omdf.round(decimals=3)
+    cum_ojdf = (1+ojdf_change/100).cumprod() -1
+    cum_ojdf = cum_ojdf.round(decimals=3)
+    #일주일 간 매매지수 상승률 순위
+    last_odf = pd.DataFrame()
+    last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
+    last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
+    last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
+    last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
+    last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
+    last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
+    last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
+    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+    #일주일 간 전세지수 상승률 순위
+    last_ojdf = pd.DataFrame()
+    last_ojdf['1w'] = ojdf_change.iloc[-1].T.to_frame()
+    last_ojdf['2w'] = ojdf_change.iloc[-2].T.to_frame()
+    last_ojdf['3w'] = ojdf_change.iloc[-3].T.to_frame()
+    last_ojdf['1m'] = ojdf_change.iloc[-4].T.to_frame()
+    last_ojdf['1y'] = ojdf_change.iloc[-51].T.to_frame()
+    last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=3)
+    basic_df = get_basic_df()
+    odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
+
+    with urlopen(geo_source) as response:
+        one_geo_data = json.load(response)
+    
+    #geojson file 변경
+    for idx, sigun_dict in enumerate(one_geo_data['features']):
+        sigun_id = sigun_dict['properties']['SIG_CD']
+        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+        try:
+            sell_change = odf.loc[(odf.code == sigun_id), '매매증감'].iloc[0]
+            jeon_change = odf.loc[(odf.code == sigun_id), '전세증감'].iloc[0]
+        except:
+            sell_change = 0
+            jeon_change =0
+        # continue
+        
+        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+        # print(txt)
+        
+        one_geo_data['features'][idx]['id'] = sigun_id
+        one_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+        one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+        one_geo_data['features'][idx]['properties']['tooltip'] = txt
+    
+
+    #기존===================================
+    # kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
+    # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
+    #senti_df, jeon_senti, jeon_su_df = load_senti_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -806,7 +940,6 @@ if __name__ == "__main__":
 
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
-    st.dataframe(gm)
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio("What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together', '기간증감분석'))
