@@ -174,6 +174,40 @@ def get_gsheet_df():
 
     return mdf, jdf, omdf, ojdf, basic_df
 
+#agg table
+def aggrid_interactive_table(df: pd.DataFrame):
+    """Creates an st-aggrid interactive table based on a dataframe.
+
+    Args:
+        df (pd.DataFrame]): Source dataframe
+
+    Returns:
+        dict: The selected row
+    """
+    df = df.reset_index()
+    #gb = GridOptionsBuilder.from_dataframe(df)
+    
+    gb = GridOptionsBuilder.from_dataframe(
+        df, enableRowGroup=True, enableValue=True, enablePivot=True
+    )
+    gb.configure_pagination()
+    gb.configure_side_bar()
+    gb.configure_selection("single")
+    response  = AgGrid(
+        df,
+        editable=True,
+        enable_enterprise_modules=True,
+        gridOptions=gb.build(),
+        data_return_mode="filtered_and_sorted",
+        width='100%',
+        update_mode="no_update",
+        fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
+        theme="streamlit",
+        allow_unsafe_jscode=True
+    )
+
+    return response
+
 # @st.cache
 # def get_basic_df():
 #     #2021-7-30 코드 추가
@@ -644,14 +678,16 @@ def draw_basic():
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
             #rank_df = rank_df.reset_index()
-            st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+            #add aggrid table
+            response  = aggrid_interactive_table(df=rank_df)
+            # st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
+            #     .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+            #     .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+            #     .set_table_styles(
+            #             [{'selector': f'th.col_heading.level0.col{col_loc}',
+            #             'props': [('background-color', '#67c5a4')]},
+            #             ])\
+            #     .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
         with col2:
             st.write("")
         with col3:
@@ -677,14 +713,16 @@ def draw_basic():
             col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _전세지수_ 기간별 순위")
             #rank_jdf = rank_jdf.reset_index()
-            st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
+            response  = aggrid_interactive_table(df=rank_jdf)
+
+            # st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+            #     .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+            #     .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+            #     .set_table_styles(
+            #             [{'selector': f'th.col_heading.level0.col{col_loc}',
+            #             'props': [('background-color', '#67c5a4')]},
+            #             ])\
+            #     .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
     html_br="""
     <br>
     """
