@@ -469,6 +469,11 @@ def load_senti_data():
     kbjs_df.columns = [new_s1,kbjs_df.iloc[0]]
     kbs_df = kbs_df.iloc[1:]
     kbjs_df = kbjs_df.iloc[1:]
+    kbs_df = kbs_df.apply(lambda x:x.replace('','0'))
+    kbs_df = kbs_df.astype(float).round(decimals=2)
+    kbjs_df = kbjs_df.apply(lambda x:x.replace('','0'))
+    kbjs_df = kbjs_df.astype(float).round(decimals=2)
+    #가장 최근 것만
     s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
     js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
     s_df = s_df.apply(lambda x:x.replace('','0'))
@@ -511,7 +516,7 @@ def load_senti_data():
     index_df['매수우위지수'] = s_df.iloc[-1]
     index_df['전세수급지수'] = js_df.iloc[-1]
 
-    return s_df, js_df, index_df
+    return kbs_df, kbjs_df, index_df
 
 
 def run_price_index() :
