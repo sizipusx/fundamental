@@ -104,23 +104,22 @@ geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigun
 #gsheet
 gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
-
-@st.cache(ttl=6000)
-def get_gsheet_df():
-
-    scope = [
+scope = [
     'https://spreadsheets.google.com/feeds',
     'https://www.googleapis.com/auth/drive',
     ]
 
-    json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
+json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
 
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
-    gc = gspread.authorize(credentials)
+credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+gc = gspread.authorize(credentials)
 
-    spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq16Va-99yT3Hs-Rbl2TGOp1U/edit#gid=0'
+spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq16Va-99yT3Hs-Rbl2TGOp1U/edit#gid=0'
 
-    doc = gc.open_by_url(spreadsheet_url)
+doc = gc.open_by_url(spreadsheet_url)
+
+@st.cache(ttl=6000)
+def get_gsheet_index():
     m_d = doc.worksheet('mae')
     j_d = doc.worksheet('jeon')
     basic_city = doc.worksheet('city')
@@ -419,42 +418,100 @@ def aggrid_interactive_table(df: pd.DataFrame):
 
 @st.cache(allow_output_mutation=True)
 def load_senti_data():
-    kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
+    #구글시트에서 불러오기 2022-05-09
+    kbs_doc= doc.worksheet('kbs')
+    ones_doc = doc.worksheet('os')
+    kbmtr_doc = doc.worksheet('kbmtr')
+    kbjtr_doc = doc.worksheet('kbjtr')
+    kbjs_doc = doc.worksheet('kbjs')
 
-    js = kb_dict['전세수급']
-    ms = kb_dict['매수매도']
+    #데이터 프레임으로 읽기
+    kbs_doc_values = kbs_doc.get_all_values()
+    ones_doc_values = ones_doc.get_all_values()
+    kbmtr_doc_values = kbmtr_doc.get_all_values()
+    kbjtr_doc_values = kbjtr_doc.get_all_values()
+    kbjs_doc_values = kbjs_doc.get_all_values()
 
-    js = js.set_index("Unnamed: 0")
-    ms = ms.set_index("Unnamed: 0")
-    js.index.name="날짜"
-    ms.index.name="날짜"
+    kbs_header, kbs_rows = kbs_doc_values[1], kbs_doc_values[2:]
+    ones_header, ones_rows = ones_doc_values[1], ones_doc_values[2:]
+    kbmtr_header, kbmtr_rows = kbmtr_doc_values[1], kbmtr_doc_values[2:]
+    kbjtr_header, kbjtr_rows = kbjtr_doc_values[1], kbjtr_doc_values[2:]
+    kbjs_header, kbjs_rows = kbjs_doc_values[1], kbjs_doc_values[2:]
 
+    kbs_df = pd.DataFrame(kbs_rows, columns=kbs_header)
+    ones_df = pd.DataFrame(ones_rows, columns=ones_header)
+    kbmtr_df = pd.DataFrame(kbmtr_rows, columns=kbmtr_header)
+    kbjtr_df = pd.DataFrame(kbjtr_rows, columns=kbjtr_header)
+    kbjs_df = pd.DataFrame(kbjs_rows, columns=kbjs_header)
+    #kb 매수우위지수
+    kbs_df = kbs_df.set_index(keys=kbs_df.iloc[:,0])
+    kbs_df.index = pd.to_datetime(kbs_df.index)
+    kbs_df.index.name="날짜"
+    kbs_df = kbs_df.iloc[:,1:]
+
+    kbjs_df = kbjs_df.set_index(keys=kbjs_df.iloc[:,0])
+    kbjs_df.index = pd.to_datetime(kbjs_df.index)
+    kbjs_df.index.name="날짜"
+    kbjs_df = kbjs_df.iloc[:,1:]
     #컬럼명 바꿈
-    j1 = js.columns.map(lambda x: x.split(' ')[0])
+    j1 = kbs_df.columns.map(lambda x: x.split(' ')[0])
 
     new_s1 = []
     for num, gu_data in enumerate(j1):
         check = num
-        if gu_data.startswith('Un'):
+        if gu_data == '':
             new_s1.append(new_s1[check-1])
         else:
             new_s1.append(j1[check])
 
     #컬럼 설정
-    js.columns = [new_s1,js.iloc[0]]
-    ms.columns = [new_s1,ms.iloc[0]]
-    js = js.iloc[2:js[('전국', '전세수급지수')].count()]
-    ms = ms.iloc[2:ms[('전국', '매수우위지수')].count()]
-    js = js.astype(float).fillna(0).round(decimals=2)
-    ms = ms.astype(float).fillna(0).round(decimals=2)
+    kbs_df.columns = [new_s1,kbs_df.iloc[0]]
+    kbjs_df.columns = [new_s1,kbjs_df.iloc[0]]
+    kbs_df = kbs_df.iloc[1:]
+    kbjs_df = kbjs_df.iloc[1:]
+    s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
+    js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
+    s_df = s_df.apply(lambda x:x.replace('','0'))
+    s_df = s_df.astype(float).round(decimals=2)
+    js_df = js_df.apply(lambda x:x.replace('','0'))
+    js_df = js_df.astype(float).round(decimals=2)
+    #=============기존
+    # kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
-    js_index = js.xs("전세수급지수", axis=1, level=1)
-    ms_index = ms.xs("매수우위지수", axis=1, level=1)
+    # js = kb_dict['전세수급']
+    # ms = kb_dict['매수매도']
+
+    # js = js.set_index("Unnamed: 0")
+    # ms = ms.set_index("Unnamed: 0")
+    # js.index.name="날짜"
+    # ms.index.name="날짜"
+
+    # #컬럼명 바꿈
+    # j1 = js.columns.map(lambda x: x.split(' ')[0])
+
+    # new_s1 = []
+    # for num, gu_data in enumerate(j1):
+    #     check = num
+    #     if gu_data.startswith('Un'):
+    #         new_s1.append(new_s1[check-1])
+    #     else:
+    #         new_s1.append(j1[check])
+
+    # #컬럼 설정
+    # js.columns = [new_s1,js.iloc[0]]
+    # ms.columns = [new_s1,ms.iloc[0]]
+    # js = js.iloc[2:js[('전국', '전세수급지수')].count()]
+    # ms = ms.iloc[2:ms[('전국', '매수우위지수')].count()]
+    # js = js.astype(float).fillna(0).round(decimals=2)
+    # ms = ms.astype(float).fillna(0).round(decimals=2)
+
+    # js_index = js.xs("전세수급지수", axis=1, level=1)
+    # ms_index = ms.xs("매수우위지수", axis=1, level=1)
     index_df = pd.DataFrame()
-    index_df['매수우위지수'] = ms_index.iloc[-1]
-    index_df['전세수급지수'] = js_index.iloc[-1]
+    index_df['매수우위지수'] = s_df.iloc[-1]
+    index_df['전세수급지수'] = js_df.iloc[-1]
 
-    return ms, js, index_df
+    return s_df, js_df, index_df
 
 
 def run_price_index() :
@@ -839,7 +896,7 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    mdf, jdf, omdf, ojdf, basic_df = get_gsheet_df()
+    mdf, jdf, omdf, ojdf, basic_df = get_gsheet_index()
     #여기서 만들어 보자!!!
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
@@ -992,7 +1049,8 @@ if __name__ == "__main__":
     #기존===================================
     # kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
-    #senti_df, jeon_senti, jeon_su_df = load_senti_data()
+    #수급지수
+    senti_df, jeon_senti, jeon_su_df = load_senti_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
