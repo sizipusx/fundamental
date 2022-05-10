@@ -874,7 +874,7 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = 'KB'
-            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
             drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
 
         with col2:
