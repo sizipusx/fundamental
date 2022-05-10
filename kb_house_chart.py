@@ -1311,15 +1311,17 @@ if __name__ == "__main__":
                 with col1:
                     #flag = "KB"  
                     st.write("KB 매매 감소-전세 증가") 
-                    st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))  
+                    response  = aggrid_interactive_table(df=inter_df)
+                    # st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
+                    #                 .format(precision=2, na_rep='MISSING', thousands=","))  
                 with col2:
                     st.write("")
                 with col3:
                     flag = "부동산원"
                     st.write("부동산원 매매 감소-전세 증가")
-                    st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
-                                          .format(precision=2, na_rep='MISSING', thousands=","))
+                    response  = aggrid_interactive_table(df=inter_odf)
+                    # st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
+                    #                       .format(precision=2, na_rep='MISSING', thousands=","))
             html_br="""
             <br>
             """
@@ -1345,18 +1347,20 @@ if __name__ == "__main__":
                 with col1:
                     #flag = "KB"  
                     st.write("KB 기간 증감") 
-                    change_df = change_df.reset_index()            
-                    st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))  
+                    #change_df = change_df.reset_index()
+                    response  = aggrid_interactive_table(df=change_df)            
+                    # st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
+                    #                 .format(precision=2, na_rep='MISSING', thousands=","))  
                     #drawAPT_weekly.draw_change_table(change_df, flag)  
                 with col2:
                     st.write("")
                 with col3:
                     flag = "부동산원"
                     st.write("부동산원 기간 증감")
-                    change_odf = change_odf.reset_index()
-                    st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
-                                          .format(precision=2, na_rep='MISSING', thousands=","))
+                    #change_odf = change_odf.reset_index()
+                    response  = aggrid_interactive_table(df=change_odf)
+                    # st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
+                    #                       .format(precision=2, na_rep='MISSING', thousands=","))
                     #drawAPT_weekly.draw_change_table(change_df, flag) 
             html_br="""
             <br>
