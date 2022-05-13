@@ -1025,9 +1025,9 @@ if __name__ == "__main__":
     omdf_change = omdf_change.round(decimals=3)
     ojdf_change = ojdf_change.round(decimals=3)
     cum_omdf = (1+omdf_change/100).cumprod() -1
-    cum_omdf = cum_omdf.round(decimals=3)
+    cum_omdf = cum_omdf.round(decimals=6)
     cum_ojdf = (1+ojdf_change/100).cumprod() -1
-    cum_ojdf = cum_ojdf.round(decimals=3)
+    cum_ojdf = cum_ojdf.round(decimals=6)
     #일주일 간 매매지수 상승률 순위
     last_odf = pd.DataFrame()
     last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
