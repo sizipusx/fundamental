@@ -722,11 +722,11 @@ def draw_senti_together(maesu_index, city_lists):
         fig.add_trace(
             go.Scatter(
                 x=maesu_index.index, y=maesu_index.loc[:,value], mode='lines+markers', name=value, 
-                marker=dict(
-                    color=maesu_index.loc[:,value], #set color equal to a variable
-                    colorscale='bluered', # one of plotly colorscales
-                    showscale=True
-                )   
+                #marker=dict(
+                    #color=maesu_index.loc[:,value], #set color equal to a variable
+                #    colorscale='bluered', # one of plotly colorscales
+                #    showscale=True
+                #)   
             ))
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True)
     fig.add_hline(y=100.0, line_width=2, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
