@@ -212,7 +212,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
 def draw_index_change_with_bar(last_df, flag):
     last_df = last_df.sort_values(by=flag[1], ascending=False)
     #상위 20과 하위 20만 slice
-    kb_last_slice = last_df.iloc[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,15, \
+    kb_last_slice = last_df.iloc[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, \
         -15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1]]
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
