@@ -739,7 +739,7 @@ def draw_basic():
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
-            #rank_df = rank_df.reset_index()
+            rank_df = rank_df.reset_index()
             #add aggrid table
             #response  = aggrid_interactive_table(df=rank_df)
             st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
@@ -774,7 +774,7 @@ def draw_basic():
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
             st.markdown("KB 186개 지역 _전세지수_ 기간별 순위")
-            #rank_jdf = rank_jdf.reset_index()
+            rank_jdf = rank_jdf.reset_index()
             #response  = aggrid_interactive_table(df=rank_jdf)
 
             st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
@@ -808,7 +808,7 @@ def draw_basic():
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.markdown("부동산원 235개 지역 _매매지수_ 변화율 기간별 순위")
-            #rank_odf = rank_odf.reset_index()
+            rank_odf = rank_odf.reset_index()
             st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
@@ -836,7 +836,7 @@ def draw_basic():
             slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
             slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
             st.markdown("부동산원 235개 지역 _전세지수_ 기간별 순위")
-            #rank_ojdf = rank_ojdf.reset_index()
+            rank_ojdf = rank_ojdf.reset_index()
             st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
                 .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
                 .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
