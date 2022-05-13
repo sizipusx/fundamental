@@ -211,14 +211,17 @@ def draw_Choroplethmapbox(df, geo_data, flag):
 
 def draw_index_change_with_bar(last_df, flag):
     last_df = last_df.sort_values(by=flag[1], ascending=True)
+    #상위 20과 하위 20만 slice
+    kb_last_slice = last_df.iloc[[0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,15,-1 \
+        -2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15]]
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
-        fig = px.bar(last_df, y= last_df.index, x=last_df.iloc[:,0], color=last_df.iloc[:,0], color_continuous_scale='Bluered', \
-                    text=last_df.index, orientation='h')
+        fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,0], color=laskb_last_slicet_df.iloc[:,0], color_continuous_scale='Bluered', \
+                    text=kb_last_slice.index, orientation='h')
         fig.add_vline(x=last_df.loc['전국','매매증감'], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.loc['전국','매매증감'])}", annotation_position="bottom right")
     else:
-        fig = px.bar(last_df, y= last_df.index, x=last_df.iloc[:,1], color=last_df.iloc[:,1], color_continuous_scale='Bluered', \
-                    text=last_df.index, orientation='h')
+        fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,1], color=kb_last_slice.iloc[:,1], color_continuous_scale='Bluered', \
+                    text=kb_last_slice.index, orientation='h')
         fig.add_vline(x=last_df.loc['전국','전세증감'], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.loc['전국','전세증감'])}", annotation_position="bottom right")
     
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
