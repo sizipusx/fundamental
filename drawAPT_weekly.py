@@ -723,7 +723,7 @@ def draw_senti_together(maesu_index, city_lists):
             go.Scatter(
                 x=maesu_index.index, y=maesu_index.loc[:,value], mode='lines+markers', name=value, 
                 marker=dict(
-                    color=maesu_index[value], #set color equal to a variable
+                    color=value, #set color equal to a variable
                     colorscale='bluered', # one of plotly colorscales
                     showscale=True
                 )   
