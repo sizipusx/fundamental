@@ -202,9 +202,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
-    fig.update_layout(title = title, titlefont_size=15, font=dict(
-        color="yellow"
-    ))
+    fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
