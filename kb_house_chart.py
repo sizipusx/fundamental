@@ -1023,6 +1023,7 @@ if __name__ == "__main__":
     ojdf_change = ojdf_change.iloc[1:]
     ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     ojdf_change = ojdf_change.astype(float).fillna(0)
+    st.dataframe(omdf_change)
     #omdf_change = omdf_change.round(decimals=6)
     #ojdf_change = ojdf_change.round(decimals=6)
     cum_omdf = (1+omdf_change/100).cumprod() -1
