@@ -216,7 +216,7 @@ def draw_index_change_with_bar(last_df, flag):
         -2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15]]
     title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
-        fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,0], color=laskb_last_slicet_df.iloc[:,0], color_continuous_scale='Bluered', \
+        fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,0], color=kb_last_slice.iloc[:,0], color_continuous_scale='Bluered', \
                     text=kb_last_slice.index, orientation='h')
         fig.add_vline(x=last_df.loc['전국','매매증감'], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.loc['전국','매매증감'])}", annotation_position="bottom right")
     else:
