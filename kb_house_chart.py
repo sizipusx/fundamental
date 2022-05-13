@@ -155,10 +155,10 @@ def get_gsheet_index():
     #kb
     mdf = mdf.set_index(keys='날짜')
     mdf.index = pd.to_datetime(mdf.index)
-    mdf = mdf.apply(lambda x:x.replace('','0'))
+    mdf = mdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
     jdf = jdf.set_index(keys='날짜')
     jdf.index = pd.to_datetime(jdf.index)
-    jdf = jdf.apply(lambda x:x.replace('','0'))
+    jdf = jdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
     mdf = mdf.astype(float).round(decimals=2)
     jdf = jdf.astype(float).round(decimals=2)
     #부동산원
@@ -166,8 +166,8 @@ def get_gsheet_index():
     omdf.index = pd.to_datetime(omdf.index)
     ojdf = ojdf.set_index(keys='날짜')
     ojdf.index = pd.to_datetime(ojdf.index)
-    omdf = omdf.apply(lambda x:x.replace('','0'))
-    ojdf = ojdf.apply(lambda x:x.replace('','0'))
+    omdf = omdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
+    ojdf = ojdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
     omdf = omdf.astype(float).round(decimals=2)
     ojdf = ojdf.astype(float).round(decimals=2)
 
