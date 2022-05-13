@@ -1022,8 +1022,8 @@ if __name__ == "__main__":
     ojdf_change = ojdf_change.iloc[1:]
     ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     ojdf_change = ojdf_change.astype(float).fillna(0)
-    omdf_change = omdf_change.round(decimals=6)
-    ojdf_change = ojdf_change.round(decimals=6)
+    #omdf_change = omdf_change.round(decimals=6)
+    #ojdf_change = ojdf_change.round(decimals=6)
     cum_omdf = (1+omdf_change/100).cumprod() -1
     cum_omdf = cum_omdf.round(decimals=6)
     cum_ojdf = (1+ojdf_change/100).cumprod() -1
@@ -1083,11 +1083,9 @@ if __name__ == "__main__":
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     one_last_week = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m.%d')
     with st.expander("See recently Data Update"):
-        cols = st.columns(6)
+        cols = st.columns(2)
         cols[0].write(f"KB last update date: {kb_last_week}")
         cols[1].write(f"부동산원 last update date: {one_last_week}")
-        cols[2].write("")
-        cols[3].write("")
 
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
