@@ -924,6 +924,7 @@ if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
     mdf, jdf, omdf, ojdf, basic_df = get_gsheet_index()
+    st.dataframe(omdf)
     #여기서 만들어 보자!!!
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
