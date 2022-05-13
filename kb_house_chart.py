@@ -1037,7 +1037,7 @@ if __name__ == "__main__":
     last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
     last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
     last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
-    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+    last_odf = last_odf.astype(float).fillna(0).round(decimals=6)
     #일주일 간 전세지수 상승률 순위
     last_ojdf = pd.DataFrame()
     last_ojdf['1w'] = ojdf_change.iloc[-1].T.to_frame()
@@ -1045,7 +1045,7 @@ if __name__ == "__main__":
     last_ojdf['3w'] = ojdf_change.iloc[-3].T.to_frame()
     last_ojdf['1m'] = ojdf_change.iloc[-4].T.to_frame()
     last_ojdf['1y'] = ojdf_change.iloc[-51].T.to_frame()
-    last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=3)
+    last_ojdf = last_ojdf.astype(float).fillna(0).round(decimals=6)
     #basic_df = get_basic_df()
     odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
 
