@@ -159,8 +159,8 @@ def get_gsheet_index():
     jdf = jdf.set_index(keys='날짜')
     jdf.index = pd.to_datetime(jdf.index)
     jdf = jdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
-    mdf = mdf.astype(float).round(decimals=2)
-    jdf = jdf.astype(float).round(decimals=2)
+    mdf = mdf.astype(float)
+    jdf = jdf.astype(float)
     #부동산원
     omdf = omdf.set_index(keys='날짜')
     omdf.index = pd.to_datetime(omdf.index)
@@ -168,8 +168,8 @@ def get_gsheet_index():
     ojdf.index = pd.to_datetime(ojdf.index)
     omdf = omdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
     ojdf = ojdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
-    omdf = omdf.astype(float).round(decimals=2)
-    ojdf = ojdf.astype(float).round(decimals=2)
+    omdf = omdf.astype(float)
+    ojdf = ojdf.astype(float)
 
     return mdf, jdf, omdf, ojdf, basic_df
 
@@ -924,7 +924,6 @@ if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
     mdf, jdf, omdf, ojdf, basic_df = get_gsheet_index()
-    st.dataframe(omdf)
     #여기서 만들어 보자!!!
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
@@ -1023,7 +1022,6 @@ if __name__ == "__main__":
     ojdf_change = ojdf_change.iloc[1:]
     ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     ojdf_change = ojdf_change.astype(float).fillna(0)
-    st.dataframe(omdf_change)
     #omdf_change = omdf_change.round(decimals=6)
     #ojdf_change = ojdf_change.round(decimals=6)
     cum_omdf = (1+omdf_change/100).cumprod() -1
