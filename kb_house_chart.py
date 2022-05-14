@@ -592,12 +592,12 @@ def run_price_index() :
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = "KB"
-            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cummdf, cumjdf, flag)
+            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
         with col2:
             st.write("")
         with col3:
             flag = "부동산원"
-            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cumomdf, cumojdf, flag)
+            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_omdf, cum_ojdf, flag)
     html_br="""
     <br>
     """
@@ -1229,7 +1229,7 @@ if __name__ == "__main__":
                     st.write("")
                 with col3:
                     flag = '부동산원 주간'
-                    drawAPT_weekly.draw_flower_together(options, cumomdf, cumojdf, flag)
+                    drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)
                     
             html_br="""
             <br>
