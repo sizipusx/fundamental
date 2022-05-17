@@ -667,7 +667,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
                 hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
                 marker=dict(
                     size=abs(cum_jdf[value])*10,
-                    color=px.colors.qualitative.Set1[index]
+                    color=px.colors.qualitative.Dark24[index]
                     # color=cum_mdf[value], #set color equal to a variable
                     # colorscale='bluered', # one of plotly colorscales
                     # showscale=True
