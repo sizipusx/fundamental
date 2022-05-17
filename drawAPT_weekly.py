@@ -642,10 +642,10 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
         hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
         marker=dict(
             size=abs(cum_jdf[select_city])*10,
-            color=px.colors.qualitative.Set1[index]
-            # color=cum_mdf[select_city], #set color equal to a variable
-            # colorscale='bluered', # one of plotly colorscales
-            # showscale=True
+            #color=px.colors.qualitative.Set1[index],
+            color=cum_mdf[select_city], #set color equal to a variable
+            colorscale='bluered', # one of plotly colorscales
+            showscale=True
         )
     )) 
     fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -667,7 +667,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
                 hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
                 marker=dict(
                     size=abs(cum_jdf[value])*10,
-                    color=px.colors.qualitative.Set1[index],
+                    color=px.colors.qualitative.Set1[index]
                     # color=cum_mdf[value], #set color equal to a variable
                     # colorscale='bluered', # one of plotly colorscales
                     # showscale=True
