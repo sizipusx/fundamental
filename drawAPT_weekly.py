@@ -60,13 +60,13 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
         
         for index, value in enumerate(draw_list):
             fig.add_trace(
-                go.Bar(x=mdf_change.index, y=mdf_change.loc[:,value],  name=value), marker_color= marker_colors[index],    
-                secondary_y=True,
+                go.Bar(x=mdf_change.index, y=mdf_change.loc[:,value],  name=value, marker_color= marker_colors[index]),     
+                secondary_y=True
                 )
         for index, value in enumerate(draw_list):
             fig.add_trace(
-                go.Scatter(x=mdf.index, y=mdf.loc[:,value],  name=value), marker_color= marker_colors[index],    
-                secondary_y=False,
+                go.Scatter(x=mdf.index, y=mdf.loc[:,value],  name=value, marker_color= marker_colors[index]),     
+                secondary_y=False
                 )
         fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
         fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
