@@ -119,9 +119,9 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
 
-def draw_power(selected_dosi2, m_power, bubble_df3):
+def draw_power(selected_dosi2, m_power, bubble_df3, flag):
     #bubble index chart
-    titles = dict(text= '<b>['+selected_dosi2 +']</b> 주간 전세파워-버블지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b>'+  flag+ '주간 전세파워-버블지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     

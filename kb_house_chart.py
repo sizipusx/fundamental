@@ -602,6 +602,21 @@ def run_price_index() :
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+     ### Block 버블지수 추가 2022. 7. 10 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = "KB"
+            drawAPT_weekly.draw_flower(selected_dosi2, m_power, bubble_df3, flag)
+        with col2:
+            st.write("")
+        with col3:
+            flag = "부동산원"
+            drawAPT_weekly.draw_flower(selected_dosi2, m_power, bubble_df3, flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
 
 def run_sentimental_index(mdf_change, jdf_change):
     ### Block 매수우위지수#########################################################################################
