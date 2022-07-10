@@ -789,6 +789,90 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+    ### 규제지역 해제 매매지수 Table ######################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = ['KB','매매증감']
+            #kb_last_df = kb_last_df.set_index("index")
+            #kb_last_df = round(kb_last_df,2)
+            rank_df = pd.DataFrame()
+            rank_df['1w'] = kb_last_df['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_df['1w%'] = kb_last_df['1w'].round(decimals=2)
+            rank_df['2w%'] = kb_last_df['2w'].round(decimals=2)
+            rank_df['3w%'] = kb_last_df['3w'].round(decimals=2)
+            rank_df['1m%'] = kb_last_df['1m'].round(decimals=2)
+            rank_df['1y%'] = kb_last_df['1y'].round(decimals=2)
+            kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
+            kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
+
+            #규제 해제 지역
+            un_lock = ['대구 동구', '대구 서구', '대구 남구', '대구 남구', '대구 북구', '대구 중구', \
+                '대구 달서구', '대구 달성군', '경북 경산시', '전남 여수', '전남 순천', '전남 광양', \
+                    '대구 수성구', '대전 동구', '대전 중구', '대전 서구', '대전 유성구', '창원 의창구']
+            
+            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            ## 칼럼 헤더 셀 배경색 바꾸기
+            column = '1w' ## 원하는 칼럼이름
+            col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
+            st.markdown("KB 매매지수 조정지역/투기과역지역 해제 지역 기간별 순위 변화")
+            un_lock_df = rank_df.loc[un_lock]
+            un_lock_df = un_lock_df.reset_index()
+            #add aggrid table
+            #response  = aggrid_interactive_table(df=rank_df)
+            st.dataframe(un_lock_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ])\
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+        with col2:
+            st.write("")
+        with col3:
+            flag = ['KB','전세증감']
+            #kb_last_df = kb_last_df.set_index("index")
+            #kb_last_df = round(kb_last_df,2)
+            rank_jdf = pd.DataFrame()
+            rank_jdf['1w'] = kb_last_jdf['1w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['2w'] = kb_last_jdf['2w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['3w'] = kb_last_jdf['3w'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['1m'] = kb_last_jdf['1m'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['1y'] = kb_last_jdf['1y'].rank(ascending=True, method='min').round(decimals=1)
+            rank_jdf['1w%'] = kb_last_jdf['1w'].round(decimals=2)
+            rank_jdf['2w%'] = kb_last_jdf['2w'].round(decimals=2)
+            rank_jdf['3w%'] = kb_last_jdf['3w'].round(decimals=2)
+            rank_jdf['1m%'] = kb_last_jdf['1m'].round(decimals=2)
+            rank_jdf['1y%'] = kb_last_jdf['1y'].round(decimals=2)
+            
+            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+            ## 칼럼 헤더 셀 배경색 바꾸기
+            column = '1w' ## 원하는 칼럼이름
+            col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
+            st.markdown("KB 전세지수 조정지역/투기과역지역 해제 지역 기간별 순위 변화")
+            un_lock_jdf = rank_jdf.loc[un_lock]
+            un_lock_jdf = un_lock_jdf.reset_index()
+            #response  = aggrid_interactive_table(df=rank_jdf)
+
+            st.dataframe(un_lock_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                .set_table_styles(
+                        [{'selector': f'th.col_heading.level0.col{col_loc}',
+                        'props': [('background-color', '#67c5a4')]},
+                        ])\
+                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     ### draw 전세지수 Table ######################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
