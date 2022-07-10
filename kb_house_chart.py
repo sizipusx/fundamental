@@ -811,7 +811,7 @@ def draw_basic():
             kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
 
             #규제 해제 지역
-            un_lock = ['대구 동구', '대구 서구', '대구 남구', '대구 남구', '대구 북구', '대구 중구', \
+            un_lock = ['대구 동구', '대구 서구', '대구 남구', '대구 북구', '대구 중구', \
                 '대구 달서구', '대구 달성군', '경산', '여수', '순천', '광양', \
                     '대구 수성구', '대전 동구', '대전 중구', '대전 서구', '대전 유성구', '창원 의창구']
             
@@ -820,7 +820,7 @@ def draw_basic():
             ## 칼럼 헤더 셀 배경색 바꾸기
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB 매매지수 조정지역/투기과역지역 해제 지역 기간별 순위 변화")
+            st.markdown("KB 매매지수 조정지역/투기과열지역 해제 지역 기간별 순위 변화")
             un_lock_df = rank_df.loc[un_lock]
             un_lock_df = un_lock_df.reset_index()
             #add aggrid table
@@ -856,7 +856,7 @@ def draw_basic():
             ## 칼럼 헤더 셀 배경색 바꾸기
             column = '1w' ## 원하는 칼럼이름
             col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB 전세지수 조정지역/투기과역지역 해제 지역 기간별 순위 변화")
+            st.markdown("KB 전세지수 조정지역/투기과열지역 해제 지역 기간별 순위 변화")
             un_lock_jdf = rank_jdf.loc[un_lock]
             un_lock_jdf = un_lock_jdf.reset_index()
             #response  = aggrid_interactive_table(df=rank_jdf)
