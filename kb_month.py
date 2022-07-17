@@ -11,6 +11,10 @@ import streamlit as st
 import drawAPT_weekly 
 import drawAPT_update
 import seaborn as sns
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid.shared import GridUpdateMode
 cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 #############html 영역####################
@@ -45,6 +49,8 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
+
+##################################### 기존 파일 시스템 ##################################
 kb_path = 'https://github.com/sizipusx/fundamental/blob/d1268bcfbbca48adb13193485d0b5990d599bc45/files/kb_monthly.xlsx?raw=true'
 #감정원 데이터
 one_path = r'https://github.com/sizipusx/fundamental/blob/4f60b8b60a3a168a8188b33583f23ecc9127281a/files/one_data.xlsx?raw=true'
@@ -58,6 +64,24 @@ kbm_dict = pd.ExcelFile(kb_path)
 one_dict = pd.ExcelFile(one_path)
 #geojson file open
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
+################################### gsheet 로 변경: 2022-7-17 ###########################
+#gsheet
+gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+
+scope = [
+    'https://spreadsheets.google.com/feeds',
+    'https://www.googleapis.com/auth/drive',
+    ]
+
+json_file_name = '/content/drive/MyDrive/weekly-house-db-ac0a43b61ddd.json'
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+gc = gspread.authorize(credentials)
+
+spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
+
+doc = gc.open_by_url(spreadsheet_url)
+###################################################################
 
  #return dic
 def read_source_excel():
@@ -438,17 +462,27 @@ if __name__ == "__main__":
     not_sell_apt = get_not_sell_apt() #준공후 미분양
     un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
-    in_df = one_dict.parse("apt_buy", header=0) 
-    bheader = pd.read_excel(header_path, sheet_name='buyer')
-    in_df['지 역'] = bheader['local'].str.strip()
-    in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
-    in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    in_df = in_df.set_index("지역명")
-    in_df = in_df.T
-    in_df.columns = [in_df.columns, in_df.iloc[0]]
-    in_df = in_df.iloc[1:]
-    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    in_df.index = pd.to_datetime(in_df.index)
+    # in_df = one_dict.parse("apt_buy", header=0) 
+    # bheader = pd.read_excel(header_path, sheet_name='buyer')
+    # in_df['지 역'] = bheader['local'].str.strip()
+    # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
+    # in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    in_values = doc.worksheet('investor')
+    #데이터 프레임으로 읽기
+    basic_values = in_values.get_all_values()
+
+    basic_header, basic_rows = basic_values[0], basic_values[1:]
+    in_df1= pd.DataFrame(basic_rows, columns=basic_header)
+    in_df1 = in_df1.set_index(['local','매입자거주지'])
+    in_df = in_df1.T
+    #=============== 여기까지 변경
+    # in_df = in_df.set_index("지역명")
+    # in_df = in_df.T
+    # in_df.columns = [in_df.columns, in_df.iloc[0]]
+    # in_df = in_df.iloc[1:]
+    # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
+    # in_df.index = pd.to_datetime(in_df.index)
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
     total_df = in_df.xs('합계', axis=1, level=1)
