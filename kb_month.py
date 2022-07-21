@@ -494,13 +494,16 @@ if __name__ == "__main__":
     in_ratio = in_ratio.round(2)
     seoul_ratio  = seoul_buyer/total_df * 100
     seoul_ratio = seoul_ratio.round(2)
+    #마지막달
     last_in = pd.DataFrame()
     last_in['전체거래수'] = total_df.iloc[-1].T.to_frame()
-    last_in['투자자수'] = invest_total.iloc[-1].T.to_frame()
+    last_in['외지인수'] = invest_total.iloc[-1].T.to_frame()
     last_in['서울거주자수'] = seoul_buyer.iloc[-1].T.to_frame()
-    last_in['서울투자자%'] = seoul_ratio.iloc[-1].T.to_frame()
-    last_in['투자자%'] = in_ratio.iloc[-1].T.to_frame()
+    last_in['서울거주자%'] = seoul_ratio.iloc[-1].T.to_frame()
+    last_in['외지인%'] = in_ratio.iloc[-1].T.to_frame()
     last_in['비율평균'] = in_ratio.mean()
+    # 그 해 누적
+
     ### 여기까지 매입자 거주지별 
 
     data_load_state.text("index & pop Data Done! (using st.cache)")
@@ -1204,11 +1207,11 @@ if __name__ == "__main__":
             <br>
             """
     elif my_choice == '투자자별매매동향':
-        st.subheader("투자자 비율 분석")
+        st.subheader("외지인 비율 분석")
         ratio_value = st.slider(
             'Select ratio to Compare index change', 0, 100, 30)
-        investor_df = last_in[last_in['투자자%'] >= last_in['비율평균']].reset_index()
-        investor_ratio = last_in[last_in['투자자%'] >= ratio_value].reset_index()
+        investor_df = last_in[last_in['외지인%'] >= last_in['비율평균']].reset_index()
+        investor_ratio = last_in[last_in['외지인%'] >= ratio_value].reset_index()
         with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
