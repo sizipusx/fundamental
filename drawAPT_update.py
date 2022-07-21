@@ -524,7 +524,7 @@ def run_buy_index(selected_dosi, org_df):
     fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     fig.add_hline(y=round(selected_df['합계'].mean(axis=0),1), line_width=1, line_color="blue", line_dash="dot", 
-                        annotation_text=round(selected_df['합계'].mean(axis=0),1), annotation_position="bottom right")
+                        annotation_text="평균 거래량: "+round(selected_df['합계'].mean(axis=0),1), annotation_position="bottom right")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
