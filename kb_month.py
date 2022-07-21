@@ -778,8 +778,8 @@ if __name__ == "__main__":
             <br>
             """
             st.markdown(html_br, unsafe_allow_html=True)
-            investor_df = last_in[last_in['투자자%'] >= last_in['비율평균']].reset_index()
-            investor_ratio = last_in[last_in['투자자%'] >= 30.0].reset_index()
+            investor_df = last_in[last_in['외지인%'] >= last_in['비율평균']].reset_index()
+            investor_ratio = last_in[last_in['외지인%'] >= 30.0].reset_index()
             with st.container():
                         col1, col2, col3 = st.columns([30,2,30])
                         with col1:
