@@ -195,6 +195,7 @@ def load_buy_data():
     df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
     df = df.apply(lambda x: x.replace('-','0'))
     df = df.astype(int)
+    org_df = df.copy()
     ####
     drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종 세종','충남', '충북']
     drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
