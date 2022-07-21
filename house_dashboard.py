@@ -12,6 +12,9 @@ from urllib.request import urlopen
 import json
 from pandas.io.json import json_normalize
 
+import gspread
+import pandas as pd
+from oauth2client.service_account import ServiceAccountCredentials
 
 #############html 영역####################
 html_header="""
@@ -41,6 +44,23 @@ st.markdown(""" <style>
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 # data=pd.read_excel('curva.xlsx')
+### 구글 시트로 소스 변경: 2022.7.21 #########
+#부동사원 gsheet
+scope = [
+    'https://spreadsheets.google.com/feeds',
+    'https://www.googleapis.com/auth/drive',
+    ]
+
+json_file_name = '/content/drive/MyDrive/weekly-house-db-ac0a43b61ddd.json'
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+gc = gspread.authorize(credentials)
+
+one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
+kb_gsheet_url = r'https://docs.google.com/spreadsheets/d/168K8mcybxQfufMi39wnH5agmMrkK9C8ac57MajmOawI/edit?usp=sharing'
+
+one_doc = gc.open_by_url(one_gsheet_url)
+kb_doc = gc.open_by_url(kb_gsheet_url)
 
 ### data 가져오기 영역 ##########################
 #매주 지역별 시황
@@ -147,22 +167,35 @@ def load_ratio_data():
 def load_buy_data():
     #년 증감 계산을 위해 최소 12개월치 데이터 필요
     # path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
-    data_type = 'apt_buy' 
-    df = pd.read_excel(one_path, sheet_name=data_type, header=10)
-    # path1 = r'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
-    header = pd.read_excel(header_path, sheet_name='buyer')
-    df['지 역'] = header['local'].str.strip()
-    df = df.rename({'지 역':'지역명'}, axis='columns')
-    df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    df = df.set_index("지역명")
-    df = df.T
-    df.columns = [df.columns, df.iloc[0]]
-    df = df.iloc[1:]
-    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    df.index = pd.to_datetime(df.index)
+    # data_type = 'apt_buy' 
+    # df = pd.read_excel(one_path, sheet_name=data_type, header=10)
+    # # path1 = r'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
+    # header = pd.read_excel(header_path, sheet_name='buyer')
+    # df['지 역'] = header['local'].str.strip()
+    # df = df.rename({'지 역':'지역명'}, axis='columns')
+    # df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    # df = df.set_index("지역명")
+    # df = df.T
+    # df.columns = [df.columns, df.iloc[0]]
+    # df = df.iloc[1:]
+    # df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    # df.index = pd.to_datetime(df.index)
+    # df = df.apply(lambda x: x.replace('-','0'))
+    # df = df.astype(float)
+    # org_df = df.copy()
+    ### g_sheet에서 읽어오기
+    in_df = one_doc.worksheet('investor')
+    #데이터 프레임으로 읽기
+    basic_values = in_df.get_all_values()
+
+    basic_header, basic_rows = basic_values[0], basic_values[1:]
+    basic_df= pd.DataFrame(basic_rows, columns=basic_header)
+    basic_df = basic_df.set_index(['local','매입자거주지'])
+    df = basic_df.T
+    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
     df = df.apply(lambda x: x.replace('-','0'))
-    df = df.astype(float)
-    org_df = df.copy()
+    df = df.astype(int)
+    ####
     drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종 세종','충남', '충북']
     drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
     # big_city = df.iloc[:,drop_list]
