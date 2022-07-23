@@ -78,9 +78,10 @@ json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
 
-spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
-
-doc = gc.open_by_url(spreadsheet_url)
+one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
+kb_gsheet_url = r'https://docs.google.com/spreadsheets/d/168K8mcybxQfufMi39wnH5agmMrkK9C8ac57MajmOawI/edit?usp=sharing'
+one_doc = gc.open_by_url(one_gsheet_url)
+kb_doc = gc.open_by_url(kb_gsheet_url)
 ###################################################################
 
  #return dic
@@ -134,34 +135,56 @@ def load_index_data():
     code_df.index = code_df.index.str.strip()
 
     #주택가격지수
-    mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0)
-    jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0)
-    mdf.columns = kbh.columns
-    jdf.columns = kbh.columns
-    #index 날짜 변경
+    # mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0)
+    # jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0)
+    # mdf.columns = kbh.columns
+    # jdf.columns = kbh.columns
+    # #index 날짜 변경
     
-    mdf = mdf.iloc[2:]
-    jdf = jdf.iloc[2:]
-    index_list = list(mdf.index)
+    # mdf = mdf.iloc[2:]
+    # jdf = jdf.iloc[2:]
+    # index_list = list(mdf.index)
 
-    new_index = []
+    # new_index = []
 
-    for num, raw_index in enumerate(index_list):
-        temp = str(raw_index).split('.')
-        if int(temp[0]) > 12 :
-            if len(temp[0]) == 2:
-                new_index.append('19' + temp[0] + '.' + temp[1])
-            else:
-                new_index.append(temp[0] + '.' + temp[1])
-        else:
-            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+    # for num, raw_index in enumerate(index_list):
+    #     temp = str(raw_index).split('.')
+    #     if int(temp[0]) > 12 :
+    #         if len(temp[0]) == 2:
+    #             new_index.append('19' + temp[0] + '.' + temp[1])
+    #         else:
+    #             new_index.append(temp[0] + '.' + temp[1])
+    #     else:
+    #         new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
 
-    mdf.set_index(pd.to_datetime(new_index), inplace=True)
-    jdf.set_index(pd.to_datetime(new_index), inplace=True)
-    mdf.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf.replace([np.inf, -np.inf], np.nan, inplace=True)
-    mdf = mdf.astype(float).fillna(0).round(decimals=2)
-    jdf = jdf.astype(float).fillna(0).round(decimals=2)
+    # mdf.set_index(pd.to_datetime(new_index), inplace=True)
+    # jdf.set_index(pd.to_datetime(new_index), inplace=True)
+    # mdf.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # jdf.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # mdf = mdf.astype(float).fillna(0).round(decimals=2)
+    # jdf = jdf.astype(float).fillna(0).round(decimals=2)
+    # 구글 시트에서 읽어 오기
+    kbm = kb_doc.worksheet('kbm')
+    kbm_values = kbm.get_all_values()
+    m_header, m_rows = kbm_values[1], kbm_values[2:]
+    mdf = pd.DataFrame(m_rows, columns=m_header)
+    mdf = mdf.set_index(mdf.iloc[:,0])
+    mdf = mdf.iloc[:,1:]
+    mdf.index = pd.to_datetime(mdf.index)
+    mdf.index.name = 'date'
+    mdf = mdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    mdf = mdf.round(decimals=2)
+    #전세
+    kbj = kb_doc.worksheet('kbm')
+    kbj_values = kbj.get_all_values()
+    j_header, j_rows = kbj_values[1], kbj_values[2:]
+    jdf = pd.DataFrame(j_rows, columns=j_header)
+    jdf = jdf.set_index(jdf.iloc[:,0])
+    jdf = jdf.iloc[:,1:]
+    jdf.index = pd.to_datetime(jdf.index)
+    jdf.index.name = 'date'
+    jdf = jdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    jdf = jdf.round(decimals=2)
 
     #geojson file open
     geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
