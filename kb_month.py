@@ -490,7 +490,7 @@ if __name__ == "__main__":
     # in_df['지 역'] = bheader['local'].str.strip()
     # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
     # in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    in_values = doc.worksheet('investor')
+    in_values = one_doc.worksheet('investor')
     #데이터 프레임으로 읽기
     basic_values = in_values.get_all_values()
 
