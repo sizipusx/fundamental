@@ -215,38 +215,61 @@ def load_index_data():
     #헤더 변경
     # path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
     header_excel = pd.ExcelFile(header_path)
-    header = header_excel.parse('KB')
+    #header = header_excel.parse('KB')
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
 
     #주택가격지수
-    mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0, convert_float=True)
-    jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0, convert_float=True)
-    mdf.columns = header.columns
-    jdf.columns = header.columns
+    #mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0, convert_float=True)
+    #jdf = kbm_dict.parse("6.전세APT", skiprows=1, index_col=0, convert_float=True)
+    #mdf.columns = header.columns
+    #jdf.columns = header.columns
     #index 날짜 변경
     
-    mdf = mdf.iloc[2:]
-    jdf = jdf.iloc[2:]
-    index_list = list(mdf.index)
+    #mdf = mdf.iloc[2:]
+    #jdf = jdf.iloc[2:]
+    #index_list = list(mdf.index)
 
-    new_index = []
+    #new_index = []
 
-    for num, raw_index in enumerate(index_list):
-        temp = str(raw_index).split('.')
-        if int(temp[0]) > 12 :
-            if len(temp[0]) == 2:
-                new_index.append('19' + temp[0] + '.' + temp[1])
-            else:
-                new_index.append(temp[0] + '.' + temp[1])
-        else:
-            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+    #for num, raw_index in enumerate(index_list):
+    #    temp = str(raw_index).split('.')
+    #    if int(temp[0]) > 12 :
+    #        if len(temp[0]) == 2:
+    #            new_index.append('19' + temp[0] + '.' + temp[1])
+    #        else:
+    #            new_index.append(temp[0] + '.' + temp[1])
+    #    else:
+    #        new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
 
-    mdf.set_index(pd.to_datetime(new_index), inplace=True)
-    jdf.set_index(pd.to_datetime(new_index), inplace=True)
-    mdf = mdf.astype(float).fillna(0).round(decimals=2)
-    jdf = jdf.astype(float).fillna(0).round(decimals=2)
+    #mdf.set_index(pd.to_datetime(new_index), inplace=True)
+    #jdf.set_index(pd.to_datetime(new_index), inplace=True)
+    #mdf = mdf.astype(float).fillna(0).round(decimals=2)
+    #jdf = jdf.astype(float).fillna(0).round(decimals=2)
 
+    # 구글 시트에서 읽어 오기
+    kbm = kb_doc.worksheet('kbm')
+    kbm_values = kbm.get_all_values()
+    m_header, m_rows = kbm_values[1], kbm_values[2:]
+    mdf = pd.DataFrame(m_rows, columns=m_header)
+    mdf = mdf.set_index(mdf.iloc[:,0])
+    mdf = mdf.iloc[:,1:]
+    mdf.index = pd.to_datetime(mdf.index)
+    mdf.index.name = 'date'
+    mdf = mdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    mdf = mdf.round(decimals=2)
+    #전세
+    kbj = kb_doc.worksheet('kbm')
+    kbj_values = kbj.get_all_values()
+    j_header, j_rows = kbj_values[1], kbj_values[2:]
+    jdf = pd.DataFrame(j_rows, columns=j_header)
+    jdf = jdf.set_index(jdf.iloc[:,0])
+    jdf = jdf.iloc[:,1:]
+    jdf.index = pd.to_datetime(jdf.index)
+    jdf.index.name = 'date'
+    jdf = jdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    jdf = jdf.round(decimals=2)
+    
     #geojson file open
     geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
     with urlopen(geo_source) as response:
