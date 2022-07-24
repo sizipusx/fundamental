@@ -607,7 +607,7 @@ def run_price_index() :
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = "아기곰 방식"
-            drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df2, flag)
+            drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df, flag)
         with col2:
             st.write("")
         with col3:
