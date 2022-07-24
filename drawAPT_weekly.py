@@ -141,6 +141,11 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+    with st.expander("버블지수/전세파워 설명"):
+            st.markdown("전세파워: 전체기간 (전세 누적 증감률 - 매매 누적 증감율)")
+            st.markdown("버블지수")
+            st.markdown("아기곰 방식: 버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)")
+            st.markdown("곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)")
 
 def draw_power_table(power_df):
     #버블지수/전세파워 table 추가
