@@ -727,6 +727,73 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
+            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 도 전체 기간 누적 차트 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            drawAPT_weekly.draw_senti_last(jeon_su_df)
+        with col2:
+            st.write("")
+        with col3:
+            city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
+            drawAPT_weekly.draw_senti_together(maesu_df, city_list)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ######매수우위지수 각 지역별 보기
+    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
+            drawAPT_weekly.draw_senti_together(maesu_df, city_list)
+        with col2:
+            st.write("")
+        with col3:
+            city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
+            drawAPT_weekly.draw_senti_together(maesu_df, city_list)            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     ### draw 매매지수 Table ######################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
@@ -946,73 +1013,6 @@ def draw_basic():
                         ]) \
                 .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
             
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
-            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
-
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 도 전체 기간 누적 차트 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
-
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            drawAPT_weekly.draw_senti_last(jeon_su_df)
-        with col2:
-            st.write("")
-        with col3:
-            city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
-            drawAPT_weekly.draw_senti_together(maesu_df, city_list)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ######매수우위지수 각 지역별 보기
-    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
-            drawAPT_weekly.draw_senti_together(maesu_df, city_list)
-        with col2:
-            st.write("")
-        with col3:
-            city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
-            drawAPT_weekly.draw_senti_together(maesu_df, city_list)            
     html_br="""
     <br>
     """
