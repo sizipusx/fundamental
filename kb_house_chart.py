@@ -606,12 +606,12 @@ def run_price_index() :
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            flag = "KB"
-            drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df3, flag)
+            flag = "아기곰 방식"
+            drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df2, flag)
         with col2:
             st.write("")
         with col3:
-            flag = "부동산원"
+            flag = "곰곰이 방식"
             drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df3, flag)
     html_br="""
     <br>
@@ -1064,7 +1064,7 @@ if __name__ == "__main__":
     bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
     bubble_df = bubble_df*100
     bubble_df2 = mdf_change.subtract(mdf_change['전국'], axis=0)/jdf_change.subtract(jdf_change['전국'], axis=0)
-    bubble_df2 = bubble_df2
+    #bubble_df2 = bubble_df2
     
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
     bubble_df3 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)

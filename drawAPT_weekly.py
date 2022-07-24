@@ -136,8 +136,8 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
     fig.update_layout(hovermode="x unified")
     fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='blue', secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='red', secondary_y = True) #tickprefix="$", 
+    fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
