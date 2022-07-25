@@ -384,6 +384,9 @@ def load_pop_data():
     omdf = omdf.set_index(omdf.iloc[:,0])
     omdf = omdf.iloc[:,1:]
     omdf.index.name = 'date'
+    omdf = omdf.astype(int)
+    omdf = omdf.apply(lambda x:x.replace(',',''))
+    omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).astype(int).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0')
     
     return pop_df, pop_change, sdf, sdf_change, omdf
 
