@@ -107,6 +107,11 @@ def load_ratio_data():
     ojp_values = ojp.get_all_values()
     ojp_header, ojp_rows = ojp_values[1], ojp_values[2:]
     ojp_df = pd.DataFrame(ojp_rows, columns=ojp_header)
+    #전세가율
+    ora= one_doc.worksheet('oratio')
+    ora_values = ora.get_all_values()
+    ora_header, ora_rows = ora_values[1], ora_values[2:]
+    rdf = pd.DataFrame(ora_rows, columns=ora_header)
     #컬럼 변경
     s1 = omp_df.columns
     new_s1 = []
@@ -116,6 +121,16 @@ def load_ratio_data():
             new_s1.append(new_s1[check-1])
         else:
             new_s1.append(s1[check])
+    #전세가율 컬럼
+    s2 = rdf.columns
+    new_s2 = []
+    for num, gu_data in enumerate(s2):
+        check = num
+        if gu_data.startswith('Un'):
+            new_s2.append(new_s2[check-1])
+        else:
+            new_s2.append(s2[check])
+    
     omp_df.columns =[new_s1, omp_df.iloc[0]]
     omp_df = omp_df.iloc[1:]
     omp_df = omp_df.set_index(omp_df.iloc[:,0])
@@ -124,15 +139,20 @@ def load_ratio_data():
     ojp_df = ojp_df.iloc[1:]
     ojp_df = ojp_df.set_index(ojp_df.iloc[:,0])
     ojp_df = ojp_df.iloc[:,1:]
+    rdf.columns =[new_s2, rdf.iloc[0]]
+    rdf = rdf.iloc[1:]
+    rdf = rdf.set_index(rdf.iloc[:,0])
+    rdf = rdf.iloc[:,1:]
     # omp_df.index = pd.to_datetime(omp_df.index)
     # ojp_df.index = pd.to_datetime(ojp_df.index)
+    #rdf.index = pd.to_datetime(rdf.index)
     omp_df.index.name = 'date'
     omp_df = omp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
     ojp_df.index.name = 'date'
     ojp_df = ojp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+    rdf.index.name = 'date'
+    rdf = rdf.astype(str).apply(lambda x: x.replace("","0")).astype(float)
     
-    #smdf = omp_df.xs('평균매매',axis=1, level=1)
-    #sadf = omp_df.xs('평균단위매매', axis=1, level=1)
     header_dict = pd.read_excel(header_path, sheet_name=None)
     header = header_dict['one']
 #     one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
@@ -152,14 +172,7 @@ def load_ratio_data():
 #         else:
 #             new_s1.append(s1[check])
 #     #전세가율은 다른가?
-#     s2 = rdf.columns
-#     new_s2 = []
-#     for num, gu_data in enumerate(s2):
-#         check = num
-#         if gu_data.startswith('Un'):
-#             new_s2.append(new_s2[check-1])
-#         else:
-#             new_s2.append(s2[check])
+    
 #     mdf.columns =[new_s1, omdf.iloc[1]]
 #     jdf.columns = [new_s1, ojdf.iloc[1]]
 #     rdf.columns =[new_s2, r_df.iloc[1]]
@@ -195,7 +208,7 @@ def load_ratio_data():
     jadf_ch = jadf_ch.round(decimals=2)
 
     ######################### 여기부터는 전세가율
-    jratio = round(jmdf/smdf*100,1)
+    #jratio = round(jmdf/smdf*100,1)
     
 
     return sadf, sadf_ch, jadf, jadf_ch, m_df, a_df
