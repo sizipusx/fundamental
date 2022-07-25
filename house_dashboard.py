@@ -327,6 +327,8 @@ def load_pop_data():
     test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
     pdf.columns = test
     pop_df = pdf.T
+    pop_df = pop_df.apply(lambda x: x.replace('','0'))
+    pop_df = pop_df.astype(int)
     # df = df.iloc[:-1]
     pop_df.index = pd.to_datetime(pop_df.index)
     pop_change = pop_df.pct_change()*100
@@ -347,6 +349,8 @@ def load_pop_data():
     #test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
     sae_df.columns = test
     sdf = sae_df.T
+    sdf = sdf.apply(lambda x: x.replace('','0'))
+    sdf = sdf.astype(int)
     # sdf = sdf.iloc[:-1]
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
