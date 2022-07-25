@@ -321,7 +321,7 @@ def load_pop_data():
     bs = bs_doc.worksheet('pop')
     bs_values = bs.get_all_values()
     bs_header, bs_rows = bs_values[2], bs_values[3:]
-    popdf = pd.DataFrame(bs_rows, columns=bs_header)
+    pdf = pd.DataFrame(bs_rows, columns=bs_header)
     pdf = pdf.set_index("pop")
     pdf = pdf.iloc[:,1:]
     test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
