@@ -98,37 +98,72 @@ def read_source_excel():
 
 @st.cache
 def load_ratio_data():
-    header_dict = pd.read_excel(header_path, sheet_name=None)
-    header = header_dict['one']
-    one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
-    omdf = one_dict['sell']
-    ojdf = one_dict['jeon']
-    r_df = one_dict['ratio']
-    mdf = omdf.iloc[4:,:]
-    jdf = ojdf.iloc[4:,:]
-    rdf = r_df.iloc[4:,:]
+    ## 구글 시트에서 읽어 오면 간단하지!!
+    omp= one_doc.worksheet('omp')
+    omp_values = omp.get_all_values()
+    omp_header, omp_rows = omp_values[1], omp_values[2:]
+    omp_df = pd.DataFrame(omp_rows, columns=omp_header)
+    ojp= one_doc.worksheet('ojp')
+    ojp_values = ojp.get_all_values()
+    ojp_header, ojp_rows = ojp_values[1], ojp_values[2:]
+    ojp_df = pd.DataFrame(ojp_rows, columns=ojp_header)
     #컬럼 변경
-    s1 = mdf.columns
+    s1 = omp_df.columns
     new_s1 = []
     for num, gu_data in enumerate(s1):
         check = num
-        if gu_data.startswith('Un'):
+        if gu_data == '':
             new_s1.append(new_s1[check-1])
         else:
             new_s1.append(s1[check])
-    #전세가율은 다른가?
-    s2 = rdf.columns
-    new_s2 = []
-    for num, gu_data in enumerate(s2):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s2.append(new_s2[check-1])
-        else:
-            new_s2.append(s2[check])
-    mdf.columns =[new_s1, omdf.iloc[1]]
-    jdf.columns = [new_s1, ojdf.iloc[1]]
-    rdf.columns =[new_s2, r_df.iloc[1]]
-    #필요 시트만 슬라이스
+    omp_df.columns =[new_s1, omp_df.iloc[0]]
+    omp_df = omp_df.iloc[1:]
+    omp_df = omp_df.set_index(omp_df.iloc[:,0])
+    omp_df = omp_df.iloc[:,1:]
+    ojp_df.columns =[new_s1, ojp_df.iloc[0]]
+    ojp_df = ojp_df.iloc[1:]
+    ojp_df = ojp_df.set_index(ojp_df.iloc[:,0])
+    ojp_df = ojp_df.iloc[:,1:]
+    # omp_df.index = pd.to_datetime(omp_df.index)
+    # ojp_df.index = pd.to_datetime(ojp_df.index)
+    omp_df.index.name = 'date'
+    omp_df = omp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+    ojp_df.index.name = 'date'
+    ojp_df = ojp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+    
+    #smdf = omp_df.xs('평균매매',axis=1, level=1)
+    #sadf = omp_df.xs('평균단위매매', axis=1, level=1)
+    header_dict = pd.read_excel(header_path, sheet_name=None)
+    header = header_dict['one']
+#     one_dict = pd.read_excel(p_path, sheet_name=None, header=1, index_col=0, parse_dates=True)
+#     omdf = one_dict['sell']
+#     ojdf = one_dict['jeon']
+#     r_df = one_dict['ratio']
+#     mdf = omdf.iloc[4:,:]
+#     jdf = ojdf.iloc[4:,:]
+#     rdf = r_df.iloc[4:,:]
+#     #컬럼 변경
+#     s1 = mdf.columns
+#     new_s1 = []
+#     for num, gu_data in enumerate(s1):
+#         check = num
+#         if gu_data.startswith('Un'):
+#             new_s1.append(new_s1[check-1])
+#         else:
+#             new_s1.append(s1[check])
+#     #전세가율은 다른가?
+#     s2 = rdf.columns
+#     new_s2 = []
+#     for num, gu_data in enumerate(s2):
+#         check = num
+#         if gu_data.startswith('Un'):
+#             new_s2.append(new_s2[check-1])
+#         else:
+#             new_s2.append(s2[check])
+#     mdf.columns =[new_s1, omdf.iloc[1]]
+#     jdf.columns = [new_s1, ojdf.iloc[1]]
+#     rdf.columns =[new_s2, r_df.iloc[1]]
+#     #필요 시트만 슬라이스
     smdf = mdf.xs('평균매매',axis=1, level=1)
     sadf = mdf.xs('평균단위매매', axis=1, level=1)
     jmdf = jdf.xs('평균전세',axis=1, level=1)
