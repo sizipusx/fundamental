@@ -58,9 +58,12 @@ gc = gspread.authorize(credentials)
 
 one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
 kb_gsheet_url = r'https://docs.google.com/spreadsheets/d/168K8mcybxQfufMi39wnH5agmMrkK9C8ac57MajmOawI/edit?usp=sharing'
+basic_url = r'https://docs.google.com/spreadsheets/d/1s5sS6K7YpbwKJBofHKEl8WsbUDJ0acmrOuw6YN8YZhw/edit?usp=sharing'
 
 one_doc = gc.open_by_url(one_gsheet_url)
 kb_doc = gc.open_by_url(kb_gsheet_url)
+#인구, 세대수, 기본 소득
+bs_doc = gc.open_by_url(basic_url)
 
 ### data 가져오기 영역 ##########################
 #매주 지역별 시황
@@ -301,57 +304,84 @@ def load_index_data():
 def load_pop_data():
     #인구수 파일 변경
     # p_path = r"https://github.com/sizipusx/fundamental/blob/1107b5e09309b7f74223697529ac757183ef4f05/files/pop.xlsx?raw=True"
-    kb_dict = pd.read_excel(pop_path, sheet_name=None, header=1, parse_dates=True)
-    pdf = kb_dict['pop']
-    sae = kb_dict['sae']
+    # kb_dict = pd.read_excel(pop_path, sheet_name=None, header=1, parse_dates=True)
+    # pdf = kb_dict['pop']
+    # sae = kb_dict['sae']
 
-    #header file: 인구수와 세대수가 약간 다르다.
-    psdf = pd.read_excel(header_path, sheet_name='pop', header=0)
+    # #header file: 인구수와 세대수가 약간 다르다.
+    # psdf = pd.read_excel(header_path, sheet_name='pop', header=0)
   
-    pdf['행정구역'] = psdf['pop']
-    pdf = pdf.set_index("행정구역")
-    pdf = pdf.iloc[:,3:]
+    # pdf['행정구역'] = psdf['pop']
+    # pdf = pdf.set_index("행정구역")
+    # pdf = pdf.iloc[:,3:]
+    # test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    # pdf.columns = test
+    # df = pdf.T
+    ## 구글 시트에서 가져오기
+    bs = bs_doc.worksheet('pop')
+    bs_values = bs.get_all_values()
+    bs_header, bs_rows = bs_values[2], bs_values[3:]
+    popdf = pd.DataFrame(bs_rows, columns=bs_header)
+    pdf = pdf.set_index("pop")
+    pdf = pdf.iloc[:,1:]
     test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
     pdf.columns = test
-    df = pdf.T
+    pop_df = pdf.T
     # df = df.iloc[:-1]
-    df.index = pd.to_datetime(df.index)
-    df_change = df.pct_change()*100
-    df_change = df_change.round(decimals=2)
+    pop_df.index = pd.to_datetime(pop_df.index)
+    pop_change = pop_df.pct_change()*100
+    pop_change = pop_change.round(decimals=2)
     #세대수
-    sae['행정구역'] =  psdf['sae']
-    sae = sae.set_index("행정구역")
-    sae = sae.iloc[:,3:]
-    sae.columns = test
-    sdf = sae.T
+    # sae['행정구역'] =  psdf['sae']
+    # sae = sae.set_index("행정구역")
+    # sae = sae.iloc[:,3:]
+    # sae.columns = test
+    # sdf = sae.T
+    #세대
+    sae = bs_doc.worksheet('sae')
+    sae_values = sae.get_all_values()
+    sae_header, sae_rows = sae_values[2], sae_values[3:]
+    sae_df = pd.DataFrame(sae_rows, columns=sae_header)
+    sae_df = sae_df.set_index("sae")
+    sae_df = sae_df.iloc[:,1:]
+    #test = pdf.columns.str.replace(' ','').map(lambda x : x.replace('월','.01'))
+    sae_df.columns = test
+    sdf = sae_df.T
     # sdf = sdf.iloc[:-1]
     sdf.index = pd.to_datetime(sdf.index)
     sdf_change = sdf.pct_change()*100
     sdf_change = sdf_change.round(decimals=2)
 
     ## 2022. 1. 5 완공 후 미분양 데이터 가져오기 from one file
-    data_type = 'not_sell' 
-    df1 = pd.read_excel(one_path, sheet_name=data_type, index_col=0, parse_dates=True)
-    #df1 = one_dict['not_sell']
+    # data_type = 'not_sell' 
+    # df1 = pd.read_excel(one_path, sheet_name=data_type, index_col=0, parse_dates=True)
+    # #df1 = one_dict['not_sell']
 
-    #컬럼명 바꿈
-    j1 = df1.columns
-    new_s1 = []
-    for num, gu_data in enumerate(j1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(j1[check])
+    # #컬럼명 바꿈
+    # j1 = df1.columns
+    # new_s1 = []
+    # for num, gu_data in enumerate(j1):
+    #     check = num
+    #     if gu_data.startswith('Un'):
+    #         new_s1.append(new_s1[check-1])
+    #     else:
+    #         new_s1.append(j1[check])
 
-    #컬럼 설정
-    df1.columns = [new_s1,df1.iloc[0]]
-    df1 = df1.iloc[1:,:]
-    df1 = df1.fillna(0)
-    #df1.index = pd.to_datetime(df1.index)
-    df1 = df1.astype(int)
+    # #컬럼 설정
+    # df1.columns = [new_s1,df1.iloc[0]]
+    # df1 = df1.iloc[1:,:]
+    # df1 = df1.fillna(0)
+    # #df1.index = pd.to_datetime(df1.index)
+    # df1 = df1.astype(int)
+    ns = one_doc.worksheet('afternotsold')
+    ns_values = ns.get_all_values()
+    ns_header, ns_rows = ns_values[1], ns_values[2:]
+    omdf = pd.DataFrame(ns_rows, columns=ns_header)
+    omdf = omdf.set_index(omdf.iloc[:,0])
+    omdf = omdf.iloc[:,1:]
+    omdf.index.name = 'date'
     
-    return df, df_change, sdf, sdf_change, df1
+    return pop_df, pop_change, sdf, sdf_change, omdf
 
 @st.cache
 def load_senti_data():
