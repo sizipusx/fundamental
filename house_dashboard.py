@@ -438,7 +438,7 @@ def load_not_sell_data():
     mb_df = mb_df.set_index(mb_df.iloc[:,0])
     mb_df = mb_df.iloc[:,1:]
     mb_df.index.name = 'date'
-    mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).astype(int).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0')
+    mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
     #준공 후 미분양
     ns = one_doc.worksheet('afternotsold')
     ns_values = ns.get_all_values()
@@ -447,9 +447,7 @@ def load_not_sell_data():
     omdf = omdf.set_index(omdf.iloc[:,0])
     omdf = omdf.iloc[:,1:]
     omdf.index.name = 'date'
-    omdf = omdf.astype(int)
-    omdf = omdf.apply(lambda x:x.replace(',',''))
-    omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).astype(int).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0')
+    omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
 
     return omdf, mb_df
 
