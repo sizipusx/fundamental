@@ -872,7 +872,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         for col_data, color in zip(size_list, marker_colors): 
             fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data],  
                               text = bigc.loc[:, col_data], textposition = 'outside', marker_color=color), secondary_y = False)
-        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color='#34314c'), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
@@ -898,7 +898,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         for col_data, color in zip(size_list, marker_colors): 
             fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
                                 text = bigc.loc[:, col_data], textposition = 'outside', marker_color=color ), secondary_y = False)
-        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color='#34314c'), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
@@ -924,7 +924,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         for col_data, color in zip(size_list, marker_colors): 
             fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
                                     text = bigc.loc[:, col_data], textposition = 'outside', marker_color=color ), secondary_y = False)
-        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color'#34314c'), secondary_y = True)
         # Change the bar mode
         fig.update_layout(barmode='stack')
         fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
@@ -948,7 +948,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         for col_data, color in zip(size_list, marker_colors): 
             fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
                                     text = bigc.loc[:, col_data], textposition = 'outside', marker_color=color ), secondary_y = False)
-        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color='#34314c'), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
@@ -976,7 +976,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         for col_data, color in zip(size_list, marker_colors): 
             fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data], 
                                 text = bigc.loc[:, col_data], textposition = 'outside', marker_color=color ), secondary_y = False)
-        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color=marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines+markers', name='500명 이상 기업수', x=bigc.index, y=bigc.loc[:,('대기업 비중',    '500명이상\n사업체수')], marker_color='#34314c'), secondary_y = True)
 
         # Change the bar mode
         fig.update_layout(barmode='stack')
@@ -1027,7 +1027,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1054,7 +1054,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1081,7 +1081,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1107,7 +1107,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1135,7 +1135,7 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1187,7 +1187,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
-                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = bigc[y_data], textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
@@ -1214,7 +1214,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
-                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = bigc[y_data], textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
@@ -1241,7 +1241,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
-                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = bigc[y_data], textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
@@ -1267,7 +1267,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
-                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = bigc[y_data], textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
@@ -1295,7 +1295,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[1], x = bigc.index, y=bigc[y_data],
-                                        text = bigc[y_data], textposition = 'top center', marker_color = color), secondary_y = True)
+                                        text = bigc[y_data], textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[1], x = bigc.index, y = bigc[y_data], 
