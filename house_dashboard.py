@@ -538,10 +538,10 @@ def load_local_basic():
     fun_df = fun_df.set_index('행정구역')
     fun_df.columns = [fun_df.columns, fun_df.iloc[0]]
     fun_df = fun_df.iloc[1:]
-    fun_df = fun_df.iloc[:,18].astype(int)
-    fun_df = fun_df.iloc[:,19:21].astype(float).round(decimals=2)
-    fun_df = fun_df.iloc[:,22].astype(int)
-    fun_df = round(fun_df.iloc[:,23:26].astype(float),2)
+    fun_df.iloc[:,18] = fun_df.iloc[:,18].astype(int)
+    fun_df.iloc[:,19:21] = fun_df.iloc[:,19:21].astype(float).round(decimals=2)
+    fun_df.iloc[:,22] = fun_df.iloc[:,22].astype(int)
+    fun_df.iloc[:,23:26] = round(fun_df.iloc[:,23:26].astype(float),2)
     # basic_dict = pd.ExcelFile(basic_path)
     # df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)
     # fun_df[('인구 및 세대수', '인구수')] = fun_df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
