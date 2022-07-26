@@ -540,8 +540,8 @@ def load_local_basic():
     fun_df = fun_df.iloc[1:]
     # basic_dict = pd.ExcelFile(basic_path)
     # df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)
-    fun_df[('인구 및 세대수', '인구수')] = fun_df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
-    fun_df[('인구 및 세대수', '세대수')] = fun_df[('인구 및 세대수', '세대수')].apply(lambda x: x.replace(',','')).astype(float)
+    # fun_df[('인구 및 세대수', '인구수')] = fun_df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
+    # fun_df[('인구 및 세대수', '세대수')] = fun_df[('인구 및 세대수', '세대수')].apply(lambda x: x.replace(',','')).astype(float)
     # df[('종사자규모별 사업체수', '500 - 999명')] = df[('종사자규모별 사업체수', '500 - 999명')].apply(lambda x: x.replace(',','')).astype(int)
     # df[('종사자규모별 사업체수', '1000명\n이상')] = df[('종사자규모별 사업체수', '1000명\n이상')].apply(lambda x: x.replace(',','')).astype(int)
     fun_df = fun_df.round(decimals=2)
