@@ -425,6 +425,23 @@ def load_pop_data():
     # df1 = df1.fillna(0)
     # #df1.index = pd.to_datetime(df1.index)
     # df1 = df1.astype(int)
+        
+    return pop_df, pop_change, sdf, sdf_change
+
+@st.cache
+def load_not_sell_data():
+    #미분양
+    mb = one_doc.worksheet('notsold')
+    mb_values = mb.get_all_values()
+    mb_header, mb_rows = mb_values[1], mb_values[2:]
+    mb_df = pd.DataFrame(mb_rows, columns=mb_header)
+    mb_df = mb_df.set_index(omdf.iloc[:,0])
+    mb_df = omdf.iloc[:,1:]
+    mb_df.index.name = 'date'
+    mb_df = omdf.astype(int)
+    mb_df = omdf.apply(lambda x:x.replace(',',''))
+    mb_df = omdf.astype(str).apply(lambda x:x.replace(',','')).astype(int).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0')
+    #준공 후 미분양
     ns = one_doc.worksheet('afternotsold')
     ns_values = ns.get_all_values()
     ns_header, ns_rows = ns_values[1], ns_values[2:]
@@ -435,8 +452,8 @@ def load_pop_data():
     omdf = omdf.astype(int)
     omdf = omdf.apply(lambda x:x.replace(',',''))
     omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).astype(int).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0')
-    
-    return pop_df, pop_change, sdf, sdf_change, omdf
+
+    return omdf, mb_df
 
 @st.cache
 def load_senti_data():
@@ -564,7 +581,8 @@ def load_local_basic():
     return fun_df, bigc, smc
 ############ data 불러오기 ######################
 mdf, jdf, code_df, geo_data = load_index_data()
-popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
+popdf, popdf_change, saedf, saedf_change = load_pop_data()
+not_sell, mibunyang = load_not_sell_data()
 b_df, org_df = load_buy_data()
 peong_df, peong_ch, peongj_df, peongj_ch, mr_df, ar_df = load_ratio_data()
 basic_df, bigc, smc = load_local_basic()
@@ -851,7 +869,7 @@ with st.container():
     with col2:
         st.write("")
     with col3:
-        drawAPT_update.run_not_sell(selected_dosi, selected_city,not_sell, small_list)
+        drawAPT_update.run_not_sell(selected_dosi, selected_city, not_sell, mibunyang)
 
 html_br="""
 <br>

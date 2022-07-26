@@ -399,13 +399,13 @@ def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
             st.write("세대수 Source : https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040B3 ")
             st.write("기타 소스: https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01#content-group")
     #미분양 그래프
-def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
+def run_not_sell(selected_city, selected_city2, after_df, not_sell_df):
     do_city = ['경기','강원', '충북', '충남', '충북', '전북', '전남', '경남', '경북', '제주']
     gu_city = ['서울', '부산', '대구', '대전', '울산', '인천', '광주']
     etc_city = ['강남', '강북', '6대광역시', '5대광역시', '지방']
 
     if selected_city == '전국' and selected_city2 == '전국':
-        city = '전국 합계'
+        city = '전국 계'
     elif (selected_city in gu_city) and (selected_city == selected_city2):
         city = selected_city + ' 계'
     elif (selected_city in gu_city) and (selected_city != selected_city2):
@@ -420,21 +420,16 @@ def run_not_sell(selected_city, selected_city2, not_sell_df, small_list):
     else:
         city = '전국 계'
 
-    slice_df =  not_sell_df.xs(city, axis=1, level=0)   
+    #slice_df =  not_sell_df.xs(city, axis=1, level=0)   
 
     titles = dict(text= ' <b>['+ selected_city2 + ']</b> 준공 후 미분양', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '60~85㎡', x =  slice_df.index, y= slice_df['60∼85㎡'], marker_color = marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Bar(name ='85㎡초과', x =  slice_df.index, y= slice_df['85㎡초과'], marker_color = marker_colors[2]), secondary_y = True)                                             
-    fig.add_trace(go.Bar(name ='40~60㎡', x =  slice_df.index, y= slice_df['40~60㎡'], marker_color = marker_colors[3]), secondary_y = True)
-    fig.add_trace(go.Bar(name ='40㎡이하', x =  slice_df.index, y= slice_df['40㎡이하'], marker_color = marker_colors[4]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name ='전체', x =  slice_df.index, y= slice_df['소계'], marker_color = marker_colors[0]), secondary_y = False)
-    # fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.add_trace(go.Bar(name = '미분양', x =  not_sell_df.index, y= not_sell_df[selected_city2], marker_color = marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '준공후', x =  after_df.index, y= after_df[selected_city2], marker_color = marker_colors[1]), secondary_y = True)
     fig.update_yaxes(title_text='호', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = True)
-    fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
+    #fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    fig.add_hline(y=round(slice_df['소계'].mean(),1), line_width=2, line_dash="dash", line_color="blue", annotation_text=f"소계 평균: {round(slice_df['소계'].mean(),1)}", annotation_position="bottom right")
+    fig.add_hline(y=round(not_sell_df[selected_city2].mean(),1), line_width=2, line_dash="dash", line_color="blue", annotation_text=f"소계 평균: {round(not_sell_df[selected_city2].mean(),1)}", annotation_position="bottom right")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
