@@ -542,6 +542,8 @@ def load_local_basic():
     fun_df.iloc[:,19:21] = fun_df.iloc[:,19:21].astype(float).round(decimals=2)
     fun_df.iloc[:,22] = fun_df.iloc[:,22].astype(int)
     fun_df.iloc[:,23:26] = round(fun_df.iloc[:,23:26].astype(float),2)
+    fun_df.iloc[:,26:38] = fun_df.iloc[:,26:38].astype(int).round(decimals=2)
+    fun_df.iloc[:,38] = fun_df.iloc[:,38].astype(float)
     # basic_dict = pd.ExcelFile(basic_path)
     # df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)
     # fun_df[('인구 및 세대수', '인구수')] = fun_df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
