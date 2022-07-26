@@ -675,8 +675,8 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         title = '전국 인구 동향'
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_bar = [('인구 및 세대수', '인구수'), ('인구 및 세대수', '세대수')]#, ('인구 및 세대수', '인구밀도')]
-        y_data_line = [('인구 및 세대수', '12인가구비율'), ('인구 및 세대수', '노인인구비율'), ('인구 및 세대수', '아파트거주비율')]
+        y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
+        y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
