@@ -936,7 +936,7 @@ with st.container():
     with col3:
         st.write("")
     with col4:
-        drawAPT_update.draw_flower_together(mirco_list, cum_mdf, cum_jdf, flag)
+        drawAPT_update.draw_flower_together(small_list, cum_mdf, cum_jdf, flag)
 html_br="""
 <br>
 """
