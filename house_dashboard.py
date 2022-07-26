@@ -538,6 +538,10 @@ def load_local_basic():
     fun_df = fun_df.set_index('행정구역')
     fun_df.columns = [fun_df.columns, fun_df.iloc[0]]
     fun_df = fun_df.iloc[1:]
+    fun_df.iloc[:,:4] = fun_df.iloc[:,:4].astype(str)
+    fun_df.iloc[:,4] = fun_df.iloc[:,4].astype(str).apply(lambda x: x.replace(' ','0')).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    fun_df.iloc[:,5:17] = fun_df.iloc[:,5:17].astype(str).apply(lambda x: x.replace(' ','0')).apply(lambda x: x.replace('-','0')).astype(int)
+    fun_df.iloc[:,17] = fun_df.iloc[:,17].astype(str).apply(lambda x: x.replace(' ','0')).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     fun_df.iloc[:,18] = fun_df.iloc[:,18].astype(int)
     fun_df.iloc[:,19:21] = fun_df.iloc[:,19:21].astype(str).apply(lambda x: x.replace(' ','0')).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     fun_df.iloc[:,22] = fun_df.iloc[:,22].astype(str).apply(lambda x: x.replace(' ','0')).apply(lambda x: x.replace('-','0')).astype(int)
