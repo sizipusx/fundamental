@@ -438,8 +438,6 @@ def load_not_sell_data():
     mb_df = mb_df.set_index(mb_df.iloc[:,0])
     mb_df = mb_df.iloc[:,1:]
     mb_df.index.name = 'date'
-    mb_df = mb_df.astype(int)
-    mb_df = mb_df.apply(lambda x:x.replace(',',''))
     mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).astype(int).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0')
     #준공 후 미분양
     ns = one_doc.worksheet('afternotsold')
