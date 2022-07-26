@@ -607,6 +607,10 @@ jdf_change = jdf_change.iloc[1:]
 
 jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
 jdf_change = jdf_change.astype(float).fillna(0)
+cum_mdf = (1+mdf_change/100).cumprod() -1
+cum_mdf = cum_mdf.round(decimals=3)
+cum_jdf = (1+jdf_change/100).cumprod() -1
+cum_jdf = cum_jdf.round(decimals=3)
 # jdf = jdf.mask(np.isinf(jdf))
 #일주일 간 상승률 순위
 last_df = mdf_change.iloc[-1].T.to_frame()
@@ -923,7 +927,19 @@ with st.container():
 html_br="""
 <br>
 """
-
+### Block 9 누적 플라워 그래프#########################################################################
+with st.container():
+    col2, col3, col4 = st.columns([30,2,30])
+    with col2:
+        flag = 'KB'
+        drawAPT_update.draw_flower(selected_city, selected_micro_city, cum_mdf, cum_jdf, flag)
+    with col3:
+        st.write("")
+    with col4:
+        drawAPT_update.draw_flower_together(mirco_list, cum_mdf, cum_jdf, flag)
+html_br="""
+<br>
+"""
 ####지역 시황 ###############
 df_dic = pd.ExcelFile(local_path)
 dmf = df_dic.parse("KB매매", index_col=0)
