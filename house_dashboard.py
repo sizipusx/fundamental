@@ -551,7 +551,7 @@ def load_local_basic():
     smc.loc[:,('보험료', '직장월급여')] = df.loc[:,('보험료', '직장월급여')].astype(float).fillna(0)
     smc.loc[:,('보험료', '직장월급여')]
 
-    return df, bigc, smc
+    return fun_df, bigc, smc
 ############ data 불러오기 ######################
 mdf, jdf, code_df, geo_data = load_index_data()
 popdf, popdf_change, saedf, saedf_change, not_sell = load_pop_data()
