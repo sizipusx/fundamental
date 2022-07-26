@@ -530,13 +530,21 @@ def load_senti_data():
 
 @st.cache(suppress_st_warning=True)
 def load_local_basic():
-    basic_dict = pd.ExcelFile(basic_path)
-    df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)
-    df[('인구 및 세대수', '인구수')] = df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
-    df[('인구 및 세대수', '세대수')] = df[('인구 및 세대수', '세대수')].apply(lambda x: x.replace(',','')).astype(float)
+    ## 구글 시트에서 읽어 오자.
+    fun = bs_doc.worksheet('fun')
+    fun_values = fun.get_all_values()
+    fun_header, fun_rows = fun_values[0], fun_values[1:]
+    fun_df = pd.DataFrame(fun_rows, columns=fun_header)
+    fun_df = fun_df.set_index('행정구역')
+    fun_df.columns = [fun_df.columns, fun_df.iloc[0]]
+    fun_df = fun_df.iloc[1:]
+    # basic_dict = pd.ExcelFile(basic_path)
+    # df = basic_dict.parse("Sheet1", header=[0,1], index_col=0)
+    fun_df[('인구 및 세대수', '인구수')] = fun_df[('인구 및 세대수', '인구수')].apply(lambda x: x.replace(',','')).astype(float)
+    fun_df[('인구 및 세대수', '세대수')] = fun_df[('인구 및 세대수', '세대수')].apply(lambda x: x.replace(',','')).astype(float)
     # df[('종사자규모별 사업체수', '500 - 999명')] = df[('종사자규모별 사업체수', '500 - 999명')].apply(lambda x: x.replace(',','')).astype(int)
     # df[('종사자규모별 사업체수', '1000명\n이상')] = df[('종사자규모별 사업체수', '1000명\n이상')].apply(lambda x: x.replace(',','')).astype(int)
-    df = df.round(decimals=2)
+    fun_df = fun_df.round(decimals=2)
     bigc = df.loc[:'제주',:]
     smc = df.loc['서울 강남구':, :]
     smc.loc[:,('보험료', '직장월급여')].replace([np.inf, -np.inf], np.nan, inplace=True)
