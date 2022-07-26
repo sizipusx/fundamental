@@ -548,7 +548,7 @@ def load_local_basic():
     bigc = fun_df.loc[:'제주',:]
     smc = fun_df.loc['서울 강남구':, :]
     smc.loc[:,('보험료', '직장월급여')].replace([np.inf, -np.inf], np.nan, inplace=True)
-    smc.loc[:,('보험료', '직장월급여')] = df.loc[:,('보험료', '직장월급여')].astype(float).fillna(0)
+    smc.loc[:,('보험료', '직장월급여')] = fun_df.loc[:,('보험료', '직장월급여')].astype(float).fillna(0)
     smc.loc[:,('보험료', '직장월급여')]
 
     return fun_df, bigc, smc
