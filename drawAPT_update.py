@@ -844,7 +844,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         titles = dict(text= title, x=0.5, y = 0.95) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
-                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수',     '1000명 이상')]
+                    ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명 이상')]
 
         for col_data, color in zip(size_list, marker_colors): 
             fig.add_trace(go.Bar(name=col_data[1], x=bigc.index, y=bigc.loc[:, col_data]/10000, 

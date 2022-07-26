@@ -550,7 +550,7 @@ def load_local_basic():
     # fun_df[('인구 및 세대수', '세대수')] = fun_df[('인구 및 세대수', '세대수')].apply(lambda x: x.replace(',','')).astype(float)
     # df[('종사자규모별 사업체수', '500 - 999명')] = df[('종사자규모별 사업체수', '500 - 999명')].apply(lambda x: x.replace(',','')).astype(int)
     # df[('종사자규모별 사업체수', '1000명\n이상')] = df[('종사자규모별 사업체수', '1000명\n이상')].apply(lambda x: x.replace(',','')).astype(int)
-    fun_df = fun_df.round(decimals=2)
+    #fun_df = fun_df.round(decimals=2)
     bigc = fun_df.loc[:'제주',:]
     smc = fun_df.loc['서울 강남구':, :]
     smc.loc[:,('보험료', '직장월급여')].replace([np.inf, -np.inf], np.nan, inplace=True)
