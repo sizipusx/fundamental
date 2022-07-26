@@ -495,8 +495,8 @@ def run_jeon_ratio(selected_dosi, mr_df, ar_df):
                                     name = "평균전세가율", x =  ar_df.index, y=ar_df[selected_dosi],  
                                     text= ar_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[1]),
                                     secondary_y = False)
-    fig.add_hline(y=round(ar_df[selected_dosi].mean(),1), line_width=2, line_dash="solid", line_color=marker_colors[1], annotation_text=f"평균 평균: {round(ar_df[selected_dosi].mean(),1)}", annotation_position="bottom right")
-    fig.add_hline(y=round(mr_df[selected_dosi].mean(),1), line_width=2, line_dash="dot", line_color=marker_colors[0], annotation_text=f"중위 평균: {round(mr_df[selected_dosi].mean(),1)}", annotation_position="bottom right")
+    fig.add_hline(y=round(ar_df[selected_dosi].mean(),1), line_width=2, line_dash="dot", line_color=marker_colors[1], annotation_text=f"평균 평균: {round(ar_df[selected_dosi].mean(),1)}", annotation_position="bottom right")
+    fig.add_hline(y=round(mr_df[selected_dosi].mean(),1), line_width=2, line_dash="dash", line_color=marker_colors[0], annotation_text=f"중위 평균: {round(mr_df[selected_dosi].mean(),1)}", annotation_position="bottom right")
 
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', template=template, xaxis_tickformat = '%Y-%m')
     fig.update_yaxes(title_text='전세가율', showticklabels= True, showgrid = True, ticksuffix="%")
