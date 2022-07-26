@@ -424,12 +424,12 @@ def run_not_sell(selected_city, selected_city2, after_df, not_sell_df):
 
     titles = dict(text= ' <b>['+ selected_city2 + ']</b> 준공 후 미분양', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '미분양', x =  not_sell_df.index, y= not_sell_df[selected_city2], marker_color = marker_colors[0]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '준공후', x =  after_df.index, y= after_df[selected_city2], marker_color = marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '미분양', x =  not_sell_df.index, y= not_sell_df[city], marker_color = marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '준공후', x =  after_df.index, y= after_df[city], marker_color = marker_colors[1]), secondary_y = True)
     fig.update_yaxes(title_text='호', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = True)
     #fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    fig.add_hline(y=round(not_sell_df[selected_city2].mean(),1), line_width=2, line_dash="dash", line_color="blue", annotation_text=f"소계 평균: {round(not_sell_df[selected_city2].mean(),1)}", annotation_position="bottom right")
+    fig.add_hline(y=round(not_sell_df[city].mean(),1), line_width=2, line_dash="dash", line_color="blue", annotation_text=f"소계 평균: {round(not_sell_df[city].mean(),1)}", annotation_position="bottom right")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
