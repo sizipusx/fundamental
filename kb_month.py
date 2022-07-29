@@ -782,7 +782,8 @@ if __name__ == "__main__":
             """
             st.markdown(html_br, unsafe_allow_html=True)
             ### 완공 후 미분양 증가 하락 지역 #########################################################################################
-            not_total = not_sell_apt.xs('소계', axis=1, level=1) 
+            #not_total = not_sell_apt.xs('소계', axis=1, level=1) 
+            not_total = not_sell_apt.copy()
             #필요 날짜만 slice
             last_date_af = not_total.index[-1]
             slice_af = not_total.loc[start_date:last_date_af]
