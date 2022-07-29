@@ -367,7 +367,7 @@ def load_senti_data():
             kbs_df = kbs_df.set_index(kbs_df.iloc[:,0])
             kbs_df = kbs_df.iloc[:,1:]
             kbs_df.index.name = 'date'
-
+            st.dataframe(kbs_df)
             #전세수급지수만 filtering
             if k.title == 'kbs':
                 js_index = kbs_df.xs("매수우위지수", axis=1, level=1)
