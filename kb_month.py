@@ -331,25 +331,28 @@ def load_one_data():
 
 @st.cache
 def load_senti_data():
-    kbm_dict = read_source_excel()
-
-    m_sheet = '21.매수우위,22.매매거래,23.전세수급,24.전세거래,25.KB부동산 매매가격 전망지수,26.KB부동산 전세가격 전망지수'
+    #kbm_dict = read_source_excel()
+    worksheet_list = kb_doc.worksheets()
+    m_sheet = 'kbs,kbjs,kbmtr,kbjtr'
     m_list = m_sheet.split(',')
     df_dic = []
     df_a = []
     df_b = []
 
-    for k in kbm_dict.keys():
-        js = kbm_dict[k]
+    for k in worksheet_list:
+        js = kb_doc.worksheet(k)
         # print(f"sheet name is {k}")
 
         if k in m_list:
             print(f"sheet name is {k}")
-            js = js.set_index("Unnamed: 0")
-            js.index.name="날짜"
+            kbs_values = js.get_all_values()
+            kbs_header, kbs_rows = kbs_values[1], kbs_values[2:]
+            kbs_df = pd.DataFrame(kbs_rows, columns=kbs_header)
+            #js = js.set_index("Unnamed: 0")
+            #js.index.name="날짜"
 
             #컬럼명 바꿈
-            j1 = js.columns.map(lambda x: x.split(' ')[0])
+            j1 = kbs_df.columns.map(lambda x: x.split(' ')[0])
 
             new_s1 = []
             for num, gu_data in enumerate(j1):
@@ -360,55 +363,59 @@ def load_senti_data():
                     new_s1.append(j1[check])
 
             #컬럼 설정
-            js.columns = [new_s1,js.iloc[0]]
+            kbs_df.columns = [new_s1,kbs_df.iloc[0]]
+            kbs_df = kbs_df.iloc[1:]
+            kbs_df = kbs_df.set_index(kbs_df.iloc[:,0])
+            kbs_df = kbs_df.iloc[:,1:]
+            kbs_df.index.name = 'date'
 
             #전세수급지수만 filtering
-            if k == '21.매수우위':
+            if k == 'kbs':
                 js_index = js.xs("매수우위지수", axis=1, level=1)
                 js_a = js.xs("매도자 많음", axis=1, level=1)
                 js_b = js.xs("매수자 많음", axis=1, level=1)
-            elif k == '22.매매거래':
+            elif k == 'kbmtr':
                 js_index = js.xs("매매거래지수", axis=1, level=1)
                 js_a = js.xs("활발함", axis=1, level=1)
                 js_b = js.xs("한산함", axis=1, level=1)
-            elif k == '23.전세수급':
+            elif k == 'kbjs':
                 js_index = js.xs("전세수급지수", axis=1, level=1)
                 js_a = js.xs("수요>공급", axis=1, level=1)
                 js_b = js.xs("수요<공급", axis=1, level=1)
-            elif k == '24.전세거래':
+            elif k == 'kbjtr':
                 js_index = js.xs("전세거래지수", axis=1, level=1)
                 js_a = js.xs("활발함", axis=1, level=1)
                 js_b = js.xs("한산함", axis=1, level=1)
-            elif k == '25.KB부동산 매매가격 전망지수':
-                js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
-                js_a = js.xs("약간상승", axis=1, level=1)
-                js_b = js.xs("약간하락", axis=1, level=1)
-            elif k == '26.KB부동산 전세가격 전망지수':
-                js_index = js.xs("KB부동산\n전세전망지수", axis=1, level=1)
-                js_a = js.xs("약간상승", axis=1, level=1)
-                js_b = js.xs("약간하락", axis=1, level=1)
+            # elif k == '25.KB부동산 매매가격 전망지수':
+            #     js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
+            #     js_a = js.xs("약간상승", axis=1, level=1)
+            #     js_b = js.xs("약간하락", axis=1, level=1)
+            # elif k == '26.KB부동산 전세가격 전망지수':
+            #     js_index = js.xs("KB부동산\n전세전망지수", axis=1, level=1)
+            #     js_a = js.xs("약간상승", axis=1, level=1)
+            #     js_b = js.xs("약간하락", axis=1, level=1)
             #필요 데이터만
-            js_index = js_index.iloc[2:js_index['서울'].count(), : ]
-            js_a = js_a.iloc[2:js_a['서울'].count(), : ]
-            js_b = js_b.iloc[2:js_b['서울'].count(), : ]
+            # js_index = js_index.iloc[2:js_index['서울'].count(), : ]
+            # js_a = js_a.iloc[2:js_a['서울'].count(), : ]
+            # js_b = js_b.iloc[2:js_b['서울'].count(), : ]
 
             #날짜 바꿔보자
-            index_list = list(js_index.index)
-            new_index = []
+            # index_list = list(js_index.index)
+            # new_index = []
 
-            for num, raw_index in enumerate(index_list):
-                temp = str(raw_index).split('.')
-                if len(temp[0]) == 3:
-                    if int(temp[0].replace("'","")) >84:
-                        new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
-                    else:
-                        new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
-                else:
-                    new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+            # for num, raw_index in enumerate(index_list):
+            #     temp = str(raw_index).split('.')
+            #     if len(temp[0]) == 3:
+            #         if int(temp[0].replace("'","")) >84:
+            #             new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+            #         else:
+            #             new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
+            #     else:
+            #         new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
 
-            js_index.set_index(pd.to_datetime(new_index), inplace=True)
-            js_a.set_index(pd.to_datetime(new_index), inplace=True)
-            js_b.set_index(pd.to_datetime(new_index), inplace=True)
+            # js_index.set_index(pd.to_datetime(new_index), inplace=True)
+            # js_a.set_index(pd.to_datetime(new_index), inplace=True)
+            # js_b.set_index(pd.to_datetime(new_index), inplace=True)
 
                 
             #매달 마지막 데이터만 넣기
