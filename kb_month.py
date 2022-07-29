@@ -264,6 +264,15 @@ def load_one_data():
     omdf.index = pd.to_datetime(omdf.index)
     omdf.index.name = 'date'
     omdf = omdf.apply(lambda x:x.replace('','0')).astype(float)
+    oj = one_doc.worksheet('oj')
+    oj_values = oj.get_all_values()
+    j_header, j_rows = oj_values[1], oj_values[2:]
+    ojdf = pd.DataFrame(j_rows, columns=j_header)
+    ojdf = ojdf.set_index(ojdf.iloc[:,0])
+    ojdf = ojdf.iloc[:,1:]
+    ojdf.index = pd.to_datetime(ojdf.index)
+    ojdf.index.name = 'date'
+    ojdf = ojdf.apply(lambda x:x.replace('','0')).astype(float)
      #주간 증감률
     omdf_change = omdf.pct_change()*100
     omdf_change = omdf_change.iloc[1:]
