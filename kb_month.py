@@ -356,7 +356,7 @@ def load_senti_data():
             new_s1 = []
             for num, gu_data in enumerate(j1):
                 check = num
-                if gu_data.startswith('Un'):
+                if gu_data == '':
                     new_s1.append(new_s1[check-1])
                 else:
                     new_s1.append(j1[check])
@@ -367,7 +367,6 @@ def load_senti_data():
             kbs_df = kbs_df.set_index(kbs_df.iloc[:,0])
             kbs_df = kbs_df.iloc[:,1:]
             kbs_df.index.name = 'date'
-            st.dataframe(kbs_df)
             #전세수급지수만 filtering
             if k.title == 'kbs':
                 js_index = kbs_df.xs("매수우위지수", axis=1, level=1)
