@@ -222,9 +222,9 @@ def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
 def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
-    js_j = senti_dfs[2].astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_5 = df_as[2].astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_6 = df_bs[2].astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_j = senti_dfs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_5 = df_as[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_6 = df_bs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     titles = dict(text= '['+ selected_dosi + '] 전세수급지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
