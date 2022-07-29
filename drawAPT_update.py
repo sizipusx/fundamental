@@ -104,60 +104,60 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
-    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
-              annotation_text="8.2 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
-              annotation_text="9.13 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
-              annotation_text="12.16/2.24 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
-              annotation_text="6.17/7.10 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
-              annotation_text="8.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
-              annotation_text="8.4 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(visible=True), type="date")      
-    )
+    # fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+    #           annotation_text="8.2 대책", annotation_position="top left",
+    #           fillcolor="green", opacity=0.25, line_width=0)
+    # fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+    #           annotation_text="9.13 대책", annotation_position="top left",
+    #           fillcolor="green", opacity=0.25, line_width=0)
+    # fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+    #           annotation_text="12.16/2.24 대책", annotation_position="top left",
+    #           fillcolor="green", opacity=0.25, line_width=0)
+    # fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+    #           annotation_text="6.17/7.10 대책", annotation_position="top left",
+    #           fillcolor="green", opacity=0.25, line_width=0)
+    # fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+    #           annotation_text="8.4 대책", annotation_position="bottom left",
+    #           fillcolor="green", opacity=0.25, line_width=0)
+    # fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
+    #           annotation_text="8.4 대책", annotation_position="top left",
+    #           fillcolor="green", opacity=0.25, line_width=0)
+    # fig.update_layout(
+    #         showlegend=True,
+    #         legend=dict(
+    #         orientation="h",
+    #         yanchor="bottom",
+    #         y=1.02,
+    #         xanchor="right",
+    #         x=1),
+    #         xaxis=go.layout.XAxis(
+    #         rangeselector=dict(
+    #             buttons=list([
+    #                 dict(count=6,
+    #                     label="6m",
+    #                     step="month",
+    #                     stepmode="backward"),
+    #                 dict(count=1,
+    #                     label="YTD",
+    #                     step="year",
+    #                     stepmode="todate"),
+    #                 dict(count=1,
+    #                     label="1y",
+    #                     step="year",
+    #                     stepmode="backward"),
+    #                 dict(count=5,
+    #                     label="5y",
+    #                     step="year",
+    #                     stepmode="backward"),
+    #                 dict(count=10,
+    #                     label="10y",
+    #                     step="year",
+    #                     stepmode="backward"),
+    #                 dict(step="all")
+    #             ])
+    #         ),
+    #         rangeslider=dict(visible=True), type="date")      
+    # )
     st.plotly_chart(fig)
 
 def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
