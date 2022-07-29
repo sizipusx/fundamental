@@ -342,7 +342,7 @@ def load_senti_data():
     for k in worksheet_list:
         # print(f"sheet name is {k}")
         if k.title in m_list:
-            print(f"sheet name is {k}")
+            #print(f"sheet name is {k}")
             js = kb_doc.worksheet(k.title)
             kbs_values = js.get_all_values()
             kbs_header, kbs_rows = kbs_values[1], kbs_values[2:]
@@ -369,19 +369,19 @@ def load_senti_data():
             kbs_df.index.name = 'date'
 
             #전세수급지수만 filtering
-            if k == 'kbs':
+            if k.title == 'kbs':
                 js_index = kbs_df.xs("매수우위지수", axis=1, level=1)
                 js_a = kbs_df.xs("매도자 많음", axis=1, level=1)
                 js_b = kbs_df.xs("매수자 많음", axis=1, level=1)
-            elif k == 'kbmtr':
+            elif k.title == 'kbmtr':
                 js_index = kbs_df.xs("매매거래지수", axis=1, level=1)
                 js_a = kbs_df.xs("활발함", axis=1, level=1)
                 js_b = kbs_df.xs("한산함", axis=1, level=1)
-            elif k == 'kbjs':
+            elif k.title == 'kbjs':
                 js_index = kbs_df.xs("전세수급지수", axis=1, level=1)
                 js_a = kbs_df.xs("수요>공급", axis=1, level=1)
                 js_b = kbs_df.xs("수요<공급", axis=1, level=1)
-            elif k == 'kbjtr':
+            elif k.title == 'kbjtr':
                 js_index = kbs_df.xs("전세거래지수", axis=1, level=1)
                 js_a = kbs_df.xs("활발함", axis=1, level=1)
                 js_b = kbs_df.xs("한산함", axis=1, level=1)
