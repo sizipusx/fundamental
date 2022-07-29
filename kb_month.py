@@ -398,22 +398,22 @@ def load_senti_data():
             # js_b = js_b.iloc[2:js_b['서울'].count(), : ]
 
             #날짜 바꿔보자
-            # index_list = list(js_index.index)
-            # new_index = []
+            index_list = list(js_index.index)
+            new_index = []
 
-            # for num, raw_index in enumerate(index_list):
-            #     temp = str(raw_index).split('.')
-            #     if len(temp[0]) == 3:
-            #         if int(temp[0].replace("'","")) >84:
-            #             new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
-            #         else:
-            #             new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
-            #     else:
-            #         new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+            for num, raw_index in enumerate(index_list):
+                temp = str(raw_index).split('.')
+                if len(temp[0]) == 3:
+                    if int(temp[0].replace("'","")) >84:
+                        new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+                    else:
+                        new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
+                else:
+                    new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
 
-            # js_index.set_index(pd.to_datetime(new_index), inplace=True)
-            # js_a.set_index(pd.to_datetime(new_index), inplace=True)
-            # js_b.set_index(pd.to_datetime(new_index), inplace=True)
+            js_index.set_index(pd.to_datetime(new_index), inplace=True)
+            js_a.set_index(pd.to_datetime(new_index), inplace=True)
+            js_b.set_index(pd.to_datetime(new_index), inplace=True)
 
                 
             #매달 마지막 데이터만 넣기
