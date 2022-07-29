@@ -370,21 +370,21 @@ def load_senti_data():
 
             #전세수급지수만 filtering
             if k == 'kbs':
-                js_index = js.xs("매수우위지수", axis=1, level=1)
-                js_a = js.xs("매도자 많음", axis=1, level=1)
-                js_b = js.xs("매수자 많음", axis=1, level=1)
+                js_index = kbs_df.xs("매수우위지수", axis=1, level=1)
+                js_a = kbs_df.xs("매도자 많음", axis=1, level=1)
+                js_b = kbs_df.xs("매수자 많음", axis=1, level=1)
             elif k == 'kbmtr':
-                js_index = js.xs("매매거래지수", axis=1, level=1)
-                js_a = js.xs("활발함", axis=1, level=1)
-                js_b = js.xs("한산함", axis=1, level=1)
+                js_index = kbs_df.xs("매매거래지수", axis=1, level=1)
+                js_a = kbs_df.xs("활발함", axis=1, level=1)
+                js_b = kbs_df.xs("한산함", axis=1, level=1)
             elif k == 'kbjs':
-                js_index = js.xs("전세수급지수", axis=1, level=1)
-                js_a = js.xs("수요>공급", axis=1, level=1)
-                js_b = js.xs("수요<공급", axis=1, level=1)
+                js_index = kbs_df.xs("전세수급지수", axis=1, level=1)
+                js_a = kbs_df.xs("수요>공급", axis=1, level=1)
+                js_b = kbs_df.xs("수요<공급", axis=1, level=1)
             elif k == 'kbjtr':
-                js_index = js.xs("전세거래지수", axis=1, level=1)
-                js_a = js.xs("활발함", axis=1, level=1)
-                js_b = js.xs("한산함", axis=1, level=1)
+                js_index = kbs_df.xs("전세거래지수", axis=1, level=1)
+                js_a = kbs_df.xs("활발함", axis=1, level=1)
+                js_b = kbs_df.xs("한산함", axis=1, level=1)
             # elif k == '25.KB부동산 매매가격 전망지수':
             #     js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
             #     js_a = js.xs("약간상승", axis=1, level=1)
