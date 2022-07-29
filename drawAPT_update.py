@@ -163,7 +163,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
 
 def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
     #매수우위지수와 매매증감
-    js_index = senti_dfs[0].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_index = senti_dfs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     mdf_change = mdf_change.apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
@@ -186,9 +186,9 @@ def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
 
 def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     #매매거래지수
-    js_sell = senti_dfs[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_3 = df_as[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_4 = df_bs[1].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_sell = senti_dfs[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_3 = df_as[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_4 = df_bs[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     titles = dict(text= '['+ selected_dosi + '] 매매거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -223,9 +223,9 @@ def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
 def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
-    js_j = senti_dfs[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_5 = df_as[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_6 = df_bs[2].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_j = senti_dfs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_5 = df_as[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_6 = df_bs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     titles = dict(text= '['+ selected_dosi + '] 전세수급지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -260,9 +260,9 @@ def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
     st.plotly_chart(fig)
 
 def draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs):
-    js_js = senti_dfs[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_7 = df_as[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    js_8 = df_bs[3].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_js = senti_dfs[3].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_7 = df_as[3].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_8 = df_bs[3].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     titles = dict(text= '['+ selected_dosi + '] 전세거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
