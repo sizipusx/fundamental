@@ -200,7 +200,7 @@ def load_index_data():
     mdf = mdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
     mdf = mdf.round(decimals=2)
     #전세
-    kbj = kb_doc.worksheet('kbm')
+    kbj = kb_doc.worksheet('kbj')
     kbj_values = kbj.get_all_values()
     j_header, j_rows = kbj_values[1], kbj_values[2:]
     jdf = pd.DataFrame(j_rows, columns=j_header)
