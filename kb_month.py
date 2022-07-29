@@ -412,8 +412,11 @@ def load_senti_data():
             #         new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
 
             # js_index.set_index(pd.to_datetime(new_index), inplace=True)
+            js_index.index = pd.to_datetime(js_index.index)
             # js_a.set_index(pd.to_datetime(new_index), inplace=True)
+            js_a.index = pd.to_datetime(js_a.index)
             # js_b.set_index(pd.to_datetime(new_index), inplace=True)
+            js_b.index = pd.to_datetime(js_b.index)
 
                 
             #매달 마지막 데이터만 넣기
