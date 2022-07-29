@@ -65,8 +65,8 @@ one_dict = pd.ExcelFile(one_path)
 #geojson file open
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 ################################### gsheet 로 변경: 2022-7-17 ###########################
-#gsheet
-gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+#주간 gsheet
+w_gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
 scope = [
     'https://spreadsheets.google.com/feeds',
@@ -80,8 +80,12 @@ gc = gspread.authorize(credentials)
 
 one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
 kb_gsheet_url = r'https://docs.google.com/spreadsheets/d/168K8mcybxQfufMi39wnH5agmMrkK9C8ac57MajmOawI/edit?usp=sharing'
+basic_url = r'https://docs.google.com/spreadsheets/d/1s5sS6K7YpbwKJBofHKEl8WsbUDJ0acmrOuw6YN8YZhw/edit?usp=sharing'
+
 one_doc = gc.open_by_url(one_gsheet_url)
 kb_doc = gc.open_by_url(kb_gsheet_url)
+#인구, 세대수, 기본 소득
+bs_doc = gc.open_by_url(basic_url)
 ###################################################################
 
  #return dic
@@ -106,28 +110,49 @@ def get_basic_df():
 @st.cache
 def get_not_sell_apt():
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
-    df1 = one_dict.parse("not_sell_after")
+    # df1 = one_dict.parse("not_sell_after")
 
-    #컬럼명 바꿈
-    j1 = df1.columns
-    new_s1 = []
-    for num, gu_data in enumerate(j1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(j1[check])
+    # #컬럼명 바꿈
+    # j1 = df1.columns
+    # new_s1 = []
+    # for num, gu_data in enumerate(j1):
+    #     check = num
+    #     if gu_data.startswith('Un'):
+    #         new_s1.append(new_s1[check-1])
+    #     else:
+    #         new_s1.append(j1[check])
 
-    #컬럼 설정
-    df1.columns = [new_s1,df1.iloc[0]]
-    df1 = df1.iloc[1:,:]
-    df1 = df1.fillna(0)
-    df1 = df1.set_index(df1.iloc[:,0])
-    df1.index.name = 'date'
-    df1 = df1.iloc[:,1:]
-    df1 = df1.astype(int)
+    # #컬럼 설정
+    # df1.columns = [new_s1,df1.iloc[0]]
+    # df1 = df1.iloc[1:,:]
+    # df1 = df1.fillna(0)
+    # df1 = df1.set_index(df1.iloc[:,0])
+    # df1.index.name = 'date'
+    # df1 = df1.iloc[:,1:]
+    # df1 = df1.astype(int)
 
-    return df1
+    # return df1
+
+    #미분양
+    mb = one_doc.worksheet('notsold')
+    mb_values = mb.get_all_values()
+    mb_header, mb_rows = mb_values[1], mb_values[2:]
+    mb_df = pd.DataFrame(mb_rows, columns=mb_header)
+    mb_df = mb_df.set_index(mb_df.iloc[:,0])
+    mb_df = mb_df.iloc[:,1:]
+    mb_df.index.name = 'date'
+    mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    #준공 후 미분양
+    ns = one_doc.worksheet('afternotsold')
+    ns_values = ns.get_all_values()
+    ns_header, ns_rows = ns_values[1], ns_values[2:]
+    omdf = pd.DataFrame(ns_rows, columns=ns_header)
+    omdf = omdf.set_index(omdf.iloc[:,0])
+    omdf = omdf.iloc[:,1:]
+    omdf.index.name = 'date'
+    omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+
+    return omdf, mb_df
 
 @st.cache
 def load_index_data():
@@ -217,18 +242,28 @@ def load_index_data():
 def load_one_data():
     #감정원 월간 데이터
     # one header 변경
-    omdf = one_dict.parse("msell_index", header=1,index_col=0, parse_dates=True, convert_float=True)
-    ojdf = one_dict.parse("mjeon_index", header=1,index_col=0, parse_dates=True, convert_float=True)
-    omdf = omdf.iloc[3:,:]
-    ojdf = ojdf.iloc[3:,:]
-    omdf.columns = oneh.columns
-    ojdf.columns = oneh.columns
+    # omdf = one_dict.parse("msell_index", header=1,index_col=0, parse_dates=True, convert_float=True)
+    # ojdf = one_dict.parse("mjeon_index", header=1,index_col=0, parse_dates=True, convert_float=True)
+    # omdf = omdf.iloc[3:,:]
+    # ojdf = ojdf.iloc[3:,:]
+    # omdf.columns = oneh.columns
+    # ojdf.columns = oneh.columns
+    # omdf.index = pd.to_datetime(omdf.index)
+    # ojdf.index = pd.to_datetime(ojdf.index)
+    # omdf.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # ojdf.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # omdf = omdf.astype(float).round(decimals=2)
+    # ojdf = ojdf.astype(float).round(decimals=2)
+    #구글 시트에서 읽어 오기
+    om = one_doc.worksheet('om')
+    om_values = om.get_all_values()
+    m_header, m_rows = om_values[1], om_values[2:]
+    omdf = pd.DataFrame(m_rows, columns=m_header)
+    omdf = omdf.set_index(omdf.iloc[:,0])
+    omdf = omdf.iloc[:,1:]
     omdf.index = pd.to_datetime(omdf.index)
-    ojdf.index = pd.to_datetime(ojdf.index)
-    omdf.replace([np.inf, -np.inf], np.nan, inplace=True)
-    ojdf.replace([np.inf, -np.inf], np.nan, inplace=True)
-    omdf = omdf.astype(float).round(decimals=2)
-    ojdf = ojdf.astype(float).round(decimals=2)
+    omdf.index.name = 'date'
+    omdf = omdf.apply(lambda x:x.replace('','0')).astype(float)
      #주간 증감률
     omdf_change = omdf.pct_change()*100
     omdf_change = omdf_change.iloc[1:]
@@ -482,7 +517,7 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
-    not_sell_apt = get_not_sell_apt() #준공후 미분양
+    not_sell_apt, mibunyang_df = get_not_sell_apt() #준공후 미분양
     un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
