@@ -1240,7 +1240,7 @@ if __name__ == "__main__":
         data_load_state = st.text('Loading Sentimental index Data...')
         senti_dfs, df_as, df_bs = load_senti_data()
         data_load_state.text("Sentimental index Data Done! (using st.cache)")
-
+        st.dataframe(senti_dfs[0])
         city_list = senti_dfs[0].columns.to_list()
         
         selected_dosi = st.sidebar.selectbox(
