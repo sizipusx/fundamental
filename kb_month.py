@@ -340,11 +340,10 @@ def load_senti_data():
     df_b = []
 
     for k in worksheet_list:
-        js = kb_doc.worksheet(k)
         # print(f"sheet name is {k}")
-
-        if k in m_list:
+        if k.title in m_list:
             print(f"sheet name is {k}")
+            js = kb_doc.worksheet(k.title)
             kbs_values = js.get_all_values()
             kbs_header, kbs_rows = kbs_values[1], kbs_values[2:]
             kbs_df = pd.DataFrame(kbs_rows, columns=kbs_header)
