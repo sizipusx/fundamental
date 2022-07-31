@@ -579,7 +579,7 @@ def load_senti_data():
             #             new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
             #     else:
             #         new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
-
+            js_index = js_index.astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
             js_index.index = pd.to_datetime(js_index.index)
             # js_a.set_index(pd.to_datetime(new_index), inplace=True)
             js_a.index = pd.to_datetime(js_a.index)
