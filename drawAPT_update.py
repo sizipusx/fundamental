@@ -185,9 +185,9 @@ def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
 
 def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     #매매거래지수
-    js_sell = senti_dfs[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    js_3 = df_as[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    js_4 = df_bs[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_sell = senti_dfs[1].astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_3 = df_as[1].astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    js_4 = df_bs[1].astype(str).apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     titles = dict(text= '['+ selected_dosi + '] 매매거래지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
