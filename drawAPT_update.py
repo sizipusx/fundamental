@@ -990,20 +990,21 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
 
 def draw_earning_info(selected_dosi, bigc, smc, flag):
 
-    if selected_dosi == '전국':
-        title =  "시도 연말정산 인원"
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]])
+    if selected_dosi == '전국':  
         if flag == 'pop':
+            title =  "시도 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
         else:
+            title =  "시도 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]            
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
                                         text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]])
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1020,17 +1021,16 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
     elif selected_dosi == '5대광역시':
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
-
-        title =  "5개 광역시 연말정산 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         if flag == 'pop':
+            title =  "5개 광역시 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
         else:
+            title =  "5개 광역시 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
@@ -1051,17 +1051,16 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
     elif selected_dosi == '6대광역시':
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
-
-        title = '6개 광역시 연말정산 현황'
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         if flag == 'pop':
+            title = '6개 광역시 연말정산 인원'
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
         else:
+            title = '6개 광역시 연말정산 금액'
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
@@ -1082,17 +1081,16 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
     elif selected_dosi == '수도권':
         city_list = ['서울', '경기', '인천']                                                    
         bigc = bigc.loc[city_list,:]
-
-        title =  "수도권 연말정산 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         if flag == 'pop':
+            title =  "수도권 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
         else:
+            title =  "수도권 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
@@ -1112,17 +1110,16 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
     elif selected_dosi == '지방':
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
-        
-        title =  "지방 연말정산 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         if flag == 'pop':
+            title =  "지방 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
         else:
+            title =  "지방 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
@@ -1144,17 +1141,17 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
         city_series = pd.Series(city_list)
         draw_list = city_series[city_series.str.contains(selected_dosi)].to_list()                                                  
         bigc = smc.loc[draw_list, :]
-
-        title =  selected_dosi + " 연말정산 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        
         if flag == 'pop':
+            title =  selected_dosi + " 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
         else:
+            title =  selected_dosi + " 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-
+        titles = dict(text= title, x=0.5, y = 0.85) 
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
