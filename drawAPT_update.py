@@ -995,17 +995,20 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "시도 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]])
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
         else:
             title =  "시도 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]            
-
-        for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]])
-
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]])
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
