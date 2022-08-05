@@ -1014,10 +1014,11 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
         if flag == 'pop':
+            fig.update_yaxes(title_text='원천징수지인원/주소지 인원', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         else:
+            fig.update_yaxes(title_text='원천징수지인원/주소지 금액', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -1052,10 +1053,11 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
         if flag == 'pop':
+            fig.update_yaxes(title_text='원천징수지인원/주소지 인원', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         else:
+            fig.update_yaxes(title_text='원천징수지인원/주소지 금액', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -1089,10 +1091,11 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
         if flag == 'pop':
+            fig.update_yaxes(title_text='원천징수지인원/주소지 인원', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         else:
+            fig.update_yaxes(title_text='원천징수지인원/주소지 금액', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -1127,10 +1130,11 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
         if flag == 'pop':
+            fig.update_yaxes(title_text='원천징수지인원/주소지 인원', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         else:
+            fig.update_yaxes(title_text='원천징수지인원/주소지 금액', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -1162,10 +1166,11 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
         if flag == 'pop':
+            fig.update_yaxes(title_text='원천징수지인원/주소지 인원', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         else:
+            fig.update_yaxes(title_text='원천징수지인원/주소지 금액', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -1197,10 +1202,11 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
 
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
         if flag == 'pop':
+            fig.update_yaxes(title_text='원천징수지인원/주소지 인원', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
         else:
+            fig.update_yaxes(title_text='원천징수지인원/주소지 금액', ticksuffix="%", secondary_y = True)
             fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
