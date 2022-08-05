@@ -988,15 +988,18 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         fig.update_layout(template="myID")
         st.plotly_chart(fig)    
 
-def draw_earning_info(selected_dosi, basic_df, bigc, smc):
+def draw_earning_info(selected_dosi, bigc, smc, flag):
 
     if selected_dosi == '전국':
         title =  "시도 연말정산 인원"
         titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line = [('원천징수지/주소지',           '비율')]
-        y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-
+        fig = make_subplots(specs=[[{'secondary_y': True}]])
+        if flag == 'pop':
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        else:
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]            
 
         for y_data, color in zip(y_data_line, marker_colors): 
             fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
@@ -1021,8 +1024,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         title =  "5개 광역시 연말정산 현황"
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line = [('원천징수지/주소지',           '비율')]
-        y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        if flag == 'pop':
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        else:
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
@@ -1048,8 +1055,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         title = '6개 광역시 연말정산 현황'
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line = [('원천징수지/주소지',           '비율')]
-        y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        if flag == 'pop':
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        else:
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
@@ -1075,8 +1086,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         title =  "수도권 연말정산 현황"
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line = [('원천징수지/주소지',           '비율')]
-        y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        if flag == 'pop':
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        else:
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
@@ -1101,8 +1116,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         title =  "지방 연말정산 현황"
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line = [('원천징수지/주소지',           '비율')]
-        y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        if flag == 'pop':
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        else:
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
 
 
         for y_data, color in zip(y_data_line, marker_colors): 
@@ -1129,8 +1148,12 @@ def draw_earning_info(selected_dosi, basic_df, bigc, smc):
         title =  selected_dosi + " 연말정산 현황"
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line = [('원천징수지/주소지',           '비율')]
-        y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        if flag == 'pop':
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+        else:
+            y_data_line = [('원천징수지/주소지',           '비율')]
+            y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
 
 
         for y_data, color in zip(y_data_line, marker_colors): 

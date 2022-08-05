@@ -755,7 +755,21 @@ with st.container():
     with col2:
         st.write("")
     with col3:
-        drawAPT_update.draw_earning_info(selected_dosi, basic_df, bigc, smc)
+        #drawAPT_update.draw_earning_info(selected_dosi, basic_df, bigc, smc)
+        st.write("")
+html_br="""
+<br>
+"""
+st.markdown(html_br, unsafe_allow_html=True)
+### Block 0.5-1#########################################################################################
+with st.container():
+    col1, col2, col3 = st.columns([30,2,30])
+    with col1:
+        drawAPT_update.draw_earning_info(selected_dosi, bigc, smc, factor_sel = 'pop')
+    with col2:
+        st.write("")
+    with col3:
+        drawAPT_update.draw_earning_info(selected_dosi, bigc, smc, factor_sel = 'money')
 html_br="""
 <br>
 """
