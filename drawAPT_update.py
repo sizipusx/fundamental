@@ -1031,16 +1031,21 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "5개 광역시 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
         else:
             title =  "5개 광역시 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-
-        for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1048,7 +1053,10 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        if flag == 'pop':
+            fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        else:
+            fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1061,16 +1069,20 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title = '6개 광역시 연말정산 인원'
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                 text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
         else:
             title = '6개 광역시 연말정산 금액'
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-
-        for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]])    
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1078,7 +1090,10 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        if flag == 'pop':
+            fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        else:
+            fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1091,16 +1106,21 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "수도권 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
         else:
             title =  "수도권 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
-        for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1108,7 +1128,10 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        if flag == 'pop':
+            fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        else:
+            fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1120,24 +1143,30 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "지방 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
         else:
             title =  "지방 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-
-        for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
                                 text = bigc[y_data]/10000, textposition = 'outside', marker_color= color), secondary_y = False)
-
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        if flag == 'pop':
+            fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        else:
+            fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
@@ -1156,12 +1185,12 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  selected_dosi + " 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
-        for y_data, color in zip(y_data_line, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data]*100,1),
-                                        text = round(bigc[y_data]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
+                                        text = round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1), textposition = 'top center', marker_color = '#34314c'), secondary_y = True)
 
         for y_data, color in zip(y_data_bar, marker_colors):
             fig.add_trace(go.Bar(name = y_data[0], x = bigc.index, y = bigc[y_data]/10000, 
@@ -1169,7 +1198,10 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
 
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='원천징수지인원/주소지인원', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        if flag == 'pop':
+            fig.update_yaxes(title_text='대상인원', ticksuffix="만명", secondary_y = False)
+        else:
+            fig.update_yaxes(title_text='1인당 금액', ticksuffix="만원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         fig.update_layout(template="myID")
