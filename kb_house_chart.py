@@ -1304,7 +1304,7 @@ if __name__ == "__main__":
         js_index = jeon_senti.xs("전세수급지수", axis=1, level=1)
         js_index.columns = city_list
         js_index = js_index.round(decimals=2)
-        st.dataframe(jeon_su_df)     
+        #st.dataframe(jeon_su_df)     
         # column_list = js_index.columns.to_list()
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도', city_list
