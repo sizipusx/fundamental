@@ -795,7 +795,7 @@ if __name__ == "__main__":
             #not_total = not_sell_apt.xs('소계', axis=1, level=1) 
             not_total = not_sell_apt.copy()
             #필요 날짜만 slice
-            last_date_af = not_total.index[-1]
+            last_date_af = not_total.index[-1].strftime("%Y-%m")
             slice_af = not_total.loc[start_date:last_date_af]
             s_af = pd.DataFrame()
             af_de = pd.DataFrame()
