@@ -718,11 +718,12 @@ if __name__ == "__main__":
             j_in = s_j.loc[condition2]
             mo_de = so_m.loc[condition3]
             jo_in = so_j.loc[condition4]
-            inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
-            inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('_m', '_j'))
+            inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('m', 'j'))
+            inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('m', 'j'))
             inter_kb_list = inter_df.index.to_list()
             if len(inter_kb_list) == 0:
                 inter_kb_list.append("없음")
+                st.write(len(inter_kb_list))
             inter_one_list = inter_odf.index.to_list()
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
