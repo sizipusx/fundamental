@@ -723,7 +723,7 @@ if __name__ == "__main__":
             inter_kb_list = inter_df.index.to_list()
             if len(inter_kb_list) == 0:
                 inter_kb_list.append("없음")
-                st.write(inter_kb_list[0])
+                #st.write(inter_kb_list[0])
             inter_one_list = inter_odf.index.to_list()
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
