@@ -721,6 +721,8 @@ if __name__ == "__main__":
             inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('m', 'j'))
             inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('m', 'j'))
             inter_kb_list = inter_df.index.to_list()
+            st.write(inter_df.index)
+            st.write(inter_odf.index)
             if len(inter_kb_list) == 0:
                 inter_kb_list.append("없음")
                 #st.write(inter_kb_list[0])
