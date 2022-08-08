@@ -118,7 +118,7 @@ spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq1
 
 doc = gc.open_by_url(spreadsheet_url)
 
-@st.cache(ttl=600)
+@st.cache(ttl=None)
 def get_gsheet_index():
     m_d = doc.worksheet('mae')
     j_d = doc.worksheet('jeon')
@@ -416,7 +416,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
    
 #     return kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change, m_power, bubble_df3, cum_mdf, cum_jdf
 
-@st.cache(ttl=6000)
+@st.cache(ttl=None)
 def load_senti_data():
     #구글시트에서 불러오기 2022-05-09
     kbs_doc= doc.worksheet('kbs')
