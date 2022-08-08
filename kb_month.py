@@ -142,6 +142,7 @@ def get_not_sell_apt():
     mb_df = mb_df.iloc[:,1:]
     mb_df.index.name = 'date'
     mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    mb_df.index = pd.to_datetime(mb_df.index)
     #준공 후 미분양
     ns = one_doc.worksheet('afternotsold')
     ns_values = ns.get_all_values()
@@ -151,6 +152,7 @@ def get_not_sell_apt():
     omdf = omdf.iloc[:,1:]
     omdf.index.name = 'date'
     omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    omdf.index = pd.to_datetime(omdf.index)
 
     return omdf, mb_df
 
