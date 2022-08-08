@@ -726,8 +726,6 @@ if __name__ == "__main__":
                 inter_kb_list.append("없음")
                 #st.write(inter_kb_list[0])
             inter_one_list = inter_odf.index.to_list()
-            st.write(inter_one_list)
-            st.write(inter_kb_list)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
@@ -764,9 +762,7 @@ if __name__ == "__main__":
             un_de = s_un.loc[condition_un_de]
             un_in_final = un_in[un_in.iloc[:,1] != 0]
             un_in_list = un_in_final.index.to_list()
-            st.write(un_in_list)
             un_de_list = un_de.index.to_list()
-            st.write(un_de_list)
             #table styler 
             s = un_in_final.style.background_gradient(cmap, axis=0)\
                                                 .format(na_rep='0', thousands=",")
