@@ -962,10 +962,10 @@ if __name__ == "__main__":
             header_dict = pd.read_excel(header_path, sheet_name=None)
             header = header_dict['one']
             #필요 시트만 슬라이스
-            smdf = omp.xs('평균매매',axis=1, level=1)
-            sadf = omp.xs('평균단위매매', axis=1, level=1)
-            jmdf = ojp.xs('평균전세',axis=1, level=1)
-            jadf = ojp.xs('평균단위전세', axis=1, level=1)
+            smdf = omp_df.xs('평균매매',axis=1, level=1)
+            sadf = omp_df.xs('평균단위매매', axis=1, level=1)
+            jmdf = ojp_df.xs('평균전세',axis=1, level=1)
+            jadf = ojp_df.xs('평균단위전세', axis=1, level=1)
             m_df = rdf.xs('중위', axis=1, level=1) # 중위가격 전세가율
             a_df = rdf.xs('평균', axis=1, level=1) # 평균가격 전세가율
             smdf.columns = oneh.columns
