@@ -875,22 +875,32 @@ if __name__ == "__main__":
             """
             st.markdown(html_br, unsafe_allow_html=True)
             ### 평균매매가격 증가 하락 지역 #########################################################################################
-            omp_df = one_dict.parse("sell_price", header=1, index_col=0)
-            ojp_df = one_dict.parse("jeon_price", header=1, index_col=0)
-            r_df = one_dict.parse("ratio", header=1, index_col=0)
-            omp = omp_df.iloc[4:,:]
-            ojp = ojp_df.iloc[4:,:]
-            rdf = r_df.iloc[4:,:]
+            #구글 시트에서 읽어 오기
+            ## 구글 시트에서 읽어 오면 간단하지!!
+            omp= one_doc.worksheet('omp')
+            omp_values = omp.get_all_values()
+            omp_header, omp_rows = omp_values[1], omp_values[2:]
+            omp_df = pd.DataFrame(omp_rows, columns=omp_header)
+            ojp= one_doc.worksheet('ojp')
+            ojp_values = ojp.get_all_values()
+            ojp_header, ojp_rows = ojp_values[1], ojp_values[2:]
+            ojp_df = pd.DataFrame(ojp_rows, columns=ojp_header)
+
+            #전세가율
+            ora= one_doc.worksheet('oratio')
+            ora_values = ora.get_all_values()
+            ora_header, ora_rows = ora_values[1], ora_values[2:]
+            rdf = pd.DataFrame(ora_rows, columns=ora_header)
             #컬럼 변경
-            s1 = omp.columns
+            s1 = omp_df.columns
             new_s1 = []
             for num, gu_data in enumerate(s1):
                 check = num
-                if gu_data.startswith('Un'):
+                if gu_data == '':
                     new_s1.append(new_s1[check-1])
                 else:
                     new_s1.append(s1[check])
-            #전세가율은 다른가?
+            #전세가율 컬럼
             s2 = rdf.columns
             new_s2 = []
             for num, gu_data in enumerate(s2):
@@ -899,9 +909,58 @@ if __name__ == "__main__":
                     new_s2.append(new_s2[check-1])
                 else:
                     new_s2.append(s2[check])
-            omp.columns =[new_s1, omp_df.iloc[1]]
-            ojp.columns = [new_s1, ojp_df.iloc[1]]
-            rdf.columns =[new_s2, r_df.iloc[1]]
+            
+            omp_df.columns =[new_s1, omp_df.iloc[0]]
+            omp_df = omp_df.iloc[1:]
+            omp_df = omp_df.set_index(omp_df.iloc[:,0])
+            omp_df = omp_df.iloc[:,1:]
+            ojp_df.columns =[new_s1, ojp_df.iloc[0]]
+            ojp_df = ojp_df.iloc[1:]
+            ojp_df = ojp_df.set_index(ojp_df.iloc[:,0])
+            ojp_df = ojp_df.iloc[:,1:]
+            rdf.columns =[new_s2, rdf.iloc[0]]
+            rdf = rdf.iloc[1:]
+            rdf = rdf.set_index(rdf.iloc[:,0])
+            rdf = rdf.iloc[:,1:]
+            # omp_df.index = pd.to_datetime(omp_df.index)
+            # ojp_df.index = pd.to_datetime(ojp_df.index)
+            #rdf.index = pd.to_datetime(rdf.index)
+            omp_df.index.name = 'date'
+            omp_df = omp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+            ojp_df.index.name = 'date'
+            ojp_df = ojp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+            rdf.index.name = 'date'
+            rdf = rdf.astype(str).apply(lambda x: x.replace("","0")).astype(float)
+            #기존 파일 시스템
+            # omp_df = one_dict.parse("sell_price", header=1, index_col=0)
+            # ojp_df = one_dict.parse("jeon_price", header=1, index_col=0)
+            # r_df = one_dict.parse("ratio", header=1, index_col=0)
+            # omp = omp_df.iloc[4:,:]
+            # ojp = ojp_df.iloc[4:,:]
+            # rdf = r_df.iloc[4:,:]
+            #컬럼 변경
+            # s1 = omp.columns
+            # new_s1 = []
+            # for num, gu_data in enumerate(s1):
+            #     check = num
+            #     if gu_data.startswith('Un'):
+            #         new_s1.append(new_s1[check-1])
+            #     else:
+            #         new_s1.append(s1[check])
+            # #전세가율은 다른가?
+            # s2 = rdf.columns
+            # new_s2 = []
+            # for num, gu_data in enumerate(s2):
+            #     check = num
+            #     if gu_data.startswith('Un'):
+            #         new_s2.append(new_s2[check-1])
+            #     else:
+            #         new_s2.append(s2[check])
+            # omp.columns =[new_s1, omp_df.iloc[1]]
+            # ojp.columns = [new_s1, ojp_df.iloc[1]]
+            # rdf.columns =[new_s2, r_df.iloc[1]]
+            header_dict = pd.read_excel(header_path, sheet_name=None)
+            header = header_dict['one']
             #필요 시트만 슬라이스
             smdf = omp.xs('평균매매',axis=1, level=1)
             sadf = omp.xs('평균단위매매', axis=1, level=1)
