@@ -801,8 +801,6 @@ html_br="""
 <br>
 """
 st.markdown(html_br, unsafe_allow_html=True)
-
-
 ### Block 2#########################################################################################
 with st.container():
     col1, col2, col3, col4, col5 = st.columns([20,1,20,1,20])
