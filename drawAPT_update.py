@@ -426,8 +426,10 @@ def run_not_sell(selected_city, selected_city2, after_df, not_sell_df):
 
     titles = dict(text= ' <b>['+ selected_city2 + ']</b> 준공 후 미분양', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '미분양', x =  not_sell_df.index, y= not_sell_df[city], marker_color = marker_colors[0]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '준공후', x =  after_df.index, y= after_df[city], marker_color = marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '미분양', x =  not_sell_df.index, y= not_sell_df[city], text =not_sell_df[city], textposition = 'outside',\
+         marker_color = marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '준공후', x =  after_df.index, y= after_df[city], text = after_df[city], textposition = 'outside', \
+        marker_color = marker_colors[1]), secondary_y = True)
     fig.update_yaxes(title_text='호', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = True)
     #fig.update_yaxes(title_text='소계', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
@@ -539,8 +541,8 @@ def run_buy_ratio(selected_dosi, org_df):
 
 def run_trade_index(selected_dosi, org_df, mdf):
      # colors 
-    marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+    #marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    #template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     if selected_dosi == "제주":
         selected_dosi ="제주서귀포"
     selected_df = org_df.xs(selected_dosi, axis=1, level=0)
@@ -550,10 +552,10 @@ def run_trade_index(selected_dosi, org_df, mdf):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매거래량", x = x_data, y =selected_df['합계'], 
                         text = selected_df['합계'], textposition = 'outside', 
-                        marker_color= marker_colors[2]), secondary_y = False) 
+                        marker_color= marker_colors[0]), secondary_y = False) 
     fig.add_trace(go.Scatter(mode='lines', 
                                     name = "매매지수", x =  mdf.index, y=mdf[selected_dosi],  
-                                    text= mdf[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
+                                    text= mdf[selected_dosi], textposition = 'top center', marker_color = '#34314c'),
                                     secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_hline(y=round(selected_df['합계'].mean(axis=0),1), line_width=1, line_color="blue", line_dash="dot", 
