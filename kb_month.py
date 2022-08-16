@@ -1348,7 +1348,7 @@ if __name__ == "__main__":
                 with col2:
                     st.write("")
                 with col3:
-                    drawAPT_weekly.draw_ds_change(selected_dosi, senti_dfs, jdf_change)
+                    drawAPT_weekly.draw_jds_change(selected_dosi, senti_dfs, jdf_change)
             html_br="""
             <br>
             """

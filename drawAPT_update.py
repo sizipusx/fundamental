@@ -95,7 +95,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='매수자 많음', x =  js_2.index, y= js_2[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
-    fig.add_trace(go.Scatter(mode='lines', name ='매수우위 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='매수우위지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
     #fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["매수자많음>100"], mode="text"))
     fig.add_hline(y=100.0, line_width=1, line_dash="dot", line_color="MediumPurple",  annotation_text="100보다 클 경우 매수자많음", annotation_position="bottom right")
     fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승", annotation_position="bottom right")
@@ -169,9 +169,9 @@ def draw_jsentimental_index(selected_dosi, senti_dfs, df_as, df_bs, jdf_change):
     titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='수요<공급', x =  js_2.index, y= js_2[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
-    fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
     #fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["100을 초과할수록 '공급부족' 비중이 높음"], mode="text"))
     #fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="MediumPurple", annotation_text="100을 초과할수록 '공급부족' 비중이 높음", annotation_position="bottom right", secondary_y=False)
@@ -294,6 +294,30 @@ def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def draw_jds_change(selected_dosi, senti_dfs, jdf_change):
+    #전세수급지수와 전세증감
+    js_index = senti_dfs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    jdf_change = jdf_change.apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
+    x_data = jdf_change.index
+    title = "[<b>"+selected_dosi+"</b>] 전세수급지수와 전세증감"
+    titles = dict(text= title,  x=0.5, y = 0.9) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =jdf_change[selected_dosi], 
+                        text = jdf_change[selected_dosi], textposition = 'outside', 
+                        marker_color= marker_colors[0]), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = '#34314c'), secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=100.0, line_width=1, line_color="red", secondary_y = False)
+    fig.add_hline(y=jdf_change[selected_dosi].mean(), line_width=2, line_dash="dash", line_color="blue",  annotation_text="평균상승률: "+str(round(jdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="전세수급지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_yaxes(title_text="전세증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
 
 def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     #매매거래지수
