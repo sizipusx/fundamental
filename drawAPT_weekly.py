@@ -819,18 +819,18 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
-def draw_jeon_sentiment_change(selected_dosi, mdf_change, js_index):
-    x_data = mdf_change.index
+def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
+    x_data = jdf_change.index
     title = "<b>["+selected_dosi+"]</b> 전세수급지수와 전세증감"
     titles = dict(text= title,  x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =round(mdf_change[selected_dosi],2), 
-                        text = round(mdf_change[selected_dosi],2), textposition = 'outside', 
+    fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =round(jdf_change[selected_dosi],2), 
+                        text = round(jdf_change[selected_dosi],2), textposition = 'outside', 
                         marker_color= marker_colors[0]), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
-    fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="dash", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.add_hline(y=jdf_change[selected_dosi].mean(), line_width=2, line_dash="dash", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
     fig.update_yaxes(title_text="전세수급지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="전세증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m-%d')
