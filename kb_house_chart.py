@@ -618,7 +618,7 @@ def run_price_index() :
     """
     st.markdown(html_br, unsafe_allow_html=True)
 
-def run_sentimental_index(mdf_change, jdf_change):
+def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
     ### Block 매수우위지수#########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
@@ -641,6 +641,19 @@ def run_sentimental_index(mdf_change, jdf_change):
             st.write("")
         with col3:
             drawAPT_weekly.draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 수요공급 비중 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            drawAPT_weekly.draw_senti_desu(selected_dosi, ms_1, ms_2, js_1, js_2, mdf, jdf)
+        with col2:
+            st.write("")
+        with col3:
+            st.write("")
     html_br="""
     <br>
     """
@@ -1311,7 +1324,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
-            run_sentimental_index(mdf_change, jdf_change)
+            run_sentimental_index(mdf, jdf, mdf_change, jdf_change)
     elif my_choice == 'Together':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])

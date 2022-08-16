@@ -835,3 +835,29 @@ def draw_jeon_sentiment_change(selected_dosi, mdf_change, js_index):
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
+    local_df = pd.DataFrame()
+    local_df['매매공급'] = mg_df.loc[:,select_city]
+    local_df['전세공급'] = jg_df.loc[:,select_city]
+    local_df['매매수요'] = ms_df.loc[:,select_city]
+    local_df['전세수요'] = jsp_df.loc[:,select_city]
+    sum_s = local_df.sum(axis=1)
+    df = local_df.divide(sum_s, axis=0)
+    df = round(df*100,2)
+
+    title = "<b>KB 심리지수로 보는 [" + select_city+"] 수요공급 비중</b>"
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+    fig.add_trace(go.Bar(x=df.index, y=df["전세수요"], name="전세수요", marker_color=marker_colors[0]), secondary_y=False)
+    fig.add_trace(go.Bar(x=df.index, y=df["매매수요"], name='매매수요',  marker_color= marker_colors[1]), secondary_y=False)
+    fig.add_trace(go.Bar(x=df.index, y=df["전세공급"], name='전세공급',  marker_color= marker_colors[2]), secondary_y=False)
+    fig.add_trace(go.Bar(x=df.index, y=df["매매공급"], name='매매공급',  marker_color= marker_colors[3]), secondary_y=False)
+    fig.add_trace(go.Scatter(x=mdf.index, y=mdf[select_city], name='매매지수',  marker_color= marker_colors[4]), secondary_y=True)
+    fig.add_trace(go.Scatter(x=jdf.index, y=jdf[select_city], name='전세지수',  marker_color= marker_colors[5]), secondary_y=True)
+    fig.update_yaxes(title= "심리지수 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%", secondary_y = False)
+    fig.update_layout(barmode='relative', title = titles, legend=dict(orientation="h"),  xaxis_tickformat = '%Y-%m-%d')
+    fig.add_hline(y=50.0, line_width=2, line_dash='dash', line_color="white", secondary_y=False)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
