@@ -1326,7 +1326,7 @@ if __name__ == "__main__":
             )
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
-            drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
+            #drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
             ### Block 매수우위/매매증감#########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
@@ -1344,7 +1344,7 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, jdf_change)
+                    drawAPT_update.draw_jsentimental_index(selected_dosi, senti_dfs, df_as, df_bs, jdf_change)
                 with col2:
                     st.write("")
                 with col3:
