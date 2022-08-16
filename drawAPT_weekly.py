@@ -845,7 +845,8 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
     sum_s = local_df.sum(axis=1)
     df = local_df.divide(sum_s, axis=0)
     df = round(df*100,2)
-
+    
+    marker_colors = ['rgb(0,0,255)', 'rgb(0,255,225)', 'rgb(255,192,203)', 'rgb(255,0,0)', 'rgb(0,0,0)', 'rgb(255,255,0)']
     title = "<b>KB 심리지수로 보는 [" + select_city+"] 수요공급 비중</b>"
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
