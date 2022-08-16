@@ -369,23 +369,36 @@ def load_senti_data():
             kbs_df = kbs_df.set_index(kbs_df.iloc[:,0])
             kbs_df = kbs_df.iloc[:,1:]
             kbs_df.index.name = 'date'
+            kbs_df.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
             #전세수급지수만 filtering
             if k.title == 'kbs':
                 js_index = kbs_df.xs("매수우위지수", axis=1, level=1)
+                js_index.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_a = kbs_df.xs("매도자 많음", axis=1, level=1)
+                js_a.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_b = kbs_df.xs("매수자 많음", axis=1, level=1)
+                js_b.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
             elif k.title == 'kbmtr':
                 js_index = kbs_df.xs("매매거래지수", axis=1, level=1)
+                js_index.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_a = kbs_df.xs("활발함", axis=1, level=1)
+                js_a.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_b = kbs_df.xs("한산함", axis=1, level=1)
+                js_b.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
             elif k.title == 'kbjs':
                 js_index = kbs_df.xs("전세수급지수", axis=1, level=1)
+                js_index.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_a = kbs_df.xs("수요>공급", axis=1, level=1)
+                js_a.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_b = kbs_df.xs("수요<공급", axis=1, level=1)
+                js_b.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
             elif k.title == 'kbjtr':
                 js_index = kbs_df.xs("전세거래지수", axis=1, level=1)
+                js_index.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_a = kbs_df.xs("활발함", axis=1, level=1)
+                js_a.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
                 js_b = kbs_df.xs("한산함", axis=1, level=1)
+                js_b.astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
             # elif k == '25.KB부동산 매매가격 전망지수':
             #     js_index = js.xs("KB부동산\n매매전망지수", axis=1, level=1)
             #     js_a = js.xs("약간상승", axis=1, level=1)
@@ -1314,6 +1327,32 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
+            ### Block 매수우위/전세수급지수#########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    drawAPT_weekly.draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index)
+                with col2:
+                    st.write("")
+                with col3:
+                    drawAPT_weekly.draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+            ### Block 수요공급 비중 #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    drawAPT_weekly.draw_senti_desu(selected_dosi, ms_1, ms_2, js_1, js_2, mdf, jdf)
+                with col2:
+                    st.write("")
+                with col3:
+                    st.write("")
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == '지역같이보기':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])

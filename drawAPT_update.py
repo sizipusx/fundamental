@@ -87,9 +87,9 @@ def draw_hai(city, hai_df, info_df):
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
-    js_index = senti_dfs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    js_1 = df_as[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    js_2 = df_bs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    # js_index = senti_dfs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    # js_1 = df_as[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    # js_2 = df_bs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     titles = dict(text= '[<b>'+ selected_dosi + '</b>] 매수우위지수 ', x=0.5, y = 0.9) 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
