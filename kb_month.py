@@ -1327,15 +1327,28 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Sentimental Index chart')
         if submit:
             drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
-            ### Block 매수우위/전세수급지수#########################################################################################
+            ### Block 매수우위/매매증감#########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    drawAPT_weekly.draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index)
+                    drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change)
                 with col2:
                     st.write("")
                 with col3:
-                    drawAPT_weekly.draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index)
+                    drawAPT_update.draw_ds_change(selected_dosi, senti_dfs, mdf_change)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+            ### Block 전세수급/전세증감#########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    drawAPT_update.draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, jdf_change)
+                with col2:
+                    st.write("")
+                with col3:
+                    drawAPT_weekly.draw_ds_change(selected_dosi, senti_dfs, jdf_change)
             html_br="""
             <br>
             """
@@ -1344,7 +1357,7 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    drawAPT_weekly.draw_senti_desu(selected_dosi, ms_1, ms_2, js_1, js_2, mdf, jdf)
+                    drawAPT_update.draw_desu_sentiment(selected_dosi, df_as, df_bs, mdf, jdf)
                 with col2:
                     st.write("")
                 with col3:

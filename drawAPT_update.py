@@ -96,68 +96,180 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='매수자 많음', x =  js_2.index, y= js_2[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
     fig.add_trace(go.Scatter(mode='lines', name ='매수우위 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["매수자많음>100"], mode="text"))
-    fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승 ", annotation_position="bottom right")
-    fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
+    #fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["매수자많음>100"], mode="text"))
+    fig.add_hline(y=100.0, line_width=1, line_dash="dot", line_color="MediumPurple",  annotation_text="100보다 클 경우 매수자많음", annotation_position="bottom right")
+    fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승", annotation_position="bottom right")
+    #fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(hovermode="x unified")
     # fig.update_yaxes(showspikes=True) #, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
-    # fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
-    #           annotation_text="8.2 대책", annotation_position="top left",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    # fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
-    #           annotation_text="9.13 대책", annotation_position="top left",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    # fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
-    #           annotation_text="12.16/2.24 대책", annotation_position="top left",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    # fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
-    #           annotation_text="6.17/7.10 대책", annotation_position="top left",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    # fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
-    #           annotation_text="8.4 대책", annotation_position="bottom left",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    # fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
-    #           annotation_text="8.4 대책", annotation_position="top left",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    # fig.update_layout(
-    #         showlegend=True,
-    #         legend=dict(
-    #         orientation="h",
-    #         yanchor="bottom",
-    #         y=1.02,
-    #         xanchor="right",
-    #         x=1),
-    #         xaxis=go.layout.XAxis(
-    #         rangeselector=dict(
-    #             buttons=list([
-    #                 dict(count=6,
-    #                     label="6m",
-    #                     step="month",
-    #                     stepmode="backward"),
-    #                 dict(count=1,
-    #                     label="YTD",
-    #                     step="year",
-    #                     stepmode="todate"),
-    #                 dict(count=1,
-    #                     label="1y",
-    #                     step="year",
-    #                     stepmode="backward"),
-    #                 dict(count=5,
-    #                     label="5y",
-    #                     step="year",
-    #                     stepmode="backward"),
-    #                 dict(count=10,
-    #                     label="10y",
-    #                     step="year",
-    #                     stepmode="backward"),
-    #                 dict(step="all")
-    #             ])
-    #         ),
-    #         rangeslider=dict(visible=True), type="date")      
-    # )
+    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+              annotation_text="8.2 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+              annotation_text="9.13 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+              annotation_text="12.16/2.24 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+              annotation_text="6.17/7.10 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+              annotation_text="8.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
+              annotation_text="8.4 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(visible=True), type="date")      
+    )
+    st.plotly_chart(fig)
+
+def draw_jsentimental_index(selected_dosi, senti_dfs, df_as, df_bs, jdf_change):
+    #전세수급지수
+    js_index = senti_dfs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_1 = df_as[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    js_2 = df_bs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9) 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='수요<공급', x =  js_2.index, y= js_2[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
+    fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
+    #fig.add_trace(go.Scatter(x=[js_index.index[-2]], y=[99.0], text=["100을 초과할수록 '공급부족' 비중이 높음"], mode="text"))
+    #fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
+    fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="MediumPurple", annotation_text="100을 초과할수록 '공급부족' 비중이 높음", annotation_position="bottom right", secondary_y=False)
+    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
+    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+              annotation_text="8.2 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+              annotation_text="9.13 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+              annotation_text="12.16/2.24 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+              annotation_text="6.17/7.10 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+              annotation_text="8.4 대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
+              annotation_text="8.4 대책", annotation_position="top left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
+    fig.update_layout(hovermode="x unified")
+    st.plotly_chart(fig)
+
+def draw_desu_sentiment(select_city, df_as, df_bs, mdf, jdf):
+    mg_df = df_as[0].apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    jg_df = df_bs[2].apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    ms_df = df_bs[0].apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+    jsp_df = df_as[2].apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
+
+    local_df = pd.DataFrame()
+    local_df['매매공급'] = mg_df.loc[:,select_city]
+    local_df['전세공급'] = jg_df.loc[:,select_city]
+    local_df['매매수요'] = ms_df.loc[:,select_city]
+    local_df['전세수요'] = jsp_df.loc[:,select_city]
+    sum_s = local_df.sum(axis=1)
+    df = local_df.divide(sum_s, axis=0)
+    df = round(df*100,2)
+
+    marker_colors = ['rgb(0,0,255)', 'rgb(0,255,225)', 'rgb(255,192,203)', 'rgb(255,0,0)', 'rgb(0,0,0)', 'rgb(255,255,0)']
+    title = "<b>KB 심리지수로 보는 [" + select_city+"] 수요공급 비중</b>"
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+
+    fig.add_trace(go.Bar(x=df.index, y=df["전세수요"], name="전세수요", marker_color=marker_colors[0]), secondary_y=False)
+    fig.add_trace(go.Bar(x=df.index, y=df["매매수요"], name='매매수요',  marker_color= marker_colors[1]), secondary_y=False)
+    fig.add_trace(go.Bar(x=df.index, y=df["전세공급"], name='전세공급',  marker_color= marker_colors[2]), secondary_y=False)
+    fig.add_trace(go.Bar(x=df.index, y=df["매매공급"], name='매매공급',  marker_color= marker_colors[3]), secondary_y=False)
+    fig.add_trace(go.Scatter(x=mdf.index, y=mdf[select_city], name='매매지수',  marker_color= marker_colors[4]), secondary_y=True)
+    fig.add_trace(go.Scatter(x=jdf.index, y=jdf[select_city], name='전세지수',  marker_color= marker_colors[5]), secondary_y=True)
+    fig.update_yaxes(title= "심리지수 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%", secondary_y = False)
+    fig.update_layout(barmode='relative', title = titles, legend=dict(orientation="h"),  xaxis_tickformat = '%Y-%m')
+    fig.add_hline(y=50.0, line_width=2, line_dash='dash', line_color="white", secondary_y=False)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
