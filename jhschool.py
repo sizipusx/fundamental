@@ -81,7 +81,7 @@ read_sheet = doc.worksheet('read')
 m_values = read_sheet.get_all_values()
 m_header, m_rows = m_values[0], m_values[1:]
 df = pd.DataFrame(m_rows, columns=m_header)
-df['학번'] = df['학번'].astype(int)
+df['학번'] = df['학번'].astype(str)
 df['성명'] = df['성명'].astype(str)
 
 def run(g_status, gubun):
