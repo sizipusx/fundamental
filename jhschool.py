@@ -164,7 +164,7 @@ def run(g_status, gubun):
   yes_no = st.text_input("이상 있음 혹은 이상 없음")
   yes_yes = st.button("확인")
   if yes_yes:
-    write_sheet.append_row([gubun, yes_no])
+    write_sheet.append_row([gubun, "확인 완료"])
   write_sheet.append_row([gubun, yes_no])
   st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
