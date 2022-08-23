@@ -132,10 +132,10 @@ def run(g_status, gubun):
   col1, col2 = st.columns([1,1])
 
   with col1:
-    ok_st = st.button("네, 모두 맞습니다.")
+    ok_st = st.checkbox("네, 모두 맞습니다.")
 
   with col2:
-    not_st = st.button("아니요, 이상이 있습니다.")
+    not_st = st.check("아니요, 이상이 있습니다.")
   
   write_sheet = doc.worksheet('confirm')
 
