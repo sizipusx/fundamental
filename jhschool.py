@@ -81,10 +81,16 @@ read_sheet = doc.worksheet('read')
 m_values = read_sheet.get_all_values()
 m_header, m_rows = m_values[0], m_values[1:]
 df = pd.DataFrame(m_rows, columns=m_header)
-
+df['학번'] = df['학번'].astype(int)
+df['성명'] = df['성명'].astype(str)
 
 def run(g_status, gubun):
-  st.dataframe(df)
+  if g_status == '재학':
+    slice_df = df[df['학번'] == gubun ]
+  else:
+    slice_df = df[df['성명'] == gubun ]
+  
+  st.dataframe(slice_df)
 
 
 if __name__ == "__main__":
@@ -92,8 +98,15 @@ if __name__ == "__main__":
   g_status = st.sidebar.radio("졸업 유무", ["재학", "졸업"])
   if g_status == '재학':
     gubun = st.sidebar.text_input("학번 6자리(ex:301033)")
+    if len(gubun) > 0:
+      if len(gubun) != 6 :
+        st.error("정확한 학번을 입력하세요")
+    else:
+      st.error("학번을 입력하세요!")
   else:
     gubun = st.sidebar.text_input("이름")
+    if len(gubun) == 0:
+      st.error("이름을 입력하세요!")
 
   submit = st.sidebar.button('Analysis')
 
