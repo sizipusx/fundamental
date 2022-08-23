@@ -148,6 +148,7 @@ def run(g_status, gubun):
   with col1:
     ok_st = st.checkbox("네, 모두 맞습니다.")
     if ok_st:
+      st.write("확인 완료")
       write_sheet.append_row([gubun, '이상 없음'])
       st.subheader("확인이 완료 되었습니다!!")
 
