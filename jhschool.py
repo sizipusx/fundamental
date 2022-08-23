@@ -42,7 +42,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 주간 부동산 시계열 분석 <br>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 정현고 2023학년도 수시 전형 학교장 추천 지원 확인 <br>
 <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -85,9 +85,9 @@ st.dataframe(df)
 
 if __name__ == "__main__":
 
-  g_status = st.sidebar.radio("선택", ["재학", "졸업"])
+  g_status = st.sidebar.radio("졸업 유무", ["재학", "졸업"])
   if g_status == '재학':
-    gubun = st.sidebar.text_input("학번 6자리")
+    gubun = st.sidebar.text_input("학번 6자리(ex:301033)")
   else:
     gubu = st.sidebar.text_input("이름")
 
