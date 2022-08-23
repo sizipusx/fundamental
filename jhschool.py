@@ -129,9 +129,9 @@ def run(g_status, gubun):
   # st.dataframe(slice_df)
 
   st.subheader("지원한 모든 정보가 모두 맞습니까?")
-  
+
   write_sheet = doc.worksheet('confirm')
-  t_f = st.radio("확인", ('이상 없음', '이상 있음'))
+  t_f = st.radio("확인", ('이상 없음', '이상 있음'), disabled=True)
   if t_f == "이상 없음":
     write_sheet.append_row([gubun, '이상 없음'])
     st.subheader("확인이 완료 되었습니다!!")
