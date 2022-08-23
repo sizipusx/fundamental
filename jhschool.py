@@ -147,15 +147,13 @@ def run(g_status, gubun):
 
   with col1:
     ok_st = st.checkbox("네, 모두 맞습니다.")
-    if st.button("네, 모두 맞습니다."):
-      write_sheet.append_row([gubun, '이상 없음'])
-      st.subheader("확인이 완료 되었습니다!!")
+    write_sheet.append_row([gubun, '이상 없음'])
+    st.subheader("확인이 완료 되었습니다!!")
 
   with col2:
     not_st = st.checkbox("아니요, 이상이 있습니다.")
-    if st.button("아니요, 이상이 있습니다."):
-      write_sheet.append_row([gubun, '이상 있음'])
-      st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+    write_sheet.append_row([gubun, '이상 있음'])
+    st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
 
 
