@@ -148,7 +148,7 @@ def run(g_status, gubun):
     write_sheet.append_row([gubun, '이상 없음'])
     st.subheader("확인이 완료 되었습니다!!")
     #write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
-  if not_st:
+  else:
     write_sheet.append_row([gubun, '이상 있음'])
     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
