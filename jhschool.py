@@ -132,7 +132,7 @@ def run(g_status, gubun):
 
   write_sheet = doc.worksheet('confirm')
   check_this = st.radio("체크", ('','이상 없음', '이상 있음'), index=0)
-  st.button("확인")
+  #st.button("확인")
 
   if st.button("확인") and check_this == '이상 없음':
     write_sheet.append_row([gubun, '이상 없음'])
