@@ -140,6 +140,8 @@ def run(g_status, gubun):
   elif st.button("확인") and check_this == '이상 있음':
     write_sheet.append_row([gubun, '이상 있음'])
     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  else:
+    st.empty()
 
   # col1, col2 = st.columns([1,1])
 
