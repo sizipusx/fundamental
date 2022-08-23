@@ -132,12 +132,12 @@ def run(g_status, gubun):
 
   write_sheet = doc.worksheet('confirm')
   check_this = st.radio("체크", ('','이상 없음', '이상 있음'), index=0)
-  #st.button("확인")
+  chess = st.button("확인")
 
-  if st.button("확인") and check_this == '이상 없음':
+  if chess is True and check_this == '이상 없음':
     write_sheet.append_row([gubun, '이상 없음'])
     st.subheader("확인이 완료 되었습니다!!")
-  elif st.button("확인") and check_this == '이상 있음':
+  elif chess is True and check_this == '이상 있음':
     write_sheet.append_row([gubun, '이상 있음'])
     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
   else:
