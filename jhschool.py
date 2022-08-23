@@ -143,7 +143,7 @@ def run(g_status, gubun):
   write_sheet = doc.worksheet('confirm')
 
 
-  if t_f == '이사 없음':
+  if t_f == '이상 없음':
     #write_sheet.update_acell('B1', '이사없음')
     write_sheet.append_row([gubun, '이상 없음'])
     st.subheader("확인이 완료 되었습니다!!")
