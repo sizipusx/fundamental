@@ -99,8 +99,8 @@ if __name__ == "__main__":
 
   if submit:
         run(g_status, gubun)
-    write_sheet = doc.worksheet('confirm')
-    write_sheet.update_acell('B1', 'b1 updated')
-    write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
-    write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
+    # write_sheet = doc.worksheet('confirm')
+    # write_sheet.update_acell('B1', 'b1 updated')
+    # write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
+    # write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
 
