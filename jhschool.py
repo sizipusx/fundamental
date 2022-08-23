@@ -84,4 +84,6 @@ df = pd.DataFrame(m_rows, columns=m_header)
 st.dataframe(df)
 
 write_sheet = doc.worksheet('confirm')
-write_sheet.append_row("this is test")
+write_sheet.update_acell('B1', 'b1 updated')
+write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
+write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
