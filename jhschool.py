@@ -83,7 +83,15 @@ m_header, m_rows = m_values[1], m_values[2:]
 df = pd.DataFrame(m_rows, columns=m_header)
 st.dataframe(df)
 
-write_sheet = doc.worksheet('confirm')
-write_sheet.update_acell('B1', 'b1 updated')
-write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
-write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
+if __name__ == "__main__":
+
+  g_status = st.sidebar.radio("선택", ["재학", "졸업"])
+  if g_status == '재학':
+    gubun = st.sidebar.text_input("학번 6자리")
+  else:
+    gubu = st.sidebar.text_input("이름")
+
+  write_sheet = doc.worksheet('confirm')
+  write_sheet.update_acell('B1', 'b1 updated')
+  write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
+  write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
