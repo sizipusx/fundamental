@@ -131,7 +131,7 @@ def run(g_status, gubun):
   st.subheader("지원한 모든 정보가 모두 맞습니까?")
 
   write_sheet = doc.worksheet('confirm')
-  t_f = st.radio("확인", ('이상 없음', '이상 있음'), index=2)
+  t_f = st.radio("확인", ('이상 없음', '이상 있음'), index=0)
   if t_f == "이상 없음":
     write_sheet.append_row([gubun, '이상 없음'])
     st.subheader("확인이 완료 되었습니다!!")
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
   g_status = st.sidebar.radio("졸업 유무", ["재학", "졸업"])
   if g_status == '재학':
-    gubun = st.sidebar.text_input("학번 6자리(ex:301033)")
+    gubun = st.sidebar.text_input("학번 5자리(ex:30135)")
     if len(gubun) > 0:
       if len(gubun) != 5 :
         st.error("정확한 학번을 입력하세요")
