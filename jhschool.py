@@ -131,33 +131,31 @@ def run(g_status, gubun):
   st.subheader("지원한 모든 정보가 모두 맞습니까?")
 
   write_sheet = doc.worksheet('confirm')
-  check_this = st.radio("체크", ('','이상 없음', '이상 있음'), index=0)
-  chess = st.button("확인")
+  # check_this = st.radio("체크", ('','이상 없음', '이상 있음'), index=0)
+  # chess = st.button("확인")
 
-  if chess is True and check_this == '이상 없음':
-    write_sheet.append_row([gubun, '이상 없음'])
-    st.subheader("확인이 완료 되었습니다!!")
-  elif chess is True and check_this == '이상 있음':
-    write_sheet.append_row([gubun, '이상 있음'])
-    st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
-  else:
-    st.empty()
+  # if chess is True and check_this == '이상 없음':
+  #   write_sheet.append_row([gubun, '이상 없음'])
+  #   st.subheader("확인이 완료 되었습니다!!")
+  # elif chess is True and check_this == '이상 있음':
+  #   write_sheet.append_row([gubun, '이상 있음'])
+  #   st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  # else:
+  #   st.empty()
 
-  # col1, col2 = st.columns([1,1])
+  col1, col2 = st.columns([1,1])
 
-  # write_sheet = doc.worksheet('confirm')
+  with col1:
+    ok_st = st.checkbox("네, 모두 맞습니다.")
+    if st.button("네, 모두 맞습니다."):
+      write_sheet.append_row([gubun, '이상 없음'])
+      st.subheader("확인이 완료 되었습니다!!")
 
-  # with col1:
-  #   #ok_st = st.checkbox("네, 모두 맞습니다.")
-  #   if st.button("네, 모두 맞습니다."):
-  #     write_sheet.append_row([gubun, '이상 없음'])
-  #     st.subheader("확인이 완료 되었습니다!!")
-
-  # with col2:
-  #   # not_st = st.checkbox("아니요, 이상이 있습니다.")
-  #   if st.button("아니요, 이상이 있습니다."):
-  #     write_sheet.append_row([gubun, '이상 있음'])
-  #     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  with col2:
+    not_st = st.checkbox("아니요, 이상이 있습니다.")
+    if st.button("아니요, 이상이 있습니다."):
+      write_sheet.append_row([gubun, '이상 있음'])
+      st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
 
 
