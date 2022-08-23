@@ -99,7 +99,7 @@ if __name__ == "__main__":
   if g_status == '재학':
     gubun = st.sidebar.text_input("학번 6자리(ex:301033)")
     if len(gubun) > 0:
-      if len(gubun) != 6 :
+      if len(gubun) != 5 :
         st.error("정확한 학번을 입력하세요")
     else:
       st.error("학번을 입력하세요!")
