@@ -137,16 +137,19 @@ def run(g_status, gubun):
   with col2:
     not_st = st.checkbox("아니요, 이상이 있습니다.")
   
+  final_submit = st.button("확인")
   write_sheet = doc.worksheet('confirm')
 
-  if ok_st:
-    #write_sheet.update_acell('B1', '이사없음')
-    write_sheet.append_row([gubun, '이상 없음'])
-    st.subheader("확인이 완료 되었습니다!!")
-    #write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
-  if not_st:
-    write_sheet.append_row([gubun, '이상 있음'])
-    st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  if final_submit:
+
+    if ok_st:
+      #write_sheet.update_acell('B1', '이사없음')
+      write_sheet.append_row([gubun, '이상 없음'])
+      st.subheader("확인이 완료 되었습니다!!")
+      #write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
+    if not_st:
+      write_sheet.append_row([gubun, '이상 있음'])
+      st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
 
 
