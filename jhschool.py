@@ -143,24 +143,32 @@ def run(g_status, gubun):
   # else:
   #   st.empty()
 
-  col1, col2 = st.columns([1,1])
+  # col1, col2 = st.columns([1,1])
 
-  with col1:
-    ok_st = st.checkbox("네, 모두 맞습니다.")
-    if ok_st:
-      st.write("확인 완료")
-      write_sheet.append_row([gubun, '이상 없음'])
-      st.subheader("확인이 완료 되었습니다!!")
-    else:
-      st.write("확인 완료 에러")
+  # with col1:
+  #   ok_st = st.checkbox("네, 모두 맞습니다.")
+  #   if ok_st:
+  #     st.write("확인 완료")
+  #     write_sheet.append_row([gubun, '이상 없음'])
+  #     st.subheader("확인이 완료 되었습니다!!")
+  #   else:
+  #     st.write("확인 완료 에러")
 
-  with col2:
-    not_st = st.checkbox("아니요, 이상이 있습니다.")
-    if not_st:
-      write_sheet.append_row([gubun, '이상 있음'])
-      st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
-    else:
-      st.write("이상 있음 에러")
+  # with col2:
+  #   not_st = st.checkbox("아니요, 이상이 있습니다.")
+  #   if not_st:
+  #     write_sheet.append_row([gubun, '이상 있음'])
+  #     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  #   else:
+  #     st.write("이상 있음 에러")
+  yes_no = st.text_input("이상 있음 혹은 이상 없음")
+  if yes_no == '이상 없음':
+    write_sheet.append_row([gubun, '이상 없음'])
+    st.subheader("확인이 완료 되었습니다!!")
+  else:
+    write_sheet.append_row([gubun, '이상 있음'])
+    st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+
 
 
 
