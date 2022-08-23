@@ -108,7 +108,7 @@ if __name__ == "__main__":
     if len(gubun) == 0:
       st.error("이름을 입력하세요!")
 
-  submit = st.sidebar.button('Analysis')
+  submit = st.sidebar.button('지원 확인')
 
   if submit:
         run(g_status, gubun)
