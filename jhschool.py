@@ -130,27 +130,36 @@ def run(g_status, gubun):
 
   st.subheader("지원한 모든 정보가 모두 맞습니까?")
   
-  # t_f = st.radio("확인", ('이상 없음', '이상 있음'))
-  col1, col2 = st.columns([1,1])
-
-
-  with col1:
-    ok_st = st.checkbox("네, 모두 맞습니다.")
-
-  with col2:
-    not_st = st.checkbox("아니요, 이상이 있습니다.")
-  
   write_sheet = doc.worksheet('confirm')
-
-
-  if ok_st:
-    #write_sheet.update_acell('B1', '이사없음')
+  t_f = st.radio("확인", ('이상 없음', '이상 있음'))
+  if t_f == "이상 없음":
     write_sheet.append_row([gubun, '이상 없음'])
     st.subheader("확인이 완료 되었습니다!!")
-    #write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
-  else:
+  elif t_f == "이상 있음":
     write_sheet.append_row([gubun, '이상 있음'])
     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  # col1, col2 = st.columns([1,1])
+
+
+  # with col1:
+  #   #ok_st = st.checkbox("네, 모두 맞습니다.")
+  #   ok_st = st.button("네, 모두 맞습니다.")
+
+  # with col2:
+  #   # not_st = st.checkbox("아니요, 이상이 있습니다.")
+  #   not_st = st.button("아니요, 이상이 있습니다.")
+  
+  # write_sheet = doc.worksheet('confirm')
+
+
+  # if ok_st:
+  #   #write_sheet.update_acell('B1', '이사없음')
+  #   write_sheet.append_row([gubun, '이상 없음'])
+  #   st.subheader("확인이 완료 되었습니다!!")
+  #   #write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
+  # else:
+  #   write_sheet.append_row([gubun, '이상 있음'])
+  #   st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
 
 
