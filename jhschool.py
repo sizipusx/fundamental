@@ -79,9 +79,13 @@ doc = gc.open_by_url(spreadsheet_url)
 
 read_sheet = doc.worksheet('read')
 m_values = read_sheet.get_all_values()
-m_header, m_rows = m_values[1], m_values[2:]
+m_header, m_rows = m_values[0], m_values[1:]
 df = pd.DataFrame(m_rows, columns=m_header)
-st.dataframe(df)
+
+
+def run(g_status, gubun):
+  st.dataframe(df)
+
 
 if __name__ == "__main__":
 
@@ -89,9 +93,14 @@ if __name__ == "__main__":
   if g_status == '재학':
     gubun = st.sidebar.text_input("학번 6자리(ex:301033)")
   else:
-    gubu = st.sidebar.text_input("이름")
+    gubun = st.sidebar.text_input("이름")
 
-  write_sheet = doc.worksheet('confirm')
-  write_sheet.update_acell('B1', 'b1 updated')
-  write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
-  write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
+  submit = st.sidebar.button('Analysis')
+
+  if submit:
+        run(g_status, gubun)
+    write_sheet = doc.worksheet('confirm')
+    write_sheet.update_acell('B1', 'b1 updated')
+    write_sheet.append_row(['new1', 'new2', 'new3', 'new4'])
+    write_sheet.insert_row(['new1', 'new2', 'new3', 'new4'], 5)
+
