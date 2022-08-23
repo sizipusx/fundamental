@@ -84,13 +84,48 @@ df = pd.DataFrame(m_rows, columns=m_header)
 df['학번'] = df['학번'].astype(str)
 df['성명'] = df['성명'].astype(str)
 
+def aggrid_interactive_table(df: pd.DataFrame):
+    """Creates an st-aggrid interactive table based on a dataframe.
+
+    Args:
+        df (pd.DataFrame]): Source dataframe
+
+    Returns:
+        dict: The selected row
+    """
+    df = df.reset_index()
+    #gb = GridOptionsBuilder.from_dataframe(df)
+    
+    gb = GridOptionsBuilder.from_dataframe(
+        df, enableRowGroup=True, enableValue=True, enablePivot=True
+    )
+    gb.configure_pagination()
+    gb.configure_side_bar()
+    gb.configure_selection("single")
+    response  = AgGrid(
+        df,
+        editable=True,
+        enable_enterprise_modules=True,
+        gridOptions=gb.build(),
+        data_return_mode="filtered_and_sorted",
+        width='100%',
+        update_mode="no_update",
+        fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
+        theme="streamlit",
+        allow_unsafe_jscode=True
+    )
+
+    return response
+
 def run(g_status, gubun):
   if g_status == '재학':
     slice_df = df[df['학번'] == gubun ]
   else:
     slice_df = df[df['성명'] == gubun ]
   
-  st.dataframe(slice_df)
+  #add aggrid table
+  response  = aggrid_interactive_table(df=slice_df)
+  # st.dataframe(slice_df)
 
 
 if __name__ == "__main__":
