@@ -173,9 +173,9 @@ def run(g_status, gubun):
         "<style>.main * div.row-widget.stRadio > div{flex-direction:row;}</style>",
         unsafe_allow_html=True,
     )
-  st.text_input("이상 있음 혹은 이상 없음")
+  st.text_input("이상 있음 혹은 이상 없음", on_change=new_todo_changed, key="new_todo")
 
-  yes_yes = st.button("확인", on_change=new_todo_changed, key="new_todo")
+  # yes_yes = st.button("확인", on_change=new_todo_changed, key="new_todo")
 
   def write_todo_list(todos):
     "Display the todo list (mostly layout stuff, no state)."
@@ -195,7 +195,7 @@ def run(g_status, gubun):
             format_str.format(todo["description"]),
             unsafe_allow_html=True,
         )
-        
+
   if yes_yes:
     write_sheet.append_row([gubun, "확인 완료"])
   write_sheet.append_row([gubun, "학인 완료"])
