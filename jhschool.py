@@ -128,6 +128,15 @@ def run(g_status, gubun):
 
   st.subheader("지원한 모든 정보가 모두 맞습니까?")
   write_sheet = doc.worksheet('confirm')
+  # Define initial state.
+  if "todos" not in st.session_state:
+      st.session_state.todos = [
+          {"description": "Play some Tic Tac Toe", "done": True},
+          {
+              "description": "Read the [blog post about session state](https://blog.streamlit.io/session-state-for-streamlit/)",
+              "done": False,
+          },
+      ]
 
   def new_todo_changed():
         if st.session_state.new_todo:
