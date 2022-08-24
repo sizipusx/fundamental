@@ -61,8 +61,6 @@ footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
 #gsheet
-gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
-
 scope = [
     'https://spreadsheets.google.com/feeds',
     'https://www.googleapis.com/auth/drive',
@@ -129,8 +127,17 @@ def run(g_status, gubun):
   # st.dataframe(slice_df)
 
   st.subheader("지원한 모든 정보가 모두 맞습니까?")
-
   write_sheet = doc.worksheet('confirm')
+
+  def new_todo_changed():
+        if st.session_state.new_todo:
+            st.session_state.todos.append(
+                {
+                    "description": st.session_state.new_todo,
+                    "done": False,
+                }
+            )
+
   # check_this = st.radio("체크", ('','이상 없음', '이상 있음'), index=0)
   # chess = st.button("확인")
 
@@ -161,8 +168,34 @@ def run(g_status, gubun):
   #     st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
   #   else:
   #     st.write("이상 있음 에러")
-  yes_no = st.text_input("이상 있음 혹은 이상 없음")
-  yes_yes = st.button("확인")
+  # Show widgets to add new TODO.
+  st.write(
+        "<style>.main * div.row-widget.stRadio > div{flex-direction:row;}</style>",
+        unsafe_allow_html=True,
+    )
+  st.text_input("이상 있음 혹은 이상 없음")
+
+  yes_yes = st.button("확인", on_change=new_todo_changed, key="new_todo")
+
+  def write_todo_list(todos):
+    "Display the todo list (mostly layout stuff, no state)."
+    st.write("")
+    all_done = True
+    for i, todo in enumerate(todos):
+        col1, col2, _ = st.beta_columns([0.05, 0.8, 0.15])
+        done = col1.checkbox("", todo["done"], key=str(i))
+        if done:
+            format_str = (
+                '<span style="color: grey; text-decoration: line-through;">{}</span>'
+            )
+        else:
+            format_str = "{}"
+            all_done = False
+        col2.markdown(
+            format_str.format(todo["description"]),
+            unsafe_allow_html=True,
+        )
+        
   if yes_yes:
     write_sheet.append_row([gubun, "확인 완료"])
   write_sheet.append_row([gubun, "학인 완료"])
