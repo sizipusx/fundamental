@@ -184,7 +184,12 @@ def run(g_status, gubun):
     )
   st.text_input("이상 있음 혹은 이상 없음", on_change=new_todo_changed, key="new_todo")
 
-  # yes_yes = st.button("확인", on_change=new_todo_changed, key="new_todo")
+
+  yes_yes = st.button("확인", on_click=insert_info)
+
+  def insert_info():
+    write_sheet.append_row([gubun, "학인 완료"])
+  
 
   def write_todo_list(todos):
     "Display the todo list (mostly layout stuff, no state)."
