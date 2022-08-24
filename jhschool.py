@@ -179,13 +179,13 @@ def run(g_status, gubun):
   #     st.write("이상 있음 에러")
   # Show widgets to add new TODO.
   def insert_info():
-    write_sheet.append_row([gubun, "학인 완료"])
+    write_sheet.append_row([gubun, msg])
 
   st.write(
         "<style>.main * div.row-widget.stRadio > div{flex-direction:row;}</style>",
         unsafe_allow_html=True,
     )
-  st.text_input("이상 있음 혹은 이상 없음", on_change=insert_info, key="new_todo")
+  msg = st.text_input("이상 있음 혹은 이상 없음", on_change=insert_info, key="new_todo")
   yes_yes = st.button("확인", on_click=insert_info)
 
   
