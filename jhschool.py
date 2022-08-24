@@ -164,10 +164,10 @@ def run(g_status, gubun):
   def insert_info():
     if st.session_state.no_pro:
       write_sheet.append_row([gubun, "이상 없음"])
-      st.write("확인 완료 에러")
+      #st.write("확인 완료 에러")
     else:
       write_sheet.append_row([gubun, "이상 있음"])
-      st.write("이상 있음 에러")
+      #st.write("이상 있음 에러")
 
   st.write(
         "<style>.main * div.row-widget.stRadio > div{flex-direction:row;}</style>",
