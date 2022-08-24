@@ -178,7 +178,7 @@ def run(g_status, gubun):
   #   else:
   #     st.write("이상 있음 에러")
   # Show widgets to add new TODO.
-  def insert_info():
+  def insert_info(msg):
     write_sheet.append_row([gubun, msg])
 
   st.write(
@@ -186,7 +186,7 @@ def run(g_status, gubun):
         unsafe_allow_html=True,
     )
   msg = st.text_input("이상 있음 혹은 이상 없음", on_change=insert_info, key="new_todo")
-  yes_yes = st.button("확인", on_click=insert_info)
+  st.button("확인", on_click=insert_info(msg))
 
   
   
