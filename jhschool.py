@@ -182,7 +182,7 @@ def run(g_status, gubun):
     st.checkbox("네, 모두 맞습니다.", on_change=insert_info, key="no_pro")
 
   with col2:
-    st.checkbox("아니요, 이상이 있습니다.", on_change=insert_info, key="yes_pro"))
+    st.checkbox("아니요, 이상이 있습니다.", on_change=insert_info, key="yes_pro")
   
 
   def write_todo_list(todos):
