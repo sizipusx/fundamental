@@ -2,6 +2,8 @@ from re import S
 import time
 from datetime import datetime
 import drawAPT_weekly
+import datetime
+from dateutil.relativedelta import relativedelta
 
 import numpy as np
 import pandas as pd
@@ -31,6 +33,11 @@ from matplotlib import font_manager, rc
 import seaborn as sns
 
 pd.set_option('display.float_format', '{:.2f}'.format)
+
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
+now_date = kor_time.strftime('%Y.%m.%d-%H:%M%S')
 
 #############html 영역####################
 html_header="""
@@ -163,10 +170,10 @@ def run(g_status, gubun):
   # Show widgets to add new TODO.
   def insert_info():
     if st.session_state.no_pro:
-      write_sheet.append_row([gubun, "이상 없음"])
+      write_sheet.append_row([now_date, gubun, "이상 없음"])
       #st.write("확인 완료 에러")
     else:
-      write_sheet.append_row([gubun, "이상 있음"])
+      write_sheet.append_row([now_date, gubun, "이상 있음"])
       #st.write("이상 있음 에러")
 
   st.write(
