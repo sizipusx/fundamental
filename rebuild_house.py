@@ -97,7 +97,7 @@ def load_data():
     t_header, t_rows = t_values[0], t_values[1:]
     total_df = pd.DataFrame(t_rows, columns=t_header)
 
-return sum_df, total_df
+    return sum_df, total_df
 
 def show_total():
     
