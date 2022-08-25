@@ -149,7 +149,7 @@ if __name__ == "__main__":
     city_apt = s_df[s_df['시도'] == city_name]
 
     apt_len = len(city_apt)
-    st.write("단지명과 공급 면적에 따라 분류한 총 ("+ apt_len+ " ) 개의 아파트가 있습니다.")  
+    st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(apt_len)+ " ) 개의 아파트가 있습니다.")  
     submit = st.sidebar.button('해당 지역만 보기')
 
     if submit:
