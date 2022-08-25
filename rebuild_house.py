@@ -99,10 +99,10 @@ def load_data():
 
     return sum_df, total_df
 
-def show_total():
+def show_total(s_df):
     
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(jdf, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["매매물건수", "공급면적", "지역명"],
+    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["매매물건수", "공급면적", "지역명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
     fig.update_layout(
         title='수도권 재건축-재개발 분양권 아파트 시세',
