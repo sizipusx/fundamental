@@ -137,7 +137,7 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
     s_df, t_df = load_data()
     show_total(s_df)
-    st.table(t_df)
+    #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
