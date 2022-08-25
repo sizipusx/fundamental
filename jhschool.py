@@ -37,7 +37,7 @@ pd.set_option('display.float_format', '{:.2f}'.format)
 utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
-now_date = kor_time.strftime('%Y.%m.%d-%H:%M%S')
+now_date = kor_time.strftime('%Y.%m.%d-%H:%M:%S')
 
 #############html 영역####################
 html_header="""
