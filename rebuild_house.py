@@ -123,7 +123,7 @@ def show_total():
     )
     fig.show()
 
-def show_local(city_apt)
+def show_local(city_apt):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["매매물건수", "공급면적", "지역명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
