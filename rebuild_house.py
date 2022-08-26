@@ -176,11 +176,10 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
-    # st.dataframe(tickers)
-    # st.dataframe(krx)
+
     city_name = st.sidebar.selectbox(
         '지역',
-        s_df['시도'].to_list() #tickers
+        s_df['시도'].drop_duplicates().to_list() #tickers
         )
 
     city_apt = s_df[s_df['시도'] == city_name]
