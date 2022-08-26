@@ -168,13 +168,13 @@ def run(g_status, gubun):
 
   
   # Show widgets to add new TODO.
-  def insert_info():
-    if st.session_state.no_pro:
-      write_sheet.append_row([now_date, gubun, "이상 없음"])
-      #st.write("확인 완료 에러")
-    else:
-      write_sheet.append_row([now_date, gubun, "이상 있음"])
-      #st.write("이상 있음 에러")
+  # def insert_info():
+  #   if st.session_state.no_pro:
+  #     write_sheet.append_row([now_date, gubun, "이상 없음"])
+  #     #st.write("확인 완료 에러")
+  #   else:
+  #     write_sheet.append_row([now_date, gubun, "이상 있음"])
+  #     #st.write("이상 있음 에러")
 
   st.write(
         "<style>.main * div.row-widget.stRadio > div{flex-direction:row;}</style>",
@@ -183,37 +183,15 @@ def run(g_status, gubun):
   # msg = st.text_input("이상 있음 혹은 이상 없음", on_change=insert_info, key="new_todo")
   # st.button("확인", on_click=insert_info(msg))
 
-  col1, col2 = st.columns([1,1])
+  # col1, col2 = st.columns([1,1])
 
-  with col1:
-    st.checkbox("네, 모두 맞습니다.", on_change=insert_info, key="no_pro")
+  # with col1:
+  #   st.checkbox("네, 모두 맞습니다.", on_change=insert_info, key="no_pro")
 
-  with col2:
-    st.checkbox("아니요, 이상이 있습니다.", on_change=insert_info, key="yes_pro")
+  # with col2:
+  #   st.checkbox("아니요, 이상이 있습니다.", on_change=insert_info, key="yes_pro")
   
 
-  def write_todo_list(todos):
-    "Display the todo list (mostly layout stuff, no state)."
-    st.write("")
-    all_done = True
-    for i, todo in enumerate(todos):
-        col1, col2, _ = st.beta_columns([0.05, 0.8, 0.15])
-        done = col1.checkbox("", todo["done"], key=str(i))
-        if done:
-            format_str = (
-                '<span style="color: grey; text-decoration: line-through;">{}</span>'
-            )
-        else:
-            format_str = "{}"
-            all_done = False
-        col2.markdown(
-            format_str.format(todo["description"]),
-            unsafe_allow_html=True,
-        )
-
-  # if yes_yes:
-  #   write_sheet.append_row([gubun, "확인 완료"])
-  #write_sheet.append_row([gubun, "학인 완료"])
   st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
 
 
