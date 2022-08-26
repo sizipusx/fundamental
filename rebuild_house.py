@@ -140,20 +140,20 @@ def show_total(s_df):
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
     fig.update_layout(
         title='수도권 재건축-재개발 분양권 아파트 시세',
-        # autosize=True,
-        # hovermode='closest',
-        # showlegend=True,
-        # mapbox=dict(
-        #     #accesstoken=mapbox_access_token,
-        #     bearing=0,
-        #     # center=dict(
-        #     #     lat=37.2,
-        #     #     lon=127.0
-        #     # ),
-        #     pitch=0,
-        #     zoom=3,
-        #     style='light'
-        #),
+        autosize=True,
+        hovermode='closest',
+        showlegend=True,
+        mapbox=dict(
+            #accesstoken=mapbox_access_token,
+            bearing=0,
+            center=dict(
+                lat=37.5,
+                lon=127.0
+            ),
+            pitch=0,
+            zoom=3,
+            style='light'
+        ),
     )
     st.plotly_chart(fig, use_container_width=True)
 
