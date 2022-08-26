@@ -150,6 +150,15 @@ if __name__ == "__main__":
 
     apt_len = len(city_apt)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(apt_len)+ " ) 개의 아파트가 있습니다.")  
+    #그래프 테스트
+    px.set_mapbox_access_token(token)
+    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["매매물건수", "공급면적", "지역명"],
+                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
+    fig.update_layout(
+        title='수도권 재건축-재개발 분양권 아파트 시세',
+
+    )
+    fig.show()
     submit = st.sidebar.button('해당 지역만 보기')
 
     if submit:
