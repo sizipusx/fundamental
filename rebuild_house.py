@@ -157,7 +157,7 @@ def show_total(s_df):
     )
     st.plotly_chart(fig, use_container_width=True)
 
-def show_local(city_apt):
+def show_local(city_apt, city_total):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["매매물건수", "공급면적", "지역명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
@@ -173,7 +173,7 @@ def show_local(city_apt):
 if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
     s_df, t_df = load_data()
-    show_total(s_df)
+    
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
@@ -188,7 +188,7 @@ if __name__ == "__main__":
 
     apt_len = len(city_apt)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(apt_len)+ " ) 개의 아파트가 있습니다.")  
-
+    show_total(s_df)
     submit = st.sidebar.button('해당 지역만 보기')
 
     if submit:
