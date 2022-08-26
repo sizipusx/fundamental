@@ -68,6 +68,40 @@ st.markdown(""" <style>
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
+#agg table
+def aggrid_interactive_table(df: pd.DataFrame):
+    """Creates an st-aggrid interactive table based on a dataframe.
+
+    Args:
+        df (pd.DataFrame]): Source dataframe
+
+    Returns:
+        dict: The selected row
+    """
+    df = df.reset_index()
+    #gb = GridOptionsBuilder.from_dataframe(df)
+    
+    gb = GridOptionsBuilder.from_dataframe(
+        df, enableRowGroup=True, enableValue=True, enablePivot=True
+    )
+    gb.configure_pagination()
+    gb.configure_side_bar()
+    gb.configure_selection("single")
+    response  = AgGrid(
+        df,
+        editable=True,
+        enable_enterprise_modules=True,
+        gridOptions=gb.build(),
+        data_return_mode="filtered_and_sorted",
+        width='100%',
+        update_mode="no_update",
+        fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
+        theme="streamlit",
+        allow_unsafe_jscode=True
+    )
+
+    return response
+
 def load_data():
     #gsheet
     scope = [
@@ -132,6 +166,9 @@ def show_local(city_apt):
 
     )
     st.plotly_chart(fig, use_container_width=True)
+    response  = aggrid_interactive_table(df=city_total)
+
+
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
@@ -147,12 +184,13 @@ if __name__ == "__main__":
         )
 
     city_apt = s_df[s_df['시도'] == city_name]
+    city_total = t_df[s_df['시도'] == city_name]
 
     apt_len = len(city_apt)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(apt_len)+ " ) 개의 아파트가 있습니다.")  
-    
+
     submit = st.sidebar.button('해당 지역만 보기')
 
     if submit:
-        show_local(city_apt)
+        show_local(city_apt, city_total)
         
