@@ -151,7 +151,7 @@ def show_total(s_df):
                 lon=127.0
             ),
             pitch=0,
-            zoom=3,
+            zoom=11,
             style='light'
         ),
     )
