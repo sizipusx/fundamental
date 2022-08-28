@@ -98,7 +98,8 @@ def aggrid_interactive_table(df: pd.DataFrame):
         update_mode='MODEL_CHANGED',#"no_update",
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
         theme="streamlit",
-        allow_unsafe_jscode=True
+        allow_unsafe_jscode=True,
+        reload_data=True
     )
    
     return response
