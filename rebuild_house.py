@@ -122,7 +122,8 @@ def load_data():
     s_values = sum_sheet.get_all_values()
     s_header, s_rows = s_values[0], s_values[1:]
     sum_df = pd.DataFrame(s_rows, columns=s_header)
-    sum_df['시세평균(만)'] = format(sum_df['시세평균(만)'].astype(int),',')
+    sum_df['시세평균(만)'] = sum_df['시세평균(만)'].astype(int)
+    sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     sum_df['위도'] = sum_df['위도'].astype(float)
     sum_df['경도'] = sum_df['경도'].astype(float)
 
