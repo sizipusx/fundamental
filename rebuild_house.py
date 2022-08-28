@@ -60,7 +60,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 시세 확인", page_icon="", layout="wide")
+st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 시세", page_icon="", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -139,7 +139,7 @@ def show_total(s_df):
     fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
     fig.update_layout(
-        title='수도권 재건축-재개발 분양권 아파트 시세',
+        title='전국 재건축-재개발 분양권 아파트 시세',
         autosize=True,
         hovermode='closest',
         showlegend=True,
@@ -167,7 +167,8 @@ def show_local(city_apt, city_total):
     )
     st.plotly_chart(fig, use_container_width=True)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
-    response  = aggrid_interactive_table(df=city_total)
+    filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '확인매물', '매물방향']]
+    response  = aggrid_interactive_table(df=filter_df)
 
 
 
