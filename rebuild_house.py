@@ -93,11 +93,11 @@ def aggrid_interactive_table(df: pd.DataFrame):
         editable=True,
         enable_enterprise_modules=True,
         gridOptions=gb.build(),
-        data_return_mode='AS_INPUT',#"filtered_and_sorted",
+        #data_return_mode="filtered_and_sorted",'AS_INPUT',
         width='100%',
-        update_mode='MODEL_CHANGED',#"no_update",
+        update_mode='MODEL_CHANGED',#"no_update", ##
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
-        theme="streamlit",
+        theme="blue",
         allow_unsafe_jscode=True,
         reload_data=True
     )
@@ -171,32 +171,11 @@ def show_local(select_city, city_apt, city_total):
     st.plotly_chart(fig, use_container_width=True)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
     filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
-    #response  = aggrid_interactive_table(df=filter_df)
-    gb = GridOptionsBuilder.from_dataframe(filter_df)
-    gb.configure_pagination(paginationAutoPageSize=True) #Add pagination
-    gb.configure_side_bar() #Add a sidebar
-    gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
-    gridOptions = gb.build()
-
-    grid_response = AgGrid(
-        filter_df,
-        gridOptions=gridOptions,
-        data_return_mode='AS_INPUT', 
-        update_mode= 'MODEL_CHANGED',#'no_update',# 
-        fit_columns_on_grid_load=False,
-        theme='blue', #Add theme color to the table
-        enable_enterprise_modules=True,
-        height=350, 
-        width='100%',
-        reload_data=True
-    )
-
-    data = grid_response['data']
-    selected = grid_response['selected_rows'] 
-    selected_rosws_df = pd.DataFrame(selected) #Pass the selected rows to a new dataframe df
-    #selected = response['selected_rows'] 
-    #selected_rosws_df = pd.DataFrame(selected)
-    st.dataframe(selected_rosws_df)
+    response  = aggrid_interactive_table(df=filter_df)
+    if response:
+        st.write("You selected:")
+        st.json(response["selected_rows"])
+    
 
 
 if __name__ == "__main__":
@@ -221,41 +200,6 @@ if __name__ == "__main__":
     submit = st.sidebar.button('해당 지역만 보기')
 
     if submit:
-        #show_local(city_name, city_apt, city_total)
-        px.set_mapbox_access_token(token)
-        fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
-                        color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
-        fig.update_layout(
-            title='[' + city_name+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
-
-        )
-        st.plotly_chart(fig, use_container_width=True)
-        st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
-        filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
-        #response  = aggrid_interactive_table(df=filter_df)
-        gb = GridOptionsBuilder.from_dataframe(filter_df)
-        gb.configure_pagination(paginationAutoPageSize=True) #Add pagination
-        gb.configure_side_bar() #Add a sidebar
-        gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
-        gridOptions = gb.build()
-
-        grid_response = AgGrid(
-            filter_df,
-            gridOptions=gridOptions,
-            data_return_mode='AS_INPUT', 
-            update_mode= 'MODEL_CHANGED',#'no_update',# 
-            fit_columns_on_grid_load=False,
-            theme='blue', #Add theme color to the table
-            enable_enterprise_modules=True,
-            height=350, 
-            width='100%',
-            reload_data=True
-        )
-
-        data = grid_response['data']
-        selected = grid_response['selected_rows'] 
-        selected_rosws_df = pd.DataFrame(selected) #Pass the selected rows to a new dataframe df
-        #selected = response['selected_rows'] 
-        #selected_rosws_df = pd.DataFrame(selected)
-        st.dataframe(selected_rosws_df)
+        show_local(city_name, city_apt, city_total)
+        
         
