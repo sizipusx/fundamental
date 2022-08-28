@@ -95,7 +95,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
         data_return_mode="filtered_and_sorted",
         width='100%',
         update_mode="no_update",
-        fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
+        fit_columns_on_grid_load=True, #GridUpdateMode.MODEL_CHANGED,
         theme="streamlit",
         allow_unsafe_jscode=True
     )
