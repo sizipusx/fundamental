@@ -84,22 +84,23 @@ def aggrid_interactive_table(df: pd.DataFrame):
     gb = GridOptionsBuilder.from_dataframe(
         df, enableRowGroup=True, enableValue=True, enablePivot=True
     )
-    gb.configure_pagination()
+    gb.configure_pagination(paginationAutoPageSize=True)
     gb.configure_side_bar()
-    gb.configure_selection("single")
+    #gb.configure_selection("single")
+    gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
     response  = AgGrid(
         df,
         editable=True,
         enable_enterprise_modules=True,
         gridOptions=gb.build(),
-        data_return_mode="filtered_and_sorted",
+        data_return_mode='AS_INPUT',#"filtered_and_sorted",
         width='100%',
-        update_mode="no_update",
-        fit_columns_on_grid_load=True, #GridUpdateMode.MODEL_CHANGED,
+        update_mode='MODEL_CHANGED',#"no_update",
+        fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
         theme="streamlit",
         allow_unsafe_jscode=True
     )
-
+   
     return response
 
 def load_data():
@@ -170,7 +171,9 @@ def show_local(select_city, city_apt, city_total):
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
     filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
     response  = aggrid_interactive_table(df=filter_df)
-
+    selected = aggrid_interactive_table.grid_response['selected_rows'] 
+    selected_rosws_df = pd.DataFrame(selected)
+    st.dataframe(selected_rosws_df)
 
 
 if __name__ == "__main__":
