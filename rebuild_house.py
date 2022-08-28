@@ -87,7 +87,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
     gb.configure_pagination(paginationAutoPageSize=True)
     gb.configure_side_bar()
     #gb.configure_selection("single")
-    gb.configure_selection('multiple', use_checkbox=True, pre_selected_rows=[0], groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
+    gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") # pre_selected_rows=[0], Enable multi-row selection
 
     response  = AgGrid(
         df,
