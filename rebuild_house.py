@@ -196,15 +196,19 @@ if __name__ == "__main__":
     city_list.insert(0,'전국')
     #submit = st.sidebar.button('해당 지역만 보기')
     with st.container():
-        col2, col3, col4 = st.columns([10,2,10])
-    with col2:
+        col1, col2, col3, col4, col5 = st.columns([20,20,20, 20, 20])
+    with col1:
         city_name = st.selectbox(
         '해당 지역만 보기',
         city_list
         )
+    with col2:
+        st.write("")
     with col3:
         st.write("")
     with col4:
+        st.write("")
+    with col5:
         st.write("")
 
     city_apt = s_df[s_df['시도'] == city_name]
