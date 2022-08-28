@@ -171,9 +171,31 @@ def show_local(select_city, city_apt, city_total):
     st.plotly_chart(fig, use_container_width=True)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
     filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
-    response  = aggrid_interactive_table(df=filter_df)
-    selected = response['selected_rows'] 
-    selected_rosws_df = pd.DataFrame(selected)
+    #response  = aggrid_interactive_table(df=filter_df)
+    gb = GridOptionsBuilder.from_dataframe(filter_df)
+    gb.configure_pagination(paginationAutoPageSize=True) #Add pagination
+    gb.configure_side_bar() #Add a sidebar
+    gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
+    gridOptions = gb.build()
+
+    grid_response = AgGrid(
+        data,
+        gridOptions=gridOptions,
+        data_return_mode='AS_INPUT', 
+        update_mode='MODEL_CHANGED', 
+        fit_columns_on_grid_load=False,
+        theme='blue', #Add theme color to the table
+        enable_enterprise_modules=True,
+        height=350, 
+        width='100%',
+        reload_data=True
+    )
+
+    data = grid_response['data']
+    selected = grid_response['selected_rows'] 
+    selected_rosws_df = pd.DataFrame(selected) #Pass the selected rows to a new dataframe df
+    #selected = response['selected_rows'] 
+    #selected_rosws_df = pd.DataFrame(selected)
     st.dataframe(selected_rosws_df)
 
 
