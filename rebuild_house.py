@@ -182,7 +182,7 @@ def show_local(select_city, city_apt, city_total):
         filter_df,
         gridOptions=gridOptions,
         data_return_mode='AS_INPUT', 
-        update_mode='no_update',#'MODEL_CHANGED', 
+        update_mode= 'MODEL_CHANGED',#'no_update',# 
         fit_columns_on_grid_load=False,
         theme='blue', #Add theme color to the table
         enable_enterprise_modules=True,
