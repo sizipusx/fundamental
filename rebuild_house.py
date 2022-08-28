@@ -179,7 +179,7 @@ def show_local(select_city, city_apt, city_total):
     gridOptions = gb.build()
 
     grid_response = AgGrid(
-        data,
+        filter_df,
         gridOptions=gridOptions,
         data_return_mode='AS_INPUT', 
         update_mode='MODEL_CHANGED', 
@@ -191,7 +191,7 @@ def show_local(select_city, city_apt, city_total):
         reload_data=True
     )
 
-    data = grid_response['data']
+    filter_df = grid_response['filter_df']
     selected = grid_response['selected_rows'] 
     selected_rosws_df = pd.DataFrame(selected) #Pass the selected rows to a new dataframe df
     #selected = response['selected_rows'] 
