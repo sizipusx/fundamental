@@ -190,22 +190,20 @@ if __name__ == "__main__":
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
     st.subheader("시세 조사 날짜: 2022.08.26." )
-
-    city_name = st.sidebar.selectbox(
+    show_total(s_df)
+    city_list = s_df['시도'].drop_duplicates().to_list()
+    city_list.insert(0,'전국')
+    #submit = st.sidebar.button('해당 지역만 보기')
+    city_name = st.selectbox(
         '해당 지역만 보기',
-        s_df['시도'].drop_duplicates().to_list() #tickers
+        city_list
         )
 
     city_apt = s_df[s_df['시도'] == city_name]
     city_total = t_df[t_df['시도'] == city_name]
-
-    apt_len = len(city_apt)
-    
-    show_total(s_df)
-    #submit = st.sidebar.button('해당 지역만 보기')
-
     #if submit:
     show_local(city_name, city_apt, city_total)
+    apt_len = len(city_apt)
     filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
     response  = aggrid_interactive_table(df=filter_df)
     if response:
