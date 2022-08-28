@@ -50,7 +50,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 전국 분양권/재개발/재건축 아파트 시세 확인 <br>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 전국 분양권/재개발/재건축 아파트 네이버 시세 <br>
 <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -60,7 +60,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 시세", page_icon="", layout="wide")
+st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 네이버 시세", page_icon="", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -162,7 +162,7 @@ def show_local(select_city, city_apt, city_total):
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
     fig.update_layout(
-        title='[' + select_city+' ] 재건축-재개발 분양권 아파트 시세',
+        title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
 
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -178,6 +178,7 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
+    st.subheader("시세 조사 날짜: 2022.08.26." )
 
     city_name = st.sidebar.selectbox(
         '지역',
