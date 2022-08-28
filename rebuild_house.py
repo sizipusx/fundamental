@@ -69,7 +69,7 @@ footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
 #agg table
-def aggrid_interactive_table(df: pd.DataFrame, default_flag):
+def aggrid_interactive_table(df: pd.DataFrame):
     """Creates an st-aggrid interactive table based on a dataframe.
 
     Args:
@@ -87,10 +87,8 @@ def aggrid_interactive_table(df: pd.DataFrame, default_flag):
     gb.configure_pagination(paginationAutoPageSize=True)
     gb.configure_side_bar()
     #gb.configure_selection("single")
-    if default_flag == "전국":
-        gb.configure_selection('multiple', use_checkbox=True, pre_selected_rows=[0], groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
-    else:
-        gb.configure_selection('multiple', use_checkbox=True, groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
+    gb.configure_selection('multiple', use_checkbox=True, pre_selected_rows=[0], groupSelectsChildren="Group checkbox select children") #Enable multi-row selection
+
     response  = AgGrid(
         df,
         editable=True,
@@ -214,7 +212,7 @@ if __name__ == "__main__":
             show_local(city_name, city_apt, city_total)
             filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
             default_flag = '그외'
-        response  = aggrid_interactive_table(df=filter_df, default_flag)
+        response  = aggrid_interactive_table(df=filter_df)
     except ValueError:
         response = False
 
