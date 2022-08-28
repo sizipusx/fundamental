@@ -187,7 +187,7 @@ if __name__ == "__main__":
     st.subheader("시세 조사 날짜: 2022.08.26." )
 
     city_name = st.sidebar.selectbox(
-        '지역',
+        '해당 지역만 보기',
         s_df['시도'].drop_duplicates().to_list() #tickers
         )
 
@@ -205,6 +205,6 @@ if __name__ == "__main__":
     response  = aggrid_interactive_table(df=filter_df)
     if response:
         st.write("You selected:")
-        st.json(response["selected_rows"])
+        st.dataframe(response["selected_rows"])
         
         
