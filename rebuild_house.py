@@ -157,12 +157,12 @@ def show_total(s_df):
     )
     st.plotly_chart(fig, use_container_width=True)
 
-def show_local(city_apt, city_total):
+def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
     fig.update_layout(
-        title='수도권 재건축-재개발 분양권 아파트 시세',
+        title='[' + select_city+' ] 재건축-재개발 분양권 아파트 시세',
 
     )
     st.plotly_chart(fig, use_container_width=True)
@@ -193,5 +193,5 @@ if __name__ == "__main__":
     submit = st.sidebar.button('해당 지역만 보기')
 
     if submit:
-        show_local(city_apt, city_total)
+        show_local(city_name, city_apt, city_total)
         
