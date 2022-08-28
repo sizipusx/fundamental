@@ -226,7 +226,7 @@ if __name__ == "__main__":
         fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
                         color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
         fig.update_layout(
-            title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
+            title='[' + city_name+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
 
         )
         st.plotly_chart(fig, use_container_width=True)
