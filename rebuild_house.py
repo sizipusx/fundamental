@@ -207,7 +207,7 @@ if __name__ == "__main__":
         st.write("You selected:")
         st.dataframe(response["selected_rows"])
         px.set_mapbox_access_token(token)
-        fig = px.scatter_mapbox(filter_df, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
+        fig = px.scatter_mapbox(filter_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
                         color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
         fig.update_layout(
             title='선택한 아파트 네이버 시세',
