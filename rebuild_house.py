@@ -78,7 +78,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
     Returns:
         dict: The selected row
     """
-    df = df.reset_index()
+    #df = df.reset_index()
     #gb = GridOptionsBuilder.from_dataframe(df)
     
     gb = GridOptionsBuilder.from_dataframe(
