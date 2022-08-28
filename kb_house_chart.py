@@ -118,7 +118,7 @@ spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq1
 
 doc = gc.open_by_url(spreadsheet_url)
 
-@st.cache(ttl=600)
+@st.cache
 def get_gsheet_index():
     m_d = doc.worksheet('mae')
     j_d = doc.worksheet('jeon')
