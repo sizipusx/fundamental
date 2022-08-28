@@ -196,7 +196,7 @@ if __name__ == "__main__":
     city_list.insert(0,'전국')
     #submit = st.sidebar.button('해당 지역만 보기')
     with st.container():
-        col2, col3, col4 = st.columns([30,2,30])
+        col2, col3, col4 = st.columns([10,2,10])
     with col2:
         city_name = st.selectbox(
         '해당 지역만 보기',
