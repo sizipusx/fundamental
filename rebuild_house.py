@@ -197,14 +197,14 @@ if __name__ == "__main__":
     apt_len = len(city_apt)
     
     show_total(s_df)
-    submit = st.sidebar.button('해당 지역만 보기')
+    #submit = st.sidebar.button('해당 지역만 보기')
 
-    if submit:
-        show_local(city_name, city_apt, city_total)
-        filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
-        response  = aggrid_interactive_table(df=filter_df)
-        if response:
-            st.write("You selected:")
-            st.json(response["selected_rows"])
+    #if submit:
+    show_local(city_name, city_apt, city_total)
+    filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
+    response  = aggrid_interactive_table(df=filter_df)
+    if response:
+        st.write("You selected:")
+        st.json(response["selected_rows"])
         
         
