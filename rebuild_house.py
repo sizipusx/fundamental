@@ -133,6 +133,11 @@ def load_data():
     t_values = t_sheet.get_all_values()
     t_header, t_rows = t_values[0], t_values[1:]
     total_df = pd.DataFrame(t_rows, columns=t_header)
+    total_df['공급면적'] = total_df['공급면적'].astype(int)
+    #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
+    total_df['위도'] = total_df['위도'].astype(float)
+    total_df['경도'] = total_df['경도'].astype(float)
+
 
     return sum_df, total_df
 
@@ -202,7 +207,6 @@ if __name__ == "__main__":
     #if submit:
     show_local(city_name, city_apt, city_total)
     filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
-    filter_df['공급면적'] = filter_df['공급면적'].astype(int)
     response  = aggrid_interactive_table(df=filter_df)
     if response:
         st.write("You selected:")
