@@ -201,10 +201,18 @@ if __name__ == "__main__":
 
     #if submit:
     show_local(city_name, city_apt, city_total)
-    filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
+    filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
     response  = aggrid_interactive_table(df=filter_df)
     if response:
         st.write("You selected:")
         st.dataframe(response["selected_rows"])
+        px.set_mapbox_access_token(token)
+        fig = px.scatter_mapbox(filter_df, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
+                        color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
+        fig.update_layout(
+            title='선택한 아파트 네이버 시세',
+
+        )
+        st.plotly_chart(fig, use_container_width=True)
         
         
