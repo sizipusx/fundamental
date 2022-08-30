@@ -179,7 +179,6 @@ def show_total(s_df):
 
     for lat, long in zip(s_df['위도'], s_df['경도']):
         folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
-    m
         # call to render Folium map in Streamlit
     st_data = st_folium(m, width = 725)
 
