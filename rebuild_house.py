@@ -104,7 +104,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
         theme="blue",
         allow_unsafe_jscode=True, #Set it to True to allow jsfunction to be injected
-        reload_data=True
+        reload_data=False
     )
    
     return response
