@@ -14,10 +14,6 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
-#this is folium
-from streamlit_folium import st_folium
-import folium
-from folium.plugins import MarkerCluster
 
 import requests
 import json
@@ -103,7 +99,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
         update_mode='MODEL_CHANGED',#"no_update", ##
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
         theme="blue",
-        allow_unsafe_jscode=True,
+        allow_unsafe_jscode=True, #Set it to True to allow jsfunction to be injected
         reload_data=True
     )
    
@@ -170,8 +166,15 @@ def show_total(s_df):
     )
     st.plotly_chart(fig, use_container_width=True)
 
+
+    #draw with folium
+    import folium
+    from streamlit_folium import st_folium
+    from folium.plugins import MarkerCluster
+
+
     m = folium.Map(
-        location=[latitude, longitude],
+        location=[37.5, 127.0],
         zoom_start=15
     )
 
@@ -179,8 +182,8 @@ def show_total(s_df):
 
     for lat, long in zip(s_df['위도'], s_df['경도']):
         folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
-        # call to render Folium map in Streamlit
     st_data = st_folium(m, width = 725)
+    
 
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
@@ -197,7 +200,7 @@ def show_local(select_city, city_apt, city_total):
     #if response:
     #    st.write("You selected:")
     #    st.json(response["selected_rows"])
-    
+   
 
 
 if __name__ == "__main__":
@@ -254,7 +257,5 @@ if __name__ == "__main__":
 
             )
             st.plotly_chart(fig, use_container_width=True)
-
-
             
         
