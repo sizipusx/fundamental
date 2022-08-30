@@ -268,7 +268,7 @@ if __name__ == "__main__":
             st.plotly_chart(fig, use_container_width=True)
 
             #folium에 표시에 보자
-            df = pd.DataFrame.from_dict(selected_df, orient ='index')
+            df = pd.DataFrame(selected_df)
             m = folium.Map(location=[37.5, 127.0],
                             width='100%',
                             position='relative',
