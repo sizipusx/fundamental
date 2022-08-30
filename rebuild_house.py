@@ -260,5 +260,21 @@ if __name__ == "__main__":
 
             )
             st.plotly_chart(fig, use_container_width=True)
+
+            #folium에 표시에 보자
+            m = folium.Map(location=[37.5, 127.0],
+                            width='100%',
+                            position='relative',
+                            min_zoom=0,
+                            max_zoom=18,
+                            zoom_start=8)
+            for i in selected_df:
+                folium.Marker(
+                    location = selected_df.loc[i, ['위도', '경도']],
+                    tooltip = selected_df.loc[i, ['단지명', '특이사항', '한글거래가액']],
+                ).add_to(m)
+
+            # call to render Folium map in Streamlit
+            st_data = st_folium(m)
             
         
