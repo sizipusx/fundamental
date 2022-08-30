@@ -264,7 +264,7 @@ if __name__ == "__main__":
             #folium에 표시에 보자
             df = pd.DataFrame(selected_df)
             st.dataframe(df)
-            m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -2]], zoom_start=12)
+            m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -1]], zoom_start=12)
             for i in range(len(df)):
                 folium.Marker(
                     location = [df.iloc[i, -2], df.iloc[i, -1]],
