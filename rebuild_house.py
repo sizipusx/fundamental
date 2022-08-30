@@ -197,7 +197,7 @@ def show_local(select_city, city_apt, city_total):
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
 
     )
-    fig.update_layout(mapbox_style="streets")
+    fig.update_layout(mapbox_style="satellite-streets")
     st.plotly_chart(fig, use_container_width=True)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
     #filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
@@ -261,7 +261,7 @@ if __name__ == "__main__":
                 title='선택한 아파트 네이버 시세',
 
             )
-            fig.update_layout(mapbox_style="satellite-streets")
+            fig.update_layout(mapbox_style="streets")
             st.plotly_chart(fig, use_container_width=True)
 
             #folium에 표시에 보자
