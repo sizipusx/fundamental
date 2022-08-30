@@ -175,14 +175,14 @@ def show_total(s_df):
 
     m = folium.Map(
         location=[37.5, 127.0],
-        zoom_start=15
+        zoom_start=8
     )
 
     marker_cluster = MarkerCluster().add_to(m)
 
     for lat, long in zip(s_df['위도'], s_df['경도']):
         folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
-    st_data = st_folium(m, width = 725)
+    st_data = st_folium(m)
     
 
 def show_local(select_city, city_apt, city_total):
