@@ -176,9 +176,10 @@ def show_total(s_df):
         location=[37.5, 127.0],
         width='100%',
         position='relative',
-        min_zoom=0,
-        max_zoom=18,
-        zoom_start=6
+        min_zoom=5,
+        max_zoom=8,
+        zoom_start=6,
+        zoom_control=False
     )
 
     marker_cluster = MarkerCluster().add_to(m)
