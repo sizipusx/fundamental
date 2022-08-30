@@ -14,6 +14,10 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
+#this is folium
+from streamlit_folium import st_folium
+import folium
+from folium.plugins import MarkerCluster
 
 import requests
 import json
@@ -166,6 +170,19 @@ def show_total(s_df):
     )
     st.plotly_chart(fig, use_container_width=True)
 
+    m = folium.Map(
+        location=[latitude, longitude],
+        zoom_start=15
+    )
+
+    marker_cluster = MarkerCluster().add_to(m)
+
+    for lat, long in zip(s_df['위도'], s_df['경도']):
+        folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
+    m
+        # call to render Folium map in Streamlit
+    st_data = st_folium(m, width = 725)
+
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
@@ -239,19 +256,6 @@ if __name__ == "__main__":
             )
             st.plotly_chart(fig, use_container_width=True)
 
-    #this is folium
-    from streamlit_folium import st_folium
-    import folium
 
-    # center on Liberty Bell, add marker
-    m = folium.Map(location=[39.949610, -75.150282], zoom_start=16)
-    folium.Marker(
-        [39.949610, -75.150282], 
-        popup="Liberty Bell", 
-        tooltip="Liberty Bell"
-    ).add_to(m)
-
-    # call to render Folium map in Streamlit
-    st_data = st_folium(m, width = 725)
             
         
