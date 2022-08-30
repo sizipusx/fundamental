@@ -273,6 +273,6 @@ if __name__ == "__main__":
                 ).add_to(m)
 
             # call to render Folium map in Streamlit
-            st_data = st_folium(m)
+            st_folium(m)
             
         
