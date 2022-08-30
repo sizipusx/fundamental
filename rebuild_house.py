@@ -238,7 +238,7 @@ if __name__ == "__main__":
 
             )
             st.plotly_chart(fig, use_container_width=True)
-    import streamlit as st
+
     from streamlit_folium import st_folium
     import folium
 
