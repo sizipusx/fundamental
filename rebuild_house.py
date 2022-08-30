@@ -172,21 +172,21 @@ def show_total(s_df):
 
 
     #draw with folium
-    m = folium.Map(
-        location=[37.5, 127.0],
-        width='100%',
-        position='relative',
-        min_zoom=5,
-        max_zoom=8,
-        zoom_start=6,
-        zoom_control=False
-    )
+    # m = folium.Map(
+    #     location=[37.5, 127.0],
+    #     width='100%',
+    #     position='relative',
+    #     min_zoom=5,
+    #     max_zoom=8,
+    #     zoom_start=6,
+    #     zoom_control=False
+    # )
 
-    marker_cluster = MarkerCluster().add_to(m)
+    # marker_cluster = MarkerCluster().add_to(m)
 
-    for lat, long in zip(s_df['위도'], s_df['경도']):
-        folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
-    st_data = st_folium(m)
+    # for lat, long in zip(s_df['위도'], s_df['경도']):
+    #     folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
+    # st_data = st_folium(m)
     
 
 def show_local(select_city, city_apt, city_total):
@@ -261,21 +261,21 @@ if __name__ == "__main__":
                 title='선택한 아파트 네이버 시세',
 
             )
-            fig.update_layout(mapbox_style="satellite")
+            fig.update_layout(mapbox_style="satellite-streets")
             st.plotly_chart(fig, use_container_width=True)
 
             #folium에 표시에 보자
-            df = pd.DataFrame(selected_df)
-            st.dataframe(df)
-            m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -1]],  min_zoom=8,max_zoom=16, zoom_start=12, zoom_control=False)
-            for i in range(len(df)):
-                folium.Marker(
-                    location = [df.iloc[i, -2], df.iloc[i, -1]],
-                    popup = df.iloc[i, 2:4],
-                    icon=folium.Icon(color="red", icon="info-sign")
-                ).add_to(m)
+            # df = pd.DataFrame(selected_df)
+            # st.dataframe(df)
+            # m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -1]],  min_zoom=8,max_zoom=16, zoom_start=12, zoom_control=False)
+            # for i in range(len(df)):
+            #     folium.Marker(
+            #         location = [df.iloc[i, -2], df.iloc[i, -1]],
+            #         popup = df.iloc[i, 2:4],
+            #         icon=folium.Icon(color="red", icon="info-sign")
+            #     ).add_to(m)
 
-            # call to render Folium map in Streamlit
-            st_folium(m)
+            # # call to render Folium map in Streamlit
+            # st_folium(m)
             
         
