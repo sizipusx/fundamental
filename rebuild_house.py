@@ -269,7 +269,7 @@ if __name__ == "__main__":
                 folium.Marker(
                     location = [df.iloc[i, -2], df.iloc[i, -1]],
                     popup = df.iloc[i, 2:4],
-                    color="red", icon="info-sign"
+                    icon=folium.Icon(color="red", icon="info-sign")
                 ).add_to(m)
 
             # call to render Folium map in Streamlit
