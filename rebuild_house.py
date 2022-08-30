@@ -165,7 +165,7 @@ def show_total(s_df):
             ),
             pitch=0,
             zoom=7,
-            style='light'
+            style='streets', #'light'
         ),
     )
     st.plotly_chart(fig, use_container_width=True)
