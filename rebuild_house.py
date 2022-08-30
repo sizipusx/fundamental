@@ -98,7 +98,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
         width='100%',
         update_mode='MODEL_CHANGED',#"no_update", ##
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
-        theme="blue",
+        theme="ALPINE",
         allow_unsafe_jscode=True,
         reload_data=True
     )
@@ -238,5 +238,19 @@ if __name__ == "__main__":
 
             )
             st.plotly_chart(fig, use_container_width=True)
+    import streamlit as st
+    from streamlit_folium import st_folium
+    import folium
+
+    # center on Liberty Bell, add marker
+    m = folium.Map(location=[39.949610, -75.150282], zoom_start=16)
+    folium.Marker(
+        [39.949610, -75.150282], 
+        popup="Liberty Bell", 
+        tooltip="Liberty Bell"
+    ).add_to(m)
+
+    # call to render Folium map in Streamlit
+    st_data = st_folium(m, width = 725)
             
         
