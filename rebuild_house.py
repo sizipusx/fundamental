@@ -178,7 +178,7 @@ def show_total(s_df):
         position='relative',
         min_zoom=0,
         max_zoom=18,
-        zoom_start=4
+        zoom_start=6
     )
 
     marker_cluster = MarkerCluster().add_to(m)
@@ -268,10 +268,11 @@ if __name__ == "__main__":
                             min_zoom=0,
                             max_zoom=18,
                             zoom_start=8)
-            for i in len(selected_df):
-                folium.Marker(
+            for i in selected_df.index:
+                folium.Circle(
                     location = selected_df.loc[i, ['위도', '경도']],
                     tooltip = selected_df.loc[i, ['단지명', '특이사항', '한글거래가액']],
+                    radius = selected_df.loc[i, '공급면적']
                 ).add_to(m)
 
             # call to render Folium map in Streamlit
