@@ -99,7 +99,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
         enable_enterprise_modules=True,
         gridOptions=gb.build(),
         #data_return_mode="filtered_and_sorted",'AS_INPUT',
-        width='100%',
+        #width='100%',
         update_mode='MODEL_CHANGED',#"no_update", ##
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
         theme="blue",
@@ -263,16 +263,12 @@ if __name__ == "__main__":
 
             #folium에 표시에 보자
             df = pd.DataFrame(selected_df)
-            m = folium.Map(location=[37.5, 127.0],
-                            width='100%',
-                            min_zoom=0,
-                            max_zoom=18,
-                            zoom_start=8)
+            m = folium.Map(location=[37.5, 127.0], zoom_start=8)
             for i in range(len(df)):
-                folium.Circle(
+                folium.Marker(
                     location = [df.iloc[i, -2], df.iloc[i, -1]],
-                    tooltip = df.iloc[i, 2:4],
-                    radius = df.iloc[i, 5]
+                    popup = df.iloc[i, 2:4],
+                    color="red", icon="info-sign"
                 ).add_to(m)
 
             # call to render Folium map in Streamlit
