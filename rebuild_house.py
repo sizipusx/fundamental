@@ -268,7 +268,7 @@ if __name__ == "__main__":
                             min_zoom=0,
                             max_zoom=18,
                             zoom_start=8)
-            for i in selected_df.index:
+            for i in range(len(selected_df)):
                 folium.Circle(
                     location = selected_df.loc[i, ['위도', '경도']],
                     tooltip = selected_df.loc[i, ['단지명', '특이사항', '한글거래가액']],
