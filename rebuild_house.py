@@ -259,6 +259,7 @@ if __name__ == "__main__":
                 title='선택한 아파트 네이버 시세',
 
             )
+            fig.update_layout(mapbox_style="satellite")
             st.plotly_chart(fig, use_container_width=True)
 
             #folium에 표시에 보자
