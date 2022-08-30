@@ -270,7 +270,7 @@ if __name__ == "__main__":
                             zoom_start=8)
             for i in range(len(selected_df)):
                 folium.Circle(
-                    location = [selected_df.iloc[i, -2], selected_df.iloc[i, -1]
+                    location = [selected_df.iloc[i, -2], selected_df.iloc[i, -1]]
                     tooltip = selected_df.iloc[i, 2:4],
                     radius = selected_df.iloc[i, 5]
                 ).add_to(m)
