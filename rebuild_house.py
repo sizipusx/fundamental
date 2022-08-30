@@ -32,6 +32,10 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 import seaborn as sns
 
+import folium
+from streamlit_folium import st_folium
+from folium.plugins import MarkerCluster
+
 pd.set_option('display.float_format', '{:.2f}'.format)
 
 utcnow= datetime.datetime.utcnow()
@@ -168,13 +172,12 @@ def show_total(s_df):
 
 
     #draw with folium
-    import folium
-    from streamlit_folium import st_folium
-    from folium.plugins import MarkerCluster
-
-
     m = folium.Map(
         location=[37.5, 127.0],
+        width='100%',
+        position='relative',
+        min_zoom=0,
+        max_zoom=18,
         zoom_start=8
     )
 
