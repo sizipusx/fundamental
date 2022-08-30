@@ -264,17 +264,18 @@ if __name__ == "__main__":
             st.plotly_chart(fig, use_container_width=True)
 
             #folium에 표시에 보자
+            df = pd.read_json(selected_df, orient ='index')
             m = folium.Map(location=[37.5, 127.0],
                             width='100%',
                             position='relative',
                             min_zoom=0,
                             max_zoom=18,
                             zoom_start=8)
-            for i in range(len(selected_df)):
+            for i in range(len(df)):
                 folium.Circle(
-                    location = [selected_df.iloc[i, -2], selected_df.iloc[i, -1]],
-                    tooltip = selected_df.iloc[i, 2:4],
-                    radius = selected_df.iloc[i, 5]
+                    location = [df.iloc[i, -2], df.iloc[i, -1]],
+                    tooltip = df.iloc[i, 2:4],
+                    radius = df.iloc[i, 5]
                 ).add_to(m)
 
             # call to render Folium map in Streamlit
