@@ -14,10 +14,6 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
-#this is folium
-from streamlit_folium import st_folium
-import folium
-from folium.plugins import MarkerCluster
 
 import requests
 import json
@@ -35,6 +31,10 @@ import FinanceDataReader as fdr
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 import seaborn as sns
+
+import folium
+from streamlit_folium import st_folium
+from folium.plugins import MarkerCluster
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 
@@ -99,12 +99,12 @@ def aggrid_interactive_table(df: pd.DataFrame):
         enable_enterprise_modules=True,
         gridOptions=gb.build(),
         #data_return_mode="filtered_and_sorted",'AS_INPUT',
-        width='100%',
+        #width='100%',
         update_mode='MODEL_CHANGED',#"no_update", ##
         fit_columns_on_grid_load=False, #GridUpdateMode.MODEL_CHANGED,
         theme="blue",
-        allow_unsafe_jscode=True,
-        reload_data=True
+        allow_unsafe_jscode=True, #Set it to True to allow jsfunction to be injected
+        reload_data=False
     )
    
     return response
@@ -150,7 +150,7 @@ def show_total(s_df):
     
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
-                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
+                    color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
     fig.update_layout(
         title='전국 재건축-재개발 분양권 아파트 시세',
         autosize=True,
@@ -165,32 +165,39 @@ def show_total(s_df):
             ),
             pitch=0,
             zoom=7,
-            style='light'
+            style='light', #'streets', #'light'
         ),
     )
     st.plotly_chart(fig, use_container_width=True)
 
-    # folium map
-    m = folium.Map(
-        location=[latitude, longitude],
-        zoom_start=15
-    )
 
-    marker_cluster = MarkerCluster().add_to(m)
+    #draw with folium
+    # m = folium.Map(
+    #     location=[37.5, 127.0],
+    #     width='100%',
+    #     position='relative',
+    #     min_zoom=5,
+    #     max_zoom=8,
+    #     zoom_start=6,
+    #     zoom_control=False
+    # )
 
-    for lat, long in zip(s_df['위도'], s_df['경도']):
-        folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
-        # call to render Folium map in Streamlit
-    st_data = st_folium(m, width = 725)
+    # marker_cluster = MarkerCluster().add_to(m)
+
+    # for lat, long in zip(s_df['위도'], s_df['경도']):
+    #     folium.Marker([lat, long], icon = folium.Icon(color="green")).add_to(marker_cluster)
+    # st_data = st_folium(m)
+    
 
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
-                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
+                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800)
     fig.update_layout(
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
 
     )
+    fig.update_layout(mapbox_style="satellite-streets")
     st.plotly_chart(fig, use_container_width=True)
     st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
     #filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
@@ -198,7 +205,7 @@ def show_local(select_city, city_apt, city_total):
     #if response:
     #    st.write("You selected:")
     #    st.json(response["selected_rows"])
-    
+   
 
 
 if __name__ == "__main__":
@@ -249,13 +256,26 @@ if __name__ == "__main__":
         if selected_df:
             px.set_mapbox_access_token(token)
             fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
-                            color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10)
+                            color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
             fig.update_layout(
                 title='선택한 아파트 네이버 시세',
 
             )
+            fig.update_layout(mapbox_style="satellite-streets")
             st.plotly_chart(fig, use_container_width=True)
 
+            #folium에 표시에 보자
+            # df = pd.DataFrame(selected_df)
+            # st.dataframe(df)
+            # m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -1]],  min_zoom=8,max_zoom=16, zoom_start=12, zoom_control=False)
+            # for i in range(len(df)):
+            #     folium.Marker(
+            #         location = [df.iloc[i, -2], df.iloc[i, -1]],
+            #         popup = df.iloc[i, 2:4],
+            #         icon=folium.Icon(color="red", icon="info-sign")
+            #     ).add_to(m)
 
+            # # call to render Folium map in Streamlit
+            # st_folium(m)
             
         
