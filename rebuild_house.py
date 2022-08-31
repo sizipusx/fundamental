@@ -170,6 +170,7 @@ def show_total(s_df):
     )
     st.plotly_chart(fig, use_container_width=True)
 
+    # folium map
     m = folium.Map(
         location=[latitude, longitude],
         zoom_start=15
