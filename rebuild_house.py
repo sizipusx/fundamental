@@ -95,7 +95,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
 
     response  = AgGrid(
         df,
-        editable=True,
+        editable=False,
         enable_enterprise_modules=True,
         gridOptions=gb.build(),
         #data_return_mode="filtered_and_sorted",'AS_INPUT',
