@@ -193,7 +193,7 @@ def show_total(s_df):
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
-                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800, orientation='h')
+                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800)
     fig.update_layout(
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
         legend=dict(orientation="h"),
@@ -257,7 +257,7 @@ if __name__ == "__main__":
         if selected_df:
             px.set_mapbox_access_token(token)
             fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
-                            color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500, orientation='h')
+                            color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
             fig.update_layout(
                 title='선택한 아파트 네이버 시세',
                 legend=dict(orientation="h")
