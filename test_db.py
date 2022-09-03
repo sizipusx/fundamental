@@ -63,8 +63,8 @@ def run_query():
     db_filename = st.selectbox('DB Filename', sqlite_dbs)
 
     query = st.text_area("SQL Query", height=100)
-    # conn = create_connection(db_filename)
-    conn = create_connection("./files/usfinance.db")
+    conn = create_connection(db_filename)
+    # conn = create_connection("./files/usfinance.db")
 
     submitted = st.button('Run Query')
 
