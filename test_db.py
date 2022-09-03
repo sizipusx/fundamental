@@ -56,7 +56,6 @@ def upload_data():
         except Exception as e:
             st.write(e)
 
-
 def run_query():
     st.markdown("# Run Query")
     sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
@@ -77,13 +76,6 @@ def run_query():
                 columns = cols
             )
             st.dataframe(results_df)
-        except Exception as e:
-            st.write(e)
-    
-    saved = st.button('Save Data')
-    if saved:
-        try:
-            results_df.to_sql('test', conn)
         except Exception as e:
             st.write(e)
 
