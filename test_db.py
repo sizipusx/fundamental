@@ -78,6 +78,8 @@ def run_query():
             st.dataframe(results_df)
         except Exception as e:
             st.write(e)
+        conn.commit()
+        # conn.close()
 
     st.sidebar.markdown("# Run Query")
 
