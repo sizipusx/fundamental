@@ -59,11 +59,19 @@ def upload_data():
 def run_query():
     st.markdown("# Run Query")
     # sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
-    sqlite_dbs = './files/weekly_house.db'
-    db_filename = st.selectbox('DB Filename', sqlite_dbs)
+    db_filename = './files/rebuild_house.db'
+    conn = create_connection(db_filename)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    table_list = []
+    for row in cursor:
+        table_list.append(row[0])
+
+
+    table_name = st.selectbox('DB Table name', table_list)
 
     query = st.text_area("SQL Query", height=100)
-    conn = create_connection(db_filename)
+    
     # conn = create_connection("./files/usfinance.db")
 
     submitted = st.button('Run Query')
