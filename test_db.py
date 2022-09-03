@@ -52,13 +52,14 @@ def upload_data():
             df.to_sql(name=table_name, con=conn)
             st.write('Data uploaded successfully. These are the first 5 rows.')
             st.dataframe(df.head(5))
-
+            conn.commit()
         except Exception as e:
             st.write(e)
 
 def run_query():
     st.markdown("# Run Query")
-    sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
+    # sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
+    sqlite_dbs = './files/weekly_house.db'
     db_filename = st.selectbox('DB Filename', sqlite_dbs)
 
     query = st.text_area("SQL Query", height=100)
@@ -78,7 +79,7 @@ def run_query():
             st.dataframe(results_df)
         except Exception as e:
             st.write(e)
-        conn.commit()
+       
         # conn.close()
 
     st.sidebar.markdown("# Run Query")
