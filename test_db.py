@@ -79,6 +79,13 @@ def run_query():
             st.dataframe(results_df)
         except Exception as e:
             st.write(e)
+    
+    saved = st.button('Save Data')
+    if saved:
+        try:
+            results_df.to_sql('test', conn)
+        except Exception as e:
+            st.write(e)
 
     st.sidebar.markdown("# Run Query")
 
