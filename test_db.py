@@ -40,8 +40,9 @@ def create_database():
 def upload_data():
     st.markdown("# Upload Data")
     # https://discuss.streamlit.io/t/uploading-csv-and-excel-files/10866/2
-    sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
-    db_filename = st.selectbox('DB Filename', sqlite_dbs)
+    #sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
+    #db_filename = st.selectbox('DB Filename', sqlite_dbs)
+    db_filename = './files/rebuild_house.db'
     table_name = st.text_input('Table Name to Insert')
     conn = create_connection(db_filename)
     uploaded_file = st.file_uploader('Choose a file')
@@ -53,6 +54,7 @@ def upload_data():
             st.write('Data uploaded successfully. These are the first 5 rows.')
             st.dataframe(df.head(5))
             conn.commit()
+            conn.close()
         except Exception as e:
             st.write(e)
 
