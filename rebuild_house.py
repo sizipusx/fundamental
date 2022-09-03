@@ -149,14 +149,17 @@ def load_data():
     try:
         db_filename = './files/rebuild_house.db'
         conn = create_connection(db_filename)
-        query = "SELECT * FROM summary_220826;"
+        #이전 데이터
+        query = "SELECT * FROM sum_220903;"
         query = conn.execute(query)
         cols = [column[0] for column in query.description]
         sum_df= pd.DataFrame.from_records(
             data = query.fetchall(), 
             columns = cols
         )
-        st.dataframe(sum_df)
+        #st.dataframe(sum_df)
+        t_old = len(sum_df)
+        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{t_old}] 개의 매물이 있습니다!")
     except Exception as e:
         st.write(e)
 
@@ -178,8 +181,9 @@ def load_data():
         data = query.fetchall(), 
         columns = cols
     )
-    st.dataframe(total_df)
-
+    #st.dataframe(total_df)
+    t_old = len(sum_df)
+    st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매물이 있습니다!")
     total_df['공급면적'] = total_df['공급면적'].astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     total_df['위도'] = total_df['위도'].astype(float)
@@ -257,7 +261,7 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
-    st.subheader("시세 조사 날짜: 2022.08.26." )
+    st.subheader("시세 조사 날짜: 2022.09.03." )
     show_total(s_df)
     city_list = s_df['시도'].drop_duplicates().to_list()
     city_list.insert(0,'전국')
