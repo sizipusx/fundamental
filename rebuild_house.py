@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 import numpy as np
 import pandas as pd
 from pandas.io.formats import style
+import sqlite3
 
 import streamlit as st
 import gspread
@@ -72,6 +73,20 @@ st.markdown(""" <style>
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
+def create_connection(db_file):
+    """ create a database connection to the SQLite database
+        specified by the db_file
+    :param db_file: database file
+    :return: Connection object or None
+    """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Exception as e:
+        st.write(e)
+
+    return conn
+
 #agg table
 def aggrid_interactive_table(df: pd.DataFrame):
     """Creates an st-aggrid interactive table based on a dataframe.
@@ -111,24 +126,41 @@ def aggrid_interactive_table(df: pd.DataFrame):
 
 def load_data():
     #gsheet
-    scope = [
-        'https://spreadsheets.google.com/feeds',
-        'https://www.googleapis.com/auth/drive',
-        ]
+    # scope = [
+    #     'https://spreadsheets.google.com/feeds',
+    #     'https://www.googleapis.com/auth/drive',
+    #     ]
 
-    json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
+    # json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
 
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
-    gc = gspread.authorize(credentials)
+    # credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+    # gc = gspread.authorize(credentials)
 
-    spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1-hIsPEvydoLQqouPNY7CT5_n--4ftey0nNNRfe8nce8/edit?usp=sharing'
+    # spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1-hIsPEvydoLQqouPNY7CT5_n--4ftey0nNNRfe8nce8/edit?usp=sharing'
 
-    doc = gc.open_by_url(spreadsheet_url)
+    # doc = gc.open_by_url(spreadsheet_url)
 
-    sum_sheet = doc.worksheet('summary')
-    s_values = sum_sheet.get_all_values()
-    s_header, s_rows = s_values[0], s_values[1:]
-    sum_df = pd.DataFrame(s_rows, columns=s_header)
+    # sum_sheet = doc.worksheet('summary')
+    # s_values = sum_sheet.get_all_values()
+    # s_header, s_rows = s_values[0], s_values[1:]
+    # sum_df = pd.DataFrame(s_rows, columns=s_header)
+
+    #sqlite3 에서 읽어오기
+    try:
+        db_filename = './files/rebuild_house.db'
+        conn = create_connection(db_filename)
+        query = "SELECT * FROM summary_220826;"
+        query = conn.execute(query)
+        cols = [column[0] for column in query.description]
+        sum_df= pd.DataFrame.from_records(
+            data = query.fetchall(), 
+            columns = cols
+        )
+        st.dataframe(sum_df)
+    except Exception as e:
+        st.write(e)
+
+    # 여기부터 공통
     sum_df['시세평균(만)'] = sum_df['시세평균(만)'].astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     sum_df['위도'] = sum_df['위도'].astype(float)
