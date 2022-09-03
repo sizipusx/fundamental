@@ -166,10 +166,20 @@ def load_data():
     sum_df['위도'] = sum_df['위도'].astype(float)
     sum_df['경도'] = sum_df['경도'].astype(float)
 
-    t_sheet = doc.worksheet('total')
-    t_values = t_sheet.get_all_values()
-    t_header, t_rows = t_values[0], t_values[1:]
-    total_df = pd.DataFrame(t_rows, columns=t_header)
+    # t_sheet = doc.worksheet('total')
+    # t_values = t_sheet.get_all_values()
+    # t_header, t_rows = t_values[0], t_values[1:]
+    # total_df = pd.DataFrame(t_rows, columns=t_header)
+    # db에서 읽어오기
+    query = "SELECT * FROM total_220826;"
+    query = conn.execute(query)
+    cols = [column[0] for column in query.description]
+    total_df= pd.DataFrame.from_records(
+        data = query.fetchall(), 
+        columns = cols
+    )
+    st.dataframe(total_df)
+
     total_df['공급면적'] = total_df['공급면적'].astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     total_df['위도'] = total_df['위도'].astype(float)
