@@ -158,8 +158,8 @@ def load_data():
             columns = cols
         )
         #st.dataframe(sum_df)
-        t_old = len(sum_df)
-        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{t_old}] 개의 매물이 있습니다!")
+        s_old = len(sum_df)
+        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{s_old}] 개의 매물이 있습니다!")
     except Exception as e:
         st.write(e)
 
@@ -183,7 +183,7 @@ def load_data():
         columns = cols
     )
     #st.dataframe(total_df)
-    t_old = len(sum_df)
+    t_old = len(total_df)
     st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매물이 있습니다!")
     # total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
     total_df['공급면적'] = total_df['공급면적'].fillna(0).astype(int)
@@ -197,7 +197,7 @@ def load_data():
 def show_total(s_df):
     
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도"],
+    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="주거형태", size="시세평균(만)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
     fig.update_layout(
         title='전국 재건축-재개발 분양권 아파트 시세',
