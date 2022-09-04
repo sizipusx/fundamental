@@ -164,8 +164,8 @@ def load_data():
         st.write(e)
 
     # 여기부터 공통
-    sum_df['시세평균(만)'].replace([np.inf, -np.inf], "0", inplace=True)
-    sum_df['시세평균(만)'] = sum_df['시세평균(만)'].astype(int)
+    # sum_df['시세평균(만)'].replace([np.inf, -np.inf], "0", inplace=True)
+    sum_df['시세평균(만)'] = sum_df['시세평균(만)'].fillna(0).astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     sum_df['위도'] = sum_df['위도'].astype(float)
     sum_df['경도'] = sum_df['경도'].astype(float)
@@ -185,8 +185,8 @@ def load_data():
     #st.dataframe(total_df)
     t_old = len(sum_df)
     st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매물이 있습니다!")
-    total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
-    total_df['공급면적'] = total_df['공급면적'].astype(int)
+    # total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
+    total_df['공급면적'] = total_df['공급면적'].fillna(0).astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     total_df['위도'] = total_df['위도'].astype(float)
     total_df['경도'] = total_df['경도'].astype(float)
