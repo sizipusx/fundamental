@@ -175,7 +175,7 @@ def load_data():
     # t_header, t_rows = t_values[0], t_values[1:]
     # total_df = pd.DataFrame(t_rows, columns=t_header)
     # db에서 읽어오기
-    query = "SELECT * FROM total_220826;"
+    query = "SELECT * FROM total_220903;"
     query = conn.execute(query)
     cols = [column[0] for column in query.description]
     total_df= pd.DataFrame.from_records(
@@ -248,7 +248,7 @@ def show_local(select_city, city_apt, city_total):
     )
     fig.update_layout(mapbox_style="satellite-streets")
     st.plotly_chart(fig, use_container_width=True)
-    st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 아파트가 있습니다.")  
+    st.write("단지명과 공급 면적에 따라 분류한 총 ("+ str(len(city_apt))+ " ) 개의 매물이 있습니다.")  
     #filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
     #response  = aggrid_interactive_table(df=filter_df)
     #if response:
