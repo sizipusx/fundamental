@@ -214,7 +214,7 @@ def load_ratio_data():
     return sadf, sadf_ch, jadf, jadf_ch, m_df, a_df
 
 
-@st.cache
+@st.cache(ttl=600)
 def load_buy_data():
     #년 증감 계산을 위해 최소 12개월치 데이터 필요
     # path = r'https://github.com/sizipusx/fundamental/blob/0bc9c7aa7236c68895e69f04fb562973f73ba2b3/files/apt_buy.xlsx?raw=true'
@@ -428,7 +428,7 @@ def load_pop_data():
         
     return pop_df, pop_change, sdf, sdf_change
 
-@st.cache
+@st.cache(ttl=600)
 def load_not_sell_data():
     #미분양
     mb = one_doc.worksheet('notsold')
