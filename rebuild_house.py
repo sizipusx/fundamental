@@ -265,7 +265,7 @@ if __name__ == "__main__":
     data_load_state.text("Done! (using st.cache)")
     st.subheader("시세 조사 날짜: 2022.09.18." )
     show_total(s_df)
-    city_list = s_df['시도명'].drop_duplicates().to_list()
+    city_list = s_df['시도'].drop_duplicates().to_list()
     city_list.insert(0,'전국')
     #submit = st.sidebar.button('해당 지역만 보기')
     with st.container():
@@ -284,17 +284,17 @@ if __name__ == "__main__":
     with col5:
         st.write("")
 
-    city_apt = s_df[s_df['시도명'] == city_name]
-    city_total = t_df[t_df['시도명'] == city_name]
+    city_apt = s_df[s_df['시도'] == city_name]
+    city_total = t_df[t_df['시도'] == city_name]
     #if submit:
     if city_name == '전국':
-        filter_df = t_df[['시도명', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
+        filter_df = t_df[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
         #response = aggrid_interactive_table(df=filter_df)
         default_flag = '전국'
     else:
         apt_len = len(city_apt)
         show_local(city_name, city_apt, city_total)
-        filter_df = city_total[['시도명', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
+        filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
         default_flag = '그외'
     response  = aggrid_interactive_table(df=filter_df)
 
