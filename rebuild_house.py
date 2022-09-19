@@ -150,7 +150,7 @@ def load_data():
         db_filename = './files/rebuild_house.db'
         conn = create_connection(db_filename)
         #이전 데이터
-        query = "SELECT * FROM sum_220903;"
+        query = "SELECT * FROM sum_220918;"
         query = conn.execute(query)
         cols = [column[0] for column in query.description]
         sum_df= pd.DataFrame.from_records(
@@ -175,7 +175,7 @@ def load_data():
     # t_header, t_rows = t_values[0], t_values[1:]
     # total_df = pd.DataFrame(t_rows, columns=t_header)
     # db에서 읽어오기
-    query = "SELECT * FROM total_220903;"
+    query = "SELECT * FROM total_220918;"
     query = conn.execute(query)
     cols = [column[0] for column in query.description]
     total_df= pd.DataFrame.from_records(
@@ -263,7 +263,7 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
-    st.subheader("시세 조사 날짜: 2022.09.03." )
+    st.subheader("시세 조사 날짜: 2022.09.18." )
     show_total(s_df)
     city_list = s_df['시도명'].drop_duplicates().to_list()
     city_list.insert(0,'전국')
