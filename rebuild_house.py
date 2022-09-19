@@ -265,7 +265,7 @@ if __name__ == "__main__":
     data_load_state.text("Done! (using st.cache)")
     st.subheader("시세 조사 날짜: 2022.09.18." )
     show_total(s_df)
-    city_list = s_df['시도'].drop_duplicates().to_list()
+    city_list = s_df['시도명'].drop_duplicates().to_list()
     city_list.insert(0,'전국')
     #submit = st.sidebar.button('해당 지역만 보기')
     with st.container():
@@ -284,8 +284,8 @@ if __name__ == "__main__":
     with col5:
         st.write("")
 
-    city_apt = s_df[s_df['시도'] == city_name]
-    city_total = t_df[t_df['시도'] == city_name]
+    city_apt = s_df[s_df['시도명'] == city_name]
+    city_total = t_df[t_df['시도명'] == city_name]
     #if submit:
     if city_name == '전국':
         filter_df = t_df[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
@@ -304,7 +304,7 @@ if __name__ == "__main__":
         selected_df = response["selected_rows"]
         if selected_df:
             px.set_mapbox_access_token(token)
-            fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도명"],
+            fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
                             color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
             fig.update_layout(
                 title='선택한 아파트 네이버 시세',
