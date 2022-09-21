@@ -338,5 +338,9 @@ if __name__ == "__main__":
                 # st_folium(m)
     with tab2:
         st.dataframe(stat_df)
+        import plotly.express as px
+
+        fig = px.bar(stat_df, x="date", y=["count", "rebuild", "redevel", "bunyang", "mapi"], title="Long-Form Input")
+        st.plotly_chart(fig)
             
         
