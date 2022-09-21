@@ -157,6 +157,14 @@ def load_data():
             data = query.fetchall(), 
             columns = cols
         )
+
+        query1 = "SELECT * FROM apt_sum;"
+        query1 = conn.execute(query1)
+        cols = [column[0] for column in query1.description]
+        stat_df= pd.DataFrame.from_records(
+            data = query.fetchall(), 
+            columns = cols
+        )
         #st.dataframe(sum_df)
         s_old = len(sum_df)
         st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{s_old}] 개의 매물이 있습니다!")
@@ -192,7 +200,7 @@ def load_data():
     total_df['경도'] = total_df['경도'].astype(float)
 
 
-    return sum_df, total_df
+    return sum_df, total_df, stat_df
 
 def show_total(s_df):
     
@@ -259,72 +267,76 @@ def show_local(select_city, city_apt, city_total):
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
-    s_df, t_df = load_data()
+    s_df, t_df, stat_df = load_data()
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
     st.subheader("시세 조사 날짜: 2022.09.18." )
-    show_total(s_df)
-    city_list = s_df['시도명'].drop_duplicates().to_list()
-    city_list.insert(0,'전국')
-    #submit = st.sidebar.button('해당 지역만 보기')
-    with st.container():
-        col1, col2, col3, col4, col5 = st.columns([20,20,20, 20, 20])
-    with col1:
-        city_name = st.selectbox(
-        '해당 지역만 보기',
-        city_list
-        )
-    with col2:
-        st.write("")
-    with col3:
-        st.write("")
-    with col4:
-        st.write("")
-    with col5:
-        st.write("")
-
-    city_apt = s_df[s_df['시도명'] == city_name]
-    city_total = t_df[t_df['시도'] == city_name]
-    #if submit:
-    if city_name == '전국':
-        filter_df = t_df[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
-        #response = aggrid_interactive_table(df=filter_df)
-        default_flag = '전국'
-    else:
-        apt_len = len(city_apt)
-        show_local(city_name, city_apt, city_total)
-        filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
-        default_flag = '그외'
-    response  = aggrid_interactive_table(df=filter_df)
-
-
-    if response:
-        st.write("선택한 아파트 위치:")
-        selected_df = response["selected_rows"]
-        if selected_df:
-            px.set_mapbox_access_token(token)
-            fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
-                            color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
-            fig.update_layout(
-                title='선택한 아파트 네이버 시세',
-                legend=dict(orientation="h")
+    tab1, tab2 = st.tabs(["📈 Chart", "🗃 Data"])
+    with tab1:
+        show_total(s_df)
+        city_list = s_df['시도명'].drop_duplicates().to_list()
+        city_list.insert(0,'전국')
+        #submit = st.sidebar.button('해당 지역만 보기')
+        with st.container():
+            col1, col2, col3, col4, col5 = st.columns([20,20,20, 20, 20])
+        with col1:
+            city_name = st.selectbox(
+            '해당 지역만 보기',
+            city_list
             )
-            fig.update_layout(mapbox_style="satellite-streets")
-            st.plotly_chart(fig, use_container_width=True)
+        with col2:
+            st.write("")
+        with col3:
+            st.write("")
+        with col4:
+            st.write("")
+        with col5:
+            st.write("")
 
-            #folium에 표시에 보자
-            # df = pd.DataFrame(selected_df)
-            # st.dataframe(df)
-            # m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -1]],  min_zoom=8,max_zoom=16, zoom_start=12, zoom_control=False)
-            # for i in range(len(df)):
-            #     folium.Marker(
-            #         location = [df.iloc[i, -2], df.iloc[i, -1]],
-            #         popup = df.iloc[i, 2:4],
-            #         icon=folium.Icon(color="red", icon="info-sign")
-            #     ).add_to(m)
+        city_apt = s_df[s_df['시도명'] == city_name]
+        city_total = t_df[t_df['시도'] == city_name]
+        #if submit:
+        if city_name == '전국':
+            filter_df = t_df[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
+            #response = aggrid_interactive_table(df=filter_df)
+            default_flag = '전국'
+        else:
+            apt_len = len(city_apt)
+            show_local(city_name, city_apt, city_total)
+            filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
+            default_flag = '그외'
+        response  = aggrid_interactive_table(df=filter_df)
 
-            # # call to render Folium map in Streamlit
-            # st_folium(m)
+
+        if response:
+            st.write("선택한 아파트 위치:")
+            selected_df = response["selected_rows"]
+            if selected_df:
+                px.set_mapbox_access_token(token)
+                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
+                                color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
+                fig.update_layout(
+                    title='선택한 아파트 네이버 시세',
+                    legend=dict(orientation="h")
+                )
+                fig.update_layout(mapbox_style="satellite-streets")
+                st.plotly_chart(fig, use_container_width=True)
+
+                #folium에 표시에 보자
+                # df = pd.DataFrame(selected_df)
+                # st.dataframe(df)
+                # m = folium.Map(location=[df.iloc[0, -2], df.iloc[0, -1]],  min_zoom=8,max_zoom=16, zoom_start=12, zoom_control=False)
+                # for i in range(len(df)):
+                #     folium.Marker(
+                #         location = [df.iloc[i, -2], df.iloc[i, -1]],
+                #         popup = df.iloc[i, 2:4],
+                #         icon=folium.Icon(color="red", icon="info-sign")
+                #     ).add_to(m)
+
+                # # call to render Folium map in Streamlit
+                # st_folium(m)
+    with tab2:
+        st.dataframe(stat_df)
             
         
