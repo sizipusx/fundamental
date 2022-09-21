@@ -339,7 +339,8 @@ if __name__ == "__main__":
     with tab2:
         st.dataframe(stat_df)
         import plotly.express as px
-
+        stat_df.replace([np.inf, -np.inf], "0", inplace=True)
+        stat_df = stat_df.fillna(0).astype(int)
         fig = px.bar(stat_df, x="date", y=["count", "rebuild", "redevel", "bunyang", "mapi"], title="Long-Form Input")
         st.plotly_chart(fig)
             
