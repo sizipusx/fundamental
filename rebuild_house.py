@@ -339,8 +339,9 @@ if __name__ == "__main__":
     with tab2:
         st.dataframe(stat_df)
         stat_df = stat_df.iloc[1:]
-        stat_df.replace([np.inf, -np.inf], "0", inplace=True)
-        stat_df = stat_df.fillna(0).astype(int)
+        stat_df.iloc[:,1:].replace([np.inf, -np.inf], "0", inplace=True)
+        stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
+        stat_df.iloc[:,1:] = stat_df.iloc[:,1:].fillna(0).astype(int)
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
