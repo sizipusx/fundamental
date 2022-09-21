@@ -341,7 +341,20 @@ if __name__ == "__main__":
         stat_df = stat_df.iloc[1:]
         stat_df.replace([np.inf, -np.inf], "0", inplace=True)
         stat_df = stat_df.fillna(0).astype(int)
-        fig = px.bar(stat_df, x="date", y=["rebuild", "redevel", "bunyang", "mapi"], title="Long-Form Input")
-        st.plotly_chart(fig)
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                fig = px.bar(stat_df, y="date", x=["mtotal", "jtotal"], title="전체 매물 중 매매/전세/월세 증감", orientation='h')                
+                st.plotly_chart(fig)
+            with col2:
+                st.write("")
+            with col3:
+                fig = px.bar(stat_df, y="date", x=["rebuild", "redevel", "bunyang", "mapi"], title="매매 물건 중 재개발/재건축/분양권 증감", orientation='h')
+                st.plotly_chart(fig)
+            html_br="""
+            <br>
+            """
+        
+        
             
         
