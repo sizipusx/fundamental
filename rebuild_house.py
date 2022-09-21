@@ -162,7 +162,7 @@ def load_data():
         query1 = conn.execute(query1)
         cols = [column[0] for column in query1.description]
         stat_df= pd.DataFrame.from_records(
-            data = query.fetchall(), 
+            data = query1.fetchall(), 
             columns = cols
         )
         #st.dataframe(sum_df)
