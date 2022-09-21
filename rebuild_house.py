@@ -341,7 +341,7 @@ if __name__ == "__main__":
         stat_df = stat_df.iloc[1:]
         stat_df.replace([np.inf, -np.inf], "0", inplace=True)
         stat_df = stat_df.fillna(0).astype(int)
-        fig = px.bar(stat_df, x="date", y=["count", "rebuild", "redevel", "bunyang", "mapi"], title="Long-Form Input")
+        fig = px.bar(stat_df, x="date", y=["rebuild", "redevel", "bunyang", "mapi"], title="Long-Form Input")
         st.plotly_chart(fig)
             
         
