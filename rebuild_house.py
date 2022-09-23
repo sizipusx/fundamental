@@ -205,7 +205,7 @@ def load_data():
 def show_total(s_df):
     
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도명"],
+    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도",     color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
     fig.update_layout(
         title='전국 재건축-재개발 분양권 아파트 시세',
@@ -248,7 +248,7 @@ def show_total(s_df):
 
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도",     color="주거형태", size="거래가(만원)", hover_name="단지명", hover_data=["물건수", "공급면적", "시도명"],
+    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800)
     fig.update_layout(
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
@@ -271,8 +271,8 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
-    st.subheader("시세 조사 날짜: 2022.09.18." )
-    tab1, tab2 = st.tabs(["📈 Chart", "🗃 Data"])
+    st.subheader("시세 조사 날짜: 2022.09.23." )
+    tab1, tab2 = st.tabs(["📈 지도", "🗃 통계"])
     with tab1:
         show_total(s_df)
         city_list = s_df['시도명'].drop_duplicates().to_list()
@@ -314,7 +314,7 @@ if __name__ == "__main__":
             selected_df = response["selected_rows"]
             if selected_df:
                 px.set_mapbox_access_token(token)
-                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도",     color="주거형태", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
+                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도", color="주거형태", size="공급면적(평)", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
                                 color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
                 fig.update_layout(
                     title='선택한 아파트 네이버 시세',
@@ -350,7 +350,7 @@ if __name__ == "__main__":
             with col2:
                 st.write("")
             with col3:
-                fig = px.bar(stat_df, y="date", x=["재건축", "재개발", "분양권", "마피"], title="매매 물건 중 재개발/재건축/분양권 증감", orientation='h')
+                fig = px.bar(stat_df, y="date", x=["재건축", "재개발", "분양권", "마피", "무피"], title="매매 물건 중 재개발/재건축/분양권 증감", orientation='h')
                 st.plotly_chart(fig)
             html_br="""
             <br>
