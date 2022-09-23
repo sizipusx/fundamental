@@ -167,7 +167,7 @@ def load_data():
         )
         #st.dataframe(sum_df)
         s_old = len(sum_df)
-        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{s_old}] 개의 매물이 있습니다!")
+        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{s_old}] 개의 매매 물건이 있습니다!")
     except Exception as e:
         st.write(e)
 
@@ -192,7 +192,7 @@ def load_data():
     )
     #st.dataframe(total_df)
     t_old = len(total_df)
-    st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매물이 있습니다!")
+    st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매매 매물이 있습니다!")
     # total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
     total_df['공급면적'] = total_df['공급면적'].fillna(0).astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
