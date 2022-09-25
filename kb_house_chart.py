@@ -5,6 +5,7 @@ import drawAPT_weekly
 
 import numpy as np
 import pandas as pd
+import sqlite3
 from pandas.io.formats import style
 
 import streamlit as st
@@ -99,6 +100,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 # #헤더 변경
 # header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400db00e75cf4e5521043be88/files/header.xlsx?raw=True'
 # header_excel = pd.ExcelFile(header_path)
+weekly_db_path = "./file/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 #gsheet
@@ -118,60 +120,99 @@ spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq1
 
 doc = gc.open_by_url(spreadsheet_url)
 
+@st.cache
+def create_connection(db_file):
+    """ create a database connection to the SQLite database
+        specified by the db_file
+    :param db_file: database file
+    :return: Connection object or None
+    """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Exception as e:
+       print(e)
+
+    return conn
+
 @st.cache(ttl=600)
 def get_gsheet_index():
-    m_d = doc.worksheet('mae')
-    j_d = doc.worksheet('jeon')
-    basic_city = doc.worksheet('city')
-    kb_m = doc.worksheet('kbm')
-    kb_j = doc.worksheet('kbj')
+    # m_d = doc.worksheet('mae')
+    # j_d = doc.worksheet('jeon')
+    # basic_city = doc.worksheet('city')
+    # kb_m = doc.worksheet('kbm')
+    # kb_j = doc.worksheet('kbj')
 
-    #데이터 프레임으로 읽기
-    basic_values = basic_city.get_all_values()
-    m_values = m_d.get_all_values()
-    j_values = j_d.get_all_values()
-    kbm_values = kb_m.get_all_values()
-    kbj_values = kb_j.get_all_values()
+    # #데이터 프레임으로 읽기
+    # basic_values = basic_city.get_all_values()
+    # m_values = m_d.get_all_values()
+    # j_values = j_d.get_all_values()
+    # kbm_values = kb_m.get_all_values()
+    # kbj_values = kb_j.get_all_values()
 
-    basic_header, basic_rows = basic_values[0], basic_values[1:]
-    m_header, m_rows = m_values[1], m_values[2:]
-    j_header, j_rows = j_values[1], j_values[2:]
-    kbm_header, kbm_rows = kbm_values[1], kbm_values[2:]
-    kbj_header, kbj_rows = kbj_values[1], kbj_values[2:]
+    # basic_header, basic_rows = basic_values[0], basic_values[1:]
+    # m_header, m_rows = m_values[1], m_values[2:]
+    # j_header, j_rows = j_values[1], j_values[2:]
+    # kbm_header, kbm_rows = kbm_values[1], kbm_values[2:]
+    # kbj_header, kbj_rows = kbj_values[1], kbj_values[2:]
 
-    basic_df= pd.DataFrame(basic_rows, columns=basic_header)
-    omdf = pd.DataFrame(m_rows, columns=m_header)
-    ojdf = pd.DataFrame(j_rows, columns=j_header)
-    mdf = pd.DataFrame(kbm_rows, columns=kbm_header)
-    jdf = pd.DataFrame(kbj_rows, columns=kbj_header)
+    # basic_df= pd.DataFrame(basic_rows, columns=basic_header)
+    # omdf = pd.DataFrame(m_rows, columns=m_header)
+    # ojdf = pd.DataFrame(j_rows, columns=j_header)
+    # mdf = pd.DataFrame(kbm_rows, columns=kbm_header)
+    # jdf = pd.DataFrame(kbj_rows, columns=kbj_header)
 
-    #데이터타입 변경
-    basic_df = basic_df[basic_df['x'] != '#N/A' ]
-    basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
-    basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
-    basic_df['면적'] = basic_df['면적'].apply(lambda x: x.replace(',','').replace('#N/A','0')).astype(float)
-    basic_df['x'] = basic_df['x'].astype(int)
-    basic_df['y'] = basic_df['y'].astype(int)
-    #kb
-    mdf = mdf.set_index(keys='날짜')
-    mdf.index = pd.to_datetime(mdf.index)
-    mdf = mdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
-    jdf = jdf.set_index(keys='날짜')
-    jdf.index = pd.to_datetime(jdf.index)
-    jdf = jdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
-    mdf = mdf.astype(float)
-    jdf = jdf.astype(float)
-    #부동산원
-    omdf = omdf.set_index(keys='날짜')
-    omdf.index = pd.to_datetime(omdf.index)
-    ojdf = ojdf.set_index(keys='날짜')
-    ojdf.index = pd.to_datetime(ojdf.index)
-    omdf = omdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
-    ojdf = ojdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
-    omdf = omdf.astype(float)
-    ojdf = ojdf.astype(float)
+    # #데이터타입 변경
+    # basic_df = basic_df[basic_df['x'] != '#N/A' ]
+    # basic_df['총인구수'] = basic_df['총인구수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
+    # basic_df['세대수'] = basic_df['세대수'].apply(lambda x: x.replace(',','').replace('-','0')).astype(int)
+    # basic_df['면적'] = basic_df['면적'].apply(lambda x: x.replace(',','').replace('#N/A','0')).astype(float)
+    # basic_df['x'] = basic_df['x'].astype(int)
+    # basic_df['y'] = basic_df['y'].astype(int)
+    # #kb
+    # mdf = mdf.set_index(keys='날짜')
+    # mdf.index = pd.to_datetime(mdf.index)
+    # mdf = mdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
+    # jdf = jdf.set_index(keys='날짜')
+    # jdf.index = pd.to_datetime(jdf.index)
+    # jdf = jdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
+    # mdf = mdf.astype(float)
+    # jdf = jdf.astype(float)
+    # #부동산원
+    # omdf = omdf.set_index(keys='날짜')
+    # omdf.index = pd.to_datetime(omdf.index)
+    # ojdf = ojdf.set_index(keys='날짜')
+    # ojdf.index = pd.to_datetime(ojdf.index)
+    # omdf = omdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
+    # ojdf = ojdf.apply(lambda x:x.replace('','0').replace('#DIV/0!','0'))
+    # omdf = omdf.astype(float)
+    # ojdf = ojdf.astype(float)
 
-    return mdf, jdf, omdf, ojdf, basic_df
+    #DB에서 읽어오자
+    conn = create_connection(weekly_db_path)
+    index_list = []
+    query_list = ["select * from kbm", "select * from kbj", "select * from onem",  "select * from onej"]
+    for query in query_list:
+        query = conn.execute(query)
+        cols = [column[0] for column in query.description]
+        df= pd.DataFrame.from_records(
+                    data = query.fetchall(), 
+                    columns = cols
+            )
+        df = df.set_index(keys='날짜')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        index_list.append(df)
+    #기본 정보
+    query = "select * from basic"
+    #conn = create_connection(db_filename)
+    query = conn.execute(query)
+    cols = [column[0] for column in query.description]
+    basic_df= pd.DataFrame.from_records(
+                    data = query.fetchall(), 
+                    columns = cols
+            )
+    index_list.append(basic_df)
+    return index_list
 
 #agg table
 def aggrid_interactive_table(df: pd.DataFrame):
@@ -1035,7 +1076,13 @@ def draw_basic():
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
     data_load_state = st.text('Loading index Data...')
-    mdf, jdf, omdf, ojdf, basic_df = get_gsheet_index()
+    index_lists = get_gsheet_index()
+    mdf = index_lists[0]
+    jdf = index_lists[1]
+    omdf = index_lists[2]
+    ojdf = index_lists[3]
+    basic_df = index_lists[4]
+    # mdf, jdf, omdf, ojdf, basic_df = get_gsheet_index()
     #여기서 만들어 보자!!!
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
