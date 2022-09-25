@@ -120,7 +120,6 @@ spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq1
 
 doc = gc.open_by_url(spreadsheet_url)
 
-@st.cache
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
