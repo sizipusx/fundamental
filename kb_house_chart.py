@@ -1406,6 +1406,22 @@ if __name__ == "__main__":
             run_sentimental_index(mdf, jdf, mdf_change, jdf_change)
     elif my_choice == '지역 함께 보기':
         citys = omdf.columns.tolist()
+        ##추가
+        period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+        st.subheader("기간 상승률 분석")
+        start_date, end_date = st.select_slider(
+            'Select Date to Compare index change', 
+            options = period_,
+            value = (period_[-105], period_[-1]))
+        
+        #부동산원 / KB
+        slice_om = omdf.loc[start_date:end_date]
+        slice_om_ch = omdf_change.loc[start_date:end_date]
+        cum_omdf.loc[start_date:end_date]
+        slice_cum_omdf = cum_omdf.loc[start_date:end_date]
+        slice_oj = ojdf.loc[start_date:end_date]
+        slice_cum_ojdf = cum_ojdf.loc[start_date:end_date]
+
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.button('Draw Index chart togethger')
         if submit:
@@ -1414,13 +1430,13 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = '부동산원 주간'
-                    drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
+                    drawAPT_weekly.run_one_index_together(options, slice_om, slice_om_ch, flag)
 
                 with col2:
                     st.write("")
                 with col3:
                     flag = '부동산원 주간'
-                    drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)
+                    drawAPT_weekly.draw_flower_together(options, slice_cum_omdf, slice_cum_ojdf, flag)
                     
             html_br="""
             <br>
