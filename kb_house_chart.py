@@ -1420,9 +1420,9 @@ if __name__ == "__main__":
         slice_om_ch = omdf_change.loc[start_date:end_date]
         slice_oj_ch = ojdf_change.loc[start_date:end_date]
         slice_cum_omdf = (1+slice_om_ch/100).cumprod() -1
-        slice_cum_omdf = slice_cum_omdf.round(decimals=2)
+        slice_cum_omdf = slice_cum_omdf.round(decimals=4)
         slice_cum_ojdf = (1+slice_oj_ch/100).cumprod() -1
-        slice_cum_ojdf = slice_cum_ojdf.round(decimals=2)
+        slice_cum_ojdf = slice_cum_ojdf.round(decimals=4)
 
         change_odf = pd.DataFrame()
         change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
