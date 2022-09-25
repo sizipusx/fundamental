@@ -851,33 +851,10 @@ def draw_basic():
     """
     st.markdown(html_br, unsafe_allow_html=True)
     ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-    def make_graph(to_df):
-        flag1 = "KB 주간 시계열"
-        title = dict(text='<b>'+flag1+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
-        template = "ggplot2"
-        fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
-                            text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
-        fig.update_yaxes(zeroline=True, zerolinecolor='LightPink')#, ticksuffix="%")
-        fig.update_xaxes(zeroline=True, zerolinecolor='LightPink')#, ticksuffix="%")
-        fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
-        fig.add_vline(x=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="전세수급지수가 100을 초과할수록 '매수자가 많다'를, 100 미만일 경우 '매도자가 많다'를 의미 ", annotation_position="top left")
-        fig.add_vline(x=40.0, line_width=1, line_dash="dot", line_color="red",  annotation_text="40 이상 매매지수 상승 가능성 높음", annotation_position="top left")
-        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig)
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            #drawAPT_weekly.draw_senti_last(index_df)
-            plot_spot = st.empty()
-            s_s = s_df.iloc[-5:-1,:]
-            j_s = js_df.iloc[-5:-1,:]
-            for i in range(0,len(j_s)):
-                temp_df = pd.DataFrame()
-                temp_df['매수우위지수'] = s_s.iloc[i, :].T.to_frame()
-                temp_df['전세수급지수'] = j_s.iloc[i, :].T.to_frame()
-                with plot_spot:
-                    make_graph(temp_df)
-                    time.sleep(2.0)
+            drawAPT_weekly.draw_senti_last(index_df)
             #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
         with col2:
             st.write("")
@@ -1307,7 +1284,7 @@ if __name__ == "__main__":
     org = org.str.split(" ", expand=True)
 
     #여기서부터는 선택
-    my_choice = st.sidebar.radio("메뉴 선택", ('한주 동향','가격 지수 보기', '심리 지수 보기', '지역 함께 보기', '지역 기간 증감'))
+    my_choice = st.sidebar.radio("메뉴 선택", ('한주 동향','가격 지수 보기', '심리 지수 보기', '지역 함께 보기', '지역 기간 증감', 'test page'))
     if my_choice == '한주 동향':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         #st.table(power_df.iloc[:50])
@@ -1448,7 +1425,7 @@ if __name__ == "__main__":
             html_br="""
             <br>
             """          
-    else:
+    elif my_choice == '지역 기간 증감':
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']
         period_ = omdf.index.strftime("%Y-%m-%d").tolist()
@@ -1629,4 +1606,31 @@ if __name__ == "__main__":
             <p style="color:Gainsboro; text-align: right;">By: sizipusx2@gmail.com</p>
             """
             st.markdown(html_br, unsafe_allow_html=True)
+    else:
+        def make_graph(to_df):
+            flag1 = "KB 주간 시계열"
+            title = dict(text='<b>'+flag1+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
+            template = "ggplot2"
+            fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
+                                text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
+            fig.update_yaxes(zeroline=True, zerolinecolor='LightPink')#, ticksuffix="%")
+            fig.update_xaxes(zeroline=True, zerolinecolor='LightPink')#, ticksuffix="%")
+            fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
+            fig.add_vline(x=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="전세수급지수가 100을 초과할수록 '매수자가 많다'를, 100 미만일 경우 '매도자가 많다'를 의미 ", annotation_position="top left")
+            fig.add_vline(x=40.0, line_width=1, line_dash="dot", line_color="red",  annotation_text="40 이상 매매지수 상승 가능성 높음", annotation_position="top left")
+            fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+            st.plotly_chart(fig)
+        
+        plot_spot = st.empty()
+        s_s = s_df.iloc[-5:-1,:]
+        j_s = js_df.iloc[-5:-1,:]
+        for i in range(0,len(j_s)):
+            temp_df = pd.DataFrame()
+            temp_df['매수우위지수'] = s_s.iloc[i, :].T.to_frame()
+            temp_df['전세수급지수'] = j_s.iloc[i, :].T.to_frame()
+            with plot_spot:
+                make_graph(temp_df)
+                time.sleep(2.0)
+
+
 
