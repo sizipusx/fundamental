@@ -1424,10 +1424,15 @@ if __name__ == "__main__":
         slice_cum_ojdf = (1+slice_oj_ch/100).cumprod() -1
         slice_cum_ojdf = slice_cum_ojdf.round(decimals=6)
 
+        change_odf = pd.DataFrame()
+        change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
+        change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
+        change_odf = change_odf.dropna().astype(float).round(decimals=2)
+
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.button('Draw Index chart togethger')
         if submit:
-            ### Draw Bubble chart #########################################################################################
+            ### Draw index chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
@@ -1438,11 +1443,27 @@ if __name__ == "__main__":
                     st.write("")
                 with col3:
                     flag = '부동산원 주간'
+                    drawAPT_weekly.run_one_jindex_together(options, slice_oj, slice_oj_ch, flag)
+                    
+            html_br="""
+            <br>
+            """ 
+            ### Draw Bubble/ flower chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = '부동산원 주간'
+                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = '부동산원 주간'
                     drawAPT_weekly.draw_flower_together(options, slice_cum_omdf, slice_cum_ojdf, flag)
                     
             html_br="""
             <br>
-            """          
+            """               
     elif my_choice == '지역 기간 증감':
         flag = ['KB','매매증감']
         flag1 = ['부동산원','매매증감']
