@@ -1269,7 +1269,7 @@ if __name__ == "__main__":
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
     s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
-    data_load_state.text("Data retrieve Done!)")
+    data_load_state.text("Data retrieve Done!")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     one_last_week = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -1282,11 +1282,11 @@ if __name__ == "__main__":
     org = org.str.split(" ", expand=True)
 
     #여기서부터는 선택
-    my_choice = st.sidebar.radio("What' are you gonna do?", ('Basic','Price Index', 'Sentiment analysis', 'Together', '기간증감분석'))
-    if my_choice == 'Basic':
+    my_choice = st.sidebar.radio("메뉴 선택", ('한주 동향','가격 지수 보기', '심리 지수 보기', '지역 함께 보기', '지역 기간 증감 분석'))
+    if my_choice == '한주 동향':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         #st.table(power_df.iloc[:50])
-        submit = st.sidebar.button('Draw Basic chart')
+        submit = st.sidebar.button('한주 동향 보기')
         if submit:
             #draw_basic(df, k_geo_data, last_df, one_df, o_geo_data, one_last_odf)
             draw_basic()
@@ -1294,7 +1294,7 @@ if __name__ == "__main__":
             # drawKorea('매매증감', df, '광역시도', '행정구역', 'Reds', 'KB 주간 아파트 매매 증감', kb_last_week)
             # drawKorea('면적', df1, '광역시도', '행정구역', 'Blues')
 
-    elif my_choice == 'Price Index':
+    elif my_choice == '가격 지수 보기':
         
         city_list = ['전국', '수도권', '지방', '6대광역시', '5대광역시', '서울', '경기', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
@@ -1377,7 +1377,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw Price Index together')
         if submit:
             run_price_index()
-    elif my_choice == 'Sentiment analysis':
+    elif my_choice == '심리 지수 보기':
         city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '지방', '제주도']
 
@@ -1399,10 +1399,10 @@ if __name__ == "__main__":
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도', city_list
             )
-        submit = st.sidebar.button('Draw Sentimental Index chart')
+        submit = st.sidebar.button('See 심리 지수')
         if submit:
             run_sentimental_index(mdf, jdf, mdf_change, jdf_change)
-    elif my_choice == 'Together':
+    elif my_choice == '지역 함께 보기':
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.button('Draw Index chart togethger')
