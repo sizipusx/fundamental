@@ -853,7 +853,7 @@ def draw_basic():
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_senti_last(js_df)
+            drawAPT_weekly.draw_senti_last(index_df)
         with col2:
             st.write("")
         with col3:
