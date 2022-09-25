@@ -17,6 +17,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
+from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid.shared import GridUpdateMode
 
 import streamlit as st
 
@@ -97,21 +99,21 @@ weekly_db_path = "./files/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 #gsheet
-gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+# gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
-scope = [
-    'https://spreadsheets.google.com/feeds',
-    'https://www.googleapis.com/auth/drive',
-    ]
+# scope = [
+#     'https://spreadsheets.google.com/feeds',
+#     'https://www.googleapis.com/auth/drive',
+#     ]
 
-json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
+# json_file_name = './files/weekly-house-db-ac0a43b61ddd.json'
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
-gc = gspread.authorize(credentials)
+# credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+# gc = gspread.authorize(credentials)
 
-spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq16Va-99yT3Hs-Rbl2TGOp1U/edit#gid=0'
+# spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cr50NkztlYeTCMkmqkeq16Va-99yT3Hs-Rbl2TGOp1U/edit#gid=0'
 
-doc = gc.open_by_url(spreadsheet_url)
+# doc = gc.open_by_url(spreadsheet_url)
 
 def create_connection(db_file):
     """ create a database connection to the SQLite database
