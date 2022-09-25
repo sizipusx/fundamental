@@ -1,6 +1,5 @@
 from re import S
 import re
-import time
 from datetime import datetime
 import drawAPT_weekly
 
@@ -10,12 +9,6 @@ import sqlite3
 from pandas.io.formats import style
 
 import streamlit as st
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from st_aggrid import AgGrid, GridOptionsBuilder
-from st_aggrid.shared import GridUpdateMode
-
-import requests
 import json
 from pandas.io.json import json_normalize
 from urllib.request import urlopen
@@ -26,7 +19,6 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
-import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
@@ -81,11 +73,11 @@ pio.templates["myID"] = go.layout.Template(
             text="graph by 기하급수적",
             textangle=0,
             opacity=0.2,
-            font=dict(color="black", size=20),
+            font=dict(color="black", size=10),
             xref="paper",
             yref="paper",
             x=0.9,
-            y=-0.2,
+            y=0.1,
             showarrow=False,
         )
     ]
