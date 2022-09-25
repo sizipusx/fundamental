@@ -1631,6 +1631,7 @@ if __name__ == "__main__":
             with plot_spot:
                 make_graph(temp_df)
                 time.sleep(2.0)
+        st.button("Re-run")
 
 
 
