@@ -100,7 +100,7 @@ today = '%s-%s-%s' % ( now.year, now.month, now.day)
 # #헤더 변경
 # header_path = r'https://github.com/sizipusx/fundamental/blob/901a00722f00376400db00e75cf4e5521043be88/files/header.xlsx?raw=True'
 # header_excel = pd.ExcelFile(header_path)
-weekly_db_path = "./file/weekly_house.db"
+weekly_db_path = "./files/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 #gsheet
