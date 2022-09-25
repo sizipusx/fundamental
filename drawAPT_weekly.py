@@ -35,11 +35,11 @@ pio.templates["myID"] = go.layout.Template(
             text="Graph by 기하급수적",
             textangle=0,
             opacity=0.5,
-            font=dict(color="red", size=20),
+            font=dict(color="red", size=10),
             xref="paper",
             yref="paper",
             x=0.9,
-            y=-0.2,
+            y=0.2,
             showarrow=False,
         )
     ]
@@ -205,7 +205,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
                         colorbar_title=flag[1])
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
-                    mapbox_zoom=6, mapbox_center = {"lat": 37.414, "lon": 127.177})
+                    mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
     fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(template="myID")
