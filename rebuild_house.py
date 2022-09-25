@@ -1,23 +1,16 @@
 from re import S
-import time
 from datetime import datetime
-import drawAPT_weekly
 import datetime
-from dateutil.relativedelta import relativedelta
 
 import numpy as np
 import pandas as pd
-from pandas.io.formats import style
 import sqlite3
 
 import streamlit as st
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
 
-import requests
-import json
 from pandas.io.json import json_normalize
 from urllib.request import urlopen
 
@@ -27,7 +20,6 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
-import FinanceDataReader as fdr
 
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
@@ -65,7 +57,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 네이버 시세", page_icon="./files/12.png", layout="wide")
+st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 네이버 시세", page_icon="./files/logo2.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
