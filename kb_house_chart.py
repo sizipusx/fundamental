@@ -1,4 +1,5 @@
 from re import S
+import re
 import time
 from datetime import datetime
 import drawAPT_weekly
@@ -211,6 +212,7 @@ def get_gsheet_index():
                     columns = cols
             )
     index_list.append(basic_df)
+    conn.close()
     return index_list
 
 #agg table
@@ -459,67 +461,104 @@ def aggrid_interactive_table(df: pd.DataFrame):
 @st.cache(ttl=600)
 def load_senti_data():
     #구글시트에서 불러오기 2022-05-09
-    kbs_doc= doc.worksheet('kbs')
-    ones_doc = doc.worksheet('os')
-    kbmtr_doc = doc.worksheet('kbmtr')
-    kbjtr_doc = doc.worksheet('kbjtr')
-    kbjs_doc = doc.worksheet('kbjs')
+    # kbs_doc= doc.worksheet('kbs')
+    # ones_doc = doc.worksheet('os')
+    # kbmtr_doc = doc.worksheet('kbmtr')
+    # kbjtr_doc = doc.worksheet('kbjtr')
+    # kbjs_doc = doc.worksheet('kbjs')
 
-    #데이터 프레임으로 읽기
-    kbs_doc_values = kbs_doc.get_all_values()
-    ones_doc_values = ones_doc.get_all_values()
-    kbmtr_doc_values = kbmtr_doc.get_all_values()
-    kbjtr_doc_values = kbjtr_doc.get_all_values()
-    kbjs_doc_values = kbjs_doc.get_all_values()
+    # #데이터 프레임으로 읽기
+    # kbs_doc_values = kbs_doc.get_all_values()
+    # ones_doc_values = ones_doc.get_all_values()
+    # kbmtr_doc_values = kbmtr_doc.get_all_values()
+    # kbjtr_doc_values = kbjtr_doc.get_all_values()
+    # kbjs_doc_values = kbjs_doc.get_all_values()
 
-    kbs_header, kbs_rows = kbs_doc_values[1], kbs_doc_values[2:]
-    ones_header, ones_rows = ones_doc_values[1], ones_doc_values[2:]
-    kbmtr_header, kbmtr_rows = kbmtr_doc_values[1], kbmtr_doc_values[2:]
-    kbjtr_header, kbjtr_rows = kbjtr_doc_values[1], kbjtr_doc_values[2:]
-    kbjs_header, kbjs_rows = kbjs_doc_values[1], kbjs_doc_values[2:]
+    # kbs_header, kbs_rows = kbs_doc_values[1], kbs_doc_values[2:]
+    # ones_header, ones_rows = ones_doc_values[1], ones_doc_values[2:]
+    # kbmtr_header, kbmtr_rows = kbmtr_doc_values[1], kbmtr_doc_values[2:]
+    # kbjtr_header, kbjtr_rows = kbjtr_doc_values[1], kbjtr_doc_values[2:]
+    # kbjs_header, kbjs_rows = kbjs_doc_values[1], kbjs_doc_values[2:]
 
-    kbs_df = pd.DataFrame(kbs_rows, columns=kbs_header)
-    ones_df = pd.DataFrame(ones_rows, columns=ones_header)
-    kbmtr_df = pd.DataFrame(kbmtr_rows, columns=kbmtr_header)
-    kbjtr_df = pd.DataFrame(kbjtr_rows, columns=kbjtr_header)
-    kbjs_df = pd.DataFrame(kbjs_rows, columns=kbjs_header)
-    #kb 매수우위지수
-    kbs_df = kbs_df.set_index(keys=kbs_df.iloc[:,0])
-    kbs_df.index = pd.to_datetime(kbs_df.index)
-    kbs_df.index.name="날짜"
-    kbs_df = kbs_df.iloc[:,1:]
+    # kbs_df = pd.DataFrame(kbs_rows, columns=kbs_header)
+    # ones_df = pd.DataFrame(ones_rows, columns=ones_header)
+    # kbmtr_df = pd.DataFrame(kbmtr_rows, columns=kbmtr_header)
+    # kbjtr_df = pd.DataFrame(kbjtr_rows, columns=kbjtr_header)
+    # kbjs_df = pd.DataFrame(kbjs_rows, columns=kbjs_header)
+    # #kb 매수우위지수
+    # kbs_df = kbs_df.set_index(keys=kbs_df.iloc[:,0])
+    # kbs_df.index = pd.to_datetime(kbs_df.index)
+    # kbs_df.index.name="날짜"
+    # kbs_df = kbs_df.iloc[:,1:]
 
-    kbjs_df = kbjs_df.set_index(keys=kbjs_df.iloc[:,0])
-    kbjs_df.index = pd.to_datetime(kbjs_df.index)
-    kbjs_df.index.name="날짜"
-    kbjs_df = kbjs_df.iloc[:,1:]
-    #컬럼명 바꿈
-    j1 = kbs_df.columns.map(lambda x: x.split(' ')[0])
+    # kbjs_df = kbjs_df.set_index(keys=kbjs_df.iloc[:,0])
+    # kbjs_df.index = pd.to_datetime(kbjs_df.index)
+    # kbjs_df.index.name="날짜"
+    # kbjs_df = kbjs_df.iloc[:,1:]
+    # #컬럼명 바꿈
+    # j1 = kbs_df.columns.map(lambda x: x.split(' ')[0])
 
-    new_s1 = []
-    for num, gu_data in enumerate(j1):
-        check = num
-        if gu_data == '':
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(j1[check])
+    # new_s1 = []
+    # for num, gu_data in enumerate(j1):
+    #     check = num
+    #     if gu_data == '':
+    #         new_s1.append(new_s1[check-1])
+    #     else:
+    #         new_s1.append(j1[check])
 
-    #컬럼 설정
-    kbs_df.columns = [new_s1,kbs_df.iloc[0]]
-    kbjs_df.columns = [new_s1,kbjs_df.iloc[0]]
-    kbs_df = kbs_df.iloc[1:]
-    kbjs_df = kbjs_df.iloc[1:]
-    kbs_df = kbs_df.apply(lambda x:x.replace('','0'))
-    kbs_df = kbs_df.astype(float).round(decimals=2)
-    kbjs_df = kbjs_df.apply(lambda x:x.replace('','0'))
-    kbjs_df = kbjs_df.astype(float).round(decimals=2)
+    # #컬럼 설정
+    # kbs_df.columns = [new_s1,kbs_df.iloc[0]]
+    # kbjs_df.columns = [new_s1,kbjs_df.iloc[0]]
+    # kbs_df = kbs_df.iloc[1:]
+    # kbjs_df = kbjs_df.iloc[1:]
+    # kbs_df = kbs_df.apply(lambda x:x.replace('','0'))
+    # kbs_df = kbs_df.astype(float).round(decimals=2)
+    # kbjs_df = kbjs_df.apply(lambda x:x.replace('','0'))
+    # kbjs_df = kbjs_df.astype(float).round(decimals=2)
+
+    #2022.9.25 db에서 읽어오기
+    conn = create_connection(weekly_db_path)
+    senti_list = []
+    senti_query_list = ["select * from kbs", "select * from kbjs"]
+    for query in senti_query_list:
+        query = conn.execute(query)
+        cols = [column[0] for column in query.description]
+        df= pd.DataFrame.from_records(
+                    data = query.fetchall(), 
+                    columns = cols
+            )
+        df = df.set_index(keys='날짜')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        senti_list.append(df)
+    conn.close()
+    s_df = senti_list[0].loc[:,senti_list[0].columns.str.contains('매수우위지수')]
+    s_maedo = senti_list[0].loc[:,senti_list[0].columns.str.contains('매도자많음')]
+    s_maesu = senti_list[0].loc[:,senti_list[0].columns.str.contains('매수자많음')]
+    js_df = senti_list[1].loc[:,senti_list[1].columns.str.contains('전세수급지수')]
+    js_su = senti_list[1].loc[:,senti_list[1].columns.str.contains('수요>공급')]
+    js_go = senti_list[1].loc[:,senti_list[1].columns.str.contains('수요<공급')]
+    citys = s_df.columns.map(lambda x: x.split(',')[0])
+    new_citys = []
+    for city in citys:
+        new_citys.append(re.sub('[^A-Za-z0-9가-힣]', '', city))
+    
+    s_df.columns = new_citys
+    s_maedo.colums = new_citys
+    s_maesu.colums = new_citys
+    js_df.columns = new_citys
+    js_su.columns = new_citys
+    js_go.columns = new_citys
     #가장 최근 것만
-    s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
-    js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
+    # s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
+    # js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
     s_df = s_df.apply(lambda x:x.replace('','0'))
-    s_df = s_df.astype(float).round(decimals=2)
+    s_maedo = s_maedo.apply(lambda x:x.replace('','0'))
+    s_maesu = s_maesu.apply(lambda x:x.replace('','0'))
+    # s_df = s_df.astype(float).round(decimals=2)
     js_df = js_df.apply(lambda x:x.replace('','0'))
-    js_df = js_df.astype(float).round(decimals=2)
+    js_su = js_su.apply(lambda x:x.replace('','0'))
+    js_go = js_go.apply(lambda x:x.replace('','0'))
+    # js_df = js_df.astype(float).round(decimals=2)
     #=============기존
     # kb_dict = pd.read_excel(kb_file_path, sheet_name=None, header=1)
 
@@ -556,7 +595,7 @@ def load_senti_data():
     index_df['매수우위지수'] = s_df.iloc[-1]
     index_df['전세수급지수'] = js_df.iloc[-1]
 
-    return kbs_df, kbjs_df, index_df, s_df, js_df
+    return s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df
 
 
 def run_price_index() :
@@ -663,11 +702,11 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_sentiment(selected_dosi, ms_1, ms_2, ms_index)
+            drawAPT_weekly.draw_sentiment(selected_dosi, s_maedo, s_maesu, s_df)
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.draw_sentiment_change(selected_dosi, mdf_change, ms_index)
+            drawAPT_weekly.draw_sentiment_change(selected_dosi, mdf_change, s_df)
     html_br="""
     <br>
     """
@@ -676,11 +715,11 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index)
+            drawAPT_weekly.draw_jeon_sentiment(selected_dosi, js_su, js_go, js_df)
         with col2:
             st.write("")
         with col3:
-            drawAPT_weekly.draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index)
+            drawAPT_weekly.draw_jeon_sentiment_change(selected_dosi, jdf_change, js_df)
     html_br="""
     <br>
     """
@@ -689,7 +728,7 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_senti_desu(selected_dosi, ms_1, ms_2, js_1, js_2, mdf, jdf)
+            drawAPT_weekly.draw_senti_desu(selected_dosi, s_maedo, s_maesu, js_su, js_go, mdf, jdf)
         with col2:
             st.write("")
         with col3:
@@ -820,12 +859,12 @@ def draw_basic():
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_senti_last(jeon_su_df)
+            drawAPT_weekly.draw_senti_last(js_df)
         with col2:
             st.write("")
         with col3:
             city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
-            drawAPT_weekly.draw_senti_together(maesu_df, city_list)
+            drawAPT_weekly.draw_senti_together(s_df, city_list)
             
     html_br="""
     <br>
@@ -837,12 +876,12 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
-            drawAPT_weekly.draw_senti_together(maesu_df, city_list)
+            drawAPT_weekly.draw_senti_together(js_df, city_list)
         with col2:
             st.write("")
         with col3:
             city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
-            drawAPT_weekly.draw_senti_together(maesu_df, city_list)            
+            drawAPT_weekly.draw_senti_together(s_df, city_list)            
     html_br="""
     <br>
     """
@@ -1235,7 +1274,7 @@ if __name__ == "__main__":
     # kb_df, kb_geo_data, kb_last_df, kb_last_jdf, mdf, jdf, mdf_change, jdf_change , m_power, bubble3, cummdf, cumjdf = load_index_data()
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
-    senti_df, jeon_senti, jeon_su_df, maesu_df, jeon_s = load_senti_data()
+    s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
     data_load_state.text("index Data Done! (using st.cache)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
@@ -1348,21 +1387,19 @@ if __name__ == "__main__":
         city_list = ['전국', '서울', '강북', '강남', '6대광역시', '5대광역시', '부산', '대구', '인천', '광주', '대전',
                   '울산', '세종', '수도권', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '지방', '제주도']
 
-        ms_1 = senti_df.xs("매도자많음", axis=1, level=1)
-        ms_1.columns = city_list
-        ms_2 = senti_df.xs("매수자많음", axis=1, level=1)
-        ms_2.columns = city_list
-        ms_index = senti_df.xs("매수우위지수", axis=1, level=1)
-        ms_index.columns = city_list
-        ms_index = ms_index.round(decimals=2)
+        s_maedo.columns = city_list
+        s_maesu.columns = city_list
+        # ms_index = senti_df.xs("매수우위지수", axis=1, level=1)
+        s_df.columns = city_list
+        # ms_index = ms_index.round(decimals=2)
         #전세수급지수
-        js_1 = jeon_senti.xs("수요>공급", axis=1, level=1)
-        js_1.columns = city_list
-        js_2 = jeon_senti.xs("수요<공급", axis=1, level=1)
-        js_2.columns = city_list
-        js_index = jeon_senti.xs("전세수급지수", axis=1, level=1)
-        js_index.columns = city_list
-        js_index = js_index.round(decimals=2)
+        # js_1 = jeon_senti.xs("수요>공급", axis=1, level=1)
+        js_su.columns = city_list
+        # js_2 = jeon_senti.xs("수요<공급", axis=1, level=1)
+        js_go.columns = city_list
+        # js_index = jeon_senti.xs("전세수급지수", axis=1, level=1)
+        js_df.columns = city_list
+        # js_index = js_index.round(decimals=2)
         #st.dataframe(jeon_su_df)     
         # column_list = js_index.columns.to_list()
         selected_dosi = st.sidebar.selectbox(
