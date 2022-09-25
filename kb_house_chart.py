@@ -1416,11 +1416,13 @@ if __name__ == "__main__":
         
         #부동산원 / KB
         slice_om = omdf.loc[start_date:end_date]
-        slice_om_ch = omdf_change.loc[start_date:end_date]
-        cum_omdf.loc[start_date:end_date]
-        slice_cum_omdf = cum_omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
-        slice_cum_ojdf = cum_ojdf.loc[start_date:end_date]
+        slice_om_ch = omdf_change.loc[start_date:end_date]
+        slice_oj_ch = ojdf_change.loc[start_date:end_date]
+        slice_cum_omdf = (1+slice_om_ch/100).cumprod() -1
+        slice_cum_omdf = slice_cum_omdf.round(decimals=6)
+        slice_cum_ojdf = (1+slice_oj_ch/100).cumprod() -1
+        slice_cum_ojdf = slice_cum_ojdf.round(decimals=6)
 
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.button('Draw Index chart togethger')
