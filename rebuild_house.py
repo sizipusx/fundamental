@@ -65,7 +65,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 네이버 시세", page_icon="", layout="wide")
+st.set_page_config(page_title="전국 분양권/재개발/재건축 아파트 네이버 시세", page_icon="./files/12.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
