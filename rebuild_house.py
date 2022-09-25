@@ -73,6 +73,23 @@ st.markdown(""" <style>
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="graph by 기하급수적",
+            textangle=0,
+            opacity=0.2,
+            font=dict(color="black", size=10),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=0.1,
+            showarrow=False,
+        )
+    ]
+)
+
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -225,6 +242,7 @@ def show_total(s_df):
             style='light', #'streets', #'light'
         ),
     )
+    fig.update_layout(template="myID")
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -255,6 +273,7 @@ def show_local(select_city, city_apt, city_total):
         legend=dict(orientation="h"),
     )
     fig.update_layout(mapbox_style="satellite-streets")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig, use_container_width=True)
     st.write("총 ( "+ str(len(city_total))+ " ) 개의 매매 물건이 있습니다.")  
     #filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '주거형태', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향']]
