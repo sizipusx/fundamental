@@ -1282,7 +1282,7 @@ if __name__ == "__main__":
     org = org.str.split(" ", expand=True)
 
     #여기서부터는 선택
-    my_choice = st.sidebar.radio("메뉴 선택", ('한주 동향','가격 지수 보기', '심리 지수 보기', '지역 함께 보기', '지역 기간 증감 분석'))
+    my_choice = st.sidebar.radio("메뉴 선택", ('한주 동향','가격 지수 보기', '심리 지수 보기', '지역 함께 보기', '지역 기간 증감'))
     if my_choice == '한주 동향':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
         #st.table(power_df.iloc[:50])
