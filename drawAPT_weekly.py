@@ -263,6 +263,18 @@ def draw_index_change_with_bubble(last_df, flag):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
+def draw_index_change_with_bubble_slice(citys, last_df, flag):
+    slice_df = last_df.loc[citys,:]
+    #매매/전세 증감률 Bubble Chart
+    title = dict(text='<b>'+flag+'지수 증감</b>', x=0.5, y = 0.9) 
+    fig = px.scatter(slice_df, x='매매증감', y='전세증감', color='매매증감', size=abs(slice_df['전세증감']*10), 
+                        text= slice_df.index, hover_name=slice_df.index, color_continuous_scale='Bluered')
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3

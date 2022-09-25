@@ -1453,7 +1453,7 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = '부동산원 주간'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
+                    drawAPT_weekly.draw_index_change_with_bubble_slice(options, change_odf, flag)
 
                 with col2:
                     st.write("")
