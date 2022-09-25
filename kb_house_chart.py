@@ -53,7 +53,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="Weekly House Analysis Dashboard", page_icon="", layout="wide")
+st.set_page_config(page_title="주간 부동산 시계열 분석", page_icon="", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -1107,7 +1107,7 @@ def draw_basic():
 
 if __name__ == "__main__":
     #st.title("KB 부동산 주간 시계열 분석")
-    data_load_state = st.text('Loading index Data...')
+    data_load_state = st.text('Loading Data From Sqlite3...')
     index_lists = get_gsheet_index()
     mdf = index_lists[0]
     jdf = index_lists[1]
@@ -1269,11 +1269,11 @@ if __name__ == "__main__":
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
     s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
-    data_load_state.text("index Data Done! (using st.cache)")
+    data_load_state.text("Data retrieve Done!)")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     one_last_week = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m.%d')
-    with st.expander("See recently Data Update"):
+    with st.expander("See Data Update"):
         cols = st.columns(2)
         cols[0].write(f"KB last update date: {kb_last_week}")
         cols[1].write(f"부동산원 last update date: {one_last_week}")
