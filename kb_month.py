@@ -300,60 +300,61 @@ def load_one_data():
     ojdf = index_list[1]
 
      #주간 증감률
-    omdf_change = omdf.pct_change()*100
-    omdf_change = omdf_change.iloc[1:]
-    omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    omdf_change = omdf_change.astype(float).fillna(0)
-    ojdf_change = ojdf.pct_change()*100
-    ojdf_change = ojdf_change.iloc[1:]
-    ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    ojdf_change = ojdf_change.astype(float).fillna(0)
-    omdf_change = omdf_change.round(decimals=3)
-    ojdf_change = ojdf_change.round(decimals=3)
-    cum_omdf = (1+omdf_change/100).cumprod() -1
-    cum_omdf = cum_omdf.round(decimals=3)
-    cum_ojdf = (1+ojdf_change/100).cumprod() -1
-    cum_ojdf = cum_ojdf.round(decimals=3)
-    #일주일 간 상승률 순위
-    last_odf = pd.DataFrame()
-    last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
-    last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
-    last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
-    last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
-    last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
-    last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
-    last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
-    #last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
-    #last_odf.dropna(inplace=True)
-    last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
-    #last_odf = last_odf.reset_index()
-    basic_df = get_basic_df()
-    odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
+    # omdf_change = omdf.pct_change()*100
+    # omdf_change = omdf_change.iloc[1:]
+    # omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # omdf_change = omdf_change.astype(float).fillna(0)
+    # ojdf_change = ojdf.pct_change()*100
+    # ojdf_change = ojdf_change.iloc[1:]
+    # ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    # ojdf_change = ojdf_change.astype(float).fillna(0)
+    # omdf_change = omdf_change.round(decimals=3)
+    # ojdf_change = ojdf_change.round(decimals=3)
+    # cum_omdf = (1+omdf_change/100).cumprod() -1
+    # cum_omdf = cum_omdf.round(decimals=3)
+    # cum_ojdf = (1+ojdf_change/100).cumprod() -1
+    # cum_ojdf = cum_ojdf.round(decimals=3)
+    # #일주일 간 상승률 순위
+    # last_odf = pd.DataFrame()
+    # last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
+    # last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
+    # last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
+    # last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
+    # last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
+    # last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
+    # last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
+    # #last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
+    # #last_odf.dropna(inplace=True)
+    # last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+    # #last_odf = last_odf.reset_index()
+    # basic_df = get_basic_df()
+    # odf = pd.merge(last_odf, basic_df, how='inner', left_index=True, right_on='short')
 
-    with urlopen(geo_source) as response:
-        one_geo_data = json.load(response)
+    # with urlopen(geo_source) as response:
+    #     one_geo_data = json.load(response)
     
-    #geojson file 변경
-    for idx, sigun_dict in enumerate(one_geo_data['features']):
-        sigun_id = sigun_dict['properties']['SIG_CD']
-        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
-        try:
-            sell_change = odf.loc[(odf.code == sigun_id), '매매증감'].iloc[0]
-            jeon_change = odf.loc[(odf.code == sigun_id), '전세증감'].iloc[0]
-        except:
-            sell_change = 0
-            jeon_change =0
-        # continue
+    # #geojson file 변경
+    # for idx, sigun_dict in enumerate(one_geo_data['features']):
+    #     sigun_id = sigun_dict['properties']['SIG_CD']
+    #     sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+    #     try:
+    #         sell_change = odf.loc[(odf.code == sigun_id), '매매증감'].iloc[0]
+    #         jeon_change = odf.loc[(odf.code == sigun_id), '전세증감'].iloc[0]
+    #     except:
+    #         sell_change = 0
+    #         jeon_change =0
+    #     # continue
         
-        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
-        # print(txt)
+    #     txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
+    #     # print(txt)
         
-        one_geo_data['features'][idx]['id'] = sigun_id
-        one_geo_data['features'][idx]['properties']['sell_change'] = sell_change
-        one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
-        one_geo_data['features'][idx]['properties']['tooltip'] = txt
+    #     one_geo_data['features'][idx]['id'] = sigun_id
+    #     one_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+    #     one_geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
+    #     one_geo_data['features'][idx]['properties']['tooltip'] = txt
    
-    return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
+    # return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
+    return index_list
 
 @st.cache(ttl=600)
 def load_senti_data():
@@ -575,6 +576,9 @@ if __name__ == "__main__":
     mdf = index_list[0]
     jdf = index_list[1]
     #odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
+    oindex_list = load_one_data()
+    omdf = index_list[0]
+    ojdf = index_list[1]
 
     not_sell_list = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[1]
@@ -676,10 +680,39 @@ if __name__ == "__main__":
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
 
-    #마지막달 dataframe에 지역 코드 넣어 합치기
-    df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
-    df.columns = ['매매증감', '전세증감', 'SIG_CD']
-    df['SIG_CD']= df['SIG_CD'].astype(str)
+    ## 부동산원
+     #주간 증감률
+    omdf_change = omdf.pct_change()*100
+    omdf_change = omdf_change.iloc[1:]
+    omdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    omdf_change = omdf_change.astype(float).fillna(0)
+    ojdf_change = ojdf.pct_change()*100
+    ojdf_change = ojdf_change.iloc[1:]
+    ojdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
+    ojdf_change = ojdf_change.astype(float).fillna(0)
+    omdf_change = omdf_change.round(decimals=3)
+    ojdf_change = ojdf_change.round(decimals=3)
+    cum_omdf = (1+omdf_change/100).cumprod() -1
+    cum_omdf = cum_omdf.round(decimals=3)
+    cum_ojdf = (1+ojdf_change/100).cumprod() -1
+    cum_ojdf = cum_ojdf.round(decimals=3)
+    #일주일 간 상승률 순위
+    last_odf = pd.DataFrame()
+    last_odf['매매증감'] = omdf_change.iloc[-1].T.to_frame()
+    last_odf['전세증감'] = ojdf_change.iloc[-1].T.to_frame()
+    last_odf['1w'] = omdf_change.iloc[-1].T.to_frame()
+    last_odf['2w'] = omdf_change.iloc[-2].T.to_frame()
+    last_odf['3w'] = omdf_change.iloc[-3].T.to_frame()
+    last_odf['1m'] = omdf_change.iloc[-4].T.to_frame()
+    last_odf['1y'] = omdf_change.iloc[-51].T.to_frame()
+    #last_odf.columns = ['매매증감', '전세증감', '2w', '3w', '1m', '1y']
+    #last_odf.dropna(inplace=True)
+    # last_odf = last_odf.astype(float).fillna(0).round(decimals=3)
+
+    # #마지막달 dataframe에 지역 코드 넣어 합치기
+    # df = pd.merge(last_df, code_df, how='inner', left_index=True, right_index=True)
+    # df.columns = ['매매증감', '전세증감', 'SIG_CD']
+    # df['SIG_CD']= df['SIG_CD'].astype(str)
     # df.reset_index(inplace=True)
 
     #버블 지수 만들어 보자
