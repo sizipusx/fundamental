@@ -86,7 +86,23 @@ one_doc = gc.open_by_url(one_gsheet_url)
 kb_doc = gc.open_by_url(kb_gsheet_url)
 #인구, 세대수, 기본 소득
 bs_doc = gc.open_by_url(basic_url)
-###################################################################
+#############################2022.9.30 sqlite3로 변경######################################
+one_db_path = "./files/one_monthly.db"
+kb_db_path = "./files/kb_monthly.db"
+
+def create_connection(db_file):
+    """ create a database connection to the SQLite database
+        specified by the db_file
+    :param db_file: database file
+    :return: Connection object or None
+    """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except Exception as e:
+       print(e)
+
+    return conn
 
  #return dic
 def read_source_excel():
@@ -132,6 +148,18 @@ def get_not_sell_apt():
     # df1 = df1.astype(int)
 
     # return df1
+
+    #DB에서 읽어오자
+    conn = create_connection(one_db_path)
+    not_sold_list = []
+    query_list = ["select * from not_sold", "select * from after_not_sold"]
+    for query in query_list:
+        df = pd.read_sql(query, conn, index_col='date')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        not_sold_list.append(df)
+    conn.close()
+
+    return not_sold_list
 
     #미분양
     mb = one_doc.worksheet('notsold')
@@ -549,7 +577,9 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     mdf, jdf, code_df, geo_data = load_index_data()
     odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
-    not_sell_apt, un_df = get_not_sell_apt() #준공후 미분양
+    not_sell_list = get_not_sell_apt() #준공후 미분양
+    not_sell_apt = not_sell_list[1]
+    un_df = not_sell_list[0]
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
