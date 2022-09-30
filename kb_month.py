@@ -162,28 +162,28 @@ def get_not_sell_apt():
 
     return not_sold_list
 
-    #미분양
-    mb = one_doc.worksheet('notsold')
-    mb_values = mb.get_all_values()
-    mb_header, mb_rows = mb_values[1], mb_values[2:]
-    mb_df = pd.DataFrame(mb_rows, columns=mb_header)
-    mb_df = mb_df.set_index(mb_df.iloc[:,0])
-    mb_df = mb_df.iloc[:,1:]
-    mb_df.index.name = 'date'
-    mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
-    mb_df.index = pd.to_datetime(mb_df.index)
-    #준공 후 미분양
-    ns = one_doc.worksheet('afternotsold')
-    ns_values = ns.get_all_values()
-    ns_header, ns_rows = ns_values[1], ns_values[2:]
-    omdf = pd.DataFrame(ns_rows, columns=ns_header)
-    omdf = omdf.set_index(omdf.iloc[:,0])
-    omdf = omdf.iloc[:,1:]
-    omdf.index.name = 'date'
-    omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
-    omdf.index = pd.to_datetime(omdf.index)
+    # #미분양
+    # mb = one_doc.worksheet('notsold')
+    # mb_values = mb.get_all_values()
+    # mb_header, mb_rows = mb_values[1], mb_values[2:]
+    # mb_df = pd.DataFrame(mb_rows, columns=mb_header)
+    # mb_df = mb_df.set_index(mb_df.iloc[:,0])
+    # mb_df = mb_df.iloc[:,1:]
+    # mb_df.index.name = 'date'
+    # mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    # mb_df.index = pd.to_datetime(mb_df.index)
+    # #준공 후 미분양
+    # ns = one_doc.worksheet('afternotsold')
+    # ns_values = ns.get_all_values()
+    # ns_header, ns_rows = ns_values[1], ns_values[2:]
+    # omdf = pd.DataFrame(ns_rows, columns=ns_header)
+    # omdf = omdf.set_index(omdf.iloc[:,0])
+    # omdf = omdf.iloc[:,1:]
+    # omdf.index.name = 'date'
+    # omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    # omdf.index = pd.to_datetime(omdf.index)
 
-    return omdf, mb_df
+    # return omdf, mb_df
 
 @st.cache(ttl=600)
 def load_index_data():
@@ -220,55 +220,38 @@ def load_index_data():
     # mdf = mdf.astype(float).fillna(0).round(decimals=2)
     # jdf = jdf.astype(float).fillna(0).round(decimals=2)
     # 구글 시트에서 읽어 오기
-    kbm = kb_doc.worksheet('kbm')
-    kbm_values = kbm.get_all_values()
-    m_header, m_rows = kbm_values[1], kbm_values[2:]
-    mdf = pd.DataFrame(m_rows, columns=m_header)
-    mdf = mdf.set_index(mdf.iloc[:,0])
-    mdf = mdf.iloc[:,1:]
-    mdf.index = pd.to_datetime(mdf.index)
-    mdf.index.name = 'date'
-    mdf = mdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
-    mdf = mdf.round(decimals=2)
-    #전세
-    kbj = kb_doc.worksheet('kbj')
-    kbj_values = kbj.get_all_values()
-    j_header, j_rows = kbj_values[1], kbj_values[2:]
-    jdf = pd.DataFrame(j_rows, columns=j_header)
-    jdf = jdf.set_index(jdf.iloc[:,0])
-    jdf = jdf.iloc[:,1:]
-    jdf.index = pd.to_datetime(jdf.index)
-    jdf.index.name = 'date'
-    jdf = jdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
-    jdf = jdf.round(decimals=2)
+    # kbm = kb_doc.worksheet('kbm')
+    # kbm_values = kbm.get_all_values()
+    # m_header, m_rows = kbm_values[1], kbm_values[2:]
+    # mdf = pd.DataFrame(m_rows, columns=m_header)
+    # mdf = mdf.set_index(mdf.iloc[:,0])
+    # mdf = mdf.iloc[:,1:]
+    # mdf.index = pd.to_datetime(mdf.index)
+    # mdf.index.name = 'date'
+    # mdf = mdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    # mdf = mdf.round(decimals=2)
+    # #전세
+    # kbj = kb_doc.worksheet('kbj')
+    # kbj_values = kbj.get_all_values()
+    # j_header, j_rows = kbj_values[1], kbj_values[2:]
+    # jdf = pd.DataFrame(j_rows, columns=j_header)
+    # jdf = jdf.set_index(jdf.iloc[:,0])
+    # jdf = jdf.iloc[:,1:]
+    # jdf.index = pd.to_datetime(jdf.index)
+    # jdf.index.name = 'date'
+    # jdf = jdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    # jdf = jdf.round(decimals=2)
+    ######DB에서 읽어오기##################
+    conn = create_connection(kb_db_path)
+    index_list = []
+    query_list = ["select * from mae", "select * from jeon"]
+    for query in query_list:
+        df = pd.read_sql(query, conn, index_col='date')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        index_list.append(df)
+    conn.close()
 
-    #geojson file open
-    geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
-    with urlopen(geo_source) as response:
-        geo_data = json.load(response)
-    
-    #geojson file 변경
-    for idx, sigun_dict in enumerate(geo_data['features']):
-        sigun_id = sigun_dict['properties']['SIG_CD']
-        sigun_name = sigun_dict['properties']['SIG_KOR_NM']
-        try:
-            sell_change = df.loc[(df.SIG_CD == sigun_id), '매매증감'].iloc[0]
-            jeon_change = df.loc[(df.SIG_CD == sigun_id), '전세증감'].iloc[0]
-        except:
-            sell_change = 0
-            jeon_change =0
-        # continue
-        
-        txt = f'<b><h4>{sigun_name}</h4></b>매매증감: {sell_change:.2f}<br>전세증감: {jeon_change:.2f}'
-        # print(txt)
-        
-        geo_data['features'][idx]['id'] = sigun_id
-        geo_data['features'][idx]['properties']['sell_change'] = sell_change
-        geo_data['features'][idx]['properties']['jeon_change'] = jeon_change
-        geo_data['features'][idx]['properties']['tooltip'] = txt
-   
-    return mdf, jdf, code_df, geo_data
-
+    return index_list
 @st.cache(ttl=600)
 def load_one_data():
     #감정원 월간 데이터
@@ -286,24 +269,36 @@ def load_one_data():
     # omdf = omdf.astype(float).round(decimals=2)
     # ojdf = ojdf.astype(float).round(decimals=2)
     #구글 시트에서 읽어 오기
-    om = one_doc.worksheet('om')
-    om_values = om.get_all_values()
-    m_header, m_rows = om_values[1], om_values[2:]
-    omdf = pd.DataFrame(m_rows, columns=m_header)
-    omdf = omdf.set_index(omdf.iloc[:,0])
-    omdf = omdf.iloc[:,1:]
-    omdf.index = pd.to_datetime(omdf.index)
-    omdf.index.name = 'date'
-    omdf = omdf.apply(lambda x:x.replace('','0')).astype(float)
-    oj = one_doc.worksheet('oj')
-    oj_values = oj.get_all_values()
-    j_header, j_rows = oj_values[1], oj_values[2:]
-    ojdf = pd.DataFrame(j_rows, columns=j_header)
-    ojdf = ojdf.set_index(ojdf.iloc[:,0])
-    ojdf = ojdf.iloc[:,1:]
-    ojdf.index = pd.to_datetime(ojdf.index)
-    ojdf.index.name = 'date'
-    ojdf = ojdf.apply(lambda x:x.replace('','0')).astype(float)
+    # om = one_doc.worksheet('om')
+    # om_values = om.get_all_values()
+    # m_header, m_rows = om_values[1], om_values[2:]
+    # omdf = pd.DataFrame(m_rows, columns=m_header)
+    # omdf = omdf.set_index(omdf.iloc[:,0])
+    # omdf = omdf.iloc[:,1:]
+    # omdf.index = pd.to_datetime(omdf.index)
+    # omdf.index.name = 'date'
+    # omdf = omdf.apply(lambda x:x.replace('','0')).astype(float)
+    # oj = one_doc.worksheet('oj')
+    # oj_values = oj.get_all_values()
+    # j_header, j_rows = oj_values[1], oj_values[2:]
+    # ojdf = pd.DataFrame(j_rows, columns=j_header)
+    # ojdf = ojdf.set_index(ojdf.iloc[:,0])
+    # ojdf = ojdf.iloc[:,1:]
+    # ojdf.index = pd.to_datetime(ojdf.index)
+    # ojdf.index.name = 'date'
+    # ojdf = ojdf.apply(lambda x:x.replace('','0')).astype(float)
+    ######DB에서 읽어오기##################
+    conn = create_connection(one_db_path)
+    index_list = []
+    query_list = ["select * from one_mae", "select * from one_jeon"]
+    for query in query_list:
+        df = pd.read_sql(query, conn, index_col='date')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        index_list.append(df)
+    conn.close()
+    omdf = index_list[0]
+    ojdf = index_list[1]
+
      #주간 증감률
     omdf_change = omdf.pct_change()*100
     omdf_change = omdf_change.iloc[1:]
@@ -576,8 +571,11 @@ def load_hai_data():
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
-    mdf, jdf, code_df, geo_data = load_index_data()
-    odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
+    index_list = load_index_data()
+    mdf = index_list[0]
+    jdf = index_list[1]
+    #odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
+
     not_sell_list = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[1]
     un_df = not_sell_list[0]
