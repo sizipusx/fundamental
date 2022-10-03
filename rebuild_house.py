@@ -286,7 +286,7 @@ if __name__ == "__main__":
     tab1, tab2 = st.tabs(["📈 지도", "🗃 통계"])
     with tab1:
         show_total(s_df)
-        city_list = s_df['시도명'].drop_duplicates().to_list()
+        city_list = s_df['시도'].drop_duplicates().to_list()
         city_list.insert(0,'전국')
         #submit = st.sidebar.button('해당 지역만 보기')
         with st.container():
@@ -305,7 +305,7 @@ if __name__ == "__main__":
         with col5:
             st.write("")
 
-        city_apt = s_df[s_df['시도명'] == city_name]
+        city_apt = s_df[s_df['시도'] == city_name]
         city_total = t_df[t_df['시도'] == city_name]
         #if submit:
         if city_name == '전국':
