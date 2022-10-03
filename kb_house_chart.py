@@ -1438,7 +1438,7 @@ if __name__ == "__main__":
         slice_m_ch = mdf_change.loc[start_date:end_date]
         slice_m_ch = slice_m_ch.round(decimals=2)
         slice_j_ch = jdf_change.loc[start_date:end_date]
-        slice_jm_ch = slice_j_ch.round(decimals=2)
+        slice_j_ch = slice_j_ch.round(decimals=2)
         slice_cum_mdf = (1+slice_m_ch/100).cumprod() -1
         slice_cum_mdf = slice_cum_mdf.round(decimals=4)
         slice_cum_jdf = (1+slice_j_ch/100).cumprod() -1
