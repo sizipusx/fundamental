@@ -159,7 +159,7 @@ def load_data():
         db_filename = './files/rebuild_house.db'
         conn = create_connection(db_filename)
         #이전 데이터
-        query = "SELECT * FROM sum_220918;"
+        query = "SELECT * FROM sum_221003;"
         query = conn.execute(query)
         cols = [column[0] for column in query.description]
         sum_df= pd.DataFrame.from_records(
@@ -192,7 +192,7 @@ def load_data():
     # t_header, t_rows = t_values[0], t_values[1:]
     # total_df = pd.DataFrame(t_rows, columns=t_header)
     # db에서 읽어오기
-    query = "SELECT * FROM total_220918;"
+    query = "SELECT * FROM total_221003;"
     query = conn.execute(query)
     cols = [column[0] for column in query.description]
     total_df= pd.DataFrame.from_records(
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
-    st.subheader("시세 조사 날짜: 2022.09.23." )
+    st.subheader("시세 조사 날짜: 2022.10.03." )
     tab1, tab2 = st.tabs(["📈 지도", "🗃 통계"])
     with tab1:
         show_total(s_df)
