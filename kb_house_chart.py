@@ -1429,10 +1429,25 @@ if __name__ == "__main__":
         change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
         change_odf = change_odf.dropna().astype(float).round(decimals=2)
 
+        #부동산원 / KB
+        slice_m = mdf.loc[start_date:end_date]
+        slice_j = jdf.loc[start_date:end_date]
+        slice_m_ch = mdf_change.loc[start_date:end_date]
+        slice_j_ch = jdf_change.loc[start_date:end_date]
+        slice_cum_mdf = (1+slice_m_ch/100).cumprod() -1
+        slice_cum_mdf = slice_cum_mdf.round(decimals=4)
+        slice_cum_jdf = (1+slice_j_ch/100).cumprod() -1
+        slice_cum_jdf = slice_cum_jdf.round(decimals=4)
+
+        change_df = pd.DataFrame()
+        change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
+        change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
+        change_df = change_df.dropna().astype(float).round(decimals=2)
+
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.button('Draw Index chart togethger')
         if submit:
-            ### Draw index chart #########################################################################################
+            ### 부동산원 index chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
@@ -1448,7 +1463,23 @@ if __name__ == "__main__":
             html_br="""
             <br>
             """ 
-            ### Draw Bubble/ flower chart #########################################################################################
+            ### KB index chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = 'KB 주간'
+                    drawAPT_weekly.run_one_index_together(options, slice_m, slice_m_ch, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = 'KB 주간'
+                    drawAPT_weekly.run_one_jindex_together(options, slice_j, slice_j_ch, flag)
+                    
+            html_br="""
+            <br>
+            """ 
+            ### 부동산원 Bubble/ flower chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
@@ -1460,6 +1491,22 @@ if __name__ == "__main__":
                 with col3:
                     flag = '부동산원 주간'
                     drawAPT_weekly.draw_flower_together(options, slice_cum_omdf, slice_cum_ojdf, flag)
+                    
+            html_br="""
+            <br>
+            """             
+            ### KB Bubble/ flower chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = 'KB 주간'
+                    drawAPT_weekly.draw_index_change_with_bubble_slice(options, change_df, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = 'KB 주간'
+                    drawAPT_weekly.draw_flower_together(options, slice_cum_mdf, slice_cum_jdf, flag)
                     
             html_br="""
             <br>
