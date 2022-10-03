@@ -1430,36 +1430,124 @@ if __name__ == "__main__":
             """
             st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == '지역같이보기':
+        #기간
+        period_ = mdf.index.strftime("%Y-%m").tolist()
+        st.subheader("기간 상승률 분석")
+        start_date, end_date = st.select_slider(
+            'Select Date to Compare index change', 
+            options = period_,
+            value = (period_[-13], period_[-1]))
+        
+        #부동산원 / KB
+        slice_om = omdf.loc[start_date:end_date]
+        slice_oj = ojdf.loc[start_date:end_date]
+        slice_m = mdf.loc[start_date:end_date]
+        slice_j = jdf.loc[start_date:end_date]
+        diff = slice_om.index[-1] - slice_om.index[0]
+        #information display
+        cols = st.columns(4)
+        cols[0].write(f"시작: {start_date}")
+        cols[1].write(f"끝: {end_date}")
+        cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
+        cols[3].write("")
+        #st.dataframe(slice_om)
+        change_odf = pd.DataFrame()
+        change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
+        change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
+        change_odf = change_odf.dropna().astype(float).round(decimals=2)
+        change_df = pd.DataFrame()
+        change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
+        change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
+        change_df = change_df.dropna().astype(float).round(decimals=2)
+        #상승률 누적
+        slice_om = omdf.loc[start_date:end_date]
+        slice_oj = ojdf.loc[start_date:end_date]
+        slice_om_ch = omdf_change.loc[start_date:end_date]
+        slice_oj_ch = ojdf_change.loc[start_date:end_date]
+        slice_cum_omdf = (1+slice_om_ch/100).cumprod() -1
+        slice_cum_omdf = slice_cum_omdf.round(decimals=4)
+        slice_cum_ojdf = (1+slice_oj_ch/100).cumprod() -1
+        slice_cum_ojdf = slice_cum_ojdf.round(decimals=4)
+
+        slice_m = mdf.loc[start_date:end_date]
+        slice_j = jdf.loc[start_date:end_date]
+        slice_m_ch = mdf_change.loc[start_date:end_date]
+        slice_j_ch = jdf_change.loc[start_date:end_date]
+        slice_cum_mdf = (1+slice_m_ch/100).cumprod() -1
+        slice_cum_mdf = slice_cum_mdf.round(decimals=4)
+        slice_cum_jdf = (1+slice_j_ch/100).cumprod() -1
+        slice_cum_jdf = slice_cum_jdf.round(decimals=4)
+
+
+        #지역 같이 
         citys = omdf.columns.tolist()
         options = st.multiselect('Select City to Compare index', citys, citys[:3])
         submit = st.button('analysis')
         if submit:
-            ### Draw Bubble chart #########################################################################################
+            ### 부동산원 index chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = '부동산원 월간'
-                    drawAPT_weekly.run_one_index_together(options, omdf, omdf_change, flag)
+                    drawAPT_weekly.run_one_index_together(options, slice_om, slice_om_ch, flag)
+
                 with col2:
                     st.write("")
                 with col3:
                     flag = '부동산원 월간'
-                    drawAPT_weekly.draw_flower_together(options, cum_omdf, cum_ojdf, flag)    
+                    drawAPT_weekly.run_one_jindex_together(options, slice_oj, slice_oj_ch, flag)
+                    
             html_br="""
             <br>
             """ 
-            ### Draw Bubble chart #########################################################################################
+            ### KB index chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    st.dataframe(cum_omdf)
+                    flag = 'KB 월간'
+                    drawAPT_weekly.run_one_index_together(options, slice_m, slice_m_ch, flag)
+
                 with col2:
                     st.write("")
                 with col3:
-                    st.dataframe(cum_ojdf)
+                    flag = 'KB 월간'
+                    drawAPT_weekly.run_one_jindex_together(options, slice_j, slice_j_ch, flag)
+                    
             html_br="""
             <br>
-            """
+            """ 
+            ### 부동산원 Bubble/ flower chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = '부동산원 월간'
+                    drawAPT_weekly.draw_index_change_with_bubble_slice(options, change_odf, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = '부동산원 월간'
+                    drawAPT_weekly.draw_flower_together(options, slice_cum_omdf, slice_cum_ojdf, flag)
+                    
+            html_br="""
+            <br>
+            """             
+            ### KB Bubble/ flower chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = 'KB 월간'
+                    drawAPT_weekly.draw_index_change_with_bubble_slice(options, change_df, flag)
+
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = 'KB 월간'
+                    drawAPT_weekly.draw_flower_together(options, slice_cum_mdf, slice_cum_jdf, flag)
+                    
+            html_br="""
+            <br>
+            """               
     elif my_choice == '투자자별매매동향':
         st.subheader("외지인 비율 분석")
         ratio_value = st.slider(
