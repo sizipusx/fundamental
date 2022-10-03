@@ -181,8 +181,8 @@ def load_data():
         st.write(e)
 
     # 여기부터 공통
-    sum_df['시세평균(만)'].replace([np.inf, -np.inf], "0", inplace=True)
-    sum_df['시세평균(만)'] = sum_df['시세평균(만)'].fillna(0).astype(int)
+    sum_df['거래가(만)'].replace([np.inf, -np.inf], "0", inplace=True)
+    sum_df['거래가(만)'] = sum_df['거래가(만)'].fillna(0).astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     sum_df['위도'] = sum_df['위도'].astype(float)
     sum_df['경도'] = sum_df['경도'].astype(float)
