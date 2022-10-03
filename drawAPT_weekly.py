@@ -260,6 +260,7 @@ def draw_index_change_with_bubble(last_df, flag):
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -272,6 +273,7 @@ def draw_index_change_with_bubble_slice(citys, last_df, flag):
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -559,50 +561,9 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
             )
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
-    fig.add_vline(x="2021-6-28", line_dash="dash", line_color="gray")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
     fig.update_layout(template="myID")
-    fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(
-                visible=True
-            ),
-            type="date"
-            )      
-        )
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def run_one_index_together(draw_list, omdf, omdf_change, flag):
@@ -623,50 +584,9 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
             )
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
-    fig.add_vline(x="2021-6-28", line_dash="dash", line_color="gray")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
     fig.update_layout(template="myID")
-    fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(
-                visible=True
-            ),
-            type="date"
-            )      
-        )
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
@@ -687,50 +607,9 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
             )
     fig.update_yaxes(title_text="전세지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="전세지수 증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
-    fig.add_vline(x="2021-6-28", line_dash="dash", line_color="gray")
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
     fig.update_layout(template="myID")
-    fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(
-                visible=True
-            ),
-            type="date"
-            )      
-        )
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
@@ -753,6 +632,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
     fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
@@ -765,7 +645,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
             go.Scatter(
                 x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
                 mode='markers+lines',
-                hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
+                hovertext=cum_mdf.index.strftime("%Y.%m.%d"),
                 marker=dict(
                     size=abs(cum_jdf[value])*10,
                     color=px.colors.qualitative.Dark24[index]
@@ -779,6 +659,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
     fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def draw_change_table(change_df,flag):
