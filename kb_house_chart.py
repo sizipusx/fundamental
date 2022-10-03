@@ -2,6 +2,7 @@ from re import S
 import re
 import time
 from datetime import datetime
+from unicodedata import decimal
 import drawAPT_weekly
 
 import numpy as np
@@ -1418,11 +1419,13 @@ if __name__ == "__main__":
         slice_om = omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
         slice_om_ch = omdf_change.loc[start_date:end_date]
+        slice_om_ch = slice_om_ch.round(decimals=2)
         slice_oj_ch = ojdf_change.loc[start_date:end_date]
+        slice_oj_ch = slice_oj_ch.round(decimals=2)
         slice_cum_omdf = (1+slice_om_ch/100).cumprod() -1
-        slice_cum_omdf = slice_cum_omdf.round(decimals=2)
+        slice_cum_omdf = slice_cum_omdf.round(decimals=4)
         slice_cum_ojdf = (1+slice_oj_ch/100).cumprod() -1
-        slice_cum_ojdf = slice_cum_ojdf.round(decimals=2)
+        slice_cum_ojdf = slice_cum_ojdf.round(decimals=4)
 
         change_odf = pd.DataFrame()
         change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
@@ -1433,11 +1436,13 @@ if __name__ == "__main__":
         slice_m = mdf.loc[start_date:end_date]
         slice_j = jdf.loc[start_date:end_date]
         slice_m_ch = mdf_change.loc[start_date:end_date]
+        slice_m_ch = slice_m_ch.round(decimals=2)
         slice_j_ch = jdf_change.loc[start_date:end_date]
+        slice_jm_ch = slice_j_ch.round(decimals=2)
         slice_cum_mdf = (1+slice_m_ch/100).cumprod() -1
-        slice_cum_mdf = slice_cum_mdf.round(decimals=2)
+        slice_cum_mdf = slice_cum_mdf.round(decimals=4)
         slice_cum_jdf = (1+slice_j_ch/100).cumprod() -1
-        slice_cum_jdf = slice_cum_jdf.round(decimals=2)
+        slice_cum_jdf = slice_cum_jdf.round(decimals=4)
 
         change_df = pd.DataFrame()
         change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
