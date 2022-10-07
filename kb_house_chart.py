@@ -122,8 +122,8 @@ def get_gsheet_index():
                     data = query.fetchall(), 
                     columns = cols
             )
-        df = df.set_index(keys='날짜')
-        df.index = pd.to_datetime(df.index, format = '%Y.%m.%d')
+        df = df.set_index(keys='날짜', format = '%Y.%m.%d')
+        #df.index = pd.to_datetime(df.index, format = '%Y.%m.%d')
         index_list.append(df)
     #기본 정보
     query = "select * from basic"
