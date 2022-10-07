@@ -189,7 +189,8 @@ def load_senti_data():
                     columns = cols
             )
         df = df.set_index(keys='날짜')
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+        df = df.round(decimals=2)
         senti_list.append(df)
     conn.close()
     s_df = senti_list[0].loc[:,senti_list[0].columns.str.contains('매수우위지수')]
