@@ -254,30 +254,35 @@ def load_buy_data():
     # df = df.apply(lambda x: x.replace('-','0'))
     # df = df.astype(float)
     # org_df = df.copy()
+    ### db에서 읽기
+    conn = create_connection(kb_db_path)
+    in_df = pd.read_sql("SELECT * FROM 'investor'", conn, index_col='index')
+    in_df = in_df.apply(lambda x: x.replace('-','0'))
+    in_df = in_df.astype(int)
     ### g_sheet에서 읽어오기
-    in_df = one_doc.worksheet('investor')
-    #데이터 프레임으로 읽기
-    basic_values = in_df.get_all_values()
+    # in_df = one_doc.worksheet('investor')
+    # #데이터 프레임으로 읽기
+    # basic_values = in_df.get_all_values()
 
-    basic_header, basic_rows = basic_values[0], basic_values[1:]
-    basic_df= pd.DataFrame(basic_rows, columns=basic_header)
-    basic_df = basic_df.set_index(['local','매입자거주지'])
-    df = basic_df.T
-    df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
-    df = df.apply(lambda x: x.replace('-','0'))
-    df = df.astype(int)
-    org_df = df.copy()
+    # basic_header, basic_rows = basic_values[0], basic_values[1:]
+    # basic_df= pd.DataFrame(basic_rows, columns=basic_header)
+    # basic_df = basic_df.set_index(['local','매입자거주지'])
+    # df = basic_df.T
+    # df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
+    # df = df.apply(lambda x: x.replace('-','0'))
+    # df = df.astype(int)
+    org_df = in_df.copy()
     ####
     drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종','충남', '충북']
     drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
     # big_city = df.iloc[:,drop_list]
-    df.drop(drop_list, axis=1, level=0, inplace=True)
-    df.drop(drop_list2, axis=1, level=0, inplace=True)
+    in_df.drop(drop_list, axis=1, level=0, inplace=True)
+    in_df.drop(drop_list2, axis=1, level=0, inplace=True)
     # drop_list3 = df.columns[df.columns.get_level_values(0).str.endswith('군')]
     # df.drop(drop_list3, axis=1, inplace=True)
     # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
     
-    return df, org_df
+    return in_df, org_df
 
 @st.cache
 def load_index_data():
