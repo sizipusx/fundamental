@@ -666,13 +666,15 @@ def run_buy_index(selected_dosi, org_df):
     st.plotly_chart(fig)
 
 def run_buy_ratio(selected_dosi, org_df):
-    selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    # selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    selected_df = org_df.loc[:,org_df.columns.str.contains(selected_dosi)]
     per_df = round(selected_df.div(selected_df.iloc[:,0], axis=0)*100,1)
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     title = last_month + "월까지 <b>["+selected_dosi+"]</b> 매입자별 비중"
     titles = dict(text= title, x=0.5, y = 0.95) 
     #fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
-    fig = px.bar(per_df, x=per_df.index, y=[1,2,3,4])
+    # fig = px.bar(per_df, x=per_df.index, y=[1,2,3,4])
+    fig = px.bar(selected_df, x=selected_df.index, y=[selected_df.columns[1], selected_df.columns[2], selected_df.columns[3], selected_df.columns[4]])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
