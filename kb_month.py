@@ -252,6 +252,8 @@ def load_index_data():
     conn.close()
 
     return index_list
+
+    
 @st.cache(ttl=600)
 def load_one_data():
     #감정원 월간 데이터
