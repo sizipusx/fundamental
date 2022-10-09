@@ -674,7 +674,7 @@ def run_buy_ratio(selected_dosi, org_df):
     titles = dict(text= title, x=0.5, y = 0.95) 
     #fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     # fig = px.bar(per_df, x=per_df.index, y=[1,2,3,4])
-    fig = px.bar(selected_df, x=selected_df.index, y=[selected_df.columns[1], selected_df.columns[2], selected_df.columns[3], selected_df.columns[4]])
+    fig = px.bar(per_df, x=per_df.index, y=[per_df.columns[1], per_df.columns[2], per_df.columns[3], per_df.columns[4]])
     fig.update_yaxes(title= "매입자별 비중", zeroline=False, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
