@@ -467,25 +467,36 @@ def load_pop_data():
 @st.cache(ttl=600)
 def load_not_sell_data():
     #미분양
-    mb = one_doc.worksheet('notsold')
-    mb_values = mb.get_all_values()
-    mb_header, mb_rows = mb_values[1], mb_values[2:]
-    mb_df = pd.DataFrame(mb_rows, columns=mb_header)
-    mb_df = mb_df.set_index(mb_df.iloc[:,0])
-    mb_df = mb_df.iloc[:,1:]
-    mb_df.index.name = 'date'
-    mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
-    #준공 후 미분양
-    ns = one_doc.worksheet('afternotsold')
-    ns_values = ns.get_all_values()
-    ns_header, ns_rows = ns_values[1], ns_values[2:]
-    omdf = pd.DataFrame(ns_rows, columns=ns_header)
-    omdf = omdf.set_index(omdf.iloc[:,0])
-    omdf = omdf.iloc[:,1:]
-    omdf.index.name = 'date'
-    omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    # mb = one_doc.worksheet('notsold')
+    # mb_values = mb.get_all_values()
+    # mb_header, mb_rows = mb_values[1], mb_values[2:]
+    # mb_df = pd.DataFrame(mb_rows, columns=mb_header)
+    # mb_df = mb_df.set_index(mb_df.iloc[:,0])
+    # mb_df = mb_df.iloc[:,1:]
+    # mb_df.index.name = 'date'
+    # mb_df = mb_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+    # #준공 후 미분양
+    # ns = one_doc.worksheet('afternotsold')
+    # ns_values = ns.get_all_values()
+    # ns_header, ns_rows = ns_values[1], ns_values[2:]
+    # omdf = pd.DataFrame(ns_rows, columns=ns_header)
+    # omdf = omdf.set_index(omdf.iloc[:,0])
+    # omdf = omdf.iloc[:,1:]
+    # omdf.index.name = 'date'
+    # omdf = omdf.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
 
-    return omdf, mb_df
+    # return omdf, mb_df
+
+    conn = create_connection(one_db_path)
+    not_sold_list = []
+    query_list = ["select * from not_sold", "select * from after_not_sold"]
+    for query in query_list:
+        df = pd.read_sql(query, conn, index_col='date')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        not_sold_list.append(df)
+    conn.close()
+
+    return not_sold_list
 
 @st.cache
 def load_senti_data():
@@ -669,7 +680,10 @@ index_list, code_df = load_index_data()
 mdf = index_list[0]
 jdf = index_list[1]
 popdf, popdf_change, saedf, saedf_change = load_pop_data()
-not_sell, mibunyang = load_not_sell_data()
+# not_sell, mibunyang = load_not_sell_data()
+not_sell_list = load_not_sell_data()
+not_sell = not_sell_list[1]
+mibunyang = not_sell_list[0]
 b_df, org_df = load_buy_data()
 peong_df, peong_ch, peongj_df, peongj_ch, mr_df, ar_df = load_ratio_data()
 basic_df, bigc, smc = load_local_basic()
