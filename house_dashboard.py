@@ -281,14 +281,14 @@ def load_buy_data():
 
 @st.cache
 def load_index_data():
-    kbm_dict = read_source()
-    # kbm_dict = pd.ExcelFile(file_path)
-    #헤더 변경
-    # path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
-    header_excel = pd.ExcelFile(header_path)
-    #header = header_excel.parse('KB')
-    code_df = header_excel.parse('code', index_col=1)
-    code_df.index = code_df.index.str.strip()
+    # kbm_dict = read_source()
+    # # kbm_dict = pd.ExcelFile(file_path)
+    # #헤더 변경
+    # # path = 'https://github.com/sizipusx/fundamental/blob/a5ce2b7ed9d208b2479580f9b89d6c965aaacb12/files/header.xlsx?raw=true'
+    # header_excel = pd.ExcelFile(header_path)
+    # #header = header_excel.parse('KB')
+    # code_df = header_excel.parse('code', index_col=1)
+    # code_df.index = code_df.index.str.strip()
 
     #주택가격지수
     #mdf = kbm_dict.parse("2.매매APT", skiprows=1, index_col=0, convert_float=True)
@@ -378,6 +378,8 @@ def load_index_data():
         df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
+    code_df = pd.read_sql("select * from code", conn, index_col='dist')
+    code_df.index = code_df.index.str.strip()
     conn.close()
 
     return index_list, code_df
