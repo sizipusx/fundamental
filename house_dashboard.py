@@ -271,18 +271,18 @@ def load_buy_data():
     # df.index = df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
     # df = df.apply(lambda x: x.replace('-','0'))
     # df = df.astype(int)
-    org_df = in_df.copy()
+    #org_df = in_df.copy()
     ####
-    drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종','충남', '충북']
-    drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
+    #drop_list = ['전국', '서울', '경기', '경북', '경남', '전남', '전북', '강원', '대전', '대구', '인천', '광주', '부산', '울산', '세종','충남', '충북']
+    #drop_list2 = ['수원', '성남', '천안', '청주', '전주', '고양', '창원', '포항', '용인', '안산', '안양']
     # big_city = df.iloc[:,drop_list]
-    in_df.drop(drop_list, axis=1, level=0, inplace=True)
-    in_df.drop(drop_list2, axis=1, level=0, inplace=True)
+    #in_df.drop(drop_list, axis=1, level=0, inplace=True)
+    #in_df.drop(drop_list2, axis=1, level=0, inplace=True)
     # drop_list3 = df.columns[df.columns.get_level_values(0).str.endswith('군')]
     # df.drop(drop_list3, axis=1, inplace=True)
     # df = df[df.columns[~df.columns.get_level_values(0).str.endswith('군')]]
     
-    return in_df, org_df
+    return in_df
 
 @st.cache
 def load_index_data():
@@ -689,14 +689,14 @@ popdf, popdf_change, saedf, saedf_change = load_pop_data()
 not_sell_list = load_not_sell_data()
 not_sell = not_sell_list[1]
 mibunyang = not_sell_list[0]
-b_df, org_df = load_buy_data()
+org_df = load_buy_data()
 peong_df, peong_ch, peongj_df, peongj_ch, mr_df, ar_df = load_ratio_data()
 basic_df, bigc, smc = load_local_basic()
 
 #마지막 달
 kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
 pop_last_month = pd.to_datetime(str(popdf.index.values[-1])).strftime('%Y.%m')
-buy_last_month = pd.to_datetime(str(b_df.index.values[-1])).strftime('%Y.%m')
+buy_last_month = pd.to_datetime(str(org_df.index.values[-1])).strftime('%Y.%m')
 not_sell_month = str(not_sell.index.values[-1])
 with st.expander("See recently Data Update"):
     cols = st.columns(4)

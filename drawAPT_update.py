@@ -650,7 +650,8 @@ def run_jeon_ratio(selected_dosi, mr_df, ar_df):
 def run_buy_index(selected_dosi, org_df):
     if selected_dosi == "제주서귀포":
         selected_dosi ="제주" 
-    selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    #selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    selected_df = org_df.loc[:,org_df.columns.str.contains(selected_dosi)]
     #마지막 달
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
@@ -681,7 +682,8 @@ def run_trade_index(selected_dosi, org_df, mdf):
     #template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     if selected_dosi == "제주":
         selected_dosi ="제주서귀포"
-    selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    #selected_df = org_df.xs(selected_dosi, axis=1, level=0)
+    selected_df = org_df.loc[:,org_df.columns.str.contains(selected_dosi)]
     x_data = selected_df.index
     title = "<b>["+selected_dosi+"]</b> KB 매매지수와 거래량"
     titles = dict(text= title, x=0.5, y = 0.85) 
