@@ -380,7 +380,7 @@ def load_index_data():
         index_list.append(df)
     conn.close()
 
-    return index_list
+    return index_list, code_df
 
 @st.cache
 def load_pop_data():
@@ -663,7 +663,7 @@ def load_local_basic():
     return fun_df, bigc, smc
 ############ data 불러오기 ######################
 #mdf, jdf, code_df, geo_data = load_index_data()
-index_list = load_index_data()
+index_list, code_df = load_index_data()
 mdf = index_list[0]
 jdf = index_list[1]
 popdf, popdf_change, saedf, saedf_change = load_pop_data()
