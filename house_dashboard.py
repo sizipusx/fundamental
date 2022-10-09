@@ -255,7 +255,7 @@ def load_buy_data():
     # df = df.astype(float)
     # org_df = df.copy()
     ### db에서 읽기
-    conn = create_connection(kb_db_path)
+    conn = create_connection(one_db_path)
     in_df = pd.read_sql("SELECT * FROM 'investor'", conn, index_col='index')
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
