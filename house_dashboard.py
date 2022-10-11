@@ -259,6 +259,7 @@ def load_buy_data():
     in_df = pd.read_sql("SELECT * FROM 'investor'", conn, index_col='index')
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
+    conn.close()
     ### g_sheet에서 읽어오기
     # in_df = one_doc.worksheet('investor')
     # #데이터 프레임으로 읽기
