@@ -581,8 +581,8 @@ if __name__ == "__main__":
     jdf = index_list[1]
     #odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
     oindex_list = load_one_data()
-    omdf = index_list[0]
-    ojdf = index_list[1]
+    omdf = oindex_list[0]
+    ojdf = oindex_list[1]
 
     not_sell_list = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[1]
@@ -1433,7 +1433,7 @@ if __name__ == "__main__":
             <br>
             """
             st.markdown(html_br, unsafe_allow_html=True)
-    elif my_choice == '지역같이보기':
+    elif my_choice == '지역같이보기': #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
         #기간
         period_ = mdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 상승률 분석")
@@ -1509,21 +1509,21 @@ if __name__ == "__main__":
             <br>
             """ 
             ### KB index chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = 'KB 월간'
-                    drawAPT_weekly.run_one_index_together(options, slice_m, slice_m_ch, flag)
+            # with st.container():
+            #     col1, col2, col3 = st.columns([30,2,30])
+            #     with col1:
+            #         flag = 'KB 월간'
+            #         drawAPT_weekly.run_one_index_together(options, slice_m, slice_m_ch, flag)
 
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = 'KB 월간'
-                    drawAPT_weekly.run_one_jindex_together(options, slice_j, slice_j_ch, flag)
+            #     with col2:
+            #         st.write("")
+            #     with col3:
+            #         flag = 'KB 월간'
+            #         drawAPT_weekly.run_one_jindex_together(options, slice_j, slice_j_ch, flag)
                     
-            html_br="""
-            <br>
-            """ 
+            # html_br="""
+            # <br>
+            # """ 
             ### 부동산원 Bubble/ flower chart #########################################################################################
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
