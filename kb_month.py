@@ -1541,21 +1541,21 @@ if __name__ == "__main__":
             <br>
             """             
             ### KB Bubble/ flower chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = 'KB 월간'
-                    drawAPT_weekly.draw_index_change_with_bubble_slice(options, change_df, flag)
+            # with st.container():
+            #     col1, col2, col3 = st.columns([30,2,30])
+            #     with col1:
+            #         flag = 'KB 월간'
+            #         drawAPT_weekly.draw_index_change_with_bubble_slice(options, change_df, flag)
 
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = 'KB 월간'
-                    drawAPT_weekly.draw_flower_together(options, slice_cum_mdf, slice_cum_jdf, flag)
+            #     with col2:
+            #         st.write("")
+            #     with col3:
+            #         flag = 'KB 월간'
+            #         drawAPT_weekly.draw_flower_together(options, slice_cum_mdf, slice_cum_jdf, flag)
                     
-            html_br="""
-            <br>
-            """               
+            # html_br="""
+            # <br>
+            # """               
     elif my_choice == '투자자별매매동향':
         st.subheader("외지인 비율 분석")
         ratio_value = st.slider(
