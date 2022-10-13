@@ -28,6 +28,7 @@ import seaborn as sns
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
+cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 
@@ -348,7 +349,8 @@ if __name__ == "__main__":
                 # # call to render Folium map in Streamlit
                 # st_folium(m)
     with tab2:
-        st.dataframe(stat_df)
+        st.dataframe(stat_df.style.background_gradient(cmap, axis=0)\
+                                           .format(precision=0, na_rep='MISSING', thousands=","))
         stat_df = stat_df.iloc[1:]
         stat_df.iloc[:,1:].replace([np.inf, -np.inf], "0", inplace=True)
         stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
