@@ -28,7 +28,6 @@ import seaborn as sns
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
-cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 
@@ -160,7 +159,7 @@ def load_data():
         db_filename = './files/rebuild_house.db'
         conn = create_connection(db_filename)
         #이전 데이터
-        query = "SELECT * FROM sum_221012;"
+        query = "SELECT * FROM sum_221003;"
         query = conn.execute(query)
         cols = [column[0] for column in query.description]
         sum_df= pd.DataFrame.from_records(
@@ -215,7 +214,7 @@ def load_data():
 def show_total(s_df):
     
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
+    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도"],
                     color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
     fig.update_layout(
         title='전국 재건축-재개발 분양권 아파트 시세',
@@ -259,7 +258,7 @@ def show_total(s_df):
 
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도"],
+    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800)
     fig.update_layout(
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
@@ -283,11 +282,11 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done! (using st.cache)")
-    st.subheader("시세 조사 날짜: 2022.10.12." )
+    st.subheader("시세 조사 날짜: 2022.10.03." )
     tab1, tab2 = st.tabs(["📈 지도", "🗃 통계"])
     with tab1:
         show_total(s_df)
-        city_list = s_df['시도명'].drop_duplicates().to_list()
+        city_list = s_df['시도'].drop_duplicates().to_list()
         city_list.insert(0,'전국')
         #submit = st.sidebar.button('해당 지역만 보기')
         with st.container():
@@ -306,7 +305,7 @@ if __name__ == "__main__":
         with col5:
             st.write("")
 
-        city_apt = s_df[s_df['시도명'] == city_name]
+        city_apt = s_df[s_df['시도'] == city_name]
         city_total = t_df[t_df['시도'] == city_name]
         #if submit:
         if city_name == '전국':
@@ -349,8 +348,7 @@ if __name__ == "__main__":
                 # # call to render Folium map in Streamlit
                 # st_folium(m)
     with tab2:
-        st.dataframe(stat_df.style.background_gradient(cmap, axis=0)\
-                                           .format(precision=0, na_rep='MISSING', thousands=","))
+        st.dataframe(stat_df)
         stat_df = stat_df.iloc[1:]
         stat_df.iloc[:,1:].replace([np.inf, -np.inf], "0", inplace=True)
         stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
