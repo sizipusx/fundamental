@@ -645,7 +645,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
             go.Scatter(
                 x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
                 mode='markers+lines',
-                #hovertext=cum_mdf.index.strftime("%Y.%m.%d"),
+                hovertext=cum_mdf.index.strftime("%Y.%m.%d"),
                 marker=dict(
                     size=abs(cum_jdf[value])*10,
                     color=px.colors.qualitative.Dark24[index]
@@ -658,8 +658,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
     fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    fig.update_layout(template="myID")
-    fig.update_layout(hovermode="x unified")
+    fig.update_layout(hovermode="x unified", template="myID")
     st.plotly_chart(fig)
 
 def draw_change_table(change_df,flag):
