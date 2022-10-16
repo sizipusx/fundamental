@@ -124,9 +124,9 @@ def get_gsheet_index():
             )
         df = df.set_index(keys='날짜')
         df.index.name = 'date'
+        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
         df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
-        df.index = pd.to_datetime(df.index, format = '%Y.%m.%d')
         index_list.append(df)
     #기본 정보
     query = "select * from basic"
