@@ -349,7 +349,7 @@ if __name__ == "__main__":
                 # # call to render Folium map in Streamlit
                 # st_folium(m)
     with tab2:
-        st.dataframe(stat_df.style.background_gradient(cmap, axis=0).format(precision=0, na_rep='MISSING', thousands=","))
+        st.dataframe(stat_df.style.background_gradient(cmap, axis=0).format(precision=0, na_rep='0', thousands=","))
         stat_df = stat_df.iloc[1:]
         stat_df.iloc[:,1:].replace([np.inf, -np.inf], "0", inplace=True)
         stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
