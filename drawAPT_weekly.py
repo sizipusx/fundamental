@@ -645,7 +645,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
             go.Scatter(
                 x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
                 mode='markers+lines',
-                hovertext=cum_mdf.index.strftime("%Y.%m.%d"),
+                hovertext=[value, cum_mdf.index.strftime("%Y.%m.%d")],
                 marker=dict(
                     size=abs(cum_jdf[value])*10,
                     color=px.colors.qualitative.Dark24[index]
