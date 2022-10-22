@@ -349,7 +349,19 @@ if __name__ == "__main__":
                 # # call to render Folium map in Streamlit
                 # st_folium(m)
     with tab2:
-        st.dataframe(stat_df.style.background_gradient(cmap, axis=0).format(precision=0, na_rep='0', thousands=","))
+        stat_df = stat_df.iloc[1:]
+        stat_df = stat_df.set_index("date")
+        stat_df.replace([np.inf, -np.inf], "0", inplace=True)
+        #stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
+        stat_df = stat_df.fillna(0).astype(int)
+        stat_df_ch = stat_df.pct_change()*100
+        with st.container():
+            col1, col2 = st.columns([50,50])
+        with col1:
+            st.dataframe(stat_df.style.background_gradient(cmap, axis=0).format(precision=0, na_rep='0', thousands=","))
+        with col2:
+            st.dataframe(stat_df_ch.style.background_gradient(cmap, axis=0).format(precision=2, na_rep='0', thousands=","))
+        
         stat_df = stat_df.iloc[1:]
         stat_df.iloc[:,1:].replace([np.inf, -np.inf], "0", inplace=True)
         stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
