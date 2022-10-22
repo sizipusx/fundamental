@@ -362,19 +362,15 @@ if __name__ == "__main__":
         with col2:
             st.dataframe(stat_df_ch.style.background_gradient(cmap, axis=0).format(precision=2, na_rep='0', thousands=","))
         
-        stat_df = stat_df.iloc[1:]
-        stat_df.iloc[:,1:].replace([np.inf, -np.inf], "0", inplace=True)
-        stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
-        stat_df.iloc[:,1:] = stat_df.iloc[:,1:].fillna(0).astype(int)
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                fig = px.bar(stat_df, y="date", x=["매매", "전세", "월세"], title="전체 매물 중 매매/전세/월세 증감", orientation='h')                
+                fig = px.bar(stat_df, y=stat_df.index, x=["매매", "전세", "월세"], title="전체 매물 중 매매/전세/월세 증감", orientation='h')                
                 st.plotly_chart(fig)
             with col2:
                 st.write("")
             with col3:
-                fig = px.bar(stat_df, y="date", x=["재건축", "재개발", "분양권", "마피", "무피"], title="매매 물건 중 재개발/재건축/분양권 증감", orientation='h')
+                fig = px.bar(stat_df, y=stat_df.index, x=["재건축", "재개발", "분양권", "마피", "무피"], title="매매 물건 중 재개발/재건축/분양권 증감", orientation='h')
                 st.plotly_chart(fig)
             html_br="""
             <br>
