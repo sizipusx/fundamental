@@ -215,7 +215,7 @@ def load_data():
 def show_total(s_df):
     
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도"],
+    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
     fig.update_layout(
         title='전국 재건축-재개발 분양권 아파트 시세',
@@ -259,7 +259,7 @@ def show_total(s_df):
 
 def show_local(select_city, city_apt, city_total):
     px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도"],
+    fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800)
     fig.update_layout(
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
@@ -306,17 +306,17 @@ if __name__ == "__main__":
         with col5:
             st.write("")
 
-        city_apt = s_df[s_df['시도'] == city_name]
-        city_total = t_df[t_df['시도'] == city_name]
+        city_apt = s_df[s_df['시도명'] == city_name]
+        city_total = t_df[t_df['시도명'] == city_name]
         #if submit:
         if city_name == '전국':
-            filter_df = t_df[['시도', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
+            filter_df = t_df[['시도명', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
             #response = aggrid_interactive_table(df=filter_df)
             default_flag = '전국'
         else:
             apt_len = len(city_apt)
             show_local(city_name, city_apt, city_total)
-            filter_df = city_total[['시도', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
+            filter_df = city_total[['시도명', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
             default_flag = '그외'
         response  = aggrid_interactive_table(df=filter_df)
 
@@ -326,7 +326,7 @@ if __name__ == "__main__":
             selected_df = response["selected_rows"]
             if selected_df:
                 px.set_mapbox_access_token(token)
-                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도", color="매물종류", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도"],
+                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도", color="매물종류", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도명"],
                                 color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
                 fig.update_layout(
                     title='선택한 아파트 네이버 시세',
