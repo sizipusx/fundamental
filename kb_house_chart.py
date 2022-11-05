@@ -211,7 +211,7 @@ def load_senti_data():
     js_df.columns = new_citys
     js_su.columns = new_citys
     js_go.columns = new_citys
-    #가장 최근 것만
+    #가장 최근 것만   d엡데이트
     # s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
     # js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
     s_df = s_df.apply(lambda x:x.replace('','0'))
