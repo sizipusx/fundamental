@@ -63,6 +63,7 @@ def draw_pir(selected_city2, pir_df, income_df, price_df):
     st.plotly_chart(fig)
 
 def draw_hai(city, hai_df, info_df):
+    hai_df = pd.to_datetime(hai_df.index, format = '%Y.%m')
     titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
@@ -71,7 +72,7 @@ def draw_hai(city, hai_df, info_df):
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right")
-    fig.add_vline(x=info_df.index[72], line_width=1, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+    fig.add_vline(x="2019.01", line_width=1, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
     fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
