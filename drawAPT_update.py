@@ -71,8 +71,8 @@ def draw_hai(city, hai_df, info_df):
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right")
-    fig.add_vline(x=121, line_width=1, line_dash='dot', line_color="black")# annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+    fig.add_hline(y=100.0, line_width=1, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right")
+    fig.add_vline(x=121, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
     # fig.add_vrect(x0="2008.12", x1="2018.12", 
     #           annotation_text="통계청 가계동향조사 이전", annotation_position="top right",
     #           fillcolor="green", opacity=0.25, line_width=0)
