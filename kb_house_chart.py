@@ -109,7 +109,7 @@ def create_connection(db_file):
 
     return conn
 
-@st.cache(ttl=600)
+@st.cache(ttl=25000)
 def get_gsheet_index():
     #DB에서 읽어오자
     conn = create_connection(weekly_db_path)
@@ -176,7 +176,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
 
     return response
 
-@st.cache(ttl=600)
+@st.cache(ttl=25000)
 def load_senti_data():
     #2022.9.25 db에서 읽어오기
     conn = create_connection(weekly_db_path)
