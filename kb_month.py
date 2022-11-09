@@ -517,7 +517,7 @@ def load_pir_data():
     pir_values = pir.get_all_values()
     pir_header, pir_rows = pir_values[1:3], pir_values[3:]
     pir_df_org = pd.DataFrame(pir_rows, columns=pir_header)
-    pir_df_org = pir_df_org.set_index(pir_df.iloc[:,0])
+    pir_df_org = pir_df_org.set_index(pir_df_org.iloc[:,0])
     pir_df_org.index.name = 'date'
 
     ###각 지역 pir만
