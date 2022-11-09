@@ -63,31 +63,38 @@ def draw_pir(selected_city2, pir_df, income_df, price_df):
     st.plotly_chart(fig)
 
 def draw_hai(city, hai_df, info_df):
-    # hai_df.index = pd.to_datetime(hai_df.index, format = '%Y.%m')
-    titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.9) 
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
-    fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
-    fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.add_hline(y=100.0, line_width=1, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right")
-    fig.add_vline(x=121, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
-    # fig.add_vrect(x0="2008.12", x1="2018.12", 
-    #           annotation_text="통계청 가계동향조사 이전", annotation_position="top right",
-    #           fillcolor="green", opacity=0.25, line_width=0)
-    fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
-    st.plotly_chart(fig)
-    
-    titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.9) 
-    fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
-    # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
-    fig.add_hline(y=info_df['주담대금리'].mean(axis=0), line_width=1, line_dash='dash', line_color="red", annotation_text="평균: " +str(round(info_df['주담대금리'].mean(axis=0),2)), annotation_position="bottom right")
-    fig.update_yaxes(title_text='주택 담보 대출 금리', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="%") #tickprefix="$", 
-    st.plotly_chart(fig)
-
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            # hai_df.index = pd.to_datetime(hai_df.index, format = '%Y.%m')
+            titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.9) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
+            fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
+            fig.update_layout(hovermode="x unified")
+            # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+            # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+            fig.add_hline(y=100.0, line_width=1, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right")
+            fig.add_vline(x=121, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+            # fig.add_vrect(x0="2008.12", x1="2018.12", 
+            #           annotation_text="통계청 가계동향조사 이전", annotation_position="top right",
+            #           fillcolor="green", opacity=0.25, line_width=0)
+            fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+            fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
+            fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
+            st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3:
+            titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.9) 
+            fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
+            # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
+            fig.add_hline(y=info_df['주담대금리'].mean(axis=0), line_width=1, line_dash='dash', line_color="red", annotation_text="평균: " +str(round(info_df['주담대금리'].mean(axis=0),2)), annotation_position="bottom right")
+            fig.update_yaxes(title_text='주택 담보 대출 금리', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="%") #tickprefix="$", 
+            st.plotly_chart(fig)
+    html_br="""
+    <br>
+    """   
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
