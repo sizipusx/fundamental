@@ -156,7 +156,7 @@ def get_not_sell_apt():
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
         df = pd.read_sql(query, conn, index_col='date')
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m')
         not_sold_list.append(df)
     conn.close()
 
@@ -247,7 +247,7 @@ def load_index_data():
     query_list = ["select * from mae", "select * from jeon"]
     for query in query_list:
         df = pd.read_sql(query, conn, index_col='date')
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m')
         df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
@@ -297,7 +297,7 @@ def load_one_data():
     query_list = ["select * from one_mae", "select * from one_jeon"]
     for query in query_list:
         df = pd.read_sql(query, conn, index_col='date')
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
     conn.close()
     omdf = index_list[0]
