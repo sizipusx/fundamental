@@ -529,44 +529,54 @@ def load_pir_data():
 
 @st.cache(ttl=108000)
 def load_hai_data():
-    hai = kbm_dict.parse('14.NEW_HAI', skiprows=1)
-    hai_old = hai.iloc[:135,2:]
-    hai_old = hai_old.set_index("지역")
-    hai_old.index.name="날짜"
-    hai_new = hai.iloc[144:hai['전국 Total'].count()-17,2:] ### 159 3월까지::: 달 증가에 따른 +1
-    hai_new = hai_new.set_index("지역")
-    hai_new.index.name="날짜"
-    s1 = hai_new.columns.map(lambda x: x.split(' ')[0])
-    #index 날짜 변경
-    new_s1 = []
-    for num, gu_data in enumerate(s1):
-        check = num
-        if gu_data.startswith('Un'):
-            new_s1.append(new_s1[check-1])
-        else:
-            new_s1.append(s1[check])
-    new_s1[-1] ='중위월소득'
-    new_s1[-2] ='대출금리'
-    hai_new.columns = [new_s1,hai_old.iloc[0]]
-    hai_index = list(hai_new.index)
-    #인덱스 날짜 변경
-    new_index = []
+    # hai = kbm_dict.parse('14.NEW_HAI', skiprows=1)
+    # hai_old = hai.iloc[:135,2:]
+    # hai_old = hai_old.set_index("지역")
+    # hai_old.index.name="날짜"
+    # hai_new = hai.iloc[144:hai['전국 Total'].count()-17,2:] ### 159 3월까지::: 달 증가에 따른 +1
+    # hai_new = hai_new.set_index("지역")
+    # hai_new.index.name="날짜"
+    # s1 = hai_new.columns.map(lambda x: x.split(' ')[0])
+    # #index 날짜 변경
+    # new_s1 = []
+    # for num, gu_data in enumerate(s1):
+    #     check = num
+    #     if gu_data.startswith('Un'):
+    #         new_s1.append(new_s1[check-1])
+    #     else:
+    #         new_s1.append(s1[check])
+    # new_s1[-1] ='중위월소득'
+    # new_s1[-2] ='대출금리'
+    # hai_new.columns = [new_s1,hai_old.iloc[0]]
+    # hai_index = list(hai_new.index)
+    # #인덱스 날짜 변경
+    # new_index = []
 
-    for num, raw_index in enumerate(hai_index):
-        temp = str(raw_index).split('.')
-        if len(temp[0]) == 3:
-            if int(temp[0].replace("'","")) >84:
-                new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
-            else:
-                new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
-        else:
-            new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
-    hai_new.set_index(pd.to_datetime(new_index), inplace=True)
+    # for num, raw_index in enumerate(hai_index):
+    #     temp = str(raw_index).split('.')
+    #     if len(temp[0]) == 3:
+    #         if int(temp[0].replace("'","")) >84:
+    #             new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+    #         else:
+    #             new_index.append('20' + temp[0].replace("'","") + '.' + temp[1])
+    #     else:
+    #         new_index.append(new_index[num-1].split('.')[0] + '.' + temp[0])
+    # hai_new.set_index(pd.to_datetime(new_index), inplace=True)
+    #구글 시트에서 읽어오기
+    hai = kb_doc.worksheet('KBHAI')
+    hai_values = hai.get_all_values()
+    hai_header, hai_rows = hai_values[1:3], hai_values[3:]
+    hai_df = pd.DataFrame(hai_rows, columns=hai_header)
+    hai_df = hai_df.set_index(hai_df.iloc[:,0])
+    hai_df.iloc[:,:-2] = hai_df.iloc[:,:-2].apply(lambda x:x.replace('','0').replace(',','')).astype(float)
+    hai_df.iloc[:,-1] = hai_df.iloc[:,-1].astype(str).apply(lambda x:x.replace(',','')).astype(int)
+    hai_df = hai_df.iloc[:,1:]
+    hai_df.index.name = 'date'
     ###각 지역 HAI만
-    hai_apt = hai_new.xs("아파트", axis=1, level=1)
-    hai_apt.set_index(pd.to_datetime(new_index), inplace=True)
+    hai_apt = hai_df.xs("아파트", axis=1, level=1)
+    # hai_apt.set_index(pd.to_datetime(new_index), inplace=True)
     ### 금리와 중위 소득만 가져오기
-    info = hai_new.iloc[:,-2:]
+    info = hai_df.iloc[:,-2:]
     info.columns = ['주담대금리', '중위월소득']
     info.index.name="분기"
     info.loc[:,'중위월소득증감'] = info['중위월소득'].astype(int).pct_change()
