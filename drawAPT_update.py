@@ -72,7 +72,10 @@ def draw_hai(city, hai_df, info_df):
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right")
-    fig.add_vline(x="2019-01-01", line_width=1, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+    fig.add_vline(x=hai_df.index[108], line_width=1, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+    fig.add_vrect(x0="2008-12-01", x1="2018-12-01", 
+              annotation_text="8.2 대책", annotation_position="통계청 가계동향조사 이전",
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
