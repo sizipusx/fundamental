@@ -1382,7 +1382,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw PIR chart')
         if submit:
             drawAPT_update.draw_pir(selected_city, pir_df, income_df, price_df)
-    elif my_choice == 'HAI':
+    elif my_choice == 'HAI-HOI':
         data_load_state = st.text('Loading HAI index Data...')
         hai_df, info_df = load_hai_data()
         hai_df = hai_df.astype(float).fillna(0).round(decimals=2)
