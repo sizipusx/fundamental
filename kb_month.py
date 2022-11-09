@@ -473,57 +473,68 @@ def load_senti_data():
 
 @st.cache(ttl=108000)
 def load_pir_data():
-    pir = kbm_dict.parse('13.KB아파트담보대출PIR', skiprows=1)
-    # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
-    # kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
-    # pir =  kb_dict['KB아파트담보대출PIR']
-    pir = pir.iloc[:pir['지역'].count()-1,1:11]
+    # pir = kbm_dict.parse('13.KB아파트담보대출PIR', skiprows=1)
+    # # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
+    # # kb_dict = pd.read_excel(file_path, sheet_name=None, header=1)
+    # # pir =  kb_dict['KB아파트담보대출PIR']
+    # pir = pir.iloc[:pir['지역'].count()-1,1:11]
 
-    s1 = ['분기', '서울', '서울', '서울', '경기', '경기', '경기', '인천', '인천', '인천']
-    s2 = pir.iloc[0]
-    pir.columns = [s1, s2]
-    pir = pir.iloc[1:]
-    pir = pir.set_index(('분기',            '년도'))
-    pir.index.name = '분기'
-    #분기 날짜 바꾸기
-    pir_index = list(pir.index)
-    new_index = []
+    # s1 = ['분기', '서울', '서울', '서울', '경기', '경기', '경기', '인천', '인천', '인천']
+    # s2 = pir.iloc[0]
+    # pir.columns = [s1, s2]
+    # pir = pir.iloc[1:]
+    # pir = pir.set_index(('분기',            '년도'))
+    # pir.index.name = '분기'
+    # #분기 날짜 바꾸기
+    # pir_index = list(pir.index)
+    # new_index = []
 
-    for num, raw_index in enumerate(pir_index):
-        temp = str(raw_index).split(' ')
-        if len(temp[0]) == 3:
-            if int(temp[0].replace("'","")) >84:
-                new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
-            else:
-                if temp[1] == '1Q':
-                    new_index.append('20' + temp[0].replace("'","") + '.03')
-                elif temp[1] == '2Q':
-                    new_index.append('20' + temp[0].replace("'","") + '.06')
-                elif temp[1] == '3Q':
-                    new_index.append('20' + temp[0].replace("'","") + '.09')
-                else:
-                    new_index.append('20' + temp[0].replace("'","") + '.12')
-        else:
-            if temp[0] == '1Q':
-                new_index.append(new_index[num-1].split('.')[0] + '.03')
-            elif temp[0] == '2Q':
-                new_index.append(new_index[num-1].split('.')[0] + '.06')
-            elif temp[0] == '3Q':
-                new_index.append(new_index[num-1].split('.')[0] + '.09')
-            else:
-                new_index.append(new_index[num-1].split('.')[0] + '.12')
+    # for num, raw_index in enumerate(pir_index):
+    #     temp = str(raw_index).split(' ')
+    #     if len(temp[0]) == 3:
+    #         if int(temp[0].replace("'","")) >84:
+    #             new_index.append('19' + temp[0].replace("'","") + '.' + temp[1])
+    #         else:
+    #             if temp[1] == '1Q':
+    #                 new_index.append('20' + temp[0].replace("'","") + '.03')
+    #             elif temp[1] == '2Q':
+    #                 new_index.append('20' + temp[0].replace("'","") + '.06')
+    #             elif temp[1] == '3Q':
+    #                 new_index.append('20' + temp[0].replace("'","") + '.09')
+    #             else:
+    #                 new_index.append('20' + temp[0].replace("'","") + '.12')
+    #     else:
+    #         if temp[0] == '1Q':
+    #             new_index.append(new_index[num-1].split('.')[0] + '.03')
+    #         elif temp[0] == '2Q':
+    #             new_index.append(new_index[num-1].split('.')[0] + '.06')
+    #         elif temp[0] == '3Q':
+    #             new_index.append(new_index[num-1].split('.')[0] + '.09')
+    #         else:
+    #             new_index.append(new_index[num-1].split('.')[0] + '.12')
+    #구글 시트에서 가져오기 2022.11.09
+    pir = kb_doc.worksheet('KBPIR')
+    pir_values = pir.get_all_values()
+    pir_header, pir_rows = pir_values[1:3], pir_values[3:]
+    pir_df_org = pd.DataFrame(pir_rows, columns=pir_header)
+    pir_df_org = pir_df_org.set_index(pir_df.iloc[:,0])
+    pir_df_org.index.name = 'date'
+
     ###각 지역 pir만
-    pir_df = pir.xs("KB아파트 PIR", axis=1, level=1)
-    pir_df.set_index(pd.to_datetime(new_index), inplace=True)
+    pir_df = pir_df_org.xs("KB아파트 PIR", axis=1, level=1)
+    pir_df = pir_df.apply(lambda x:x.replace('','0').replace(',','')).astype(float)
+    # pir_df.set_index(pd.to_datetime(new_index), inplace=True)
     ###가구소득
-    income_df = pir.xs("가구소득(Income)", axis=1, level=1)
-    income_df.set_index(pd.to_datetime(new_index), inplace=True)
+    income_df = pir_df_org.xs("가구소득(Income)", axis=1, level=1)
+    income_df = income_df.apply(lambda x:x.replace('','0').replace(',','')).astype(int)
+    # income_df.set_index(pd.to_datetime(new_index), inplace=True)
     ###주택가격
-    house_df = pir.xs("주택가격\n(Price)", axis=1, level=1)
-    house_df.set_index(pd.to_datetime(new_index), inplace=True)
-    pir_df.index.name = '분기'
-    income_df.index.name = '분기'
-    house_df.index.name = '분기'
+    house_df = pir_df_org.xs("주택가격(Price)", axis=1, level=1)
+    house_df = house_df.apply(lambda x:x.replace('','0').replace(',','')).astype(int)
+    # house_df.set_index(pd.to_datetime(new_index), inplace=True)
+    # pir_df.index.name = '분기'
+    # income_df.index.name = '분기'
+    # house_df.index.name = '분기'
 
     return pir_df, income_df, house_df
 
