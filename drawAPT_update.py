@@ -67,11 +67,10 @@ def draw_hai(city, hai_df, info_df):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
-    fig.add_trace(go.Scatter(x=[hai_df.index[-2]], y=[99.0], text=["100>무리없이구입가능"], mode="text"))
-    fig.add_shape(type="line", x0=hai_df.index[0], y0=100.0, x1=hai_df.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="red", secondary_y=False, annotation_text="100보다 클 경우 무리없이 구입 가능", annotation_position="bottom right"))
     fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -80,7 +79,7 @@ def draw_hai(city, hai_df, info_df):
     titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.9) 
     fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
     # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
-    fig.add_hline(y=info_df['주담대금리'].mean(axis=0))
+    fig.add_hline(y=info_df['주담대금리'].mean(axis=0), annotation_text=info_df['주담대금리'].mean(axis=0), annotation_position="bottom right")
     fig.update_yaxes(title_text='금리', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', ticksuffix="%") #tickprefix="$", 
     st.plotly_chart(fig)
 
