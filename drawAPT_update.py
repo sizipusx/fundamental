@@ -37,8 +37,8 @@ pio.templates["myID"] = go.layout.Template(
             font=dict(color="red", size=10),
             xref="paper",
             yref="paper",
-            x=0.9,
-            y=0.2,
+            x=0.0,
+            y=0.9,
             showarrow=False,
         )
     ]
@@ -59,7 +59,7 @@ def draw_pir(selected_city2, pir_df, income_df, price_df):
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='PIR', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='가구소득-주택가격', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h",  y=-0.3), template=template)
     st.plotly_chart(fig)
 
 def draw_hai(city, hai_df, info_df):
@@ -81,7 +81,7 @@ def draw_hai(city, hai_df, info_df):
             #           fillcolor="green", opacity=0.25, line_width=0)
             fig.update_yaxes(title_text='HAI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
             fig.update_yaxes(title_text='전국중위월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
-            fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
+            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h", y=-0.3))
             st.plotly_chart(fig)
         with col2:
             st.write("")
@@ -117,7 +117,7 @@ def draw_hoi(hoi_df):
             fig.add_vline(x=36, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
             fig.update_yaxes(title_text='HOI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
             fig.update_yaxes(title_text='가구별 월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
-            fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
+            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h", y=-0.3))
             st.plotly_chart(fig)
         with col2:
             st.write("")
@@ -135,7 +135,7 @@ def draw_hoi(hoi_df):
             fig.add_vline(x=36, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
             fig.update_yaxes(title_text='주거비율', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
             fig.update_yaxes(title_text='구입가능 주택가격', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
-            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h",y=-0.3))
+            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h", y=-0.3))
             st.plotly_chart(fig)
     html_br="""
     <br>
