@@ -1388,18 +1388,27 @@ if __name__ == "__main__":
         hai_df = hai_df.astype(float).fillna(0).round(decimals=2)
         info_df = info_df.astype(float).fillna(0).round(decimals=2)
         data_load_state.text("HAI index Data Done! (using st.cache)")
-        st.subheader("주택구매력지수(HAI): Housing affordability index")
+        st.subheader("KB 주택구매력지수(HAI): Housing affordability index")
         st.write("* HAI = (중위가구소득 ÷ 대출상환가능소득) ×100 ")
         st.write("* 주택구매력지수란 우리나라에서 중간정도의 소득을 가진 가구가 금융기관의 대출을 받아 중간가격 정도의 주택을 구입한다고 가정할 때, \
             현재의 소득으로 대출원리금상환에 필요한 금액을 부담할 수 있는 능력을 의미")
         st.write("* HAI가 100보다 클수록 중간정도의 소득을 가진 가구가 중간가격 정도의 주택을 큰 무리없이 구입할 수 있다는 것을 나타내며, HAI가 상승하면 주택구매력이 증가한다는 것을 의미")
         st.write("* 발표시기 : 해당분기 익익월 보고서 발표(예 / 1분기 자료 ⇒ 5월 보고서 )")
 
+        st.subheader("KB주택구입 잠재력지수(KB-HOI)  KB Housing Opportunity Index")
+        st.write("*  HOI = (구입가능 재고량 ÷ 총재고량) ×100 ")
+        st.write("   HTI = 33% (Housing Cost To Income Ratio: 소득대비 주거비용비율)")
+        st.write("   주택구입자금 밑천(Down Payment)=30%, 20년 만기 원리금상환 기준")
+        st.write("* 주택구입잠재력지수란 중위 소득의 가구가 금융기관의 대출을 받아 주택을 구입한다고 가정할 경우,   \
+            지역 내 주택 중 경제능력(소득, 자산 등)의 제약 속에서 구입 가능한 주택 재고량을 알 수 있는 지표임.")
+        st.write("*즉, KB-HOI 지수가 50이면 해당지역 내 주택 재고수의 가격별 하위 50%범위 내 주택을 구입할 수 있음을 나타내며, KB-HOI지수가 상승하면 주택구입능력(잠재력)이 증가한다는 것을 뜻함")
+        st.write("* 발표시기 : 해당분기 익익월 보고서 발표(예 / 1분기 자료 ⇒ 5월 보고서 )")
+
         city_list = hai_df.columns.to_list()
         selected_city = st.sidebar.selectbox(
                 '지역', city_list
             )
-        submit = st.sidebar.button('Draw HAI chart')
+        submit = st.sidebar.button('Draw HAI-HOI chart')
         if submit:
             drawAPT_update.draw_hai(selected_city, hai_df, info_df)
     elif my_choice == 'Sentiment' :
