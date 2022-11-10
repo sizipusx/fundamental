@@ -135,7 +135,7 @@ def draw_hoi(hoi_df):
             fig.add_vline(x=36, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
             fig.update_yaxes(title_text='주거비율', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
             fig.update_yaxes(title_text='구입가능 주택가격', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
-            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h",y=-0.2))
+            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h",y=-0.3))
             st.plotly_chart(fig)
     html_br="""
     <br>
