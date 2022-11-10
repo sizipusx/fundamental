@@ -594,6 +594,23 @@ def load_hai_data():
 
     return hai_apt, info
 
+@st.cache(ttl=108000)
+def load_hoi():
+    # 데이터 프레임 만들기
+    hoi = kb_doc.worksheet('KBHOI')
+    hoi_values = hoi.get_all_values()
+    hoi_header, hoi_rows = hoi_values[1:3], hoi_values[3:]
+    hoi_df = pd.DataFrame(hoi_rows, columns=hoi_header)
+    hoi_df = hoi_df.set_index(hoi_df.iloc[:,0])
+    hoi_df = hoi_df.iloc[:,1:]
+    hoi_df.index.name = 'date'
+    # 데이터 타입 변환
+    hoi_df.iloc[:,:3] = hoi_df.iloc[:,:3].astype(float).round(decimals=2)
+    hoi_df.iloc[:,3:12] = hoi_df.iloc[:,3:12].astype(str).apply(lambda x:x.str.replace(',','')).astype(int)
+    hoi_df.iloc[:,12:] = hoi_df.iloc[:,12:].astype(float).round(decimals=2)
+
+    return hoi_df
+
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
@@ -1385,6 +1402,7 @@ if __name__ == "__main__":
     elif my_choice == 'HAI-HOI':
         data_load_state = st.text('Loading HAI index Data...')
         hai_df, info_df = load_hai_data()
+        hoi_df = load_hoi()
         hai_df = hai_df.astype(float).fillna(0).round(decimals=2)
         info_df = info_df.astype(float).fillna(0).round(decimals=2)
         data_load_state.text("HAI index Data Done! (using st.cache)")
@@ -1411,6 +1429,7 @@ if __name__ == "__main__":
         submit = st.sidebar.button('Draw HAI-HOI chart')
         if submit:
             drawAPT_update.draw_hai(selected_city, hai_df, info_df)
+            drawAPT_update.draw_hoi(hoi_df)
     elif my_choice == 'Sentiment' :
         data_load_state = st.text('Loading Sentimental index Data...')
         senti_dfs, df_as, df_bs = load_senti_data()

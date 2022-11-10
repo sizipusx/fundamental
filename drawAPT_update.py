@@ -95,6 +95,51 @@ def draw_hai(city, hai_df, info_df):
     html_br="""
     <br>
     """   
+def draw_hoi(hoi_df):
+    hoi_s = hoi_df.xs("서울", axis=1, level=1)
+    hoi_g = hoi_df.xs("경기", axis=1, level=1)
+    hoi_i = hoi_df.xs("인천", axis=1, level=1)
+    with st.container():
+        col1, col2, col3 = st.columns([30,1,30])
+        with col1:
+            titles = dict(text= '수도권 분기 HOI 지수', x=0.5, y = 0.9) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            fig.add_trace(go.Scatter(mode='lines', name = '서울 HOI', x =  hoi_s.index, y= hoi_s["KB-HOI"], marker_color = marker_colors[0]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '경기 HOI', x =  hoi_g.index, y= hoi_g["KB-HOI"], marker_color = marker_colors[1]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '인천 HOI', x =  hoi_i.index, y= hoi_i["KB-HOI"], marker_color = marker_colors[2]), secondary_y = False)
+            fig.add_trace(go.Bar(name = '서울 (월)소득', x = hoi_s.index, y = hoi_s['가구별 (월)소득'], marker_color=  marker_colors[0], opacity=0.3), secondary_y = True)
+            fig.add_trace(go.Bar(name = '경기 (월)소득', x = hoi_g.index, y = hoi_s['가구별 (월)소득'], marker_color=  marker_colors[1], opacity=0.3), secondary_y = True)
+            fig.add_trace(go.Bar(name = '인천 (월)소득', x = hoi_i.index, y = hoi_s['가구별 (월)소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
+            fig.update_layout(hovermode="x unified", barmode='stack')
+            # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+            # fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+            fig.add_hline(y=50.0, line_width=1, line_dash='dash', line_color="red", secondary_y=False, annotation_text="50이면 해당지역 내 주택 재고수의 가격별 하위 50%범위 내 주택을 구입할 수 있음을 나타냄", annotation_position="bottom right")
+            fig.add_vline(x=36, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+            fig.update_yaxes(title_text='HOI', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+            fig.update_yaxes(title_text='가구별 월소득', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
+            fig.update_layout(title = titles, titlefont_size=15,template=template) # legend=dict(orientation="h"), 
+            st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3:
+            titles = dict(text= '연간 지출가능 주거비용/구입가능 주택가격 지수', x=0.5, y = 0.9) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            fig.add_trace(go.Scatter(mode='lines', name = '서울 주거비율', x =  hoi_s.index, y= hoi_s["지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[0]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '경기 주거비율', x =  hoi_g.index, y= hoi_g["지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[1]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '인천 주거비율', x =  hoi_i.index, y= hoi_i["지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[2]), secondary_y = False)
+            fig.add_trace(go.Bar(name = '서울 구입가능 주택가격', x = hoi_s.index, y = hoi_s['가구별 (월)소득'], marker_color=  marker_colors[0], opacity=0.3), secondary_y = True)
+            fig.add_trace(go.Bar(name = '경기 구입가능 주택가격', x = hoi_g.index, y = hoi_s['가구별 (월)소득'], marker_color=  marker_colors[1], opacity=0.3), secondary_y = True)
+            fig.add_trace(go.Bar(name = '인천 구입가능 주택가격', x = hoi_i.index, y = hoi_s['가구별 (월)소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
+            fig.update_layout(hovermode="x unified", barmode='stack')
+            #fig.add_hline(y=50.0, line_width=1, line_dash='dash', line_color="red", secondary_y=False, annotation_text="50이면 해당지역 내 주택 재고수의 가격별 하위 50%범위 내 주택을 구입할 수 있음을 나타냄", annotation_position="bottom right")
+            fig.add_vline(x=36, line_width=2, line_dash='dot', line_color="black", annotation_text="통계청 가계동향조사 개편", annotation_position="top")
+            fig.update_yaxes(title_text='주거비율', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+            fig.update_yaxes(title_text='구입가능 주택가격', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="만원") #tickprefix="$", 
+            fig.update_layout(title = titles, titlefont_size=15,template=template, legend=dict(orientation="h"))
+            st.plotly_chart(fig)
+    html_br="""
+    <br>
+    """   
 
 def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     #매수우위지수
