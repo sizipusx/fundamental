@@ -158,9 +158,17 @@ def get_not_sell_apt():
         df = pd.read_sql(query, conn, index_col='date')
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         not_sold_list.append(df)
+    
+    #투자자 거주지별 매매동향
+    ### db에서 읽기
+    in_df = pd.read_sql("SELECT * FROM 'investor'", conn, index_col='index')
+    in_df = in_df.apply(lambda x: x.replace('-','0'))
+    in_df = in_df.astype(int)
+
     conn.close()
 
-    return not_sold_list
+
+    return not_sold_list, in_df
 
     # #미분양
     # mb = one_doc.worksheet('notsold')
@@ -611,6 +619,13 @@ def load_hoi():
 
     return hoi_df
 
+import re
+def remove_giho(s):
+    hangul = re.compile('[^ ㄱ-ㅣ가-힣+]') # 한글과 띄어쓰기를 제외한 모든 글자
+    # hangul = re.compile('[^ \u3131-\u3163\uac00-\ud7a3]+')  # 위와 동일
+    result = hangul.sub('', s) # 한글과 띄어쓰기를 제외한 모든 부분을 제거
+    return result
+
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
@@ -622,7 +637,7 @@ if __name__ == "__main__":
     omdf = oindex_list[0]
     ojdf = oindex_list[1]
 
-    not_sell_list = get_not_sell_apt() #준공후 미분양
+    not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[1]
     un_df = not_sell_list[0]
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
@@ -632,24 +647,33 @@ if __name__ == "__main__":
     # in_df['지 역'] = bheader['local'].str.strip()
     # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
     # in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    in_values = one_doc.worksheet('investor')
-    #데이터 프레임으로 읽기
-    basic_values = in_values.get_all_values()
+    # in_values = one_doc.worksheet('investor')
+    # #데이터 프레임으로 읽기
+    # basic_values = in_values.get_all_values()
 
-    basic_header, basic_rows = basic_values[0], basic_values[1:]
-    in_df1= pd.DataFrame(basic_rows, columns=basic_header)
-    in_df1 = in_df1.set_index(['local','매입자거주지'])
-    in_df = in_df1.T
+    # basic_header, basic_rows = basic_values[0], basic_values[1:]
+    # in_df1= pd.DataFrame(basic_rows, columns=basic_header)
+    # in_df1 = in_df1.set_index(['local','매입자거주지'])
+    # in_df = in_df1.T
     #=============== 여기까지 변경
     # in_df = in_df.set_index("지역명")
     # in_df = in_df.T
     # in_df.columns = [in_df.columns, in_df.iloc[0]]
     # in_df = in_df.iloc[1:]
     # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
+    # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
     # in_df.index = pd.to_datetime(in_df.index)
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
+
+    #2022. 11. 10 수정 멀티 인덱스로 변경
+    new_s1 = []
+    new_s2 = []
+    for num, city_name in enumerate(in_df.columns):
+        new_s1.append(remove_giho(city_name.split(',')[0]).strip())
+        new_s2.append(remove_giho(city_name.split(',')[1]).strip())
+    in_df.columns = [new_s1,new_s2]
+    
     total_df = in_df.xs('합계', axis=1, level=1)
     out_city = in_df.xs('관할시도외_기타', axis=1, level=1)
     seoul_buyer = in_df.xs('관할시도외_서울', axis=1, level=1)
