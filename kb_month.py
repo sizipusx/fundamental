@@ -685,10 +685,10 @@ if __name__ == "__main__":
     seoul_ratio = seoul_ratio.round(2)
     #마지막달
     last_in = pd.DataFrame()
-    last_in['전체거래수'] = total_df.iloc[-1].T.to_frame()
-    last_in['외지인수'] = invest_total.iloc[-1].T.to_frame()
-    last_in['서울거주자수'] = seoul_buyer.iloc[-1].T.to_frame()
-    last_in['서울거주자%'] = seoul_ratio.iloc[-1].T.to_frame()
+    last_in['전체'] = total_df.iloc[-1].T.to_frame()
+    last_in['외지인'] = invest_total.iloc[-1].T.to_frame()
+    last_in['서울'] = seoul_buyer.iloc[-1].T.to_frame()
+    last_in['서울%'] = seoul_ratio.iloc[-1].T.to_frame()
     last_in['외지인%'] = in_ratio.iloc[-1].T.to_frame()
     last_in['비율평균'] = in_ratio.mean()
     # 그 해 누적
