@@ -34,10 +34,10 @@ pio.templates["myID"] = go.layout.Template(
             text="Graph by 기하급수적",
             textangle=0,
             opacity=0.5,
-            font=dict(color="red", size=10),
+            font=dict(color="black", size=10),
             xref="paper",
             yref="paper",
-            x=0.0,
+            x=0.2,
             y=0.9,
             showarrow=False,
         )
