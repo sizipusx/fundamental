@@ -33,7 +33,7 @@ pio.templates["myID"] = go.layout.Template(
             name="draft watermark",
             text="Graph by 기하급수적",
             textangle=0,
-            opacity=0.5,
+            opacity=0.3,
             font=dict(color="black", size=10),
             xref="paper",
             yref="paper",
