@@ -811,7 +811,7 @@ if __name__ == "__main__":
         cols[1].write(f"끝: {end_date}")
         cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
         cols[3].write("")
-        submit = st.button('Analize Local situation')
+        submit = st.sidebar.button('Analize Local situation')
         if submit:
             ### 매매지수 하락 전세지수 상승 #########################################################################################            
             #############
