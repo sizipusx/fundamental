@@ -675,8 +675,8 @@ if __name__ == "__main__":
     in_df.columns = [new_s1,new_s2]
     
     total_df = in_df.xs('합계', axis=1, level=1)
-    out_city = in_df.xs('관할시도외_기타', axis=1, level=1)
-    seoul_buyer = in_df.xs('관할시도외_서울', axis=1, level=1)
+    out_city = in_df.xs('관할시도외기타', axis=1, level=1)
+    seoul_buyer = in_df.xs('관할시도외서울', axis=1, level=1)
     invest_total = out_city.add(seoul_buyer)
     #투자자비율 만들어보자
     in_ratio  = invest_total/total_df * 100
