@@ -124,9 +124,9 @@ def draw_hoi(hoi_df):
         with col3:
             titles = dict(text= '연간 지출가능 주거비용/구입가능 주택가격 지수', x=0.5, y = 0.9) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            fig.add_trace(go.Scatter(mode='lines', name = '서울 주거비율', x =  hoi_s.index, y= hoi_s["지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[0]), secondary_y = False)
-            fig.add_trace(go.Scatter(mode='lines', name = '경기 주거비율', x =  hoi_g.index, y= hoi_g["지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[1]), secondary_y = False)
-            fig.add_trace(go.Scatter(mode='lines', name = '인천 주거비율', x =  hoi_i.index, y= hoi_i["지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[2]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '서울 주거비율', x =  hoi_s.index, y= hoi_s["연간 지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[0]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '경기 주거비율', x =  hoi_g.index, y= hoi_g["연간 지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[1]), secondary_y = False)
+            fig.add_trace(go.Scatter(mode='lines', name = '인천 주거비율', x =  hoi_i.index, y= hoi_i["연간 지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[2]), secondary_y = False)
             fig.add_trace(go.Bar(name = '서울 구입가능 주택가격', x = hoi_s.index, y = hoi_s['구입가능 주택가격'], marker_color=  marker_colors[0], opacity=0.3), secondary_y = True)
             fig.add_trace(go.Bar(name = '경기 구입가능 주택가격', x = hoi_g.index, y = hoi_s['구입가능 주택가격'], marker_color=  marker_colors[1], opacity=0.3), secondary_y = True)
             fig.add_trace(go.Bar(name = '인천 구입가능 주택가격', x = hoi_i.index, y = hoi_s['구입가능 주택가격'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
