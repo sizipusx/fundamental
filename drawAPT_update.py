@@ -37,7 +37,7 @@ pio.templates["myID"] = go.layout.Template(
             font=dict(color="black", size=10),
             xref="paper",
             yref="paper",
-            x=0.2,
+            x=0.1,
             y=0.9,
             showarrow=False,
         )
