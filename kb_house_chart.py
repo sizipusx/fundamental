@@ -378,12 +378,12 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
         with col2:
             st.write("")
         with col3:
             flag = ['부동산원','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
     html_br="""
     <br>
     """
@@ -393,12 +393,12 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
         with col2:
             st.write("")
         with col3:
             flag = ['부동산원','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag)
+            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
     html_br="""
     <br>
     """
@@ -408,12 +408,12 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','매매증감']
-            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
+            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
         with col2:
             st.write("")
         with col3:
             flag = ['부동산원','매매증감']
-            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag)        
+            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
     html_br="""
     <br>
     """
@@ -423,12 +423,12 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = ['KB','전세증감']
-            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag)
+            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
         with col2:
             st.write("")
         with col3:
             flag = ['부동산원','전세증감']
-            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag)        
+            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
     html_br="""
     <br>
     """
@@ -438,13 +438,13 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             flag = 'KB'
-            drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag)
+            drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag, kb_last_week)
 
         with col2:
             st.write("")
         with col3:
             flag = '부동산원'
-            drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag)
+            drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag, one_last_week)
             
     html_br="""
     <br>
@@ -490,13 +490,13 @@ def draw_basic():
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            drawAPT_weekly.draw_senti_last(index_df)
+            drawAPT_weekly.draw_senti_last(index_df, kb_last_week)
             #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
         with col2:
             st.write("")
         with col3:
             city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
-            drawAPT_weekly.draw_senti_together(s_df, city_list)
+            drawAPT_weekly.draw_senti_together(s_df, city_list,kb_last_week)
             
     html_br="""
     <br>
@@ -508,12 +508,12 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
-            drawAPT_weekly.draw_senti_together(js_df, city_list)
+            drawAPT_weekly.draw_senti_together(js_df, city_list, kb_last_week)
         with col2:
             st.write("")
         with col3:
             city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
-            drawAPT_weekly.draw_senti_together(s_df, city_list)            
+            drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
     html_br="""
     <br>
     """
