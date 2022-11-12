@@ -177,7 +177,7 @@ def load_data():
         )
         #st.dataframe(sum_df)
         s_old = len(sum_df)
-        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{s_old}] 개의 매매 물건이 있습니다!")
+        st.write(f"아파트명과 공급면적을 기준으로 분류한 총 [{s_old}] 개의 아파트가 있습니다!")
     except Exception as e:
         st.write(e)
 
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     s_df, t_df, stat_df = load_data()
     
     #st.table(t_df)
-    data_load_state.text("Done! (using st.cache)")
+    data_load_state.text("Done!")
     st.subheader("시세 조사 날짜: 2022.11.12." )
     tab1, tab2 = st.tabs(["📈 지도", "🗃 통계"])
     with tab1:
