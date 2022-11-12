@@ -205,7 +205,7 @@ def draw_power_table(power_df):
     # fig.update_layout(template="myID")
     # st.plotly_chart(fig)
 
-def draw_Choroplethmapbox(df, geo_data, flag):
+def draw_Choroplethmapbox(df, geo_data, flag, last_week):
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     for col in df.columns:
@@ -213,7 +213,7 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     df['text'] = '<b>' + df['short'] + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감']
-    title = dict(text='<b>'+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9, xanchor = 'center', yanchor = 'top') 
+    title = dict(text='<b>'+last_week+ '기준 '+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9, xanchor = 'center', yanchor = 'top') 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
                             colorscale="Bluered", zmin=-0.8, zmax=0.8, marker_line_width=2))
                             #colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=2))
@@ -229,12 +229,12 @@ def draw_Choroplethmapbox(df, geo_data, flag):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def draw_index_change_with_bar(last_df, flag):
+def draw_index_change_with_bar(last_df, flag, last_week):
     last_df = last_df.sort_values(by=flag[1], ascending=False)
     #상위 20과 하위 20만 slice
     kb_last_slice = last_df.iloc[[-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,\
         14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]]
-    title = dict(text='<b>'+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
+    title = dict(text='<b>'+last_week+ '기준 '+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
     if flag[1] == '매매증감':
         fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,0], color=kb_last_slice.iloc[:,0], color_continuous_scale='Bluered', \
                     text=kb_last_slice.index, orientation='h')
@@ -252,9 +252,9 @@ def draw_index_change_with_bar(last_df, flag):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def draw_index_change_with_bubble(last_df, flag):
+def draw_index_change_with_bubble(last_df, flag, last_week):
     #매매/전세 증감률 Bubble Chart
-    title = dict(text='<b>'+flag+'지수 증감</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+last_week+ '기준 '+flag+'지수 증감</b>', x=0.5, y = 0.9) 
     fig = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']*10), 
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -680,10 +680,10 @@ def draw_change_table(change_df,flag):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def draw_senti_last(to_df):
+def draw_senti_last(to_df, last_week):
     #매매/전세 증감률 Bubble Chart
     flag = "KB 주간 시계열"
-    title = dict(text='<b>'+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+last_week+'기준 '+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
     template = "ggplot2"
     fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
                         text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
@@ -696,10 +696,10 @@ def draw_senti_last(to_df):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def draw_senti_together(maesu_index, city_lists):
+def draw_senti_together(maesu_index, city_lists, last_week):
     #매수우위지수 같이 보기
     flag = "KB 주간 시계열"
-    titles = dict(text=f'<b>{flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9)
+    titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9)
     fig = go.Figure()
 
     for index, value in enumerate(city_lists):
