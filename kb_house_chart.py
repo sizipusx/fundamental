@@ -373,6 +373,59 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
 def draw_basic():
     # kb_df, k_geo_data, last_df, kb_mdf = load_index_data()
     # one_df, o_geo_data, one_last_odf = load_one_data()
+     ### Draw Bubble chart #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag, kb_last_week)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag, one_last_week)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
+            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Draw 도 전체 기간 누적 차트 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = 'KB'
+            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+
+        with col2:
+            st.write("")
+        with col3:
+            flag = '부동산원'
+            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+            
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     ### Block 0#########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
@@ -433,59 +486,7 @@ def draw_basic():
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw Bubble chart #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag, kb_last_week)
-
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag, one_last_week)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
-            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
-
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 도 전체 기간 누적 차트 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
-
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
+   
     ### Draw 매수우위지수와 전세수급지수 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
