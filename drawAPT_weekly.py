@@ -315,6 +315,9 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
     fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
               annotation_text="2.4 대책", annotation_position="bottom left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -356,6 +359,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
             type="date"
             )      
         )
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def draw_sentiment(selected_dosi, js_1, js_2, js_index):
@@ -392,6 +396,9 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
     fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -467,7 +474,6 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
     fig.add_trace(go.Bar(name = '전세지수증감', x = ojdf.index, y = ojdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
     fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  omdf.index, y= omdf[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
     fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  ojdf.index, y= ojdf[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
-    fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
@@ -495,6 +501,9 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
     fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
               annotation_text="2.4 대책", annotation_position="bottom left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -536,6 +545,7 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
             type="date"
             )      
         )
+    fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
 def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, city3, city_series) :
@@ -750,6 +760,9 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
     fig.add_vrect(x0="2021-02-15", x1="2021-02-22", 
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(

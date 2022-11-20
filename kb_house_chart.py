@@ -760,10 +760,12 @@ if __name__ == "__main__":
     mdf_change = mdf_change.iloc[1:]
     mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     mdf_change = mdf_change.astype(float).fillna(0)
+    mdf_change = mdf_change.round(decimals=2)
     jdf_change = jdf.pct_change()*100
     jdf_change = jdf_change.iloc[1:]
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
+    jdf_change = jdf_change.round(decimals=2)
     cum_mdf = (1+mdf_change/100).cumprod() -1
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
