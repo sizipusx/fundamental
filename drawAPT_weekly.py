@@ -572,6 +572,9 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -595,6 +598,9 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -620,6 +626,9 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
+    fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     st.plotly_chart(fig)
 
 def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
