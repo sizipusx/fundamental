@@ -283,7 +283,7 @@ if __name__ == "__main__":
     
     #st.table(t_df)
     data_load_state.text("Done!")
-    st.subheader("시세 조사 날짜: 2022.11.12." )
+    st.subheader("시세 조사 날짜: 2022.11.18." )
     tab1, tab2 = st.tabs(["📈 지도", "🗃 통계"])
     with tab1:
         show_total(s_df)
