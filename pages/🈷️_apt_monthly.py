@@ -1741,6 +1741,6 @@ html_line="""
   margin-right: auto;
   border-style: inset;
   border-width: 1.5px;">
-<p style="color:Gainsboro; text-align: right;">By: https://blog.naver.com/indiesoul2 / sizipusx2@gmail.com</p>
+<p style="color:Gainsboro; text-align: right;">By: 기하급수적 https://blog.naver.com/indiesoul2 / sizipusx2@gmail.com</p>
 """
 st.markdown(html_line, unsafe_allow_html=True)
