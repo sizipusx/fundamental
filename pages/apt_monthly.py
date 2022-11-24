@@ -74,7 +74,7 @@ scope = [
     'https://www.googleapis.com/auth/drive',
     ]
 
-json_file_name = '../files/weekly-house-db-ac0a43b61ddd.json'
+json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
@@ -88,8 +88,8 @@ kb_doc = gc.open_by_url(kb_gsheet_url)
 #인구, 세대수, 기본 소득
 bs_doc = gc.open_by_url(basic_url)
 #############################2022.9.30 sqlite3로 변경######################################
-one_db_path = "../files/one_monthly.db"
-kb_db_path = "../files/kb_monthly.db"
+one_db_path = "/fundamental/files/one_monthly.db"
+kb_db_path = "/fundamental/files/kb_monthly.db"
 
 def create_connection(db_file):
     """ create a database connection to the SQLite database

@@ -47,8 +47,8 @@ footer {visibility: hidden;}
 # data=pd.read_excel('curva.xlsx')
 
 #############################2022.10.09 sqlite3로 변경######################################
-one_db_path = "../files/one_monthly.db"
-kb_db_path = "../files/kb_monthly.db"
+one_db_path = "/fundamental/files/one_monthly.db"
+kb_db_path = "/fundamental//files/kb_monthly.db"
 
 def create_connection(db_file):
     """ create a database connection to the SQLite database
@@ -71,7 +71,7 @@ scope = [
     'https://www.googleapis.com/auth/drive',
     ]
 
-json_file_name = '../files/weekly-house-db-ac0a43b61ddd.json'
+json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
