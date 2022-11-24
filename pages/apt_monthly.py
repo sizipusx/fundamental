@@ -67,7 +67,7 @@ one_dict = pd.ExcelFile(one_path)
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 ################################### gsheet 로 변경: 2022-7-17 ###########################
 #주간 gsheet
-w_gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+w_gsheet_url = r'files/weekly-house-db-ac0a43b61ddd.json'
 
 scope = [
     'https://spreadsheets.google.com/feeds',
