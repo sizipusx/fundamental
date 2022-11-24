@@ -17,7 +17,6 @@ st.markdown(
     of what Streamlit can do!
     ### Want to learn more?
     - Check out [기하급수적](https://blog.naver.com/indiesoul2)
-    - Jump into our [documentation](https://docs.streamlit.io)
     - Ask a question in my [e-mail]<indiesoul2@naver.com>
     ### See more complex demos
     - Use a neural net to [analyze the Udacity Self-driving Car Image
