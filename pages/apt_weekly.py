@@ -90,7 +90,7 @@ pio.templates["myID"] = go.layout.Template(
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-weekly_db_path = "../files/weekly_house.db"
+weekly_db_path = "/fundamental/files/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
