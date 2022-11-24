@@ -1361,6 +1361,26 @@ if __name__ == "__main__":
                 make_graph(temp_df)
                 time.sleep(2.0)
         st.button("Re-run")
+        
+html_br="""
+<br>
+"""
 
+html_line="""
+
+<br>
+<br>
+<br>
+<br>
+<hr style= "  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1.5px;">
+<p style="color:Gainsboro; text-align: right;">By: https://blog.naver.com/indiesoul2 / sizipusx2@gmail.com</p>
+"""
+st.markdown(html_line, unsafe_allow_html=True)
 
 
