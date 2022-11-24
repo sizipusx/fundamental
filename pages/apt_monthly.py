@@ -74,7 +74,8 @@ scope = [
     'https://www.googleapis.com/auth/drive',
     ]
 
-json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
+# json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
+json_file_name = "https://github.com/sizipusx/fundamental/blob/354d7460fc19c792b4daedb10e42d3fe90e95596/files/weekly-house-db-ac0a43b61ddd.json"
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
