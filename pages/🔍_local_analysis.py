@@ -27,7 +27,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
- <h2 style="color:#008080; font-family:Georgia"> 지역분석 </h3> <br>
+ <h2 style="color:#008080; font-family:Georgia"> 🌆 지역분석 🔍 </h3> <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
