@@ -67,7 +67,7 @@ one_dict = pd.ExcelFile(one_path)
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 ################################### gsheet 로 변경: 2022-7-17 ###########################
 #주간 gsheet
-w_gsheet_url = r'files/weekly-house-db-ac0a43b61ddd.json'
+#w_gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
 
 scope = [
     'https://spreadsheets.google.com/feeds',
@@ -75,7 +75,7 @@ scope = [
     ]
 
 # json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
-json_file_name = "https://github.com/sizipusx/fundamental/blob/354d7460fc19c792b4daedb10e42d3fe90e95596/files/weekly-house-db-ac0a43b61ddd.json"
+json_file_name = "files/weekly-house-db-ac0a43b61ddd.json"
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
