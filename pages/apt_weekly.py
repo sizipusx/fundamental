@@ -55,7 +55,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="주간 부동산 시계열 분석", page_icon="/fundamental/files/logo2.png", layout="wide")
+st.set_page_config(page_title="주간 부동산 시계열 분석", page_icon="../files/logo2.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -90,7 +90,7 @@ pio.templates["myID"] = go.layout.Template(
 now = datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
-weekly_db_path = "/fundamental/main/files/weekly_house.db"
+weekly_db_path = "files/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
