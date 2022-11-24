@@ -28,7 +28,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h1 style="font-size:200%; color:#008080; font-family:Georgia">  월간 부동산 시계열 분석 <br>
+<h1 style="font-size:200%; color:#008080; font-family:Georgia">  🈷️ 월간 부동산 시계열 분석 <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
