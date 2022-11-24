@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon="👋",
 )
 
-st.write("# Welcome to Streamlit! 👋")
+st.write("# Welcome to 아파트 데이터 분석! 👋")
 
 st.sidebar.success("Select a menu above.")
 
