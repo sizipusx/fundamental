@@ -61,8 +61,8 @@ st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
-p {text-align:right;}
-div {text-align:right;}
+#p {text-align:right;}
+#div {text-align:right;}
 </style> """, unsafe_allow_html=True)
 
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,0,255)', 'rgb(153,204,0)', \
