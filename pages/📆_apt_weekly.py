@@ -511,7 +511,7 @@ def draw_basic():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
-            drawAPT_weekly.draw_senti_together(js_df, city_list, kb_last_week)
+            drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)
         with col2:
             st.write("")
         with col3:
