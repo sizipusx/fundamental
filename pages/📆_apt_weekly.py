@@ -1385,7 +1385,7 @@ html_line="""
 st.markdown(html_line, unsafe_allow_html=True)
 st.markdown(
 """
-<p style="color:Gainsboro; text-align: right;">By: [기하급수적](https://blog.naver.com/indiesoul2) / (sizipusx2@gmail.com) </p>
+By: [기하급수적](https://blog.naver.com/indiesoul2) / (sizipusx2@gmail.com)
 
 """)
 
