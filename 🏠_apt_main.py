@@ -15,7 +15,7 @@ st.markdown(
     앞으로 꾸준히 업데이트하면서 더 나은 프로젝트가 되도록 노력하겠습니다.      
     속도도 느리고 디자인, UI도 없지만 복잡한 데이터를 쉽게 본다는데 의미를 두면 좋겠습니다.
 
-    **👈 Select a demo from the sidebar** 
+    **👈 Select a menu from the sidebar** 
 
     ### Menu 설명
     - apt weekly: 한국부동산원과 KB에서 매주 발표하는 부동산 지수를 다양한 차트와 테이블로 아파트 주간 동향을 살펴 봄
