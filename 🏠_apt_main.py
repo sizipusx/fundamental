@@ -23,7 +23,7 @@ st.markdown(
     - local analysis: 시군 지역의 다양한 데이터를 확인할 수 있음. 예를 들면 인구수, 직장수, 평균 연봉, 미분양, 전세가율 등등
     - rebuild house: 네이버 부동산에서 가져온 전국의 아파트분양권, 재개발, 재건축 매물 위치와 정보 확인
     ### See more 
-    - Check out blog : [기하급수적](https://blog.naver.com/indiesoul2)
+    - Check out my blog : [기하급수적](https://blog.naver.com/indiesoul2)
     - Ask a question in my E-mail : <indiesoul2@naver.com>
 """
 )
