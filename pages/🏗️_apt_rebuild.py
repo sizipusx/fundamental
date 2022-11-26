@@ -134,6 +134,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
    
     return response
 
+@st.cache(ttl=25000)
 def load_data():
     #gsheet
     # scope = [
