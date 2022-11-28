@@ -1017,7 +1017,7 @@ if __name__ == "__main__":
                 '구', mirco_list
             )
         
-        submit = st.sidebar.button('Draw Price Index together')
+        submit = st.sidebar.button('Draw Chart')
         if submit:
             run_price_index()
     elif my_choice == '심리 지수 보기':
