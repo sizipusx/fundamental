@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Hello",
+    page_title="KB-부동산원 지수 분석",
     page_icon="👋",
 )
 
