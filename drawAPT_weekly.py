@@ -554,14 +554,15 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
     if city3 in gu_city:
         draw_list = city_series[city_series.str.contains(city3)].to_list()
   
+    omdf_change = omdf_change.round(decimals=2)
     title = "<b>부동산원 매매지수 변화 같이 보기</b>"
     titles = dict(text= title, x=0.5, y = 0.85) 
-
+    
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
     for index, value in enumerate(draw_list):
         fig.add_trace(
-            go.Bar(x=omdf_change.index, y=omdf_change.loc[:,value],  name=round(value,3), marker_color= marker_colors[index]),    
+            go.Bar(x=omdf_change.index, y=omdf_change.loc[:,value],  name=value, marker_color= marker_colors[index]),    
             secondary_y=True,
             )
     for index, value in enumerate(draw_list):
