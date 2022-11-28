@@ -87,51 +87,13 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
                 )
         fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
         fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
         fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
         fig.update_layout(template="myID")
         fig.update_layout(hovermode="x unified")
-        fig.update_layout(
-                showlegend=True,
-                legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
-            ),
-                xaxis=go.layout.XAxis(
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=6,
-                            label="6m",
-                            step="month",
-                            stepmode="backward"),
-                        dict(count=1,
-                            label="YTD",
-                            step="year",
-                            stepmode="todate"),
-                        dict(count=1,
-                            label="1y",
-                            step="year",
-                            stepmode="backward"),
-                        dict(count=5,
-                            label="5y",
-                            step="year",
-                            stepmode="backward"),
-                        dict(count=10,
-                            label="10y",
-                            step="year",
-                            stepmode="backward"),
-                        dict(step="all")
-                    ])
-                ),
-                rangeslider=dict(
-                    visible=True
-                ),
-                type="date"
-                )      
-            )
+        fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+              annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
         st.plotly_chart(fig)
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
