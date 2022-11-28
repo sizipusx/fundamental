@@ -38,7 +38,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="Monthly House Analysis", page_icon="", layout="wide")
+st.set_page_config(page_title="🈷️ 월간 부동산 시계열 분석", page_icon="files/logo2.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
