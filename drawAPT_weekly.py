@@ -316,7 +316,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
               annotation_text="2.4 대책", annotation_position="bottom left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
-              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
@@ -397,7 +397,7 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
               annotation_text="8.4 대책", annotation_position="top left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
-              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
@@ -502,7 +502,7 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
               annotation_text="2.4 대책", annotation_position="bottom left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
-              annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
@@ -561,7 +561,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
     
     for index, value in enumerate(draw_list):
         fig.add_trace(
-            go.Bar(x=omdf_change.index, y=omdf_change.loc[:,value],  name=value, marker_color= marker_colors[index]),    
+            go.Bar(x=omdf_change.index, y=omdf_change.loc[:,value],  name=round(value,3), marker_color= marker_colors[index]),    
             secondary_y=True,
             )
     for index, value in enumerate(draw_list):
