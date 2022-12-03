@@ -257,7 +257,7 @@ def load_index_data():
     for query in query_list:
         df = pd.read_sql(query, conn, index_col='date')
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
-        df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+        df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
     conn.close()
