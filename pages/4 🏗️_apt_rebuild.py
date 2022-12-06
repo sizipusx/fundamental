@@ -280,10 +280,15 @@ def show_local(select_city, city_apt, city_total):
 if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
     s_df, t_df, stat_df = load_data()
-    
+    stat_df = stat_df.iloc[1:]
+    stat_df = stat_df.set_index("date")
+    stat_df.replace([np.inf, -np.inf], "0", inplace=True)
+    #stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
+    stat_df = stat_df.fillna(0).astype(int)
+    last_date = pd.to_datetime(str(stat_df.index.values[-1])).strftime('%Y.%m.%d')
     #st.table(t_df)
     data_load_state.text("Done!")
-    st.subheader("시세 조사 날짜: 2022.11.18." )
+    st.subheader(f"시세 조사 날짜: {last_date}" )
     tab1, tab2 = st.tabs(["🗺️ 지도", "🔣 통계"])
     with tab1:
         show_total(s_df)
@@ -349,11 +354,7 @@ if __name__ == "__main__":
                 # # call to render Folium map in Streamlit
                 # st_folium(m)
     with tab2:
-        stat_df = stat_df.iloc[1:]
-        stat_df = stat_df.set_index("date")
-        stat_df.replace([np.inf, -np.inf], "0", inplace=True)
-        #stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
-        stat_df = stat_df.fillna(0).astype(int)
+        
         stat_df_ch = stat_df.pct_change()*100
         with st.container():
             col1, col2 = st.columns([50,50])
