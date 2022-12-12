@@ -48,7 +48,7 @@ def run(code, com_name):
     navers_more = pd.read_html(fs_page.text)
 
     company_basic_info = navers_more[0]
-    st.dataframe(company_basic_info.set_index('0', inplace=True))
+    st.table(company_basic_info)
     if  st.checkbox('Show raw data'):
         
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
