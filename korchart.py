@@ -29,60 +29,69 @@ def load_data():
 
 
 def run(code, com_name):
-    #아이투자에서 기업 데이터 가져오기
-    info_url = "http://m.itooza.com/search.php?sn="+code
-    info_page = requests.get(info_url)
-    info_tables = pd.read_html(info_page.text)
-    company_info = info_tables[0]
-    company_info.set_index(0, inplace=True)
-    st.table(company_info)
-    #아이투자 10년 데이타
-    value_df, ttm_df, ann_df = getData.get_kor_itooza(code)
+    #아이투자에서 기업 데이터 가져오기: 크롤링 막혀서 네이버로 변경
+    # info_url = "http://m.itooza.com/search.php?sn="+code
+    # info_page = requests.get(info_url)
+    # info_tables = pd.read_html(info_page.text)
+    # company_info = info_tables[0]
+    # company_info.set_index(0, inplace=True)
+    # st.table(company_info)
+    # #아이투자 10년 데이타
+    # value_df, ttm_df, ann_df = getData.get_kor_itooza(code)
     #네이버 4년 데이타
     naver_ann, naver_q = getData.get_naver_finance(code)
 
+    # 좀 더 자세히
+    # 좀더 자세히
+    n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
+    fs_page = requests.get(n_url_f)
+    navers_more = pd.read_html(fs_page.text)
+
+    company_basic_info = navers_more[0]
+
     if  st.checkbox('Show raw data'):
-        st.dataframe(ttm_df.style.highlight_max(axis=0))
-        st.dataframe(ann_df.style.highlight_max(axis=0))
+        st.dataframe(company_basic_info)
+        # st.dataframe(ttm_df.style.highlight_max(axis=0))
+        # st.dataframe(ann_df.style.highlight_max(axis=0))
         st.dataframe(naver_ann.style.highlight_max(axis=0))
         st.dataframe(naver_q.style.highlight_max(axis=0))
     st.subheader("Valuation")
-    value_df = value_df.astype(float).fillna(0).round(decimals=2)
-    st.table(value_df)
+    #value_df = value_df.astype(float).fillna(0).round(decimals=2)
+    st.table(navers_more[5])
     #RIM Price
-    rim_price, r_ratio = makeData.kor_rim(ttm_df)
+    rim_price, r_ratio = makeData.kor_rim(naver_ann, naver_q)
     #기업의 최근 price
     # now = datetime.now() +pd.DateOffset(days=-3)
     # today = '%s-%s-%s' % ( now.year, now.month, now.day)
     # price = fdr.DataReader(code, today).iloc[-1,0]
     # st.write(price)
-    fig = go.Figure(go.Indicator(
-        mode = "gauge+number+delta",
-        value = value_df.iloc[1,0],
-        delta = {'reference': value_df.iloc[0,0], 'relative': True},
-        title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
-        domain = {'x': [0, 1], 'y': [0, 1]}
-    ))
-    st.plotly_chart(fig)
+    # fig = go.Figure(go.Indicator(
+    #     mode = "gauge+number+delta",
+    #     value = value_df.iloc[1,0],
+    #     delta = {'reference': value_df.iloc[0,0], 'relative': True},
+    #     title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
+    #     domain = {'x': [0, 1], 'y': [0, 1]}
+    # ))
+    # st.plotly_chart(fig)
 
     #ttmeps last / ttmeps.max()
-    fig = go.Figure(go.Indicator(
-        mode = "gauge+number+delta",
-        value = ttm_df.iloc[-1,0],
-        delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
-        title = {'text': f"Last ttmEPS ={ttm_df.iloc[-1,0]}원 relative Max ttmEPS = {ttm_df['EPS'].max().astype(int)} 원"},
-        domain = {'x': [0, 1], 'y': [0, 1]}
-    ))
-    st.plotly_chart(fig)
+    # fig = go.Figure(go.Indicator(
+    #     mode = "gauge+number+delta",
+    #     value = ttm_df.iloc[-1,0],
+    #     delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
+    #     title = {'text': f"Last ttmEPS ={ttm_df.iloc[-1,0]}원 relative Max ttmEPS = {ttm_df['EPS'].max().astype(int)} 원"},
+    #     domain = {'x': [0, 1], 'y': [0, 1]}
+    # ))
+    # st.plotly_chart(fig)
 
     #Earnings Yeild
-    fig = go.Figure(go.Indicator(
-    mode = "number+delta",
-    value = 1/value_df.iloc[2,0]*100,
-    title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    delta = {'reference': 15}))
-    st.plotly_chart(fig)
+    # fig = go.Figure(go.Indicator(
+    # mode = "number+delta",
+    # value = 1/value_df.iloc[2,0]*100,
+    # title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+    # domain = {'x': [0, 1], 'y': [0, 1]},
+    # delta = {'reference': 15}))
+    # st.plotly_chart(fig)
     
     #PEG 
     # fig = go.Figure(go.Indicator(
@@ -144,7 +153,7 @@ def run(code, com_name):
     with st.beta_expander("See explanation"):
         st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
 
-    chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
+    #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     drawkorchart.income_chart(code, naver_ann, naver_q)
     drawkorchart.balance_chart(code, naver_q)
 

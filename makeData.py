@@ -73,12 +73,14 @@ def make_growthRatio(year_earning, q_earning, year_income, year_cash, year_balan
 
     return growth_df
 
-def kor_rim(ttm_df):
+def kor_rim(naver_ann, naver_qdf):
     #BBB- 5년물 회사채 수익률 
     in_url = 'https://www.kisrating.com/ratingsStatistics/statics_spread.do'
     in_page = requests.get(in_url)
     in_tables = pd.read_html(in_page.text)
     yeild = in_tables[0].iloc[-1,-1]
+    # 네이버 ROE 추정치, 4분기 BPS 평균, 
+    BPS_mean = naver_qdf['BPS(원)'].rolling(4).mean()[-1]
     #rim = (BPS * ROE/ r) or (EPS / r)
-    rim_price = round(ttm_df.iloc[-1,3]*ttm_df.iloc[-1,7] / yeild,2)
+    rim_price = round(BPS_mean*naver_ann.iloc[-1,5] / yeild,2)
     return rim_price, yeild
