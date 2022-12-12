@@ -50,14 +50,14 @@ def run(code, com_name):
     company_basic_info = navers_more[0]
 
     if  st.checkbox('Show raw data'):
-        st.table(company_basic_info.set_index(1, inplace=True))
+        st.table(company_basic_info.set_index('0', inplace=True))
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
         # st.dataframe(ann_df.style.highlight_max(axis=0))
         st.dataframe(naver_ann.style.highlight_max(axis=0))
         st.dataframe(naver_q.style.highlight_max(axis=0))
     st.subheader("Valuation")
     #value_df = value_df.astype(float).fillna(0).round(decimals=2)
-    st.table(navers_more[5].set_index(Index=1, inplace=True))
+    st.table(navers_more[5].set_index('주요지표', inplace=True))
     #RIM Price
     rim_price, r_ratio = makeData.kor_rim(naver_ann, naver_q)
     #기업의 최근 price
