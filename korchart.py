@@ -38,6 +38,14 @@ def run(code, com_name):
     # st.table(company_info)
     # #아이투자 10년 데이타
     # value_df, ttm_df, ann_df = getData.get_kor_itooza(code)
+    # 회사채 BBB- 할인율
+    in_url = 'https://www.kisrating.com/ratingsStatistics/statics_spread.do'
+    in_page = requests.get(in_url)
+    in_tables = pd.read_html(in_page.text)
+    in_tables[0]
+    yeild = in_tables[0].iloc[-1,-1]
+    value_df = getData.make_Valuation(code, com_name, yeild)
+    st.table(value_df.T)
     #네이버 4년 데이타
     naver_ann, naver_q = getData.get_naver_finance(code)
 
