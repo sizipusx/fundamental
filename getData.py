@@ -344,3 +344,200 @@ def get_naver_finance(code):
 
     return ann_df, f_df
 
+#함수화 해보자
+from datetime import date
+
+today = date.today()
+
+def make_Valuation(firm_code, firm_name, bond_y):
+  fs_url = 'https://comp.fnguide.com/SVO2/asp/SVD_Main.asp?pGB=1&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701&gicode=A' + firm_code
+  fs_page = requests.get(fs_url)
+  fs_tables = pd.read_html(fs_page.text)
+
+  datalist = []
+
+  #종목명/종목코드
+  datalist.append(firm_code)
+  datalist.append(firm_name)
+  #평가일
+  #now = datetime.now()
+  #datalist.append(f"{now.year}-{now.month}-{now.day}")
+  datalist.append(today.isoformat())
+  #평가일 현재 주가(종가)
+  close_price = fdr.DataReader(firm_code).iloc[-1,3]
+  # close_price = fs_tables[0].loc[0,1]
+  # close_price = int(close_price.split('/')[0].replace(",",""))
+  datalist.append(close_price)
+  #BPS : 상수 최근 분기 또는 전년 말 확정치
+  # 연결이나 별도냐에 따라 달라짐
+  tempdf = fs_tables[10].xs('Annual', axis=1)
+  qu_df = fs_tables[12].xs("Net Quarter", axis=1)
+
+  #연결 일때
+  if  np.isnan(fs_tables[12].iloc[19,5]) == False: 
+    #bps = float(fs_tables[12].iloc[19,5]) #2021.11.18 수정
+    #분기 5개 평균으로 바꿔볼까?
+    bps_value = qu_df.iloc[19,1:5] #22.11.29 EPS [17,] => [18,] 변경
+    list4 = [float(x) for x in bps_value.values]
+    bps = sum(list4)/4 #이전 4분기 BPS 평균
+    # print(f"연결이고 BPS가 있을 때  = {BPS}")
+  else:
+    #연결이면서 4분기 평균으로
+    bps_value = fs_tables[15].iloc[15,2:6]
+    list4 = [float(x) for x in bps_value.values]
+    bps = sum(list4)/4 #이전 분기 BPS 평균
+    #bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
+    # print(f"연결이 아니고 BPS가 있을 때  = {BPS}")
+  datalist.append(bps)
+  #===================EPS: 변수 애널리스트 예측치 또는 최근 4분기 합계==========
+  if  np.isnan(tempdf.iloc[18,3]) == False: #22.11.29 EPS [17,3] => [18,3] 변경
+    eps = float(tempdf.iloc[18,3])
+    # print(f"연결이고 추정 EPS가 있을 때  = {eps}")
+  else:
+    eps_value = qu_df.iloc[18,1:5] #22.11.29 EPS [17,] => [18,] 변경
+    list4 = [float(x) for x in eps_value.values]
+    eps = sum(list4) #이전 분기 EPS 합산
+    # print(f"연결이지만 추정 EPS가 없을 때  = {eps}")
+    #연결이 없어 별도로 감
+    tempdf1 = fs_tables[13].xs('Annual', axis=1)
+    if np.isnan(eps):
+      #print(f"별도 np.isnan  true/false= {np.isnan(eps)}")
+      if  np.isnan(tempdf1.iloc[14,3]) == False: #22.11.29 EPS [13,3] => [14,3] 변경
+        eps = float(tempdf1.iloc[14,3])
+        # print(f"별도이지만 추정 EPS가 있을 때  = {eps}")
+      else:
+        qu_df1 = fs_tables[15].xs("Net Quarter", axis=1)
+        eps_value1 = qu_df1.iloc[14,1:5] #22.11.29 EPS [13,] => [14,] 변경
+        list5 = [float(x) for x in eps_value1.values]
+        eps = sum(list5)
+        # print(f"별도이지만 추정 EPS가 없을 때  = {eps}") 
+ 
+  datalist.append(eps)
+
+  # print("step 1. EPS END ==========================")
+  #DPS : 준상수 최근 3년치 평균 또는 전년도 주당 배당금액
+  if np.isnan(tempdf.iloc[20,2]):
+    dps = 0
+  else:
+    dps = float(tempdf.iloc[20,2])
+  datalist.append(dps) 
+  # print("step 2. DPS END ==========================")
+  #ROE
+  #직접 계산
+  roe = round(eps/bps*100,2)
+  datalist.append(roe)
+  # print("step 3. ROE cal END ==========================")
+  #요구수익률: 수정해야함: 하드코딩 7, 7.5, 8, 8.5, 9 => 2021-11-28 크롤링 수정
+  # 기대수익률 
+  rr = bond_y
+  datalist.append(rr)
+  # print("step 4. bond_y END ==========================")
+  #배당수익률
+  did = round(dps/close_price*100,2)
+  datalist.append(did)
+  # print("step 5. DIDIEND Y END ==========================")
+  #시가수익률
+  current = round(eps/close_price*100,2)
+  datalist.append(current)
+  # print("step 6.시가수익률 END ==========================")
+  #할인률
+  if did < 1 :  r = rr
+  elif did < 2 : r = rr - 0.4
+  elif did < 3 : r = rr-0.4
+  elif did < 4 : r = rr-0.6
+  elif did < 5 : r = rr-0.8
+  else :  r= rr-1
+  datalist.append(r)
+  # print("step 7.요구수익률 할인 END ==========================")
+  #ROE/r
+  roe_r = roe/r
+  datalist.append(round(roe_r,2))
+  # print("step 8. ROE/r END ==========================")
+
+  #적정주가
+  want_price = round(bps*roe_r,-1)
+  datalist.append(want_price)
+  # print("step 9. 적정주가 END ==========================")
+  #패러티
+  pa = close_price/want_price
+  datalist.append(pa)
+  # print("step 10. 패러티 END ==========================")
+  #기대수익률
+  expect = want_price/close_price - 1
+  datalist.append(expect)
+  # print("step 11. 기대수익률 END ==========================")
+  #컨센서스
+  if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
+    datalist.append(0)
+  else:
+    datalist.append(fs_tables[7].loc[0,'목표주가'])
+  # print("step 12.목표주가 END ==========================")
+  #컨센서스 기관수
+  if fs_tables[7].loc[0,'추정기관수'] == "관련 데이터가 없습니다.":
+    datalist.append(0)
+  else:
+    datalist.append(fs_tables[7].loc[0,'추정기관수'])
+  # print("step 13. 추정기관수 END ==========================")
+  #5년 PER
+  avdf = fs_tables[11].xs("Annual", axis=1)
+  per5 = avdf.iloc[21,:5] #22.11.29 EPS [20,] => [21,] 변경
+  if per5.isnull().sum() > 0 :
+    #per5_value = 0
+    #2019.10.25. 추가 코드: 5개년 중 있는 년의 per 평균 낸다!!
+    #5개년 per 값이 없는 경우 있는 개수로만 평균 낸다!!
+    if per5.isnull().sum() == 5 :
+      per5_value = 0  
+      per_period = 0  
+    else:
+      per_sum = 0.0
+      for x in per5.values :
+        if ~np.isnan(x) :
+          per_sum = per_sum + x
+      per5_value = round(per_sum/(5-per5.isnull().sum()),2)
+      per_period = 5-per5.isnull().sum()
+  else :
+    list3 = [float(x) for x in per5.values]
+    per5_value = round(sum(list3)/5,2)
+    per_period = 5
+  datalist.append(per5_value)
+  # print("step 14. 5년 PER END ==========================")
+  #5년 PBR
+  pbr5 = avdf.iloc[22,:5] #22.11.29 EPS [21,] => [22,] 변경
+  if pbr5.isnull().sum() > 0 :
+    #pbr5_value = 0
+    #2019. 10.25. 추가 코드: 
+    if pbr5.isnull().sum() == 5 :
+      pbr5_value = 0
+      pbr_period = 0    
+    else:
+      pbr_sum = 0.0
+      for x in pbr5.values :
+        if ~np.isnan(x) :
+          pbr_sum = pbr_sum + x
+      pbr5_value = round(pbr_sum/(5-pbr5.isnull().sum()),2)
+      pbr_period = 5-pbr5.isnull().sum()
+  else :
+    list2 = [float(x) for x in pbr5.values]
+    pbr5_value = round(sum(list2)/5,2)
+    pbr_period = 5
+  datalist.append(pbr5_value) 
+  # print("step 15. 5년 PBR END ==========================") 
+  #PERR
+  perr = round(per5_value/roe,2)
+  datalist.append(perr)
+  # print("step 16. PERR END ==========================")
+  #PBRR
+  pbrr = round(pbr5_value/(roe/10),2)
+  datalist.append(pbrr)
+  # print("step 17. PBRR END ==========================")
+  #PER/PBR 기간
+  total_period = str(per_period)+"년/"+str(pbr_period)+"년"
+  datalist.append(total_period)
+  # print("step 18. 총년수 END ==========================")
+  onedf = pd.DataFrame(index=["종목코드", "종목명", "평가일","현재주가", "BPS", "EPS","DPS","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가","패리티", \
+                                     "기대수익률", "컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
+  # print("step 19. 데이터프레임 최종 만들기 END ==========================")
+
+  return onedf
+
+  
