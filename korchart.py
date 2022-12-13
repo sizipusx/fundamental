@@ -76,7 +76,7 @@ def run(code, com_name):
     fig = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
         value = value_df.iloc[13,0],
-        delta = {'reference': value_df.iloc[3,0], 'relative': True},
+        delta = {'reference': value_df.iloc[3,0].astype(int), 'relative': True},
         title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
         domain = {'x': [0, 1], 'y': [0, 1]}
     ))
