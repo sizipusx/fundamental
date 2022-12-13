@@ -42,7 +42,6 @@ def run(code, com_name):
     in_url = 'https://www.kisrating.com/ratingsStatistics/statics_spread.do'
     in_page = requests.get(in_url)
     in_tables = pd.read_html(in_page.text)
-    in_tables[0]
     yeild = in_tables[0].iloc[-1,-1]
     #make BED valuation
     value_df = getData.make_Valuation(code, com_name, yeild)
@@ -57,7 +56,7 @@ def run(code, com_name):
 
     company_basic_info = navers_more[0]
     st.table(company_basic_info)
-    st.dataframe(value_df.T)
+    st.dataframe(value_df)
     if  st.checkbox('Show raw data'):
         
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
