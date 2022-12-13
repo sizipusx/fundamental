@@ -45,7 +45,7 @@ def run(code, com_name):
     in_tables[0]
     yeild = in_tables[0].iloc[-1,-1]
     value_df = getData.make_Valuation(code, com_name, yeild)
-    st.table(value_df.T)
+    
     #네이버 4년 데이타
     naver_ann, naver_q = getData.get_naver_finance(code)
 
@@ -57,6 +57,7 @@ def run(code, com_name):
 
     company_basic_info = navers_more[0]
     st.table(company_basic_info)
+    st.dataframe(value_df.T)
     if  st.checkbox('Show raw data'):
         
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
