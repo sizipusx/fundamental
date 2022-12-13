@@ -56,7 +56,7 @@ def run(code, com_name):
 
     company_basic_info = navers_more[0]
     st.table(company_basic_info)
-    st.dataframe(value_df)
+    st.table(value_df)
     if  st.checkbox('Show raw data'):
         
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
