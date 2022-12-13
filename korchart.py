@@ -44,12 +44,12 @@ def run(code, com_name):
     in_tables = pd.read_html(in_page.text)
     in_tables[0]
     yeild = in_tables[0].iloc[-1,-1]
+    #make BED valuation
     value_df = getData.make_Valuation(code, com_name, yeild)
     
     #네이버 4년 데이타
     naver_ann, naver_q = getData.get_naver_finance(code)
 
-    # 좀 더 자세히
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
     fs_page = requests.get(n_url_f)
