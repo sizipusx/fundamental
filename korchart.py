@@ -56,6 +56,7 @@ def run(code, com_name):
 
     company_basic_info = navers_more[0]
     st.table(company_basic_info)
+    st.subheader("Valuation")
     st.table(value_df)
     if  st.checkbox('Show raw data'):
         
@@ -63,7 +64,7 @@ def run(code, com_name):
         # st.dataframe(ann_df.style.highlight_max(axis=0))
         st.dataframe(naver_ann.style.highlight_max(axis=0))
         st.dataframe(naver_q.style.highlight_max(axis=0))
-    st.subheader("Valuation")
+    
     #value_df = value_df.astype(float).fillna(0).round(decimals=2)
     st.dataframe(navers_more[5].set_index("주요지표", inplace=True))
     #RIM Price
@@ -76,7 +77,7 @@ def run(code, com_name):
     fig = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
         value = value_df.iloc[13,0],
-        delta = {'reference': value_df.iloc[3,0].astype(int), 'relative': True},
+        delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
         title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
         domain = {'x': [0, 1], 'y': [0, 1]}
     ))
