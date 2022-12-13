@@ -72,15 +72,15 @@ def run(code, com_name):
     # now = datetime.now() +pd.DateOffset(days=-3)
     # today = '%s-%s-%s' % ( now.year, now.month, now.day)
     # price = fdr.DataReader(code, today).iloc[-1,0]
-    # st.write(price)
-    # fig = go.Figure(go.Indicator(
-    #     mode = "gauge+number+delta",
-    #     value = value_df.iloc[1,0],
-    #     delta = {'reference': value_df.iloc[0,0], 'relative': True},
-    #     title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
-    #     domain = {'x': [0, 1], 'y': [0, 1]}
-    # ))
-    # st.plotly_chart(fig)
+    st.write(value_df.iloc[3,0])
+    fig = go.Figure(go.Indicator(
+        mode = "gauge+number+delta",
+        value = value_df.iloc[13,0],
+        delta = {'reference': value_df.iloc[3,0], 'relative': True},
+        title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
+        domain = {'x': [0, 1], 'y': [0, 1]}
+    ))
+    st.plotly_chart(fig)
 
     #ttmeps last / ttmeps.max()
     # fig = go.Figure(go.Indicator(
