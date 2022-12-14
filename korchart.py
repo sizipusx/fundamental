@@ -83,9 +83,8 @@ def run(code, com_name):
             value = float(value_df.iloc[13,0]),
             delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
             title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
-            domain = {'x': [0, 1], 'y': [0, 1]}
-        ))
-        st.plotly_chart(fig)
+            domain = {'x': [0, 1], 'y': [0, 1]}))
+            st.plotly_chart(fig)
         with col2:
             st.write("")
         with col3:
