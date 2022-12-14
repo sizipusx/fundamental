@@ -59,7 +59,7 @@ def run(code, com_name):
     st.subheader("Valuation")
     #형변환
     value_df.iloc[13,0] = value_df.iloc[13,0].astype(int)
-    value_df.iloc[13,0].apply(lambda int_num: '{:,}'.format(int_num))
+    value_df.iloc[13,0] = value_df.iloc[13,0].apply(lambda int_num: '{:,}'.format(int_num))
     st.table(value_df)
     if  st.checkbox('Show raw data'):
         
