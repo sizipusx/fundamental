@@ -536,12 +536,10 @@ def make_Valuation(firm_code, firm_name, bond_y):
   # print("step 18. 총년수 END ==========================")
   onedf = pd.DataFrame(index=["종목코드", "종목명", "평가일","현재주가", "BPS(4QM)", "EPS(ttm)","DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가","패리티", \
                                      "기대수익률", "컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
-  onedf.iloc[:,3:6] = onedf.iloc[:,3:6].apply(lambda int_num: '{:,}'.format(int_num))
   #컬럼 순서 변경
   onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가", "컨센서스", "BPS(4QM)", "EPS(ttm)","DPS(MRY)","ROE","기대수익률", "요구수익률","배당수익률","시가수익률", "r","ROE/r","패리티", \
-                                      "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
-  # onedf['적정주가'] = onedf['적정주가'].apply(lambda int_num: '{:,}'.format(int_num))
-  # print("step 19. 데이터프레임 최종 만들기 END ==========================")
+                      "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
+  onedf.iloc[:,3:9] = onedf.iloc[:,3:9].apply(lambda int_num: '{:,}'.format(int_num))
 
   return onedf
 
