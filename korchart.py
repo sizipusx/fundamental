@@ -15,7 +15,7 @@ import FinanceDataReader as fdr
 import getData, makeData, drawkorchart
 import chart
 
-pd.options.display.float_format = '{:.2f}'.format
+pd.set_option('display.float_format', '{:.2f}'.format)
 
 @st.cache
 def load_data():
