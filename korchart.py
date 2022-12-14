@@ -177,8 +177,11 @@ def run(code, com_name):
         st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
 
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
-    drawkorchart.income_chart(code, naver_ann, naver_q)
-    drawkorchart.balance_chart(code, naver_q)
+    try:
+        drawkorchart.income_chart(code, naver_ann, naver_q)
+        drawkorchart.balance_chart(code, naver_q)
+    except TypeError :
+        st.write("이익이 마이너스인 경우")
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
