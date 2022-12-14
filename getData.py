@@ -357,8 +357,8 @@ def make_Valuation(firm_code, firm_name, bond_y):
   datalist = []
 
   #종목명/종목코드
-  datalist.append(firm_code)
-  datalist.append(firm_name)
+  datalist.append(str(firm_code))
+  datalist.append(str(firm_name))
   #평가일
   #now = datetime.now()
   #datalist.append(f"{now.year}-{now.month}-{now.day}")
@@ -367,7 +367,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   close_price = fdr.DataReader(firm_code).iloc[-1,3]
   # close_price = fs_tables[0].loc[0,1]
   # close_price = int(close_price.split('/')[0].replace(",",""))
-  datalist.append(close_price)
+  datalist.append(int(close_price))
   #BPS : 상수 최근 분기 또는 전년 말 확정치
   # 연결이나 별도냐에 따라 달라짐
   tempdf = fs_tables[10].xs('Annual', axis=1)
@@ -388,7 +388,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
     bps = sum(list4)/4 #이전 분기 BPS 평균
     #bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
     # print(f"연결이 아니고 BPS가 있을 때  = {BPS}")
-  datalist.append(bps)
+  datalist.append(int(bps))
   #===================EPS: 변수 애널리스트 예측치 또는 최근 4분기 합계==========
   if  np.isnan(tempdf.iloc[18,3]) == False: #22.11.29 EPS [17,3] => [18,3] 변경
     eps = float(tempdf.iloc[18,3])
@@ -412,7 +412,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
         eps = sum(list5)
         # print(f"별도이지만 추정 EPS가 없을 때  = {eps}") 
  
-  datalist.append(eps)
+  datalist.append(int(eps))
 
   # print("step 1. EPS END ==========================")
   #DPS : 준상수 최근 3년치 평균 또는 전년도 주당 배당금액
@@ -420,7 +420,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
     dps = 0
   else:
     dps = float(tempdf.iloc[20,2])
-  datalist.append(dps) 
+  datalist.append(int(dps)) 
   # print("step 2. DPS END ==========================")
   #ROE
   #직접 계산
@@ -456,7 +456,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
 
   #적정주가
   want_price = round(bps*roe_r,-1)
-  datalist.append(want_price)
+  datalist.append(int(want_price))
   # print("step 9. 적정주가 END ==========================")
   #패러티
   pa = close_price/want_price
@@ -470,7 +470,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
     datalist.append(0)
   else:
-    datalist.append(fs_tables[7].loc[0,'목표주가'])
+    datalist.append(int(fs_tables[7].loc[0,'목표주가']))
   # print("step 12.목표주가 END ==========================")
   #컨센서스 기관수
   if fs_tables[7].loc[0,'추정기관수'] == "관련 데이터가 없습니다.":
@@ -536,8 +536,10 @@ def make_Valuation(firm_code, firm_name, bond_y):
   # print("step 18. 총년수 END ==========================")
   onedf = pd.DataFrame(index=["종목코드", "종목명", "평가일","현재주가", "BPS(4QM)", "EPS(ttm)","DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가","패리티", \
                                      "기대수익률", "컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
-  onedf.iloc[:,3:6] = onedf.iloc[:,3:6].astype(int)                                 
   onedf.iloc[:,3:6] = onedf.iloc[:,3:6].apply(lambda int_num: '{:,}'.format(int_num))
+  #컬럼 순서 변경
+  onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가", "컨센서스", "BPS(4QM)", "EPS(ttm)","DPS(MRY)","ROE","기대수익률", "요구수익률","배당수익률","시가수익률", "r","ROE/r","패리티", \
+                                      "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
   # onedf['적정주가'] = onedf['적정주가'].apply(lambda int_num: '{:,}'.format(int_num))
   # print("step 19. 데이터프레임 최종 만들기 END ==========================")
 
