@@ -77,30 +77,20 @@ def run(code, com_name):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            #기대수익률
+            #RIM price
             fig = go.Figure(go.Indicator(
             mode = "gauge+number+delta",
             value = float(value_df.iloc[13,0]),
             delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
-            title = {'text': f"RIM-Price(r={r_ratio}) & 기대수익률"},
+            title = {'text': f"RIM-Price(r={r_ratio})"},
             domain = {'x': [0, 1], 'y': [0, 1]},
-            gauge = {
-                    'shape': "bullet",
-                    'axis': {'range': [-1, 1]},
-                    'threshold': {
-                        'line': {'color': "black", 'width': 2},
-                        'thickness': 0.75,
-                        'value': 0.75},
-                    'steps': [
-                        {'range': [-1, 0], 'color': "gray"},
-                        {'range': [0, 0.5], 'color': "lightgray"}],
-                    'bar': {'color': "black"}}))
+            gauge = {'shape': "bullet"}))
             fig.update_layout(height = 250)    
             st.plotly_chart(fig)
         with col2:
             st.write("")
         with col3:
-            #Earnings Yeild
+            #Earnings Yeild: 기대수익률
             fig = go.Figure(go.Indicator(
             mode = "number+delta",
             value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
