@@ -66,7 +66,7 @@ def run(code, com_name):
         st.dataframe(naver_q.style.highlight_max(axis=0))
     
     #value_df = value_df.astype(float).fillna(0).round(decimals=2)
-    st.dataframe(navers_more[5].set_index("주요지표", inplace=True))
+    st.dataframe(navers_more[5])
     #RIM Price
     rim_price, r_ratio = makeData.kor_rim(naver_ann, naver_q)
     #기업의 최근 price
