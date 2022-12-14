@@ -7,6 +7,7 @@ import requests
 import json
 from pandas.io.json import json_normalize
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import streamlit as st
@@ -16,6 +17,51 @@ import getData, makeData, drawkorchart
 import chart
 
 pd.set_option('display.float_format', '{:.2f}'.format)
+#############html 영역####################
+html_header="""
+<head>
+<title>Korea house analysis chart</title>
+<meta charset="utf-8">
+<meta name="keywords" content="chart, analysis">
+<meta name="description" content="House data analysis">
+<meta name="author" content="indiesoul">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 국내 상장 기업 기본 정보 <br>
+<hr style= "  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1.5px;"></h1>
+"""
+
+st.set_page_config(page_title="국내 상장 기업 정보 조회", page_icon="files/logo2.png", layout="wide")
+st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
+st.markdown(html_header, unsafe_allow_html=True)
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
+
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="graph by 기하급수적",
+            textangle=0,
+            opacity=0.2,
+            font=dict(color="black", size=10),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=0.1,
+            showarrow=False,
+        )
+    ]
+)
+
 
 @st.cache
 def load_data():
