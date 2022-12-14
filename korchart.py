@@ -73,30 +73,54 @@ def run(code, com_name):
     # now = datetime.now() +pd.DateOffset(days=-3)
     # today = '%s-%s-%s' % ( now.year, now.month, now.day)
     # price = fdr.DataReader(code, today).iloc[-1,0]
-    ### Block 매매전세지수 같이 보기 #########################################################################################
+    #RIM price
+    fig = go.Figure(go.Indicator(
+    mode = "gauge+number+delta",
+    value = float(value_df.iloc[13,0]),
+    delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
+    title = {'text': f"RIM-Price(r={r_ratio})"},
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    gauge = {'shape': "bullet"}))
+    fig.update_layout(height = 250)    
+    st.plotly_chart(fig)
+     #Earnings Yeild: 기대수익률
+    fig = go.Figure(go.Indicator(
+    mode = "number+delta",
+    value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
+    title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    delta = {'reference': 15}))
+    st.plotly_chart(fig)
+
+        ### Block 매매전세지수 같이 보기 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            #RIM price
+            # #PERR, PBRR
             fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = float(value_df.iloc[13,0]),
-            delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
-            title = {'text': f"RIM-Price(r={r_ratio})"},
+            mode = "number+delta",
+            value = value_df.iloc[-3,0],
+            title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
-            gauge = {'shape': "bullet"}))
-            fig.update_layout(height = 250)    
+            delta = {'reference': 2}))
             st.plotly_chart(fig)
+            #PEG 
+            # fig = go.Figure(go.Indicator(
+            # mode = "number+delta",
+            # value = value_df.iloc[7,0],
+            # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
+            # domain = {'x': [0, 1], 'y': [0, 1]},
+            # delta = {'reference': 1.5}))
+            # st.plotly_chart(fig)
         with col2:
             st.write("")
         with col3:
-            #Earnings Yeild: 기대수익률
             fig = go.Figure(go.Indicator(
             mode = "number+delta",
-            value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
-            title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+            value = value_df.iloc[-2,0],
+            title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
-            delta = {'reference': 15}))
+            delta = {'reference': 2}))
             st.plotly_chart(fig)
     html_br="""
     <br>
@@ -114,36 +138,7 @@ def run(code, com_name):
     #     domain = {'x': [0, 1], 'y': [0, 1]}
     # ))
     # st.plotly_chart(fig)
-
     
-    
-    #PEG 
-    # fig = go.Figure(go.Indicator(
-    # mode = "number+delta",
-    # value = value_df.iloc[7,0],
-    # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
-    # domain = {'x': [0, 1], 'y': [0, 1]},
-    # delta = {'reference': 1.5}))
-    # st.plotly_chart(fig)
-
-    # #PERR, PBRR
-    # fig = go.Figure(go.Indicator(
-    # mode = "number+delta",
-    # value = value_df.iloc[8,0],
-    # title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-    # domain = {'x': [0, 1], 'y': [0, 1]},
-    # delta = {'reference': 2}))
-    # st.plotly_chart(fig)
-
-    # fig = go.Figure(go.Indicator(
-    # mode = "number+delta",
-    # value = value_df.iloc[9,0],
-    # title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-    # domain = {'x': [0, 1], 'y': [0, 1]},
-    # delta = {'reference': 2}))
-    # st.plotly_chart(fig)
-    
-
     st.subheader("Candlestick Chart")
     now = datetime.now() +pd.DateOffset(days=-4000)
     start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
