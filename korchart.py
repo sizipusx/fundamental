@@ -78,7 +78,7 @@ def run(code, com_name):
     mode = "gauge+number+delta",
     value = float(value_df.iloc[13,0]),
     delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
-    title = {'text': f"RIM-Price(r={r_ratio})"},
+    title = {'text': f"RIM-Price\n(r={r_ratio})"},
     domain = {'x': [0, 1], 'y': [0, 1]},
     gauge = {'shape': "bullet"}))
     fig.update_layout(height = 250)    
@@ -99,7 +99,7 @@ def run(code, com_name):
             # #PERR, PBRR
             fig = go.Figure(go.Indicator(
             mode = "number+delta",
-            value = value_df.iloc[-3,0],
+            value = float(value_df.iloc[-3,0]),
             title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             delta = {'reference': 2}))
@@ -117,7 +117,7 @@ def run(code, com_name):
         with col3:
             fig = go.Figure(go.Indicator(
             mode = "number+delta",
-            value = value_df.iloc[-2,0],
+            value = float(value_df.iloc[-2,0]),
             title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             delta = {'reference': 2}))
