@@ -131,6 +131,7 @@ def run(code, com_name):
             title = {'text': f"RIM-Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet"}))
+            fig.update_layout(height = 250)
             st.plotly_chart(fig)
         with col2:
             st.write("")
@@ -144,6 +145,7 @@ def run(code, com_name):
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet"},
             delta = {'reference': 15}))
+            fig.update_layout(height = 250)
             st.plotly_chart(fig)
         ### Block 매매전세지수 같이 보기 #########################################################################################
     with st.container():
