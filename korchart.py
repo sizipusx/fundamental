@@ -130,7 +130,11 @@ def run(code, com_name):
             delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
             title = {'text': f"RIM-Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
-            gauge = {'shape': "bullet"}))
+            gauge = {'shape': "bullet",
+                    'threshold': {
+                    'line': {'color': "red", 'width': 2},
+                    'thickness': 0.75, 'value': float(value_df.iloc[13,0])}}
+            ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
         with col2:
