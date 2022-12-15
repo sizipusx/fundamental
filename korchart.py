@@ -131,12 +131,12 @@ def run(code, com_name):
             title = {'text': f"RIM-Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet"}))
-            fig.update_layout(height = 250)  
+            st.plotly_chart(fig)
         with col2:
             st.write("")
         with col3:  
             #Earnings Yeild: 기대수익률
-            st.plotly_chart(fig)
+            
             fig = go.Figure(go.Indicator(
             mode = "gauge+number+delta",
             value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
@@ -145,7 +145,6 @@ def run(code, com_name):
             gauge = {'shape': "bullet"},
             delta = {'reference': 15}))
             st.plotly_chart(fig)
-
         ### Block 매매전세지수 같이 보기 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
