@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 import FinanceDataReader as fdr
 
@@ -12,6 +13,23 @@ from datetime import datetime
 # marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="Graph by 기하급수적",
+            textangle=0,
+            opacity=0.5,
+            font=dict(color="black", size=10),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=0.2,
+            showarrow=False,
+        )
+    ]
+)
+
 
 def income_chart(input_ticker, income_df, income_df_q):
     with st.container():
@@ -41,7 +59,8 @@ def income_chart(input_ticker, income_df, income_df_q):
             fig.update_yaxes(title_text='Margin', range=[-max(income_df.loc[:,y_data_line[0]]), max(income_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+            fig.update_layout(template="myID")
             st.plotly_chart(fig)
     with col2:
             st.write("")
@@ -68,7 +87,8 @@ def income_chart(input_ticker, income_df, income_df_q):
         fig.update_yaxes(title_text='Income', range=[-max(income_df_q.loc[:,y_data_line[0]]), max(income_df_q.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+        fig.update_layout(template="myID")
         st.plotly_chart(fig)
 
 
@@ -97,5 +117,6 @@ def balance_chart(input_ticker, balance_df):
     fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], ticksuffix="%", secondary_y = True)
     fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
     fig.update_yaxes(title_text= "유보율", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
