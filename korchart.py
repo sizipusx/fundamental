@@ -128,7 +128,7 @@ def run(code, com_name):
             mode = "gauge+number+delta",
             value = float(value_df.iloc[13,0]),
             delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
-            title = {'text': f"RIM-Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
+            title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
                     'threshold': {
@@ -145,7 +145,7 @@ def run(code, com_name):
             fig = go.Figure(go.Indicator(
             mode = "gauge+number+delta",
             value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
-            title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+            title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet"},
             delta = {'reference': 15}))
@@ -207,7 +207,7 @@ def run(code, com_name):
 
     st.subheader("Earnings")
     from PIL import Image
-    col1, col2, col3 = st.beta_columns(3)
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         ecycle = Image.open("good-cycle.png")
@@ -226,8 +226,8 @@ def run(code, com_name):
         with st.expander("See explanation"):
             st.markdown('**_가치주 투자자들_**이 사과를 구입할 때 약간의 기대를 가지기는 하지만, 벌레가 있더라도 다소간의 충격은 있을지 몰라도 비극으로 받아들이지는 않는다. 즉, 가치주 투자자는 매입한 주식에 대해 큰 기대를 갖지 않는다. 따라서 가치주 투자자는 일반적으로 이익예상 라이프사이클의 아래쪽에 위치한다')
     
-    totalcycle = Image.open("image.png")
-    st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
+    #totalcycle = Image.open("image.png")
+    #st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
     with st.expander("See explanation"):
         st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
 
