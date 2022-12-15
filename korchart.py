@@ -133,7 +133,7 @@ def run(code, com_name):
             gauge = {'shape': "bullet",
                     'threshold': {
                     'line': {'color': "red", 'width': 2},
-                    'thickness': 0.75, 'value': float(value_df.iloc[13,0])}}
+                    'thickness': 0.75, 'value': float(value_df.iloc[3,0])}}
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
