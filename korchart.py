@@ -119,24 +119,32 @@ def run(code, com_name):
     # now = datetime.now() +pd.DateOffset(days=-3)
     # today = '%s-%s-%s' % ( now.year, now.month, now.day)
     # price = fdr.DataReader(code, today).iloc[-1,0]
-    #RIM price
-    fig = go.Figure(go.Indicator(
-    mode = "gauge+number+delta",
-    value = float(value_df.iloc[13,0]),
-    delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
-    title = {'text': f"RIM-Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    gauge = {'shape': "bullet"}))
-    fig.update_layout(height = 250)    
-    st.plotly_chart(fig)
-     #Earnings Yeild: 기대수익률
-    fig = go.Figure(go.Indicator(
-    mode = "number+delta",
-    value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
-    title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    delta = {'reference': 15}))
-    st.plotly_chart(fig)
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            #RIM price
+            fig = go.Figure(go.Indicator(
+            #mode = "number+delta",
+            mode = "gauge+number+delta",
+            value = float(value_df.iloc[13,0]),
+            delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
+            title = {'text': f"RIM-Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            gauge = {'shape': "bullet"}))
+            fig.update_layout(height = 250)  
+        with col2:
+            st.write("")
+        with col3:  
+            #Earnings Yeild: 기대수익률
+            st.plotly_chart(fig)
+            fig = go.Figure(go.Indicator(
+            mode = "gauge+number+delta",
+            value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
+            title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+            domain = {'x': [0, 1], 'y': [0, 1]},
+            gauge = {'shape': "bullet"},
+            delta = {'reference': 15}))
+            st.plotly_chart(fig)
 
         ### Block 매매전세지수 같이 보기 #########################################################################################
     with st.container():
