@@ -39,6 +39,7 @@ def income_chart(input_ticker, income_df, income_df_q):
             st.subheader('Annual Profit, Margin ')
             
             x_data = income_df.index
+            st.write(x_data)
             title = '('  + input_ticker + ') <b>Annual Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
