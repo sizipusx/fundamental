@@ -96,6 +96,7 @@ def run(code, com_name):
     naver_ann, naver_q = getData.get_naver_finance(code)
     st.dataframe(naver_ann)
     st.dataframe(naver_q)
+    st.write(type(naver_ann.index))
 
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
