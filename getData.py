@@ -328,17 +328,17 @@ def get_naver_finance(code):
     #년간만 가져오기
     a_df = total_df.iloc[:,:4]
     a_df.columns = a_df.columns.get_level_values(1)
-    # a_df.columns = a_df.columns.map(lambda x: x[:7]+'.30')
+    a_df.columns = a_df.columns.map(lambda x: x[:7]+'.30')
     ann_df = a_df.T
-    # ann_df.index = pd.to_datetime(ann_df.index, format='%Y-%m-%d')
+    ann_df.index = pd.to_datetime(ann_df.index, format='%Y-%m')
     ann_df.fillna(0, inplace=True)
     
     #분기만 가져오기
     q_df = total_df.iloc[:,4:]
     q_df.columns = q_df.columns.get_level_values(1)
-    # q_df.columns = q_df.columns.map(lambda x: x[:7]+'.30')
+    q_df.columns = q_df.columns.map(lambda x: x[:7]+'.30')
     f_df = q_df.T
-    # f_df.index = pd.to_datetime(f_df.index, format='%Y-%m-%d')
+    f_df.index = pd.to_datetime(f_df.index, format='%Y-%m')
     f_df.fillna(0, inplace=True)
     f_df = f_df.round(decimals=2)
 
