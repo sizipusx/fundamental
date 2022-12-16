@@ -94,8 +94,8 @@ def run(code, com_name):
     
     #네이버 4년 데이타
     naver_ann, naver_q = getData.get_naver_finance(code)
-    st.dataframe(naver_ann)
-    st.dataframe(naver_q)
+    # st.dataframe(naver_ann)
+    # st.dataframe(naver_q)
 
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
@@ -105,7 +105,7 @@ def run(code, com_name):
     company_basic_info = navers_more[0]
     st.table(company_basic_info)
     st.subheader("Valuation")
-    st.table(value_df)
+    st.dataframe(value_df)
     if  st.checkbox('Show raw data'):
         
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
