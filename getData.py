@@ -544,9 +544,10 @@ def make_Valuation(firm_code, firm_name, bond_y):
 def get_fdata_fnguide(firm_code):
   fs_url = 'https://comp.fnguide.com/SVO2/asp/SVD_Main.asp?pGB=1&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701&gicode=A' + firm_code
   fs_page = requests.get(fs_url)
-  fs_tables = pd.read_html(fs_page.text)  
+  fs_tables = pd.read_html(fs_page.text) 
   
   #연결인지 별도인지 구별은 fs_tables[10]의 Net Quarter 모두 NaN으로 구분
+  sep_flag = False
   ann_df = pd.DataFrame()
   qu_df = pd.DataFrame()
   if np.isnan(fs_tables[10].iloc[0,5]) == False  and np.isnan(fs_tables[10].iloc[18,5]) == False: #연결
@@ -561,6 +562,7 @@ def get_fdata_fnguide(firm_code):
   #연결이면서 추정치 없는 경우
   #ann_df.iloc[18,5] or ann_df.iloc[19,5] is NaN
   else: #별도
+    sep_flag = True
     fs_tables[14] = fs_tables[14].set_index([('IFRS(별도)',   'IFRS(별도)')])
     ann_df = fs_tables[14].xs("Annual", axis=1)
     ann_df.index.name = '항목'
@@ -569,6 +571,6 @@ def get_fdata_fnguide(firm_code):
     qu_df = fs_tables[15].xs("Net Quarter", axis=1)
     qu_df.index.name = '항목'
 
-  return ann_df, qu_df
+  return sep_flag, ann_df, qu_df
   
 
