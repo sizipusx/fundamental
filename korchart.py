@@ -204,8 +204,9 @@ def run(code, com_name):
     price_df = fdr.DataReader(code,start_date)
 
     chart.price_chart(code, price_df)
-
+    """
     st.subheader("Earnings")
+
     from PIL import Image
     col1, col2, col3 = st.columns(3)
     
@@ -230,7 +231,7 @@ def run(code, com_name):
     #st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
     with st.expander("See explanation"):
         st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
-
+    """
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     try:
         drawkorchart.income_chart(code, naver_ann, naver_q)
