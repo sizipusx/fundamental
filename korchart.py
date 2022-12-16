@@ -127,15 +127,15 @@ def run(code, com_name):
             fig = go.Figure(go.Indicator(
             #mode = "number+delta",
             mode = "gauge+number+delta",
-            value = float(value_df.iloc[3,0]), #현재가
+            value = float(value_df.iloc[13,0]), #Rim price
             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
                     'threshold': {
                     'line': {'color': "red", 'width': 2},
-                    'thickness': 0.75, 'value': float(value_df.iloc[13,0])}},
-            delta = {'reference': int(value_df.iloc[13,0])}#, 'relative': True},
+                    'thickness': 0.75, 'value': float(value_df.iloc[3,0])}},
+            delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
