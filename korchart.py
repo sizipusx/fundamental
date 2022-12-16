@@ -127,14 +127,14 @@ def run(code, com_name):
             fig = go.Figure(go.Indicator(
             #mode = "number+delta",
             mode = "gauge+number+delta",
-            value = float(value_df.iloc[13,0]),
+            value = float(value_df.iloc[3,0]), #현재가
             delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
                     'threshold': {
                     'line': {'color': "red", 'width': 2},
-                    'thickness': 0.75, 'value': float(value_df.iloc[3,0])}}
+                    'thickness': 0.75, 'value': float(value_df.iloc[13,0])}}
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
@@ -148,7 +148,10 @@ def run(code, com_name):
             value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
             title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
-            gauge = {'shape': "bullet"},
+            gauge = {'shape': "bullet",
+                    'threshold': {
+                    'line': {'color': "red", 'width': 2},
+                    'thickness': 0.75, 'value': 15.0}},
             delta = {'reference': 15}))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
@@ -205,34 +208,34 @@ def run(code, com_name):
     price_df = fdr.DataReader(code,start_date)
 
     chart.price_chart(code, price_df)
-    """
-    st.subheader("Earnings")
+    
+    # st.subheader("Earnings")
 
-    from PIL import Image
-    col1, col2, col3 = st.columns(3)
+    # from PIL import Image
+    # col1, col2, col3 = st.columns(3)
     
-    with col1:
-        ecycle = Image.open("good-cycle.png")
-        st.image(ecycle, caption='좋은 펀드 매니저')
-        with st.expander("See explanation"):
-            st.markdown('**성공하는 투자자**는 시장의 주식에 대한 기대 수준이 높든지 낮든지 상관없이 이익 전망이 개선되는 주식을 언제나 찾을 것이다. \
-            따라서 **_‘좋은’ 펀드매니저_**는 이익 전망이 개선되는 기업, 다시 말해 기업의 이익예상 라이프사이클의 왼쪽 부분에 위치한 주식을 매수할 것이다.')
-    with col2:
-        gcycle = Image.open("growth.png")
-        st.image(gcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 성장주의 경우')
-        with st.expander("See explanation"):
-            st.markdown('투자자들이 **_성장주_**를 매수할 때 그들은 지금 자신이 다이아몬드를 구입했기를 기대한다. 바꿔 말하면 사람들이 많은 기대를 갖고 다이아몬드를 사는 것처럼 성장주 투자자는 매수한 주식에 대해 높은 기대 수준을 가지고 있다. 따라서 성장주 투자자는 이익예상 라이프사이클의 위쪽에 위치한다')
-    with col3:
-        vcycle = Image.open("value.png")
-        st.image(vcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 가치주의 경우')
-        with st.expander("See explanation"):
-            st.markdown('**_가치주 투자자들_**이 사과를 구입할 때 약간의 기대를 가지기는 하지만, 벌레가 있더라도 다소간의 충격은 있을지 몰라도 비극으로 받아들이지는 않는다. 즉, 가치주 투자자는 매입한 주식에 대해 큰 기대를 갖지 않는다. 따라서 가치주 투자자는 일반적으로 이익예상 라이프사이클의 아래쪽에 위치한다')
+    # with col1:
+    #     ecycle = Image.open("good-cycle.png")
+    #     st.image(ecycle, caption='좋은 펀드 매니저')
+    #     with st.expander("See explanation"):
+    #         st.markdown('**성공하는 투자자**는 시장의 주식에 대한 기대 수준이 높든지 낮든지 상관없이 이익 전망이 개선되는 주식을 언제나 찾을 것이다. \
+    #         따라서 **_‘좋은’ 펀드매니저_**는 이익 전망이 개선되는 기업, 다시 말해 기업의 이익예상 라이프사이클의 왼쪽 부분에 위치한 주식을 매수할 것이다.')
+    # with col2:
+    #     gcycle = Image.open("growth.png")
+    #     st.image(gcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 성장주의 경우')
+    #     with st.expander("See explanation"):
+    #         st.markdown('투자자들이 **_성장주_**를 매수할 때 그들은 지금 자신이 다이아몬드를 구입했기를 기대한다. 바꿔 말하면 사람들이 많은 기대를 갖고 다이아몬드를 사는 것처럼 성장주 투자자는 매수한 주식에 대해 높은 기대 수준을 가지고 있다. 따라서 성장주 투자자는 이익예상 라이프사이클의 위쪽에 위치한다')
+    # with col3:
+    #     vcycle = Image.open("value.png")
+    #     st.image(vcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 가치주의 경우')
+    #     with st.expander("See explanation"):
+    #         st.markdown('**_가치주 투자자들_**이 사과를 구입할 때 약간의 기대를 가지기는 하지만, 벌레가 있더라도 다소간의 충격은 있을지 몰라도 비극으로 받아들이지는 않는다. 즉, 가치주 투자자는 매입한 주식에 대해 큰 기대를 갖지 않는다. 따라서 가치주 투자자는 일반적으로 이익예상 라이프사이클의 아래쪽에 위치한다')
     
-    #totalcycle = Image.open("image.png")
-    #st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
-    with st.expander("See explanation"):
-        st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
-    """
+    # #totalcycle = Image.open("image.png")
+    # #st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
+    # with st.expander("See explanation"):
+    #     st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
+    
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     try:
         drawkorchart.income_chart(code, naver_ann, naver_q)
