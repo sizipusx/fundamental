@@ -46,12 +46,13 @@ def income_chart(input_ticker, income_df, income_df_q):
             y_data_line = ['영업이익률', '순이익률', 'ROE(지배주주)']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
-                fig.add_trace(go.Bar(name = y_data, x = income_df.index, y = income_df.loc[:,y_data], marker_color= color), secondary_y = False) 
+                fig.add_trace(go.Bar(name = y_data, x = income_df.index, y = income_df.loc[:,y_data], 
+                                            text= income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  income_df.index, y= income_df.loc[:,y_data],
-                                            text= income_df[y_data].astype(int), textposition = 'top center', marker_color = color),
+                                            text= income_df[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
@@ -75,12 +76,13 @@ def income_chart(input_ticker, income_df, income_df_q):
             y_data_line = ['영업이익률', '순이익률', 'ROE(지배주주)']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
-                fig.add_trace(go.Bar(name = y_data, x = income_df_q.index, y = income_df_q.loc[:,y_data], marker_color= color), secondary_y = False) 
+                fig.add_trace(go.Bar(name = y_data, x = income_df_q.index, y = income_df_q.loc[:,y_data], 
+                                    text= income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  income_df_q.index, y= income_df_q.loc[:,y_data],
-                                            text= income_df_q[y_data].astype(int), textposition = 'top center', marker_color = color),
+                                            text= income_df_q[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text='Revenue', range=[0, max(income_df_q.loc[:,y_data_bar[0]])*2], secondary_y = False)
