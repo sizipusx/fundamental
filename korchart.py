@@ -128,7 +128,7 @@ def run(code, com_name):
             #mode = "number+delta",
             mode = "gauge+number+delta",
             value = float(value_df.iloc[3,0]), #현재가
-            delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
+            delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
