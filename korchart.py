@@ -9,9 +9,12 @@ from pandas.io.json import json_normalize
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
-
+import matplotlib.pyplot as plt
+from matplotlib import font_manager, rc
+import seaborn as sns
+cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 import streamlit as st
-from pykrx import stock
+#from pykrx import stock
 import FinanceDataReader as fdr
 import getData, makeData, drawkorchart
 import chart
@@ -102,8 +105,10 @@ def run(code, com_name):
     sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(code)
     with st.expander("See Raw Data"):
           #value_df = value_df.astype(float).fillna(0).round(decimals=2)
-        st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.highlight_max(axis=0))
-        st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.highlight_max(axis=0))
+        st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                     .format(precision=2, na_rep='MISSING', thousands=","))
+        st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
 
     if sep_flag == True:
         st.write("별도")
