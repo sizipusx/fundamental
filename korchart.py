@@ -104,8 +104,8 @@ def run(code, com_name):
         st.write("별도")
     else:
         st.write("연결")
-    st.dataframe(fn_ann_df)
-    st.dataframe(fn_qu_df)
+    st.dataframe(fn_ann_df.T)
+    st.dataframe(fn_qu_df.T)
     
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
@@ -250,7 +250,7 @@ def run(code, com_name):
     
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     
-    drawkorchart.income_chart(code, fn_ann_df, fn_qu_df)
+    drawkorchart.income_chart(code, fn_ann_df.T, fn_qu_df.T)
     drawkorchart.balance_chart(code, naver_q)
     #except TypeError :
     #    st.write("이익이 마이너스인 경우")
