@@ -102,7 +102,7 @@ def balance_chart(input_ticker, balance_df):
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
-    y_data_bar3 = ['부채비율', '당좌비율']
+    y_data_bar3 = ['부채비율']
     y_data_line3 = ['유보율']
 
     for y_data, color in zip(y_data_bar3, marker_colors) :
