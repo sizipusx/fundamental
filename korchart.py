@@ -14,7 +14,7 @@ from matplotlib import font_manager, rc
 import seaborn as sns
 cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 import streamlit as st
-#from pykrx import stock
+from pykrx import stock
 import FinanceDataReader as fdr
 import getData, makeData, drawkorchart
 import chart
