@@ -113,9 +113,9 @@ def run(code, com_name):
     navers_more = pd.read_html(fs_page.text)
 
     company_basic_info = navers_more[0]
-    st.table(company_basic_info.iloc[1:])
+    st.table(company_basic_info)
     st.subheader("Valuation")
-    st.table(value_df.iloc[1:])
+    st.table(value_df)
     if  st.checkbox('Show raw data'):
         
         # st.dataframe(ttm_df.style.highlight_max(axis=0))
@@ -251,7 +251,7 @@ def run(code, com_name):
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     
     drawkorchart.income_chart(code, fn_ann_df.T, fn_qu_df.T)
-    drawkorchart.balance_chart(code, naver_q)
+    drawkorchart.balance_chart(code, fn_qu_df.T)
     #except TypeError :
     #    st.write("이익이 마이너스인 경우")
 
@@ -275,7 +275,7 @@ if __name__ == "__main__":
     company_name_ = comany_info.iloc[0,2]
     code = comany_info.iloc[0,0]
     st.subheader('<'+company_name_+'> 회사 기본 정보')
-    st.table(comany_info.T.iloc[1:])
+    st.table(comany_info.T)
     submit = st.sidebar.button('Analysis')
 
     if submit:
