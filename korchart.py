@@ -135,6 +135,11 @@ def run(code, com_name):
         with col3: 
             compare_df = fs_tables[8].set_index("구분")
             st.dataframe(compare_df)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    #######################################################
     #기업의 최근 price
     # now = datetime.now() +pd.DateOffset(days=-3)
     # today = '%s-%s-%s' % ( now.year, now.month, now.day)
