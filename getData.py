@@ -571,6 +571,6 @@ def get_fdata_fnguide(firm_code):
     qu_df = fs_tables[15].xs("Net Quarter", axis=1)
     qu_df.index.name = '항목'
 
-  return sep_flag, ann_df, qu_df
+  return sep_flag, ann_df, qu_df, fs_tables
   
 

@@ -99,34 +99,37 @@ def run(code, com_name):
     # st.write(naver_ann.index)
 
     # Fnguide에서 원본 데이터 가져오기
-    sep_flag, fn_ann_df, fn_qu_df = getData.get_fdata_fnguide(code)
+    sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(code)
+    with st.expander("See Raw Data"):
+          #value_df = value_df.astype(float).fillna(0).round(decimals=2)
+        st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.highlight_max(axis=0))
+        st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.highlight_max(axis=0))
+
     if sep_flag == True:
         st.write("별도")
     else:
         st.write("연결")
-    st.dataframe(fn_ann_df.T)
-    st.dataframe(fn_qu_df.T)
-    
+   
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
     fs_page = requests.get(n_url_f)
     navers_more = pd.read_html(fs_page.text)
-
     company_basic_info = navers_more[0]
-    st.table(company_basic_info)
+
+    #st.table(company_basic_info)
+
     st.subheader("Valuation")
     st.table(value_df)
-    if  st.checkbox('Show raw data'):
-        
-        # st.dataframe(ttm_df.style.highlight_max(axis=0))
-        # st.dataframe(ann_df.style.highlight_max(axis=0))
-        st.dataframe(naver_ann.style.highlight_max(axis=0))
-        st.dataframe(naver_q.style.highlight_max(axis=0))
-    
-    #value_df = value_df.astype(float).fillna(0).round(decimals=2)
-    st.dataframe(navers_more[5])
-    #RIM Price
-    rim_price, r_ratio = makeData.kor_rim(naver_ann, naver_q)
+
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.dataframe(navers_more[5])
+        with col2:
+            st.write("")
+        with col3: 
+            compare_df = fs_tables[8].set_index("구분")
+            st.dataframe(compare_df)
     #기업의 최근 price
     # now = datetime.now() +pd.DateOffset(days=-3)
     # today = '%s-%s-%s' % ( now.year, now.month, now.day)
@@ -140,7 +143,7 @@ def run(code, com_name):
             mode = "gauge+number+delta",
             value = float(value_df.iloc[13,0]), #Rim price
             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
-            title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={r_ratio})</span>"},
+            title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
                     'threshold': {
