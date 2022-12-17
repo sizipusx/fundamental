@@ -100,7 +100,7 @@ def run(code, com_name):
 
     # Fnguide에서 원본 데이터 가져오기
     sep_flag, fn_ann_df, fn_qu_df = getData.get_fdata_fnguide(code)
-    if sep_flag == "True":
+    if sep_flag == True:
         st.write("별도")
     else:
         st.write("연결")
