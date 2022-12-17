@@ -31,7 +31,7 @@ pio.templates["myID"] = go.layout.Template(
 )
 
 
-def income_chart(input_ticker, income_df, income_df_q):
+def income_chart(input_ticker, income_df, income_df_q, dis_flag):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -43,7 +43,10 @@ def income_chart(input_ticker, income_df, income_df_q):
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['매출액', '영업이익', '당기순이익']
-            y_data_line = ['영업이익률', '순이익률', 'ROE']
+            if dis_flag == True:
+                y_data_line = ['영업이익률', '순이익률', 'ROE']
+            else:
+                y_data_line = ['영업이익률', '지배주주순이익률', 'ROE']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df.loc[:,y_data], 
@@ -73,7 +76,10 @@ def income_chart(input_ticker, income_df, income_df_q):
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['매출액', '영업이익', '당기순이익']
-            y_data_line = ['영업이익률', '순이익률', 'ROE']
+            if dis_flag == True:
+                y_data_line = ['영업이익률', '순이익률', 'ROE']
+            else:
+                y_data_line = ['영업이익률', '지배주주순이익률', 'ROE']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = income_df_q.index, y = income_df_q.loc[:,y_data], 
