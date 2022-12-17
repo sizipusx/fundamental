@@ -43,15 +43,15 @@ def income_chart(input_ticker, income_df, income_df_q):
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['매출액', '영업이익', '당기순이익']
-            y_data_line = ['영업이익률', '순이익률', 'ROE(지배주주)']
+            y_data_line = ['영업이익률', '순이익률', 'ROE']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
-                fig.add_trace(go.Bar(name = y_data, x = income_df.index, y = income_df.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df.loc[:,y_data], 
                                             text= income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                            name = y_data, x =  income_df.index, y= income_df.loc[:,y_data],
+                                            name = y_data, x =  x_data, y= income_df.loc[:,y_data],
                                             text= income_df[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
