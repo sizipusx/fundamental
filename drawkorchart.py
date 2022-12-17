@@ -37,12 +37,12 @@ def income_chart(input_ticker, income_df, income_df_q, dis_flag):
         with col1:
             # Profit and Margin
             st.subheader('Annual Profit, Margin ')
-            
+            column_name_ch = income_df.columns[0]
             x_data = income_df.index
             title = '('  + input_ticker + ') <b>Annual Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_bar = ['매출액', '영업이익', '당기순이익']
+            y_data_bar = [column_name_ch, '영업이익', '당기순이익']
             if dis_flag == True:
                 y_data_line = ['영업이익률', '순이익률', 'ROE']
             else:
@@ -75,7 +75,7 @@ def income_chart(input_ticker, income_df, income_df_q, dis_flag):
             title = '('  + input_ticker + ') <b>Quartly Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_bar = ['매출액', '영업이익', '당기순이익']
+            y_data_bar = [column_name_ch, '영업이익', '당기순이익']
             if dis_flag == True:
                 y_data_line = ['영업이익률', '순이익률', 'ROE']
             else:
