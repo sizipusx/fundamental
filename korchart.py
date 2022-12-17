@@ -94,10 +94,19 @@ def run(code, com_name):
     
     #네이버 4년 데이타
     naver_ann, naver_q = getData.get_naver_finance(code)
-    st.dataframe(naver_ann)
-    st.dataframe(naver_q)
-    st.write(naver_ann.index)
+    # st.dataframe(naver_ann)
+    # st.dataframe(naver_q)
+    # st.write(naver_ann.index)
 
+    # Fnguide에서 원본 데이터 가져오기
+    sep_flag, fn_ann_df, fn_qu_df = getData.get_fdata_fnguide(code)
+    if sep_flag == "True":
+        st.write("별도")
+    else:
+        st.write("연결")
+    st.dataframe(fn_ann_df)
+    st.dataframe(fn_qu_df)
+    
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
     fs_page = requests.get(n_url_f)
@@ -241,7 +250,7 @@ def run(code, com_name):
     
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     
-    drawkorchart.income_chart(code, naver_ann, naver_q)
+    drawkorchart.income_chart(code, fn_ann_df, fn_qu_df)
     drawkorchart.balance_chart(code, naver_q)
     #except TypeError :
     #    st.write("이익이 마이너스인 경우")
