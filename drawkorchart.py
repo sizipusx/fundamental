@@ -121,10 +121,38 @@ def balance_chart(input_ticker, balance_df):
                                     text= balance_df[y_data], textposition = 'top center', marker_color = color),
                                     secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
-    fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*1.5], secondary_y = False)
+    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_line3[0]])* 1.2], ticksuffix="%", secondary_y = True)
     fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
     fig.update_yaxes(title_text= "유보율", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def dividend_chart(input_ticker, income_df):
+    #시가배당률, 
+    st.subheader('DPS & Dividend Yield')
+    x_data = income_df.index
+    title = '('  + input_ticker + ') <bDPS & Dividend Yield</b>'
+    titles = dict(text= title, x=0.5, y = 0.85) 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar4 = ['DPS(원)']
+    y_data_line4 = ['배당수익률']
+
+    for y_data, color in zip(y_data_bar4, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = income_df.index, y = income_df[y_data], 
+                            text = income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+    
+    for y_data, color in zip(y_data_line4, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data, x =  income_df.index, y= income_df.loc[:,y_data],
+                                    text= income_df[y_data], textposition = 'top center', marker_color = color),
+                                    secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(range=[0, max(income_df.loc[:,y_data_bar4[0]])*1.5], secondary_y = False)
+    fig.update_yaxes(range=[0, max(income_df.loc[:,y_data_line4[0]])* 1.2], ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text="배당수익률", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text= "DPS(원)", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="원", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
