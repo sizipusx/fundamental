@@ -141,9 +141,6 @@ def run(code, com_name):
     st.markdown(html_br, unsafe_allow_html=True)
     #######################################################
     #기업의 최근 price
-    # now = datetime.now() +pd.DateOffset(days=-3)
-    # today = '%s-%s-%s' % ( now.year, now.month, now.day)
-    # price = fdr.DataReader(code, today).iloc[-1,0]
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -180,7 +177,7 @@ def run(code, com_name):
             delta = {'reference': 15}))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
-        ### Block 매매전세지수 같이 보기 #########################################################################################
+    ### PERR, PBRR 같이 보기 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -226,14 +223,24 @@ def run(code, com_name):
     #     domain = {'x': [0, 1], 'y': [0, 1]}
     # ))
     # st.plotly_chart(fig)
-    
-    st.subheader("Candlestick Chart")
-    now = datetime.now() +pd.DateOffset(days=-4000)
-    start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
-    price_df = fdr.DataReader(code,start_date)
-
-    chart.price_chart(code, price_df)
-    
+     ### PERR, PBRR 같이 보기 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            # candlestick chart
+            st.subheader("Candlestick Chart")
+            now = datetime.now() +pd.DateOffset(days=-4000)
+            start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
+            price_df = fdr.DataReader(code,start_date)
+            chart.price_chart(code, price_df)
+        with col2:
+            st.write("")
+        with col3:
+            drawkorchart.income_chart(code, fn_ann_df.T)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     # st.subheader("Earnings")
 
     # from PIL import Image
