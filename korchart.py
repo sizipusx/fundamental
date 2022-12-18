@@ -236,7 +236,7 @@ def run(code, com_name):
         with col2:
             st.write("")
         with col3:
-            drawkorchart.income_chart(code, fn_ann_df.T)
+            drawkorchart.dividend_chart(code, fn_ann_df.T)
     html_br="""
     <br>
     """
