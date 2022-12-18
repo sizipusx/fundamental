@@ -31,7 +31,7 @@ pio.templates["myID"] = go.layout.Template(
 )
 
 
-def income_chart(input_ticker, income_df, income_df_q, dis_flag):
+def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -39,7 +39,7 @@ def income_chart(input_ticker, income_df, income_df_q, dis_flag):
             st.subheader('Annual Profit, Margin ')
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
-            title = '('  + input_ticker + ') <b>Annual Profit & Margin</b>'
+            title = '('  + company_name + ') <b>Annual Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
@@ -72,7 +72,7 @@ def income_chart(input_ticker, income_df, income_df_q, dis_flag):
             # Profit and Margin
             st.subheader('Quartly Profit, Margin ')
             x_data = income_df_q.index
-            title = '('  + input_ticker + ') <b>Quartly Profit & Margin</b>'
+            title = '('  + company_name + ') <b>Quartly Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
@@ -100,11 +100,11 @@ def income_chart(input_ticker, income_df, income_df_q, dis_flag):
             st.plotly_chart(fig)
 
 
-def balance_chart(input_ticker, balance_df):
+def balance_chart(input_ticker, company_name, balance_df):
     #부채비율, 유동비율, 당좌비율
     st.subheader('Asset, Liabilities, ShareholderEquity')
     x_data = balance_df.index
-    title = '('  + input_ticker + ') <b>Asset & Liabilities</b>'
+    title = '('  + company_name + ') <b>Asset & Liabilities</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
@@ -129,11 +129,11 @@ def balance_chart(input_ticker, balance_df):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def dividend_chart(input_ticker, income_df):
+def dividend_chart(input_ticker, company_name, income_df):
     #시가배당률, 
     st.subheader('DPS & Dividend Yield')
     x_data = income_df.index
-    title = '('  + input_ticker + ') <bDPS & Dividend Yield</b>'
+    title = '('  + company_name + ') <b>DPS & Dividend Yield</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar4 = ['DPS(원)']

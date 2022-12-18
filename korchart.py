@@ -78,15 +78,6 @@ def load_data():
 
 
 def run(code, com_name):
-    #아이투자에서 기업 데이터 가져오기: 크롤링 막혀서 네이버로 변경
-    # info_url = "http://m.itooza.com/search.php?sn="+code
-    # info_page = requests.get(info_url)
-    # info_tables = pd.read_html(info_page.text)
-    # company_info = info_tables[0]
-    # company_info.set_index(0, inplace=True)
-    # st.table(company_info)
-    # #아이투자 10년 데이타
-    # value_df, ttm_df, ann_df = getData.get_kor_itooza(code)
     # 회사채 BBB- 할인율
     in_url = 'https://www.kisrating.com/ratingsStatistics/statics_spread.do'
     in_page = requests.get(in_url)
@@ -96,7 +87,7 @@ def run(code, com_name):
     value_df = getData.make_Valuation(code, com_name, yeild)
     
     #네이버 4년 데이타
-    naver_ann, naver_q = getData.get_naver_finance(code)
+    #naver_ann, naver_q = getData.get_naver_finance(code)
     # st.dataframe(naver_ann)
     # st.dataframe(naver_q)
     # st.write(naver_ann.index)
@@ -140,11 +131,11 @@ def run(code, com_name):
     """
     st.markdown(html_br, unsafe_allow_html=True)
     #######################################################
-    #기업의 최근 price
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             #RIM price
+            st.subheader("RIM price")
             fig = go.Figure(go.Indicator(
             #mode = "number+delta",
             mode = "gauge+number+delta",
@@ -164,7 +155,7 @@ def run(code, com_name):
             st.write("")
         with col3:  
             #Earnings Yeild: 기대수익률
-            
+            st.subheader("Earnings Yeild")
             fig = go.Figure(go.Indicator(
             mode = "gauge+number+delta",
             value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
@@ -232,11 +223,11 @@ def run(code, com_name):
             now = datetime.now() +pd.DateOffset(days=-4000)
             start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
             price_df = fdr.DataReader(code,start_date)
-            chart.price_chart(code, price_df)
+            chart.price_chart(code, com_name, price_df)
         with col2:
             st.write("")
         with col3:
-            drawkorchart.dividend_chart(code, fn_ann_df.T)
+            drawkorchart.dividend_chart(code, com_name, fn_ann_df.T)
     html_br="""
     <br>
     """
@@ -270,8 +261,8 @@ def run(code, com_name):
     
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     
-    drawkorchart.income_chart(code, fn_ann_df.T, fn_qu_df.T, sep_flag)
-    drawkorchart.balance_chart(code, fn_qu_df.T)
+    drawkorchart.income_chart(code, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
+    drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
     #except TypeError :
     #    st.write("이익이 마이너스인 경우")
 
