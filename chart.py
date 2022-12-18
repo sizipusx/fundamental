@@ -13,8 +13,8 @@ from datetime import datetime
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 
-def price_chart(input_ticker, price_df):   
-    title = '('  + input_ticker + ') Price'
+def price_chart(input_ticker, company_name, price_df):   
+    title = '('  + company_name + ') Price'
     titles = dict(text= title, x=0.5, y = 0.9) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Candlestick(x=price_df.index,
