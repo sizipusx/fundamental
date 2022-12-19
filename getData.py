@@ -425,7 +425,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   #ROE
   #직접 계산
   roe = round(eps/bps*100,1)
-  datalist.append(roe+"%")
+  datalist.append(str(roe)+"%")
   # print("step 3. ROE cal END ==========================")
   #요구수익률: 수정해야함: 하드코딩 7, 7.5, 8, 8.5, 9 => 2021-11-28 크롤링 수정
   # 기대수익률 
@@ -434,11 +434,11 @@ def make_Valuation(firm_code, firm_name, bond_y):
   # print("step 4. bond_y END ==========================")
   #배당수익률
   did = round(dps/close_price*100,1)
-  datalist.append(did+"%")
+  datalist.append(str(did)+"%")
   # print("step 5. DIDIEND Y END ==========================")
   #시가수익률
   current = round(eps/close_price*100,1)
-  datalist.append(current+"%")
+  datalist.append(str(current)+"%")
   # print("step 6.시가수익률 END ==========================")
   #할인률
   if did < 1 :  r = rr
