@@ -282,7 +282,7 @@ if __name__ == "__main__":
 
     if com_name == "":
         com_name = st.sidebar.selectbox(
-            'Company Name',
+            'Company Name or Code',
             krx['Name'].to_list() #tickers
         )
 
