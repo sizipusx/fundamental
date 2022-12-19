@@ -430,7 +430,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   #요구수익률: 수정해야함: 하드코딩 7, 7.5, 8, 8.5, 9 => 2021-11-28 크롤링 수정
   # 기대수익률 
   rr = bond_y
-  datalist.append(rr+"%")
+  datalist.append(str(rr)+"%")
   # print("step 4. bond_y END ==========================")
   #배당수익률
   did = round(dps/close_price*100,1)
