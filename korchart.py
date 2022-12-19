@@ -95,12 +95,15 @@ def run(code, com_name):
     # Fnguide에서 원본 데이터 가져오기
     sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(code)
     with st.expander("See Raw Data"):
-          #value_df = value_df.astype(float).fillna(0).round(decimals=2)
-        st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                     .format(precision=2, na_rep='MISSING', thousands=","))
-        st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-
+        try:
+            #value_df = value_df.astype(float).fillna(0).round(decimals=2)
+            st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                        .format(precision=2, na_rep='MISSING', thousands=","))
+            st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                  .format(precision=2, na_rep='MISSING', thousands=","))
+        except ValueError :
+            st.dataframe(fn_ann_df.T)
+            st.dataframe(fn_qu_df.T)
     if sep_flag == True:
         st.write("별도")
     else:
