@@ -267,7 +267,7 @@ def run(code, com_name):
         drawkorchart.income_chart(code, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
         drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
     except TypeError as te :
-        st.error("알수 없는 Error로 차트를 그릴 수 없습니다!", icon="🚨")
+        st.error("다음과 같은 Error로 차트를 그릴 수 없습니다!", icon="🚨")
         st.write(te)
         
 if __name__ == "__main__":
