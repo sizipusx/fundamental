@@ -460,11 +460,11 @@ def make_Valuation(firm_code, firm_name, bond_y):
   # print("step 9. 적정주가 END ==========================")
   #패러티
   pa = round(close_price/want_price*100,2)
-  datalist.append(pa+"%")
+  datalist.append(str(pa)+"%")
   # print("step 10. 패러티 END ==========================")
   #기대수익률
-  expect = round(want_price/close_price - 1,2)
-  datalist.append(expect*100+"%")
+  expect = round((want_price/close_price - 1)*100,2)
+  datalist.append(str(expect)+"%")
   # print("step 11. 기대수익률 END ==========================")
   #컨센서스
   if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
