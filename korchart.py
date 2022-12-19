@@ -268,7 +268,7 @@ def run(code, com_name):
         drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
     except TypeError as te :
         st.write("알수 없는 Error로 차트를 그릴 수 없습니다!")
-        st.error("Error 내용: " + te)
+        st.error("Error 내용: ", te)
         
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
