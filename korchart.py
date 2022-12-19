@@ -142,15 +142,15 @@ def run(code, com_name):
             fig = go.Figure(go.Indicator(
             #mode = "number+delta",
             mode = "gauge+number+delta",
-            value = float(value_df.iloc[13,0]), #Rim price
+            value = int(value_df.iloc[13,0].replace(',','').replace('원', '')), #Rim price
             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
                     'threshold': {
                     'line': {'color': "red", 'width': 2},
-                    'thickness': 0.75, 'value': float(value_df.iloc[3,0])}},
-            delta = {'reference': int(value_df.iloc[3,0]), 'relative': True},
+                    'thickness': 0.75, 'value': float(value_df.iloc[3,0].replace(',','').replace('원', ''))}},
+            delta = {'reference': int(value_df.iloc[3,0].replace(',','').replace('원', '')), 'relative': True},
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
@@ -161,7 +161,7 @@ def run(code, com_name):
             st.subheader("Earnings Yeild")
             fig = go.Figure(go.Indicator(
             mode = "gauge+number+delta",
-            value = round(float(value_df.iloc[5,0])/float(value_df.iloc[3,0])*100,2),
+            value = round(float(value_df.iloc[5,0].replace(',','').replace('원', ''))/float(value_df.iloc[3,0].replace(',','').replace('원', ''))*100,2),
             title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
