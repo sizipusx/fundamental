@@ -367,7 +367,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   close_price = fdr.DataReader(firm_code).iloc[-1,3]
   # close_price = fs_tables[0].loc[0,1]
   # close_price = int(close_price.split('/')[0].replace(",",""))
-  datalist.append('{0:,}'.format(close_price)+"원"))
+  datalist.append('{0:,}'.format(close_price)+"원")
   #BPS : 상수 최근 분기 또는 전년 말 확정치
   # 연결이나 별도냐에 따라 달라짐
   tempdf = fs_tables[10].xs('Annual', axis=1)
@@ -459,11 +459,11 @@ def make_Valuation(firm_code, firm_name, bond_y):
   datalist.append('{0:,}'.format(want_price)+"원")
   # print("step 9. 적정주가 END ==========================")
   #패러티
-  pa = close_price/want_price*100
+  pa = round(close_price/want_price*100,2)
   datalist.append(pa+"%")
   # print("step 10. 패러티 END ==========================")
   #기대수익률
-  expect = want_price/close_price - 1
+  expect = round(want_price/close_price - 1,2)
   datalist.append(expect*100+"%")
   # print("step 11. 기대수익률 END ==========================")
   #컨센서스
