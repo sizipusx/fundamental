@@ -367,7 +367,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   close_price = fdr.DataReader(firm_code).iloc[-1,3]
   # close_price = fs_tables[0].loc[0,1]
   # close_price = int(close_price.split('/')[0].replace(",",""))
-  datalist.append(int(close_price))
+  datalist.append('{0:,}'.format(close_price)+"원"))
   #BPS : 상수 최근 분기 또는 전년 말 확정치
   # 연결이나 별도냐에 따라 달라짐
   tempdf = fs_tables[10].xs('Annual', axis=1)
@@ -388,7 +388,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
     bps = sum(list4)/4 #이전 분기 BPS 평균
     #bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
     # print(f"연결이 아니고 BPS가 있을 때  = {BPS}")
-  datalist.append(int(bps))
+  datalist.append('{0:,}'.format(bps)+"원")
   #===================EPS: 변수 애널리스트 예측치 또는 최근 4분기 합계==========
   if  np.isnan(tempdf.iloc[18,3]) == False: #22.11.29 EPS [17,3] => [18,3] 변경
     eps = float(tempdf.iloc[18,3])
@@ -412,7 +412,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
         eps = sum(list5)
         # print(f"별도이지만 추정 EPS가 없을 때  = {eps}") 
  
-  datalist.append(int(eps))
+  datalist.append('{0:,}'.format(eps)+"원")
 
   # print("step 1. EPS END ==========================")
   #DPS : 준상수 최근 3년치 평균 또는 전년도 주당 배당금액
@@ -420,25 +420,25 @@ def make_Valuation(firm_code, firm_name, bond_y):
     dps = 0
   else:
     dps = float(tempdf.iloc[20,2])
-  datalist.append(int(dps)) 
+  datalist.append('{0:,}'.format(dps)+"원") 
   # print("step 2. DPS END ==========================")
   #ROE
   #직접 계산
-  roe = round(eps/bps*100,2)
-  datalist.append(roe)
+  roe = round(eps/bps*100,1)
+  datalist.append(roe+"%")
   # print("step 3. ROE cal END ==========================")
   #요구수익률: 수정해야함: 하드코딩 7, 7.5, 8, 8.5, 9 => 2021-11-28 크롤링 수정
   # 기대수익률 
   rr = bond_y
-  datalist.append(rr)
+  datalist.append(rr+"%")
   # print("step 4. bond_y END ==========================")
   #배당수익률
-  did = round(dps/close_price*100,2)
-  datalist.append(did)
+  did = round(dps/close_price*100,1)
+  datalist.append(did+"%")
   # print("step 5. DIDIEND Y END ==========================")
   #시가수익률
-  current = round(eps/close_price*100,2)
-  datalist.append(current)
+  current = round(eps/close_price*100,1)
+  datalist.append(current+"%")
   # print("step 6.시가수익률 END ==========================")
   #할인률
   if did < 1 :  r = rr
@@ -456,21 +456,21 @@ def make_Valuation(firm_code, firm_name, bond_y):
 
   #적정주가
   want_price = round(bps*roe_r,-1)
-  datalist.append(int(want_price))
+  datalist.append('{0:,}'.format(want_price)+"원")
   # print("step 9. 적정주가 END ==========================")
   #패러티
-  pa = close_price/want_price
-  datalist.append(pa)
+  pa = close_price/want_price*100
+  datalist.append(pa+"%")
   # print("step 10. 패러티 END ==========================")
   #기대수익률
   expect = want_price/close_price - 1
-  datalist.append(expect)
+  datalist.append(expect*100+"%")
   # print("step 11. 기대수익률 END ==========================")
   #컨센서스
   if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
     datalist.append(0)
   else:
-    datalist.append(int(fs_tables[7].loc[0,'목표주가']))
+    datalist.append('{0:,}'.format(fs_tables[7].loc[0,'목표주가'])+"원")
   # print("step 12.목표주가 END ==========================")
   #컨센서스 기관수
   if fs_tables[7].loc[0,'추정기관수'] == "관련 데이터가 없습니다.":
