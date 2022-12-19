@@ -409,7 +409,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
         qu_df1 = fs_tables[15].xs("Net Quarter", axis=1)
         eps_value1 = qu_df1.iloc[14,1:5] #22.11.29 EPS [13,] => [14,] 변경
         list5 = [float(x) for x in eps_value1.values]
-        eps = sum(list5)
+        eps = int(sum(list5))
         # print(f"별도이지만 추정 EPS가 없을 때  = {eps}") 
  
   datalist.append('{0:,}'.format(eps)+"원")
@@ -455,7 +455,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   # print("step 8. ROE/r END ==========================")
 
   #적정주가
-  want_price = round(bps*roe_r,-1)
+  want_price = int(round(bps*roe_r,-1))
   datalist.append('{0:,}'.format(want_price)+"원")
   # print("step 9. 적정주가 END ==========================")
   #패러티
