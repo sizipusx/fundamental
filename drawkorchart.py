@@ -39,7 +39,7 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
             st.subheader('Annual Profit, Margin ')
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
-            title = '('  + company_name + ') <b>Annual Profit & Margin</b>'
+            title = '('  + company_name + ') <b>Annually Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
@@ -70,9 +70,9 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
                 st.write("")
         with col3: 
             # Profit and Margin
-            st.subheader('Quartly Profit, Margin ')
+            st.subheader('Quarterly Profit, Margin ')
             x_data = income_df_q.index
-            title = '('  + company_name + ') <b>Quartly Profit & Margin</b>'
+            title = '('  + company_name + ') <b>Quarterly Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
@@ -108,8 +108,8 @@ def balance_chart(input_ticker, company_name, balance_df):
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
-    y_data_bar3 = ['부채비율']
-    y_data_line3 = ['유보율']
+    y_data_bar3 = ['유보율']
+    y_data_line3 = ['부채비율']
 
     for y_data, color in zip(y_data_bar3, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = balance_df.index, y = balance_df[y_data], 
@@ -165,7 +165,7 @@ def pbr_chart(company_name, income_df, income_df_q):
             st.subheader('Annual PBR-ROE')
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
-            title = '('  + company_name + ') <b>Annual PBR & ROE</b>'
+            title = '('  + company_name + ') <b>Annually PBR & ROE</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['PBR']
@@ -192,9 +192,9 @@ def pbr_chart(company_name, income_df, income_df_q):
                 st.write("")
         with col3: 
             # Profit and Margin
-            st.subheader('Quart PBR-ROE')
+            st.subheader('Quarter PBR-ROE')
             x_data = income_df_q.index
-            title = '('  + company_name + ') <b>Quartly Profit & Margin</b>'
+            title = '('  + company_name + ') <b>Quarterly Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['PBR']
