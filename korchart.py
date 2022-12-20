@@ -264,6 +264,9 @@ def run(code, com_name):
     
     #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
     try:
+        #PBR PER 차트
+        drawkorchart.pbr_chart(com_name, fn_ann_df.T, fn_qu_df.T)
+        #매출액이 차트
         drawkorchart.income_chart(code, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
         drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
     except TypeError as te :
