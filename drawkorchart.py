@@ -44,9 +44,9 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
             if dis_flag == True:
-                y_data_line = ['영업이익률', '순이익률', 'ROE']
+                y_data_line = ['영업이익률', '순이익률']
             else:
-                y_data_line = ['영업이익률', '지배주주순이익률', 'ROE']
+                y_data_line = ['영업이익률', '지배주주순이익률']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df.loc[:,y_data], 
@@ -77,9 +77,9 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
             if dis_flag == True:
-                y_data_line = ['영업이익률', '순이익률', 'ROE']
+                y_data_line = ['영업이익률', '순이익률']
             else:
-                y_data_line = ['영업이익률', '지배주주순이익률', 'ROE']
+                y_data_line = ['영업이익률', '지배주주순이익률']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = income_df_q.index, y = income_df_q.loc[:,y_data], 
@@ -200,8 +200,8 @@ def pbr_chart(company_name, income_df, income_df_q):
             y_data_line = ['PBR']
             y_data_bar = ['ROE']
             for y_data, color in zip(y_data_bar, marker_colors) :
-                fig.add_trace(go.Bar(name = y_data, x = income_df_q.index, y = income_df_q.loc[:,y_data], 
-                                    text= income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df_q.loc[:,y_data], 
+                                    text= income_df_q[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
