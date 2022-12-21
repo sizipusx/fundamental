@@ -77,14 +77,14 @@ def load_data():
     return tickers, krx
 
 
-def run(code, com_name):
+def run(ticker, com_name):
     # 회사채 BBB- 할인율
     in_url = 'https://www.kisrating.com/ratingsStatistics/statics_spread.do'
     in_page = requests.get(in_url)
     in_tables = pd.read_html(in_page.text)
     yeild = in_tables[0].iloc[-1,-1]
     #make BED valuation
-    value_df = getData.make_Valuation(code, com_name, yeild)
+    value_df = getData.make_Valuation(ticker, com_name, yeild)
     
     #네이버 4년 데이타
     #naver_ann, naver_q = getData.get_naver_finance(code)
@@ -93,7 +93,7 @@ def run(code, com_name):
     # st.write(naver_ann.index)
 
     # Fnguide에서 원본 데이터 가져오기
-    sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(code)
+    sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(ticker)
     with st.expander("See Raw Data"):
         try:
             #value_df = value_df.astype(float).fillna(0).round(decimals=2)
@@ -110,7 +110,7 @@ def run(code, com_name):
         st.write("연결")
    
     # 좀더 자세히
-    n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ code+ '&amp;target=finsum_more'
+    n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ ticker+ '&amp;target=finsum_more'
     fs_page = requests.get(n_url_f)
     navers_more = pd.read_html(fs_page.text)
     company_basic_info = navers_more[0]
@@ -225,12 +225,12 @@ def run(code, com_name):
             st.subheader("Candlestick Chart")
             now = datetime.now() +pd.DateOffset(days=-4000)
             start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
-            price_df = fdr.DataReader(code,start_date)
-            chart.price_chart(code, com_name, price_df)
+            price_df = fdr.DataReader(ticker,start_date)
+            chart.price_chart(ticker, com_name, price_df)
         with col2:
             st.write("")
         with col3:
-            drawkorchart.dividend_chart(code, com_name, fn_ann_df.T)
+            drawkorchart.dividend_chart(ticker, com_name, fn_ann_df.T)
     html_br="""
     <br>
     """
@@ -267,17 +267,17 @@ def run(code, com_name):
         #PBR PER 차트
         drawkorchart.pbr_chart(com_name, fn_ann_df.T, fn_qu_df.T)
         #매출액이 차트
-        drawkorchart.income_chart(code, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
+        drawkorchart.income_chart(ticker, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
         #재무상태표 차트
-        status_tables = getData.get_html_fnguide(code,1)
-        status_ratio_tables = getData.get_html_fnguide(code,2)
-        status_an = status_tables[3].set_index(status_tables[3].columns[0]).T #연간
-        status_qu = status_tables[4].set_index(status_tables[3].columns[0]).T #분기
-        drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
+        status_tables = getData.get_html_fnguide(ticker,1)
+        status_ratio_tables = getData.get_html_fnguide(ticker,2)
+        status_an = status_tables[2].set_index(status_tables[2].columns[0]).T #연간
+        status_qu = status_tables[3].set_index(status_tables[3].columns[0]).T #분기
+        drawkorchart.balance_chart(ticker, com_name, fn_qu_df.T)
         #현금 흐름 차트
-        cf_tables = getData.get_html_fnguide(code,3)
-        cf_an = status_tables[5].set_index(status_tables[3].columns[0]).T #연간
-        cf_qu = status_tables[6].set_index(status_tables[3].columns[0]).T #분기
+        cf_tables = getData.get_html_fnguide(ticker,3)
+        cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
+        cf_qu = status_tables[5].set_index(status_tables[5].columns[0]).T #분기
         #투자지표는 따로 크롤링
         invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
         in_page = requests.get(invest_url)
