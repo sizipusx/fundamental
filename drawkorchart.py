@@ -127,7 +127,7 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
                                                 text= ratio_an[y_data], textposition = 'top center', marker_color = color),
                                                 secondary_y = True)
             except KeyError:
-                y_data_line =[status_an.columns[1]]
+                y_data_line =[ratio_an.columns[1]]
                 for y_data, color in zip(y_data_bar, marker_colors) :
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
                                                 text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
