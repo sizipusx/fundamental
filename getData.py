@@ -602,8 +602,8 @@ def get_fdata_fnguide(firm_code):
     url = url[gb]
     try:
 
-        req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
-        fs_tables = pd.read_html(fs_page.text)
+        req = request.get(url,headers={'User-Agent': 'Mozilla/5.0'})
+        fs_tables = pd.read_html(req.text)
         #html_text = urlopen(req).read()
 
     except AttributeError as e :
