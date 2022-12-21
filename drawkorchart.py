@@ -36,7 +36,7 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             # Profit and Margin
-            st.subheader('Annual Profit, Margin ')
+            st.subheader('손익계산서')
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
             title = '('  + company_name + ') <b>Annually Profit & Margin</b>'
@@ -100,36 +100,70 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
             st.plotly_chart(fig)
 
 
-def balance_chart(input_ticker, company_name, balance_df):
+def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
     #부채비율, 유동비율, 당좌비율
-    st.subheader('Asset, Liabilities, ShareholderEquity')
-    x_data = balance_df.index
-    title = '('  + company_name + ') <b>Asset & Liabilities</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
-    y_data_bar3 = ['유보율']
-    y_data_line3 = ['부채비율']
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            # Profit and Margin
+            st.subheader('연간 재무상태표')
+            column_name_ch = status_an.columns[0]
+            x_data = status_an.index
+            title = '('  + company_name + ') <b>Annually Asset & Liabilities</b>'
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = ['자본', '부채']
+            y_data_line = ['부채비율계산에 참여한 계정 펼치기']
 
-    for y_data, color in zip(y_data_bar3, marker_colors) :
-        fig.add_trace(go.Bar(name = y_data, x = balance_df.index, y = balance_df[y_data], 
-                            text = balance_df[y_data], textposition = 'outside', marker_color= color), secondary_y = True) 
-    
-    for y_data, color in zip(y_data_line3, marker_colors): 
-        fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                    name = y_data, x =  balance_df.index, y= balance_df.loc[:,y_data],
-                                    text= balance_df[y_data], textposition = 'top center', marker_color = color),
-                                    secondary_y = False)
-    fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*1.5], secondary_y = False)
-    fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_line3[0]])* 1.2], ticksuffix="%", secondary_y = True)
-    fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
-    fig.update_yaxes(title_text= "유보율", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
-    fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+            for y_data, color in zip(y_data_bar, marker_colors) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
+                                            text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+            
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                            name = y_data, x =  x_data, y= ratio_an.loc[:,y_data],
+                                            text= ratio_an[y_data], textposition = 'top center', marker_color = color),
+                                            secondary_y = True)
+            #fig.update_traces(texttemplate='%{text:.3s}') 
+            fig.update_yaxes(title_text='Profit', range=[0, max(status_an.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='Margin', range=[-max(ratio_an.loc[:,y_data_line[0]]), max(ratio_an.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        with col2:
+                st.write("")
+        with col3: 
+            # Profit and Margin
+            st.subheader('분기 재무 상태표')
+            x_data = status_qu.index
+            title = '('  + company_name + ') <b>Quarterly Asset & Liabilities</b>'
+            titles = dict(text= title, x=0.5, y = 0.85) 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = ['자본', '부채']
+            y_data_line = ['자산']
 
-def dividend_chart(input_ticker, company_name, income_df):
+            for y_data, color in zip(y_data_bar, marker_colors) :
+                fig.add_trace(go.Bar(name = y_data, x = status_qu.index, y = status_qu.loc[:,y_data], 
+                                    text= status_qu[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+            
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                            name = y_data, x =  status_qu.index, y= status_qu.loc[:,y_data],
+                                            text= status_qu[y_data], textposition = 'top center', marker_color = color),
+                                            secondary_y = True)
+            #fig.update_traces(texttemplate='%{text:.3s}') 
+            fig.update_yaxes(title_text='Asset & Liabilities', range=[0, max(status_qu.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='자산', range=[-max(status_qu.loc[:,y_data_line[0]]), max(status_qu.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+
+def dividend_chart(company_name, income_df):
     #시가배당률, 
     st.subheader('DPS & Dividend Yield')
     x_data = income_df.index
