@@ -114,7 +114,10 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['자본', '부채']
             #안정성 지표로 금융업은 부채비율 없고 '예대율', 창투사 '유보율' 일반 기업 '이자보상배율' 추가
-            y_data_line = ['부채비율계산에 참여한 계정 펼치기']
+            try:
+                y_data_line = ['부채비율계산에 참여한 계정 펼치기']
+            except KeyError:
+                y_data_line =[status_an.columns[1]]
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
