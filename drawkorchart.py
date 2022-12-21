@@ -113,6 +113,7 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['자본', '부채']
+            #안정성 지표로 금융업은 부채비율 없고 '예대율', 창투사 '유보율'
             y_data_line = ['부채비율계산에 참여한 계정 펼치기']
 
             for y_data, color in zip(y_data_bar, marker_colors) :
