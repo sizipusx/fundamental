@@ -587,11 +587,11 @@ def get_fdata_fnguide(firm_code):
   def get_html_fnguide(ticker,gb):
     """    
     :param ticker: 종목코드 
-    :param gb: 데이터 종류 (0 : 재무제표, 1 : 재무비율, 2: 투자지표)
+    :param gb: 데이터 종류 (0: snapshot, 1 : 재무제표, 2 : 재무비율, 3: 투자지표)
     :return: 
     """
     url=[]
-
+    url.append("https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?pGB=1&gicode=A" + ticker + "&cID=&MenuYn=Y&ReportGB=&NewMenuID=101&stkGb=701")
     url.append("https://comp.fnguide.com/SVO2/ASP/SVD_Finance.asp?pGB=1&gicode=A" + ticker + "&cID=&MenuYn=Y&ReportGB=&NewMenuID=103&stkGb=701")
     url.append("https://comp.fnguide.com/SVO2/ASP/SVD_FinanceRatio.asp?pGB=1&gicode=A" + ticker + "&cID=&MenuYn=Y&ReportGB=&NewMenuID=104&stkGb=701")
     url.append("https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=&NewMenuID=105&stkGb=701")
@@ -603,11 +603,12 @@ def get_fdata_fnguide(firm_code):
     try:
 
         req = Request(url,headers={'User-Agent': 'Mozilla/5.0'})
-        html_text = urlopen(req).read()
+        fs_tables = pd.read_html(fs_page.text)
+        #html_text = urlopen(req).read()
 
     except AttributeError as e :
         return None
 
-    return html_text
+    return fs_tables
   
 
