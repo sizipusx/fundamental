@@ -502,7 +502,9 @@ def make_Valuation(firm_code, firm_name, bond_y):
     else:
       per_sum = 0.0
       for x in per5.values :
-        if np.isnan(x) == False:
+        if x == 'N/A':
+          x.str.replace('None','0').replace('N/A','0').astype(float).round(0)
+        if np.isnan(x) == False or x != 0:
           per_sum = per_sum + x
       per5_value = round(per_sum/(5-per5.isnull().sum()),2)
       per_period = 5-per5.isnull().sum()
