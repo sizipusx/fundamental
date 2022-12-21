@@ -257,7 +257,6 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
         with col1:
             # Profit and Margin
             st.subheader('Annual Cashflow')
-            column_name_ch = cf_an.columns[0]
             x_data = cf_an.index
             title = '('  + company_name + ') <b>Annually Cashflow</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
