@@ -268,7 +268,12 @@ def run(code, com_name):
         drawkorchart.pbr_chart(com_name, fn_ann_df.T, fn_qu_df.T)
         #매출액이 차트
         drawkorchart.income_chart(code, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
+        #재무상태표 차트
+        status_tables = getData.get_html_fnguide(code,2)
         drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
+        #현금 흐름 차트
+        cf_tables = getData.get_html_fnguide(code,3)
+        drawkorchart.cash_flow()
     except TypeError as te :
         st.error("다음과 같은 Error로 차트를 그릴 수 없습니다!", icon="🚨")
         st.write(te)
