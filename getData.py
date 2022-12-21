@@ -523,7 +523,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
     else:
       pbr_sum = 0.0
       for x in pbr5.values :
-        if ~np.isnan(x) :
+        if np.isnan(x) == False :
           pbr_sum = pbr_sum + x
       pbr5_value = round(pbr_sum/(5-pbr5.isnull().sum()),2)
       pbr_period = 5-pbr5.isnull().sum()
