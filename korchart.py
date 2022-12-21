@@ -273,23 +273,24 @@ def run(ticker, com_name):
         status_ratio_tables = getData.get_html_fnguide(ticker,2)
         status_an = status_tables[2].set_index(status_tables[2].columns[0]).T #연간
         status_qu = status_tables[3].set_index(status_tables[3].columns[0]).T #분기
-        #재무비율
-        ratio_an = status_ratio_tables[0].set_index(status_ratio_tables[0].columns[0]).T #연간
-        ratio_qu = status_ratio_tables[1].set_index(status_ratio_tables[1].columns[0]).T #분기
-        drawkorchart.balance_chart(com_name, status_an, status_qu, ratio_an, ratio_qu)
-        #현금 흐름 차트
-        cf_tables = getData.get_html_fnguide(ticker,3)
-        cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
-        cf_qu = status_tables[5].set_index(status_tables[5].columns[0]).T #분기
-        #투자지표는 따로 크롤링
-        invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
-        in_page = requests.get(invest_url)
-        in_tables = pd.read_html(in_page.text)
-        invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
-        drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
     except TypeError as te :
         st.error("다음과 같은 Error로 차트를 그릴 수 없습니다!", icon="🚨")
         st.write(te)
+        #재무비율
+    ratio_an = status_ratio_tables[0].set_index(status_ratio_tables[0].columns[0]).T #연간
+    ratio_qu = status_ratio_tables[1].set_index(status_ratio_tables[1].columns[0]).T #분기
+    drawkorchart.balance_chart(com_name, status_an, status_qu, ratio_an, ratio_qu)
+    #현금 흐름 차트
+    cf_tables = getData.get_html_fnguide(ticker,3)
+    cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
+    cf_qu = status_tables[5].set_index(status_tables[5].columns[0]).T #분기
+    #투자지표는 따로 크롤링
+    invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
+    in_page = requests.get(invest_url)
+    in_tables = pd.read_html(in_page.text)
+    invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
+    drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
+    
         
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
