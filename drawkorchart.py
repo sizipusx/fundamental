@@ -116,18 +116,27 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             #안정성 지표로 금융업은 부채비율 없고 '예대율', 창투사 '유보율' 일반 기업 '이자보상배율' 추가
             try:
                 y_data_line = ['부채비율계산에 참여한 계정 펼치기']
+           
+                for y_data, color in zip(y_data_bar, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
+                                                text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                
+                for y_data, color in zip(y_data_line, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= ratio_an.loc[:,y_data],
+                                                text= ratio_an[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
             except KeyError:
                 y_data_line =[status_an.columns[1]]
-
-            for y_data, color in zip(y_data_bar, marker_colors) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
-                                            text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
-            
-            for y_data, color in zip(y_data_line, marker_colors): 
-                fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                            name = y_data, x =  x_data, y= ratio_an.loc[:,y_data],
-                                            text= ratio_an[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = True)
+                for y_data, color in zip(y_data_bar, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
+                                                text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                
+                for y_data, color in zip(y_data_line, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= ratio_an.loc[:,y_data],
+                                                text= ratio_an[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text='Asset & Liabilities', range=[0, max(status_an.loc[:,y_data_bar[0]])*2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
