@@ -284,6 +284,16 @@ def run(ticker, com_name):
     cf_tables = getData.get_html_fnguide(ticker,3)
     cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
     cf_qu = status_tables[5].set_index(status_tables[5].columns[0]).T #분기
+    with st.expander("See Raw Data"):
+        try:
+            #value_df = value_df.astype(float).fillna(0).round(decimals=2)
+            st.dataframe(cf_an.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                        .format(precision=2, na_rep='MISSING', thousands=","))
+            st.dataframe(cf_qu.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                  .format(precision=2, na_rep='MISSING', thousands=","))
+        except ValueError :
+            st.dataframe(cf_an)
+            st.dataframe(cf_qu)
     #투자지표는 따로 크롤링
     invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
     in_page = requests.get(invest_url)
