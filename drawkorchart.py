@@ -273,7 +273,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
                                             text= in_df[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
-            fig.update_yaxes(title_text='현금흐름', range=[0, max(in_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='현금흐름', range=[0, max(cf_an.loc[:,y_data_bar[0]])*2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='FCFF', range=[-max(in_df.loc[:,y_data_line[0]]), max(in_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
