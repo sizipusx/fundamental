@@ -262,7 +262,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['FCFF']
-            y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름' '현금및현금성자산의증가']
+            y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
                                             text= cf_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
@@ -291,7 +291,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['현금및현금성자산의증가']
-            y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름' '현금및현금성자산의증가']
+            y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_qu.loc[:,y_data], 
                                     text= cf_qu[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
