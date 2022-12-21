@@ -385,35 +385,45 @@ def make_Valuation(firm_code, firm_name, bond_y):
     #연결이면서 4분기 평균으로
     bps_value = fs_tables[15].iloc[15,2:6]
     list4 = [float(x) for x in bps_value.values]
-    bps = sum(list4)/4 #이전 분기 BPS 평균
+    bps = sum(list4)/len(list4) #이전 분기 BPS 평균
     #bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
     # print(f"연결이 아니고 BPS가 있을 때  = {BPS}")
-  datalist.append('{0:,}'.format(bps)+"원")
+  datalist.append('{0:,}'.format(int(bps))+"원")
   datalist.append(round(close_price/bps,2))
   #===================EPS: 변수 애널리스트 예측치 또는 최근 4분기 합계==========
+  eps_value = qu_df.iloc[18,1:5] #22.11.29 EPS [17,] => [18,] 변경
+  list4 = [float(x) for x in eps_value.values]
+  eps_sum = sum(list4) #이전 분기 EPS 합산
   if  np.isnan(tempdf.iloc[18,3]) == False: #22.11.29 EPS [17,3] => [18,3] 변경
-    eps = float(tempdf.iloc[18,3])
+    anal_est = float(tempdf.iloc[18,3])
+    if eps_sum >= anal_est:
+      eps = anal_est
+    else:
+      eps = eps_sum 
     # print(f"연결이고 추정 EPS가 있을 때  = {eps}")
   else:
-    eps_value = qu_df.iloc[18,1:5] #22.11.29 EPS [17,] => [18,] 변경
-    list4 = [float(x) for x in eps_value.values]
-    eps = sum(list4) #이전 분기 EPS 합산
-    # print(f"연결이지만 추정 EPS가 없을 때  = {eps}")
+    #print(f"연결이지만 추정 EPS가 없을 때  = {eps_sum}")
+    eps = eps_sum
     #연결이 없어 별도로 감
     tempdf1 = fs_tables[13].xs('Annual', axis=1)
     if np.isnan(eps):
       #print(f"별도 np.isnan  true/false= {np.isnan(eps)}")
+      qu_df1 = fs_tables[15].xs("Net Quarter", axis=1)
+      eps_value1 = qu_df1.iloc[14,1:5] #22.11.29 EPS [13,] => [14,] 변경
+      list5 = [float(x) for x in eps_value1.values]
+      eps_sum2 = sum(list5)
       if  np.isnan(tempdf1.iloc[14,3]) == False: #22.11.29 EPS [13,3] => [14,3] 변경
-        eps = float(tempdf1.iloc[14,3])
+        anal_est2 = float(tempdf1.iloc[14,3])
+        if eps_sum2 >= anal_est2:
+          eps = anal_est2
+        else:
+          eps = eps_sum2 
         # print(f"별도이지만 추정 EPS가 있을 때  = {eps}")
       else:
-        qu_df1 = fs_tables[15].xs("Net Quarter", axis=1)
-        eps_value1 = qu_df1.iloc[14,1:5] #22.11.29 EPS [13,] => [14,] 변경
-        list5 = [float(x) for x in eps_value1.values]
-        eps = int(sum(list5))
+        eps = eps_sum2
         # print(f"별도이지만 추정 EPS가 없을 때  = {eps}") 
  
-  datalist.append('{0:,}'.format(eps)+"원")
+  datalist.append('{0:,}'.format(int(eps))+"원")
   datalist.append(round(close_price/eps,2))
   # print("step 1. EPS END ==========================")
   #DPS : 준상수 최근 3년치 평균 또는 전년도 주당 배당금액
@@ -421,7 +431,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
     dps = 0
   else:
     dps = float(tempdf.iloc[20,2])
-  datalist.append('{0:,}'.format(dps)+"원") 
+  datalist.append('{0:,}'.format(int(dps))+"원") 
   # print("step 2. DPS END ==========================")
   #ROE
   #직접 계산
@@ -448,7 +458,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   elif did < 4 : r = rr-0.6
   elif did < 5 : r = rr-0.8
   else :  r= rr-1
-  datalist.append(r)
+  datalist.append(round(r,2))
   # print("step 7.요구수익률 할인 END ==========================")
   #ROE/r
   roe_r = roe/r
