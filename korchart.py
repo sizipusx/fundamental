@@ -299,6 +299,12 @@ def run(ticker, com_name):
     in_page = requests.get(invest_url)
     in_tables = pd.read_html(in_page.text)
     invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
+    with st.expander("See Raw Data"):
+        try:
+            st.dataframe(invest_table.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                  .format(precision=2, na_rep='MISSING', thousands=","))
+        except ValueError :
+            st.dataframe(invest_table)
     drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
     
         
