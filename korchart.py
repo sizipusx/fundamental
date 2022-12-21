@@ -269,11 +269,21 @@ def run(code, com_name):
         #매출액이 차트
         drawkorchart.income_chart(code, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
         #재무상태표 차트
-        status_tables = getData.get_html_fnguide(code,2)
+        status_tables = getData.get_html_fnguide(code,1)
+        status_ratio_tables = getData.get_html_fnguide(code,2)
+        status_an = fs_tables[3].set_index(fs_tables[3].columns[0]).T #연간
+        status_qu = fs_tables[4].set_index(fs_tables[3].columns[0]).T #분기
         drawkorchart.balance_chart(code, com_name, fn_qu_df.T)
         #현금 흐름 차트
         cf_tables = getData.get_html_fnguide(code,3)
-        drawkorchart.cash_flow()
+        cf_an = fs_tables[5].set_index(fs_tables[3].columns[0]).T #연간
+        cf_qu = fs_tables[6].set_index(fs_tables[3].columns[0]).T #분기
+        #투자지표는 따로 크롤링
+        invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
+        in_page = requests.get(invest_url)
+        in_tables = pd.read_html(in_page.text)
+        invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
+        drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
     except TypeError as te :
         st.error("다음과 같은 Error로 차트를 그릴 수 없습니다!", icon="🚨")
         st.write(te)
