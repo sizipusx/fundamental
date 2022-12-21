@@ -602,7 +602,7 @@ def get_html_fnguide(ticker,gb):
     url = url[gb]
     try:
 
-        req = request.get(url,headers={'User-Agent': 'Mozilla/5.0'})
+        req = requests.get(url,headers={'User-Agent': 'Mozilla/5.0'})
         fs_tables = pd.read_html(req.text)
         #html_text = urlopen(req).read()
 
