@@ -274,17 +274,30 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             title = '('  + company_name + ') <b>Annually Cashflow</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_line = ['FCFF']
-            y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
-            for y_data, color in zip(y_data_bar, marker_colors) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
-                                            text= cf_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
-            
-            for y_data, color in zip(y_data_line, marker_colors): 
-                fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                            name = y_data, x =  x_data, y= in_df.loc[:,y_data],
-                                            text= in_df[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = True)
+            try:
+                y_data_line = ['FCFF']
+                y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
+                for y_data, color in zip(y_data_bar, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
+                                                text= cf_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                
+                for y_data, color in zip(y_data_line, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= in_df.loc[:,y_data],
+                                                text= in_df[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
+            except KeyError:
+                y_data_line = []
+                y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
+                for y_data, color in zip(y_data_bar, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
+                                                text= cf_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                
+                for y_data, color in zip(y_data_line, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= in_df.loc[:,y_data],
+                                                text= in_df[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text='현금흐름', range=[0, max(cf_an.loc[:,y_data_bar[0]])*2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
