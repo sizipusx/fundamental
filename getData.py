@@ -584,7 +584,7 @@ def get_fdata_fnguide(firm_code):
 
   return sep_flag, ann_df, qu_df, fs_tables
 
-  def get_html_fnguide(ticker,gb):
+def get_html_fnguide(ticker,gb):
     """    
     :param ticker: 종목코드 
     :param gb: 데이터 종류 (0: snapshot, 1 : 재무제표, 2 : 재무비율, 3: 투자지표)
