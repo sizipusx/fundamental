@@ -276,7 +276,7 @@ def run(ticker, com_name):
         #재무비율
         ratio_an = status_ratio_tables[0].set_index(status_ratio_tables[0].columns[0]).T #연간
         ratio_qu = status_ratio_tables[1].set_index(status_ratio_tables[1].columns[0]).T #분기
-        #drawkorchart.balance_chart(com_name, status_an, status_qu, ratio_an, ratio_qu)
+        drawkorchart.balance_chart(com_name, status_an, status_qu, ratio_an, ratio_qu)
         #현금 흐름 차트
         cf_tables = getData.get_html_fnguide(ticker,3)
         cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
