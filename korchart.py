@@ -299,7 +299,7 @@ def run(ticker, com_name):
     in_page = requests.get(invest_url)
     in_tables = pd.read_html(in_page.text)
     invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
-    invest_table = invest_table.fillna(0)
+    invest_table['FCFF'] = invest_table['FCFF'].fillna(0).astype(int)
     with st.expander("See Raw Data"):
         try:
             st.dataframe(invest_table.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
