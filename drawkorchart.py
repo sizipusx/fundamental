@@ -127,7 +127,7 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text='Asset & Liabilities', range=[0, max(status_an.loc[:,y_data_bar[0]])*2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='부채비율', range=[-max(ratio_an.loc[:,y_data_line[0]]), max(ratio_an.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            #fig.update_yaxes(title_text='부채비율', range=[-max(ratio_an.loc[:,y_data_line[0]]), max(ratio_an.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = '%Y.%m')
