@@ -36,7 +36,7 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             # Profit and Margin
-            st.subheader('손익계산서')
+            st.subheader('연간 손익계산서')
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
             title = '('  + company_name + ') <b>Annually Profit & Margin</b>'
@@ -70,7 +70,7 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
                 st.write("")
         with col3: 
             # Profit and Margin
-            st.subheader('Quarterly Profit, Margin ')
+            st.subheader('분기 손익계산서')
             x_data = income_df_q.index
             title = '('  + company_name + ') <b>Quarterly Profit & Margin</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
@@ -256,7 +256,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             # Profit and Margin
-            st.subheader('Annual Cashflow')
+            st.subheader('연간 현금흐름')
             x_data = cf_an.index
             title = '('  + company_name + ') <b>Annually Cashflow</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
@@ -285,7 +285,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
                 st.write("")
         with col3: 
             # Profit and Margin
-            st.subheader('Quarter Cashflow')
+            st.subheader('분기 현금흐름')
             x_data = cf_qu.index
             title = '('  + company_name + ') <b>Quarterly Cashflow</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
