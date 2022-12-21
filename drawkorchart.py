@@ -217,7 +217,7 @@ def pbr_chart(company_name, income_df, income_df_q):
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
-def cash_flow(company_name, cf_an, cf_qu):
+def cash_flow(company_name, cf_an, cf_qu, in_df):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -228,7 +228,7 @@ def cash_flow(company_name, cf_an, cf_qu):
             title = '('  + company_name + ') <b>Annually Cashflow</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_line = ['PBR']
+            y_data_line = ['FCFF']
             y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름' '현금및현금성자산의증가']
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
@@ -236,15 +236,15 @@ def cash_flow(company_name, cf_an, cf_qu):
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                            name = y_data, x =  x_data, y= cf_an.loc[:,y_data],
-                                            text= cf_an[y_data], textposition = 'top center', marker_color = color),
+                                            name = y_data, x =  x_data, y= in_df.loc[:,y_data],
+                                            text= in_df[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
-            fig.update_yaxes(title_text='ROE', range=[0, max(cf_an.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='현금흐름', range=[0, max(in_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='PBR', range=[-max(cf_an.loc[:,y_data_line[0]]), max(cf_an.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="배", secondary_y = True)
+            fig.update_yaxes(title_text='FCFF', range=[-max(in_df.loc[:,y_data_line[0]]), max(in_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
@@ -257,8 +257,8 @@ def cash_flow(company_name, cf_an, cf_qu):
             title = '('  + company_name + ') <b>Quarterly Cashflow</b>'
             titles = dict(text= title, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_line = ['PBR']
-            y_data_bar = ['ROE']
+            y_data_line = ['현금및현금성자산의증가']
+            y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름' '현금및현금성자산의증가']
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_qu.loc[:,y_data], 
                                     text= cf_qu[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
@@ -269,10 +269,10 @@ def cash_flow(company_name, cf_an, cf_qu):
                                             text= cf_qu[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
-            fig.update_yaxes(title_text='ROE', range=[0, max(cf_qu.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='PBR', range=[-max(cf_qu.loc[:,y_data_line[0]]), max(cf_qu.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="배", secondary_y = True)
+            fig.update_yaxes(title_text='현금흐름', range=[0, max(cf_qu.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='현금및현금성자산의증가', range=[-max(cf_qu.loc[:,y_data_line[0]]), max(cf_qu.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="억원", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
