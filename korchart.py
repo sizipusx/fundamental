@@ -167,7 +167,7 @@ def run(ticker, com_name):
                 gauge = {'shape': "bullet",
                         'threshold': {
                         'line': {'color': "red", 'width': 2},
-                        'thickness': 0.75, 'value': value_df.iloc[14]*2}},
+                        'thickness': 0.75, 'value': round(float(value_df.iloc[14]*2),2)}},
                 delta = {'reference': round(float(value_df.iloc[14]),2)}
             ))
             fig.update_layout(height = 250)
