@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math
 import time
 from datetime import datetime
 from alpha_vantage.fundamentaldata import FundamentalData 
@@ -389,7 +390,9 @@ def make_Valuation(firm_code, firm_name, bond_y):
     bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
     # print(f"연결이 아니고 BPS가 있을 때  = {BPS}")
   datalist.append('{0:,}'.format(int(bps))+"원")
-  datalist.append(round(close_price/bps,2))
+  #PBR
+  pbr = round(close_price/bps,2)
+  datalist.append(pbr)
   #===================EPS: 변수 애널리스트 예측치 또는 최근 4분기 합계==========
   eps_value = qu_df.iloc[18,1:5] #22.11.29 EPS [17,] => [18,] 변경
   list4 = [float(x) for x in eps_value.values]
@@ -424,6 +427,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
         # print(f"별도이지만 추정 EPS가 없을 때  = {eps}") 
  
   datalist.append('{0:,}'.format(int(eps))+"원")
+  #PER
   datalist.append(round(close_price/eps,2))
   # print("step 1. EPS END ==========================")
   #DPS : 준상수 최근 3년치 평균 또는 전년도 주당 배당금액
@@ -438,7 +442,6 @@ def make_Valuation(firm_code, firm_name, bond_y):
   roe = round(eps/bps*100,1)
   datalist.append(str(roe)+"%")
   # print("step 3. ROE cal END ==========================")
-  #요구수익률: 수정해야함: 하드코딩 7, 7.5, 8, 8.5, 9 => 2021-11-28 크롤링 수정
   # 기대수익률 
   rr = bond_y
   datalist.append(str(rr)+"%")
@@ -461,8 +464,8 @@ def make_Valuation(firm_code, firm_name, bond_y):
   datalist.append(round(r,2))
   # print("step 7.요구수익률 할인 END ==========================")
   #ROE/r
-  roe_r = roe/r
-  datalist.append(round(roe_r,2))
+  roe_r = round(roe/r,2)
+  datalist.append(roe_r)
   # print("step 8. ROE/r END ==========================")
 
   #적정주가
@@ -477,6 +480,19 @@ def make_Valuation(firm_code, firm_name, bond_y):
   expect = round((want_price/close_price - 1)*100,2)
   datalist.append(str(expect)+"%")
   # print("step 11. 기대수익률 END ==========================")
+  ##홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 5년
+  log_v = (1+roe/100)/(1+r/100)
+  target_pbr = (log_v)**5
+  ### 장기 기대수익률
+  longp_yield = round(((1+roe/100)/pbr**(1/5)-1)*100,2)
+  ### 갭수익률 적정PBR/시가PBR -1
+  gap_yield = round((target_pbr/pbr -1)*100,2)
+  ### 지속 가능 기간
+  last_p = round(math.log(pbr,log_v),1)
+  datalist.append(round(target_pbr,2))
+  datalist.append(str(longp_yield)+"%")
+  datalist.append(str(gap_yield)+"%")
+  datalist.append(str(last_p)+"%")
   #컨센서스
   if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
     datalist.append(0)
@@ -547,9 +563,11 @@ def make_Valuation(firm_code, firm_name, bond_y):
   total_period = str(per_period)+"년/"+str(pbr_period)+"년"
   datalist.append(total_period)
   # print("step 18. 총년수 END ==========================")
-  onedf = pd.DataFrame(index=["종목코드", "종목명", "평가일","현재주가", "BPS(4QM)", "PBR", "EPS(ttm)", "PER", "DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가","패리티", "기대수익률", "컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
+  onedf = pd.DataFrame(index=["종목코드", "종목명", "평가일","현재주가", "BPS", "PBR", "EPS(ttm)", "ttmPER", "DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가(RIM)","패리티", "기대수익률", \
+     "적정PBR", "5년 연평균수익률", "PBR갭수익률", "지속가능기간","컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
   #컬럼 순서 변경
-  #onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가", "컨센서스", "BPS(4QM)", "EPS(ttm)","DPS(MRY)","ROE","기대수익률", "요구수익률","배당수익률","시가수익률", "r","ROE/r","패리티", "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
+  onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가(RIM)", "컨센서스", "기대수익률(RIM)", "5년 연평균수익률", "PBR갭수익률", "배당수익률","시가수익률", "지속가능기간",\
+     "BPS", "PBR", "적정PBR", "EPS(ttm)", "ttmPER", "DPS(MRY)","ROE","요구수익률","r","ROE/r", "패리티", "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
   #onedf.iloc[:,3:7] = onedf.iloc[:,3:7].apply(lambda int_num: '{:,}'.format(int_num))
 
   return onedf
