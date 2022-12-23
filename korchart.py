@@ -161,52 +161,52 @@ def run(ticker, com_name):
     col2.metric(label="PER(ttm)", value =value_df.iloc[16])
     col3.metric("시가수익률", value =value_df.iloc[10])
     col1, col2, col3 = st.columns(3)
-    col1.metric(label="5년PER", value = value_df.iloc[-5])
-    col2.metric(label="5년PBR", value =str(value_df.iloc[-4])+"배")
+    col1.metric(label="5년PBR", value = value_df.iloc[-4])
+    col2.metric(label="5년PER", value =value_df.iloc[-5])
     col3.metric("PER/PBR평균", value =value_df.iloc[-1])
     col1, col2, col3 = st.columns(3)
     col1.metric(label="요구수익률", value = value_df.iloc[-9])
-    col2.metric(label="ROE/r", value =str(value_df.iloc[-8])+"배")
+    col2.metric(label="ROE/r", value =value_df.iloc[-8])
     col3.metric("컨센기업수", value =value_df.iloc[-6])
     #######################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            #RIM price
-            st.subheader("RIM price")
-            fig = go.Figure(go.Indicator(
-                #mode = "number+delta",
-                mode = "gauge+number+delta",
-                value = current_price, #Rim price
-                #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
-                title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
-                domain = {'x': [0, 1], 'y': [0, 1]},
-                gauge = {'shape': "bullet",
-                        'threshold': {
-                        'line': {'color': "red", 'width': 2},
-                        'thickness': 0.75, 'value': rim_price}},
-                delta = {'reference': rim_price, 'relative': True},
-            ))
-            fig.update_layout(height = 250)
-            st.plotly_chart(fig)
-        with col2:
-            st.write("")
-        with col3:  
-            #Earnings Yeild: 기대수익률
-            st.subheader("PBR 갭수익률")
-            fig = go.Figure(go.Indicator(
-                mode = "gauge+number+delta",
-                value = round(float(value_df.iloc[13]),2),
-                title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
-                domain = {'x': [0, 1], 'y': [0, 1]},
-                gauge = {'shape': "bullet",
-                        'threshold': {
-                        'line': {'color': "red", 'width': 2},
-                        'thickness': 0.75, 'value': round(float(value_df.iloc[14]),2)}},
-                delta = {'reference': round(float(value_df.iloc[14]),2), 'relative': True}
-            ))
-            fig.update_layout(height = 250)
-            st.plotly_chart(fig)
+    # with st.container():
+    #     col1, col2, col3 = st.columns([30,2,30])
+    #     with col1:
+    #         #RIM price
+    #         st.subheader("RIM price")
+    #         fig = go.Figure(go.Indicator(
+    #             #mode = "number+delta",
+    #             mode = "gauge+number+delta",
+    #             value = current_price, #Rim price
+    #             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
+    #             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
+    #             domain = {'x': [0, 1], 'y': [0, 1]},
+    #             gauge = {'shape': "bullet",
+    #                     'threshold': {
+    #                     'line': {'color': "red", 'width': 2},
+    #                     'thickness': 0.75, 'value': rim_price}},
+    #             delta = {'reference': rim_price, 'relative': True},
+    #         ))
+    #         fig.update_layout(height = 250)
+    #         st.plotly_chart(fig)
+    #     with col2:
+    #         st.write("")
+    #     with col3:  
+    #         #Earnings Yeild: 기대수익률
+    #         st.subheader("PBR 갭수익률")
+    #         fig = go.Figure(go.Indicator(
+    #             mode = "gauge+number+delta",
+    #             value = round(float(value_df.iloc[13]),2),
+    #             title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+    #             domain = {'x': [0, 1], 'y': [0, 1]},
+    #             gauge = {'shape': "bullet",
+    #                     'threshold': {
+    #                     'line': {'color': "red", 'width': 2},
+    #                     'thickness': 0.75, 'value': round(float(value_df.iloc[14]),2)}},
+    #             delta = {'reference': round(float(value_df.iloc[14]),2), 'relative': True}
+    #         ))
+    #         fig.update_layout(height = 250)
+    #         st.plotly_chart(fig)
     ### PERR, PBRR 같이 보기 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
