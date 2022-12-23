@@ -319,19 +319,24 @@ if __name__ == "__main__":
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
-    etf = krx[krx['Sector'].isnull()]
-    krx = krx[~krx['Sector'].isnull()]
-    com_name = st.sidebar.text_input("Company Name")
+    try:
+        etf = krx[krx['Sector'].isnull()]
+        krx = krx[~krx['Sector'].isnull()]
+        com_name = st.sidebar.text_input("Company Name")
 
-    if com_name == "":
-        com_name = st.sidebar.selectbox(
-            'Company Name or Code',
-            krx['Name'].to_list() #tickers
-        )
+        if com_name == "":
+            com_name = st.sidebar.selectbox(
+                'Company Name or Code',
+                krx['Name'].to_list() #tickers
+            )
 
-    comany_info = krx[krx['Name'] == com_name]
-    company_name_ = comany_info.iloc[0,2]
-    code = comany_info.iloc[0,0]
+        comany_info = krx[krx['Name'] == com_name]
+        company_name_ = comany_info.iloc[0,2]
+        code = comany_info.iloc[0,0]
+    except IndexError:
+        comany_info = krx[krx['Name'].contains(com_name)]
+        company_name_ = comany_info.iloc[0,2]
+        code = comany_info.iloc[0,0]
     st.subheader('<'+company_name_+'> 회사 기본 정보')
     st.table(comany_info.T)
     submit = st.sidebar.button('Analysis')
