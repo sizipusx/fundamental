@@ -465,7 +465,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   # print("step 7.요구수익률 할인 END ==========================")
   #ROE/r
   roe_r = round(roe/r,2)
-  datalist.append(roe_r)
+  datalist.append(str(roe_r)+"배")
   # print("step 8. ROE/r END ==========================")
 
   #적정주가
@@ -492,7 +492,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   datalist.append(round(target_pbr,2))
   datalist.append(str(longp_yield)+"%")
   datalist.append(str(gap_yield)+"%")
-  datalist.append(str(last_p)+"%")
+  datalist.append(str(last_p)+"Y")
   #컨센서스
   if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
     datalist.append(0)
