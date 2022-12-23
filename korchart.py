@@ -334,7 +334,7 @@ if __name__ == "__main__":
         company_name_ = comany_info.iloc[0,2]
         code = comany_info.iloc[0,0]
     except IndexError:
-        comany_info = krx[krx['Name'].contains(com_name)]
+        comany_info = krx[krx['Name'].str.contains(com_name)]
         company_name_ = comany_info.iloc[0,2]
         code = comany_info.iloc[0,0]
     st.subheader('<'+company_name_+'> 회사 기본 정보')
