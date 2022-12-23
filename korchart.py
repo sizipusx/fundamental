@@ -109,29 +109,8 @@ def run(ticker, com_name):
     #     st.write("별도")
     # else:
     #     st.write("연결")
-   
-    # 좀더 자세히
-    n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ ticker+ '&amp;target=finsum_more'
-    fs_page = requests.get(n_url_f)
-    navers_more = pd.read_html(fs_page.text)
-    company_basic_info = navers_more[0]
-
     tab1, tab2 = st.tabs(["🗃 Valuation", "📈 Chart"])
-    with tab1: 
-        st.subheader("Valuation")
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                st.dataframe(navers_more[5])
-            with col2:
-                st.write("")
-            with col3: 
-                compare_df = fs_tables[8].set_index("구분")
-                st.dataframe(compare_df)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
+    with tab1:
         #######################################################
         rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
         current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
@@ -241,7 +220,27 @@ def run(ticker, com_name):
         """
         st.markdown(html_br, unsafe_allow_html=True)
         #######################################################
-        
+        # 좀더 자세히
+        n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ ticker+ '&amp;target=finsum_more'
+        fs_page = requests.get(n_url_f)
+        navers_more = pd.read_html(fs_page.text)
+        company_basic_info = navers_more[0]
+
+   
+        st.subheader("Valuation")
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                st.dataframe(navers_more[5])
+            with col2:
+                st.write("")
+            with col3: 
+                compare_df = fs_tables[8].set_index("구분")
+                st.dataframe(compare_df)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
 
     with tab2:
         with st.container():
