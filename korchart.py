@@ -140,8 +140,8 @@ def run(ticker, com_name):
     pro_pbr = round(float(value_df.iloc[14]),2)
     a_yield = float(value_df.iloc[7].replace('%',''))
     col1, col2, col3 = st.columns(3)
-    col1.metric(label="Price", value = current_price, delta=rim_price-current_price)
-    col2.metric(label="PBR", value =current_pbr, delta=pro_pbr-current_pbr)
+    col1.metric(label="현재 주가", value = current_price, delta=rim_price-current_price, delta_color="inverse")
+    col2.metric(label="PBR", value =current_pbr, delta=pro_pbr-current_pbr, delta_color="inverse")
     col3.metric("5년 연평균수익률", value =a_yield, delta=round(float(value_df.iloc[-9]),2))
     #######################################################
     with st.container():
