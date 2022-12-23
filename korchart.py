@@ -118,6 +118,7 @@ def run(ticker, com_name):
     #st.table(company_basic_info)
 
     st.subheader("Valuation")
+    value_df.columns.name = "BED Valuation"
     st.table(value_df)
 
     with st.container():
