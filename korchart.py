@@ -142,7 +142,7 @@ def run(ticker, com_name):
             fig = go.Figure(go.Indicator(
                 #mode = "number+delta",
                 mode = "gauge+number+delta",
-                value = int(value_df.iloc[4].replace(',','').replace('원', '')), #Rim price
+                value = int(value_df.iloc[3].replace(',','').replace('원', '')), #Rim price
                 #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
                 title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
@@ -150,7 +150,7 @@ def run(ticker, com_name):
                         'threshold': {
                         'line': {'color': "red", 'width': 2},
                         'thickness': 0.75, 'value': float(value_df.iloc[3].replace(',','').replace('원', ''))}},
-                delta = {'reference': int(value_df.iloc[3].replace(',','').replace('원', '')), 'relative': True},
+                delta = {'reference': int(value_df.iloc[4].replace(',','').replace('원', '')), 'relative': True},
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
@@ -167,8 +167,8 @@ def run(ticker, com_name):
                 gauge = {'shape': "bullet",
                         'threshold': {
                         'line': {'color': "red", 'width': 2},
-                        'thickness': 0.75, 'value': round(float(value_df.iloc[14]),2)}},
-                delta = {'reference': round(float(value_df.iloc[14]),2)}
+                        'thickness': 0.75, 'value': round(float(value_df.iloc[13]),2)}},
+                delta = {'reference': round(float(value_df.iloc[14]),2), 'relative': True}
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
