@@ -136,10 +136,12 @@ def run(ticker, com_name):
     #######################################################
     rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
     current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
+    current_pbr = round(float(value_df.iloc[13]),2)
+    pro_pbr = round(float(value_df.iloc[14]),2)
     a_yield = float(value_df.iloc[7].replace('%',''))
     col1, col2, col3 = st.columns(3)
-    col1.metric(label="Price", value = current_price, delta=rim_price)
-    col2.metric(label="PBR", value =round(float(value_df.iloc[13]),2), delta=round(float(value_df.iloc[14]),2))
+    col1.metric(label="Price", value = current_price, delta=rim_price-current_price)
+    col2.metric(label="PBR", value =current_pbr, delta=pro_pbr-current_pbr)
     col3.metric("5년 연평균수익률", value =a_yield, delta=round(float(value_df.iloc[-9]),2))
     #######################################################
     with st.container():
