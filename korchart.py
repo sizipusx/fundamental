@@ -142,7 +142,7 @@ def run(ticker, com_name):
             fig = go.Figure(go.Indicator(
             #mode = "number+delta",
             mode = "gauge+number+delta",
-            value = int(value_df.iloc[15,0].replace(',','').replace('원', '')), #Rim price
+            value = int(value_df.iloc[4,0].replace(',','').replace('원', '')), #Rim price
             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
@@ -158,17 +158,17 @@ def run(ticker, com_name):
             st.write("")
         with col3:  
             #Earnings Yeild: 기대수익률
-            st.subheader("Earnings Yeild")
+            st.subheader("PBR 갭수익률")
             fig = go.Figure(go.Indicator(
             mode = "gauge+number+delta",
-            value = round(float(value_df.iloc[6,0].replace(',','').replace('원', ''))/float(value_df.iloc[3,0].replace(',','').replace('원', ''))*100,2),
+            value = value_df.iloc[13,0],
             title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
             domain = {'x': [0, 1], 'y': [0, 1]},
             gauge = {'shape': "bullet",
                     'threshold': {
                     'line': {'color': "red", 'width': 2},
-                    'thickness': 0.75, 'value': 15.0}},
-            delta = {'reference': 15}))
+                    'thickness': 0.75, 'value': value_df.iloc[14,0]*2}},
+            delta = {'reference': value_df.iloc[14,0]}))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
     ### PERR, PBRR 같이 보기 #########################################################################################
