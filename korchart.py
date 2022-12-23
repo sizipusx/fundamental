@@ -96,12 +96,13 @@ def run(ticker, com_name):
     sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(ticker)
     with st.expander("See Raw Data"):
         try:
-            #value_df = value_df.astype(float).fillna(0).round(decimals=2)
+            st.dataframe(value_df)
             st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                         .format(precision=2, na_rep='MISSING', thousands=","))
             st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                   .format(precision=2, na_rep='MISSING', thousands=","))
         except ValueError :
+            st.dataframe(value_df)
             st.dataframe(fn_ann_df.T)
             st.dataframe(fn_qu_df.T)
     if sep_flag == True:
@@ -115,237 +116,226 @@ def run(ticker, com_name):
     navers_more = pd.read_html(fs_page.text)
     company_basic_info = navers_more[0]
 
-    #st.table(company_basic_info)
+    tab1, tab2 = st.tabs(["🗃 Valuation", "📈 Chart"])
+    with tab1: 
+        st.subheader("Valuation")
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                st.dataframe(navers_more[5])
+            with col2:
+                st.write("")
+            with col3: 
+                compare_df = fs_tables[8].set_index("구분")
+                st.dataframe(compare_df)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        #######################################################
+        rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
+        current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
+        conse_price = int(value_df.iloc[5].replace(',','').replace('원', ''))
+        current_pbr = round(float(value_df.iloc[13]),2)
+        pro_pbr = round(float(value_df.iloc[14]),2)
+        a_yield = float(value_df.iloc[7].replace('%',''))
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="현재 주가", value = value_df.iloc[3], delta=current_price-rim_price)
+        col2.metric(label="RIM Price", value =value_df.iloc[4], delta=rim_price-current_price)
+        col3.metric("컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="5년 연평균수익률", value = value_df.iloc[7])
+        col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
+        col3.metric("지속가능기간", value =value_df.iloc[11])
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="DPS(mry)", value = value_df.iloc[17])
+        col2.metric(label="배당수익률", value =value_df.iloc[9])
+        col3.metric("ROE", value =value_df.iloc[18])
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="PBR", value = value_df.iloc[13])
+        col2.metric(label="적정PBR", value =value_df.iloc[14])
+        col3.metric("PBR갭수익률", value =value_df.iloc[8])
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="EPS(ttm)", value = value_df.iloc[15])
+        col2.metric(label="PER(ttm)", value =value_df.iloc[16])
+        col3.metric("시가수익률", value =value_df.iloc[10])
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="5년PBR", value = value_df.iloc[-4])
+        col2.metric(label="5년PER", value =value_df.iloc[-5])
+        col3.metric("PER/PBR평균", value =value_df.iloc[-1])
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="요구수익률", value = value_df.iloc[-9])
+        col2.metric(label="ROE/r", value =value_df.iloc[-8])
+        col3.metric("컨센기업수", value =value_df.iloc[-6])
+        #######################################################
+        # with st.container():
+        #     col1, col2, col3 = st.columns([30,2,30])
+        #     with col1:
+        #         #RIM price
+        #         st.subheader("RIM price")
+        #         fig = go.Figure(go.Indicator(
+        #             #mode = "number+delta",
+        #             mode = "gauge+number+delta",
+        #             value = current_price, #Rim price
+        #             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
+        #             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
+        #             domain = {'x': [0, 1], 'y': [0, 1]},
+        #             gauge = {'shape': "bullet",
+        #                     'threshold': {
+        #                     'line': {'color': "red", 'width': 2},
+        #                     'thickness': 0.75, 'value': rim_price}},
+        #             delta = {'reference': rim_price, 'relative': True},
+        #         ))
+        #         fig.update_layout(height = 250)
+        #         st.plotly_chart(fig)
+        #     with col2:
+        #         st.write("")
+        #     with col3:  
+        #         #Earnings Yeild: 기대수익률
+        #         st.subheader("PBR 갭수익률")
+        #         fig = go.Figure(go.Indicator(
+        #             mode = "gauge+number+delta",
+        #             value = round(float(value_df.iloc[13]),2),
+        #             title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+        #             domain = {'x': [0, 1], 'y': [0, 1]},
+        #             gauge = {'shape': "bullet",
+        #                     'threshold': {
+        #                     'line': {'color': "red", 'width': 2},
+        #                     'thickness': 0.75, 'value': round(float(value_df.iloc[14]),2)}},
+        #             delta = {'reference': round(float(value_df.iloc[14]),2), 'relative': True}
+        #         ))
+        #         fig.update_layout(height = 250)
+        #         st.plotly_chart(fig)
+        ### PERR, PBRR 같이 보기 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                # #PERR, PBRR
+                fig = go.Figure(go.Indicator(
+                mode = "number+delta",
+                value = float(value_df.iloc[-3]),
+                title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                delta = {'reference': 2}))
+                st.plotly_chart(fig)
+                #PEG 
+                # fig = go.Figure(go.Indicator(
+                # mode = "number+delta",
+                # value = value_df.iloc[7,0],
+                # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
+                # domain = {'x': [0, 1], 'y': [0, 1]},
+                # delta = {'reference': 1.5}))
+                # st.plotly_chart(fig)
+            with col2:
+                st.write("")
+            with col3:
+                fig = go.Figure(go.Indicator(
+                mode = "number+delta",
+                value = float(value_df.iloc[-2]),
+                title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                delta = {'reference': 2}))
+                st.plotly_chart(fig)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        #######################################################
+        
 
-    st.subheader("Valuation")
-    st.table(value_df)
+    with tab2:
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                # candlestick chart
+                st.subheader("Candlestick Chart")
+                now = datetime.now() +pd.DateOffset(days=-4000)
+                start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
+                price_df = fdr.DataReader(ticker,start_date)
+                chart.price_chart(ticker, com_name, price_df)
+            with col2:
+                st.write("")
+            with col3:
+                drawkorchart.dividend_chart(com_name, fn_ann_df.T)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        # st.subheader("Earnings")
 
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            st.dataframe(navers_more[5])
-        with col2:
-            st.write("")
-        with col3: 
-            compare_df = fs_tables[8].set_index("구분")
-            st.dataframe(compare_df)
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    #######################################################
-    rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
-    current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
-    conse_price = int(value_df.iloc[5].replace(',','').replace('원', ''))
-    current_pbr = round(float(value_df.iloc[13]),2)
-    pro_pbr = round(float(value_df.iloc[14]),2)
-    a_yield = float(value_df.iloc[7].replace('%',''))
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="현재 주가", value = value_df.iloc[3], delta=current_price-rim_price)
-    col2.metric(label="RIM Price", value =value_df.iloc[4], delta=rim_price-current_price)
-    col3.metric("컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="5년 연평균수익률", value = value_df.iloc[7])
-    col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
-    col3.metric("지속가능기간", value =value_df.iloc[11])
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="DPS(mry)", value = value_df.iloc[17])
-    col2.metric(label="배당수익률", value =value_df.iloc[9])
-    col3.metric("ROE", value =value_df.iloc[18])
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="PBR", value = value_df.iloc[13])
-    col2.metric(label="적정PBR", value =value_df.iloc[14])
-    col3.metric("PBR갭수익률", value =value_df.iloc[8])
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="EPS(ttm)", value = value_df.iloc[15])
-    col2.metric(label="PER(ttm)", value =value_df.iloc[16])
-    col3.metric("시가수익률", value =value_df.iloc[10])
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="5년PBR", value = value_df.iloc[-4])
-    col2.metric(label="5년PER", value =value_df.iloc[-5])
-    col3.metric("PER/PBR평균", value =value_df.iloc[-1])
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="요구수익률", value = value_df.iloc[-9])
-    col2.metric(label="ROE/r", value =value_df.iloc[-8])
-    col3.metric("컨센기업수", value =value_df.iloc[-6])
-    #######################################################
-    # with st.container():
-    #     col1, col2, col3 = st.columns([30,2,30])
-    #     with col1:
-    #         #RIM price
-    #         st.subheader("RIM price")
-    #         fig = go.Figure(go.Indicator(
-    #             #mode = "number+delta",
-    #             mode = "gauge+number+delta",
-    #             value = current_price, #Rim price
-    #             #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
-    #             title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
-    #             domain = {'x': [0, 1], 'y': [0, 1]},
-    #             gauge = {'shape': "bullet",
-    #                     'threshold': {
-    #                     'line': {'color': "red", 'width': 2},
-    #                     'thickness': 0.75, 'value': rim_price}},
-    #             delta = {'reference': rim_price, 'relative': True},
-    #         ))
-    #         fig.update_layout(height = 250)
-    #         st.plotly_chart(fig)
-    #     with col2:
-    #         st.write("")
-    #     with col3:  
-    #         #Earnings Yeild: 기대수익률
-    #         st.subheader("PBR 갭수익률")
-    #         fig = go.Figure(go.Indicator(
-    #             mode = "gauge+number+delta",
-    #             value = round(float(value_df.iloc[13]),2),
-    #             title = {"text": "Earnings<br>Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
-    #             domain = {'x': [0, 1], 'y': [0, 1]},
-    #             gauge = {'shape': "bullet",
-    #                     'threshold': {
-    #                     'line': {'color': "red", 'width': 2},
-    #                     'thickness': 0.75, 'value': round(float(value_df.iloc[14]),2)}},
-    #             delta = {'reference': round(float(value_df.iloc[14]),2), 'relative': True}
-    #         ))
-    #         fig.update_layout(height = 250)
-    #         st.plotly_chart(fig)
-    ### PERR, PBRR 같이 보기 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            # #PERR, PBRR
-            fig = go.Figure(go.Indicator(
-            mode = "number+delta",
-            value = float(value_df.iloc[-3]),
-            title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            delta = {'reference': 2}))
-            st.plotly_chart(fig)
-            #PEG 
-            # fig = go.Figure(go.Indicator(
-            # mode = "number+delta",
-            # value = value_df.iloc[7,0],
-            # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
-            # domain = {'x': [0, 1], 'y': [0, 1]},
-            # delta = {'reference': 1.5}))
-            # st.plotly_chart(fig)
-        with col2:
-            st.write("")
-        with col3:
-            fig = go.Figure(go.Indicator(
-            mode = "number+delta",
-            value = float(value_df.iloc[-2]),
-            title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-            domain = {'x': [0, 1], 'y': [0, 1]},
-            delta = {'reference': 2}))
-            st.plotly_chart(fig)
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    #######################################################
-    
-
-    #ttmeps last / ttmeps.max()
-    # fig = go.Figure(go.Indicator(
-    #     mode = "gauge+number+delta",
-    #     value = ttm_df.iloc[-1,0],
-    #     delta = {'reference': ttm_df['EPS'].max(), 'relative': True},
-    #     title = {'text': f"Last ttmEPS ={ttm_df.iloc[-1,0]}원 relative Max ttmEPS = {ttm_df['EPS'].max().astype(int)} 원"},
-    #     domain = {'x': [0, 1], 'y': [0, 1]}
-    # ))
-    # st.plotly_chart(fig)
-     ### PERR, PBRR 같이 보기 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            # candlestick chart
-            st.subheader("Candlestick Chart")
-            now = datetime.now() +pd.DateOffset(days=-4000)
-            start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
-            price_df = fdr.DataReader(ticker,start_date)
-            chart.price_chart(ticker, com_name, price_df)
-        with col2:
-            st.write("")
-        with col3:
-            drawkorchart.dividend_chart(com_name, fn_ann_df.T)
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    # st.subheader("Earnings")
-
-    # from PIL import Image
-    # col1, col2, col3 = st.columns(3)
-    
-    # with col1:
-    #     ecycle = Image.open("good-cycle.png")
-    #     st.image(ecycle, caption='좋은 펀드 매니저')
-    #     with st.expander("See explanation"):
-    #         st.markdown('**성공하는 투자자**는 시장의 주식에 대한 기대 수준이 높든지 낮든지 상관없이 이익 전망이 개선되는 주식을 언제나 찾을 것이다. \
-    #         따라서 **_‘좋은’ 펀드매니저_**는 이익 전망이 개선되는 기업, 다시 말해 기업의 이익예상 라이프사이클의 왼쪽 부분에 위치한 주식을 매수할 것이다.')
-    # with col2:
-    #     gcycle = Image.open("growth.png")
-    #     st.image(gcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 성장주의 경우')
-    #     with st.expander("See explanation"):
-    #         st.markdown('투자자들이 **_성장주_**를 매수할 때 그들은 지금 자신이 다이아몬드를 구입했기를 기대한다. 바꿔 말하면 사람들이 많은 기대를 갖고 다이아몬드를 사는 것처럼 성장주 투자자는 매수한 주식에 대해 높은 기대 수준을 가지고 있다. 따라서 성장주 투자자는 이익예상 라이프사이클의 위쪽에 위치한다')
-    # with col3:
-    #     vcycle = Image.open("value.png")
-    #     st.image(vcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 가치주의 경우')
-    #     with st.expander("See explanation"):
-    #         st.markdown('**_가치주 투자자들_**이 사과를 구입할 때 약간의 기대를 가지기는 하지만, 벌레가 있더라도 다소간의 충격은 있을지 몰라도 비극으로 받아들이지는 않는다. 즉, 가치주 투자자는 매입한 주식에 대해 큰 기대를 갖지 않는다. 따라서 가치주 투자자는 일반적으로 이익예상 라이프사이클의 아래쪽에 위치한다')
-    
-    # #totalcycle = Image.open("image.png")
-    # #st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
-    # with st.expander("See explanation"):
-    #     st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
-    
-    #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
-    try:
-        #PBR PER 차트
-        drawkorchart.pbr_chart(com_name, fn_ann_df.T, fn_qu_df.T)
-        #매출액이 차트
-        drawkorchart.income_chart(ticker, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
-        #재무상태표 차트
-        status_tables = getData.get_html_fnguide(ticker,1)
-        status_ratio_tables = getData.get_html_fnguide(ticker,2)
-        status_an = status_tables[2].set_index(status_tables[2].columns[0]).T #연간
-        status_qu = status_tables[3].set_index(status_tables[3].columns[0]).T #분기
-    except TypeError as te :
-        st.error("다음과 같은 Error로 차트를 그릴 수 없습니다!", icon="🚨")
-        st.write(te)
-        #재무비율
-    ratio_an = status_ratio_tables[0].set_index(status_ratio_tables[0].columns[0]).T #연간
-    ratio_qu = status_ratio_tables[1].set_index(status_ratio_tables[1].columns[0]).T #분기
-    drawkorchart.balance_chart(com_name, status_an, status_qu, ratio_an, ratio_qu)
-    #현금 흐름 차트
-    cf_tables = getData.get_html_fnguide(ticker,3)
-    cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
-    cf_qu = status_tables[5].set_index(status_tables[5].columns[0]).T #분기
-    with st.expander("See Raw Data"):
+        # from PIL import Image
+        # col1, col2, col3 = st.columns(3)
+        
+        # with col1:
+        #     ecycle = Image.open("good-cycle.png")
+        #     st.image(ecycle, caption='좋은 펀드 매니저')
+        #     with st.expander("See explanation"):
+        #         st.markdown('**성공하는 투자자**는 시장의 주식에 대한 기대 수준이 높든지 낮든지 상관없이 이익 전망이 개선되는 주식을 언제나 찾을 것이다. \
+        #         따라서 **_‘좋은’ 펀드매니저_**는 이익 전망이 개선되는 기업, 다시 말해 기업의 이익예상 라이프사이클의 왼쪽 부분에 위치한 주식을 매수할 것이다.')
+        # with col2:
+        #     gcycle = Image.open("growth.png")
+        #     st.image(gcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 성장주의 경우')
+        #     with st.expander("See explanation"):
+        #         st.markdown('투자자들이 **_성장주_**를 매수할 때 그들은 지금 자신이 다이아몬드를 구입했기를 기대한다. 바꿔 말하면 사람들이 많은 기대를 갖고 다이아몬드를 사는 것처럼 성장주 투자자는 매수한 주식에 대해 높은 기대 수준을 가지고 있다. 따라서 성장주 투자자는 이익예상 라이프사이클의 위쪽에 위치한다')
+        # with col3:
+        #     vcycle = Image.open("value.png")
+        #     st.image(vcycle, caption='이익예상 라이프사이클에서의 투자자의 위치- 가치주의 경우')
+        #     with st.expander("See explanation"):
+        #         st.markdown('**_가치주 투자자들_**이 사과를 구입할 때 약간의 기대를 가지기는 하지만, 벌레가 있더라도 다소간의 충격은 있을지 몰라도 비극으로 받아들이지는 않는다. 즉, 가치주 투자자는 매입한 주식에 대해 큰 기대를 갖지 않는다. 따라서 가치주 투자자는 일반적으로 이익예상 라이프사이클의 아래쪽에 위치한다')
+        
+        # #totalcycle = Image.open("image.png")
+        # #st.image(totalcycle, caption= "좋은 가치 VS 나쁜가치 VS  좋은 성장 VS 나쁜 성장")
+        # with st.expander("See explanation"):
+        #     st.markdown(" 주식투자자들은 기업의 이익 전망이 직선처럼 움직인다고 착각하고 있지만, **이익 전망의 변화 과정은 원의 모습을 띤다.**")
+        
+        #chart.kor_earning_chart(code,com_name, ttm_df, ann_df)
         try:
-            #value_df = value_df.astype(float).fillna(0).round(decimals=2)
-            st.dataframe(cf_an.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                        .format(precision=2, na_rep='MISSING', thousands=","))
-            st.dataframe(cf_qu.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                  .format(precision=2, na_rep='MISSING', thousands=","))
-        except ValueError :
-            st.dataframe(cf_an)
-            st.dataframe(cf_qu)
-    #투자지표는 따로 크롤링
-    invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
-    in_page = requests.get(invest_url)
-    in_tables = pd.read_html(in_page.text)
-    invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
-    try:
-        invest_table['FCFF'] = invest_table['FCFF'].fillna(0).astype(int)
-    except KeyError:
-        pass
-    with st.expander("See Raw Data"):
+            #PBR PER 차트
+            drawkorchart.pbr_chart(com_name, fn_ann_df.T, fn_qu_df.T)
+            #매출액이 차트
+            drawkorchart.income_chart(ticker, com_name, fn_ann_df.T, fn_qu_df.T, sep_flag)
+            #재무상태표 차트
+            status_tables = getData.get_html_fnguide(ticker,1)
+            status_ratio_tables = getData.get_html_fnguide(ticker,2)
+            status_an = status_tables[2].set_index(status_tables[2].columns[0]).T #연간
+            status_qu = status_tables[3].set_index(status_tables[3].columns[0]).T #분기
+        except TypeError as te :
+            st.error("다음과 같은 Error로 차트를 그릴 수 없습니다!", icon="🚨")
+            st.write(te)
+            #재무비율
+        ratio_an = status_ratio_tables[0].set_index(status_ratio_tables[0].columns[0]).T #연간
+        ratio_qu = status_ratio_tables[1].set_index(status_ratio_tables[1].columns[0]).T #분기
+        drawkorchart.balance_chart(com_name, status_an, status_qu, ratio_an, ratio_qu)
+        #현금 흐름 차트
+        cf_tables = getData.get_html_fnguide(ticker,3)
+        cf_an = status_tables[4].set_index(status_tables[4].columns[0]).T #연간
+        cf_qu = status_tables[5].set_index(status_tables[5].columns[0]).T #분기
+        with st.expander("See Raw Data"):
+            try:
+                #value_df = value_df.astype(float).fillna(0).round(decimals=2)
+                st.dataframe(cf_an.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                st.dataframe(cf_qu.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.dataframe(cf_an)
+                st.dataframe(cf_qu)
+        #투자지표는 따로 크롤링
+        invest_url = "https://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A"+ ticker + "&cID=&MenuYn=Y&ReportGB=D&NewMenuID=105&stkGb=701"
+        in_page = requests.get(invest_url)
+        in_tables = pd.read_html(in_page.text)
+        invest_table = in_tables[3].set_index(in_tables[3].columns[0]).T 
         try:
-            st.dataframe(invest_table.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                  .format(precision=2, na_rep='MISSING', thousands=","))
-        except ValueError :
-            st.dataframe(invest_table)
-    drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
+            invest_table['FCFF'] = invest_table['FCFF'].fillna(0).astype(int)
+        except KeyError:
+            pass
+        with st.expander("See Raw Data"):
+            try:
+                st.dataframe(invest_table.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.dataframe(invest_table)
+        drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
     
         
 if __name__ == "__main__":
