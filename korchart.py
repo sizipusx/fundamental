@@ -134,6 +134,14 @@ def run(ticker, com_name):
     """
     st.markdown(html_br, unsafe_allow_html=True)
     #######################################################
+    rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
+    current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
+    a_yield = int(value_df.iloc[7].replace('%',''))
+    col1, col2, col3 = st.columns(3)
+    col1.metric(label="Price", value = current_price, delta=rim_price)
+    col2.metric(label="PBR", value =round(float(value_df.iloc[13]),2), delta=round(float(value_df.iloc[14]),2))
+    col3.metric("5년 연평균수익률", value =a_yield, delta=round(float(value_df.iloc[-9]),2))
+    #######################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -142,15 +150,15 @@ def run(ticker, com_name):
             fig = go.Figure(go.Indicator(
                 #mode = "number+delta",
                 mode = "gauge+number+delta",
-                value = int(value_df.iloc[3].replace(',','').replace('원', '')), #Rim price
+                value = current_price, #Rim price
                 #delta = {'reference': int(value_df.iloc[13,0]), 'relative': True},
                 title = {'text': f"RIM<br>Price<br><span style='font-size:0.8em;color:gray'>(r={yeild})</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 gauge = {'shape': "bullet",
                         'threshold': {
                         'line': {'color': "red", 'width': 2},
-                        'thickness': 0.75, 'value': float(value_df.iloc[3].replace(',','').replace('원', ''))}},
-                delta = {'reference': int(value_df.iloc[4].replace(',','').replace('원', '')), 'relative': True},
+                        'thickness': 0.75, 'value': rim_price}},
+                delta = {'reference': rim_price, 'relative': True},
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
@@ -167,7 +175,7 @@ def run(ticker, com_name):
                 gauge = {'shape': "bullet",
                         'threshold': {
                         'line': {'color': "red", 'width': 2},
-                        'thickness': 0.75, 'value': round(float(value_df.iloc[13]),2)}},
+                        'thickness': 0.75, 'value': round(float(value_df.iloc[14]),2)}},
                 delta = {'reference': round(float(value_df.iloc[14]),2), 'relative': True}
             ))
             fig.update_layout(height = 250)
