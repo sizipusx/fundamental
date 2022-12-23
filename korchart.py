@@ -111,6 +111,7 @@ def run(ticker, com_name):
     #     st.write("연결")
     tab1, tab2 = st.tabs(["🗃 Valuation", "📈 Chart"])
     with tab1:
+        st.subheader("Valuation")
         #######################################################
         rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
         current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
@@ -225,9 +226,7 @@ def run(ticker, com_name):
         fs_page = requests.get(n_url_f)
         navers_more = pd.read_html(fs_page.text)
         company_basic_info = navers_more[0]
-
-   
-        st.subheader("Valuation")
+        st.subheader("요약 보기")
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
