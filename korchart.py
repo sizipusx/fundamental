@@ -149,8 +149,8 @@ def run(ticker, com_name):
             gauge = {'shape': "bullet",
                     'threshold': {
                     'line': {'color': "red", 'width': 2},
-                    'thickness': 0.75, 'value': float(value_df.iloc[3,0].replace(',','').replace('원', ''))}},
-            delta = {'reference': int(value_df.iloc[3,0].replace(',','').replace('원', '')), 'relative': True},
+                    'thickness': 0.75, 'value': float(value_df.iloc[3].replace(',','').replace('원', ''))}},
+            delta = {'reference': int(value_df.iloc[3].replace(',','').replace('원', '')), 'relative': True},
             ))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
