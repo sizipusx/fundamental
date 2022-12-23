@@ -105,10 +105,10 @@ def run(ticker, com_name):
             st.dataframe(value_df)
             st.dataframe(fn_ann_df.T)
             st.dataframe(fn_qu_df.T)
-    if sep_flag == True:
-        st.write("별도")
-    else:
-        st.write("연결")
+    # if sep_flag == True:
+    #     st.write("별도")
+    # else:
+    #     st.write("연결")
    
     # 좀더 자세히
     n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ ticker+ '&amp;target=finsum_more'
