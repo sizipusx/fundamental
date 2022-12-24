@@ -136,8 +136,11 @@ def run(ticker, com_name):
         col2.metric(label="적정PBR", value =value_df.iloc[14])
         col3.metric("PBR갭수익률", value =value_df.iloc[8])
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="EPS(ttm)", value = value_df.iloc[15])
-        col2.metric(label="PER(ttm)", value =value_df.iloc[16])
+        col1.metric(label=value_df.index[15], value = value_df.iloc[15])
+        if value_df.index[15] == "ttmEPS":
+            col2.metric(label="ttmPER", value =value_df.iloc[16])
+        else:
+            col2.metric(label="예측PER", value =value_df.iloc[16])
         col3.metric("시가수익률", value =value_df.iloc[10])
         col1, col2, col3 = st.columns(3)
         col1.metric(label="5년PBR", value = value_df.iloc[-4])
