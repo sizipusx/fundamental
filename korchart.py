@@ -115,7 +115,8 @@ def run(ticker, com_name):
         #######################################################
         rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
         current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
-        conse_price = int(value_df.iloc[5].replace(',','').replace('원', ''))
+        if value_df.iloc[5] != 0:
+            conse_price = int(value_df.iloc[5].replace(',','').replace('원', ''))
         current_pbr = round(float(value_df.iloc[13]),2)
         pro_pbr = round(float(value_df.iloc[14]),2)
         a_yield = float(value_df.iloc[7].replace('%',''))
