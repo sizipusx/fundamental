@@ -123,7 +123,7 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.iloc[3], delta=current_price-rim_price)
         col2.metric(label="RIM Price", value =value_df.iloc[4], delta=rim_price-current_price)
-        col3.metric("컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
+        col3.metric("컨센 주가", value =value_df.iloc[5], delta=int(value_df.iloc[5])-current_price)
         col1, col2, col3 = st.columns(3)
         col1.metric(label="5년 연평균수익률", value = value_df.iloc[7])
         col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
