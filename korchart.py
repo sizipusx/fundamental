@@ -76,6 +76,15 @@ def load_data():
     krx = krx[~(krx['Market'].str.endswith('X'))]
     return tickers, krx
 
+# 숫자로 모두 변환
+def convert_str_to_float(value):
+    if type(value) == float: # nan의 자료형은 float임
+        return value
+    elif value == '-' or value == 'N/A(IFRS)': # -로 되어 있으면 0으로 변환
+        return np.NaN
+    else:
+        return float(value.replace(',', ''))
+
 
 def run(ticker, com_name):
     # 회사채 BBB- 할인율
@@ -125,19 +134,19 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.iloc[3], delta=current_price-rim_price)
         col2.metric(label="RIM Price", value =value_df.iloc[4], delta=rim_price-current_price)
-        col3.metric("컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
+        col3.metric(label="컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
         col1, col2, col3 = st.columns(3)
         col1.metric(label="5년 연평균수익률", value = value_df.iloc[7])
         col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
-        col3.metric("지속가능기간", value =value_df.iloc[11])
+        col3.metric(label="지속가능기간", value =value_df.iloc[11])
         col1, col2, col3 = st.columns(3)
         col1.metric(label="DPS(mry)", value = value_df.iloc[17])
         col2.metric(label="배당수익률", value =value_df.iloc[9])
-        col3.metric("ROE", value =value_df.iloc[18])
+        col3.metric(label="ROE", value =value_df.iloc[18])
         col1, col2, col3 = st.columns(3)
         col1.metric(label="PBR", value = value_df.iloc[13])
         col2.metric(label="적정PBR", value =value_df.iloc[14])
-        col3.metric("PBR갭수익률", value =value_df.iloc[8])
+        col3.metric(label="PBR갭수익률", value =value_df.iloc[8])
         col1, col2, col3 = st.columns(3)
         col1.metric(label=value_df.index[15], value = value_df.iloc[15])
         if value_df.index[15] == "ttmEPS":
@@ -152,7 +161,33 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="요구수익률", value = value_df.iloc[-9])
         col2.metric(label="ROE/r", value =value_df.iloc[-8])
-        col3.metric("컨센기업수", value =value_df.iloc[-6])
+        col3.metric(label="컨센기업수", value =value_df.iloc[-6])
+        #####################################
+        for ind in fn_ann_df.columns:
+            fn_ann_df[ind] = fn_ann_df[ind].apply(convert_str_to_float)
+        bps = int(value_df.loc['BPS'].replace(',','').replace('원', ''))
+        #ROE 평균 구해보자
+        roe_s = fn_ann_df.loc['ROE']
+        roe_total = roe_s.mean()
+        roe_real = roe_s.iloc[:5].mean()
+        roe_sum = len(roe_s) - roe_s.isnull().sum()
+        if  sep_flag is True:
+            roe_est = roe_s.iloc[5:].mean()
+        else:
+            roe_est = roe_s.iloc[5:].mean()
+        st.subheader("채권형 주식 Valuation")
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
+        col2.metric(label="과거 5년 평균", value =roe_real)
+        col3.metric(label="예측 3년 평균", value =roe_min)
+        roe_min = min(roe_total,roe_real,roe_real)
+        current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
+        f_bps = bps*(1+roe_min/100)**10
+        est_yield = round(((f_bps/current_price)**(1/10)-1)*100,2)
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label=f"bps", value = value_df.loc['BPS'])
+        col2.metric(label="추정 미래 ROE", value =roe_min)
+        col3.metric(label="추정 기대수익률", value =est_yield)
         #######################################################
         # with st.container():
         #     col1, col2, col3 = st.columns([30,2,30])
