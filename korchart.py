@@ -168,13 +168,10 @@ def run(ticker, com_name):
         bps = int(value_df.loc['BPS'].replace(',','').replace('원', ''))
         #ROE 평균 구해보자
         roe_s = fn_ann_df.loc['ROE']
-        roe_total = roe_s.mean()
-        roe_real = roe_s.iloc[:5].mean()
+        roe_total = round(roe_s.mean(),2)
+        roe_real = round(roe_s.iloc[:5].mean(),2)
         roe_sum = len(roe_s) - roe_s.isnull().sum()
-        if  sep_flag is True:
-            roe_est = roe_s.iloc[5:].mean()
-        else:
-            roe_est = roe_s.iloc[5:].mean()
+        roe_est = roe_s.iloc[5:].mean()
         st.subheader("채권형 주식 Valuation")
         col1, col2, col3 = st.columns(3)
         col1.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
