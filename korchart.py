@@ -171,7 +171,7 @@ def run(ticker, com_name):
         roe_total = round(roe_s.mean(),2)
         roe_real = round(roe_s.iloc[:5].mean(),2)
         roe_sum = len(roe_s) - roe_s.isnull().sum()
-        roe_est = roe_s.iloc[5:].mean()
+        roe_est = round(roe_s.iloc[5:].mean(),2)
         st.subheader("채권형 주식 Valuation")
         col1, col2, col3 = st.columns(3)
         col1.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
