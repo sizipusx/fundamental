@@ -179,8 +179,8 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
         col2.metric(label="과거 5년 평균", value =roe_real)
-        col3.metric(label="예측 3년 평균", value =roe_min)
-        roe_min = min(roe_total,roe_real,roe_real)
+        col3.metric(label="예측 3년 평균", value =roe_est)
+        roe_min = min(roe_total,roe_real,roe_est)
         current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
         f_bps = bps*(1+roe_min/100)**10
         est_yield = round(((f_bps/current_price)**(1/10)-1)*100,2)
