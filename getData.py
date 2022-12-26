@@ -394,6 +394,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
   pbr = round(close_price/bps,2)
   datalist.append(pbr)
   #===================EPS: 변수 애널리스트 예측치 또는 최근 4분기 합계==========
+  eps_flag = "ttmEPS"
   eps_value = qu_df.iloc[18,1:5] #22.11.29 EPS [17,] => [18,] 변경
   list4 = [float(x) for x in eps_value.values]
   eps_sum = sum(list4) #이전 분기 EPS 합산
@@ -401,6 +402,7 @@ def make_Valuation(firm_code, firm_name, bond_y):
     anal_est = float(tempdf.iloc[18,3])
     if eps_sum >= anal_est:
       eps = anal_est
+      eps_flag = "예측EPS"
     else:
       eps = eps_sum 
     # print(f"연결이고 추정 EPS가 있을 때  = {eps}")
@@ -563,11 +565,11 @@ def make_Valuation(firm_code, firm_name, bond_y):
   total_period = str(per_period)+"년/"+str(pbr_period)+"년"
   datalist.append(total_period)
   # print("step 18. 총년수 END ==========================")
-  onedf = pd.Series(index=["종목코드", "종목명", "평가일","현재주가", "BPS", "PBR", "EPS(ttm)", "ttmPER", "DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가(RIM)","패리티", "기대수익률(RIM)", \
+  onedf = pd.Series(index=["종목코드", "종목명", "평가일","현재주가", "BPS", "PBR", eps_flag, "ttmPER", "DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가(RIM)","패리티", "기대수익률(RIM)", \
      "적정PBR", "5년 연평균수익률", "PBR갭수익률", "지속가능기간","컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
   #인덱스 순서 변경
   onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가(RIM)", "컨센서스", "기대수익률(RIM)", "5년 연평균수익률", "PBR갭수익률", "배당수익률","시가수익률", "지속가능기간",\
-      "BPS", "PBR", "적정PBR", "EPS(ttm)", "ttmPER", "DPS(MRY)","ROE","요구수익률","r","ROE/r", "패리티", "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
+      "BPS", "PBR", "적정PBR", eps_flag, "ttmPER", "DPS(MRY)","ROE","요구수익률","r","ROE/r", "패리티", "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
 
   return onedf
 
