@@ -146,7 +146,7 @@ def run(ticker, com_name):
         if value_df.index[11] == "ttmEPS":
             col2.metric(label="ttmPER", value =value_df.loc['ttmPER'])
         else:
-            col2.metric(label="예측PER", value =value_df.loc['예측PER'])
+            col2.metric(label="예측PER", value =value_df.loc['ttmPER'])
         col3.metric("시가수익률", value =value_df.loc['시가수익률'])
         col1, col2, col3 = st.columns(3)
         col1.metric(label="5년PBR", value = value_df.loc['5년PBR'])
