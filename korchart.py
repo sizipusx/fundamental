@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import requests
 import json
+import math
 from pandas.io.json import json_normalize
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -122,47 +123,44 @@ def run(ticker, com_name):
     with tab1:
         st.subheader("Valuation")
         #######################################################
-        rim_price = int(value_df.iloc[4].replace(',','').replace('원', ''))
-        current_price = int(value_df.iloc[3].replace(',','').replace('원', ''))
-        if value_df.iloc[5] == 0:
-            conse_price = int(value_df.iloc[5])
+        rim_price = int(value_df.iloc['적정주가(RIM)'].replace(',','').replace('원', ''))
+        current_price = int(value_df.iloc['현재주가'].replace(',','').replace('원', ''))
+        if value_df.iloc['컨센서스'] == 0:
+            conse_price = int(value_df.iloc['컨센서스'])
         else:
-            conse_price = int(value_df.iloc[5].replace(',','').replace('원', ''))
-        current_pbr = round(float(value_df.iloc[13]),2)
-        pro_pbr = round(float(value_df.iloc[14]),2)
+            conse_price = int(value_df.iloc['컨센서스'].replace(',','').replace('원', ''))
+        current_pbr = round(float(value_df.iloc['PBR']),2)
         a_yield = float(value_df.iloc[7].replace('%',''))
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="현재 주가", value = value_df.iloc[3], delta=current_price-rim_price)
-        col2.metric(label="RIM Price", value =value_df.iloc[4], delta=rim_price-current_price)
+        col1.metric(label="현재 주가", value = value_df.iloc['현재주가'], delta=current_price-rim_price)
+        col2.metric(label="RIM Price", value =value_df.iloc['적정주가(RIM)'], delta=rim_price-current_price)
         col3.metric(label="컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
+
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="5년 연평균수익률", value = value_df.iloc[7])
-        col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
-        col3.metric(label="지속가능기간", value =value_df.iloc[11])
-        col1, col2, col3 = st.columns(3)
-        col1.metric(label="DPS(mry)", value = value_df.iloc[17])
-        col2.metric(label="배당수익률", value =value_df.iloc[9])
-        col3.metric(label="ROE", value =value_df.iloc[18])
-        col1, col2, col3 = st.columns(3)
-        col1.metric(label="PBR", value = value_df.iloc[13])
-        col2.metric(label="적정PBR", value =value_df.iloc[14])
-        col3.metric(label="PBR갭수익률", value =value_df.iloc[8])
+        col1.metric(label="DPS(mry)", value = value_df.iloc['DPS(MRY)'])
+        col2.metric(label="배당수익률", value =value_df.iloc['배당수익률'])
+        col3.metric(label="기대수익률(RIM)", value =value_df.iloc['기대수익률(RIM)'])
+
         col1, col2, col3 = st.columns(3)
         col1.metric(label=value_df.index[15], value = value_df.iloc[15])
         if value_df.index[15] == "ttmEPS":
             col2.metric(label="ttmPER", value =value_df.iloc[16])
         else:
             col2.metric(label="예측PER", value =value_df.iloc[16])
-        col3.metric("시가수익률", value =value_df.iloc[10])
+        col3.metric("시가수익률", value =value_df.iloc['시가수익률'])
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="5년PBR", value = value_df.iloc[-4])
-        col2.metric(label="5년PER", value =value_df.iloc[-5])
-        col3.metric("PER/PBR평균", value =value_df.iloc[-1])
+        col1.metric(label="5년PBR", value = value_df.iloc['5년PBR'])
+        col2.metric(label="5년PER", value =value_df.iloc['5년PER'])
+        col3.metric("PER/PBR평균", value =value_df.iloc['PER/PBR평균'])
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="요구수익률", value = value_df.iloc[-9])
-        col2.metric(label="ROE/r", value =value_df.iloc[-8])
-        col3.metric(label="컨센기업수", value =value_df.iloc[-6])
-        #####################################
+        col1.metric(label="요구수익률", value = value_df.iloc['요구수익률'])
+        col2.metric(label="ROE/r", value =value_df.iloc['ROE/r'])
+        col3.metric(label="컨센기업수", value =value_df.iloc['컨센기업수'])
+        ################채권형 주식 valuation #######################
+        #지속가능기간 10년 고정
+        lasting_N = 10
+        #기대수익률 15% 고정
+        expect_yield = 0.15
         for ind in fn_ann_df.columns:
             fn_ann_df[ind] = fn_ann_df[ind].apply(convert_str_to_float)
         bps = int(value_df.loc['BPS'].replace(',','').replace('원', ''))
@@ -173,18 +171,37 @@ def run(ticker, com_name):
         roe_sum = len(roe_s) - roe_s.isnull().sum()
         roe_est = round(roe_s.iloc[5:].mean(),2)
         st.subheader("채권형 주식 Valuation")
-        col1, col2, col3 = st.columns(3)
-        col1.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
-        col2.metric(label="과거 5년 평균", value =roe_real)
-        col3.metric(label="예측 3년 평균", value =roe_est)
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric(label="현재 ROE", value =value_df.loc['ROE'])
+        col2.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
+        col3.metric(label="과거 5년 평균", value =roe_real)
+        col4.metric(label="예측 3년 평균", value =roe_est)
         roe_min = min(roe_total,roe_real,roe_est)
         current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
-        f_bps = bps*(1+roe_min/100)**10
-        est_yield = round(((f_bps/current_price)**(1/10)-1)*100,2)
+        f_bps = bps*(1+roe_min/100)**lasting_N
+        est_yield = round(((f_bps/current_price)**(1/lasting_N)-1)*100,2)
         col1, col2, col3 = st.columns(3)
-        col1.metric(label=f"bps", value = value_df.loc['BPS'])
+        col1.metric(label="bps", value = value_df.loc['BPS'])
         col2.metric(label="추정 미래 ROE", value =roe_min)
-        col3.metric(label="추정 기대수익률", value =est_yield)
+        col3.metric(label="10년 기대수익률(CAGR)", value =est_yield,  delta=est_yield-expect_yield*100)
+        ################홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 10년
+        log_v = (1+roe_min/100)/(1+expect_yield)
+        target_pbr = (log_v)**lasting_N
+        ### 장기 기대수익률
+        longp_yield = round(((1+roe_min/100)/current_pbr**(1/lasting_N)-1)*100,2)
+        ### 갭수익률 적정PBR/시가PBR -1
+        gap_yield = round((target_pbr/current_pbr -1)*100,2)
+        ### 지속 가능 기간
+        last_p = round(math.log(current_pbr,log_v),1)
+        st.subheader("홍진채 주식 Valuation")
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="PBR", value = value_df.iloc['PBR'])
+        col2.metric(label="적정PBR", value =target_pbr)
+        col3.metric(label="PBR갭수익률", value =gap_yield, delta=current_pbr-target_pbr)
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=longp_yield-expect_yield*100)
+        col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
+        col3.metric(label="지속가능기간", value =last_p+"년")
         #######################################################
         # with st.container():
         #     col1, col2, col3 = st.columns([30,2,30])

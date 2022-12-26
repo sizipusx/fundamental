@@ -482,19 +482,6 @@ def make_Valuation(firm_code, firm_name, bond_y):
   expect = round((want_price/close_price - 1)*100,2)
   datalist.append(str(expect)+"%")
   # print("step 11. 기대수익률 END ==========================")
-  ##홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 10년
-  log_v = (1+roe/100)/(1+r/100)
-  target_pbr = (log_v)**10
-  ### 장기 기대수익률
-  longp_yield = round(((1+roe/100)/pbr**(1/10)-1)*100,2)
-  ### 갭수익률 적정PBR/시가PBR -1
-  gap_yield = round((target_pbr/pbr -1)*100,2)
-  ### 지속 가능 기간
-  last_p = round(math.log(pbr,log_v),1)
-  datalist.append(round(target_pbr,2))
-  datalist.append(str(longp_yield)+"%")
-  datalist.append(str(gap_yield)+"%")
-  datalist.append(str(last_p)+"Y")
   #컨센서스
   if fs_tables[7].loc[0,'목표주가'] == "관련 데이터가 없습니다.":
     datalist.append(0)
