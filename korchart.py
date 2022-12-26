@@ -129,7 +129,7 @@ def run(ticker, com_name):
             conse_price = int(value_df.loc['컨센서스'])
         else:
             conse_price = int(value_df.loc['컨센서스'].replace(',','').replace('원', ''))
-        current_pbr = round(float(value_df.iloc['PBR']),2)
+        current_pbr = round(float(value_df.loc['PBR']),2)
         a_yield = float(value_df.iloc[7].replace('%',''))
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta=current_price-rim_price)
