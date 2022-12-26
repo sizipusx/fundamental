@@ -134,7 +134,7 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta=current_price-rim_price)
         col2.metric(label="RIM Price", value =value_df.loc['적정주가(RIM)'], delta=rim_price-current_price)
-        col3.metric(label="컨센 주가", value =value_df.loc[5], delta=conse_price-current_price)
+        col3.metric(label="컨센 주가", value =value_df.loc['컨센서스'], delta=conse_price-current_price)
 
         col1, col2, col3 = st.columns(3)
         col1.metric(label="DPS(mry)", value = value_df.loc['DPS(MRY)'])
