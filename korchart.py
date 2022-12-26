@@ -121,41 +121,41 @@ def run(ticker, com_name):
     #     st.write("연결")
     tab1, tab2 = st.tabs(["🗃 Valuation", "📈 Chart"])
     with tab1:
-        st.subheader("Valuation")
+        st.subheader("BED Valuation")
         #######################################################
-        rim_price = int(value_df.iloc['적정주가(RIM)'].replace(',','').replace('원', ''))
-        current_price = int(value_df.iloc['현재주가'].replace(',','').replace('원', ''))
-        if value_df.iloc['컨센서스'] == 0:
-            conse_price = int(value_df.iloc['컨센서스'])
+        rim_price = int(value_df.loc['적정주가(RIM)'].replace(',','').replace('원', ''))
+        current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
+        if value_df.loc['컨센서스'] == 0:
+            conse_price = int(value_df.loc['컨센서스'])
         else:
-            conse_price = int(value_df.iloc['컨센서스'].replace(',','').replace('원', ''))
+            conse_price = int(value_df.loc['컨센서스'].replace(',','').replace('원', ''))
         current_pbr = round(float(value_df.iloc['PBR']),2)
         a_yield = float(value_df.iloc[7].replace('%',''))
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="현재 주가", value = value_df.iloc['현재주가'], delta=current_price-rim_price)
-        col2.metric(label="RIM Price", value =value_df.iloc['적정주가(RIM)'], delta=rim_price-current_price)
-        col3.metric(label="컨센 주가", value =value_df.iloc[5], delta=conse_price-current_price)
+        col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta=current_price-rim_price)
+        col2.metric(label="RIM Price", value =value_df.loc['적정주가(RIM)'], delta=rim_price-current_price)
+        col3.metric(label="컨센 주가", value =value_df.loc[5], delta=conse_price-current_price)
 
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="DPS(mry)", value = value_df.iloc['DPS(MRY)'])
-        col2.metric(label="배당수익률", value =value_df.iloc['배당수익률'])
-        col3.metric(label="기대수익률(RIM)", value =value_df.iloc['기대수익률(RIM)'])
+        col1.metric(label="DPS(mry)", value = value_df.loc['DPS(MRY)'])
+        col2.metric(label="배당수익률", value =value_df.loc['배당수익률'])
+        col3.metric(label="기대수익률(RIM)", value =value_df.loc['기대수익률(RIM)'])
 
         col1, col2, col3 = st.columns(3)
-        col1.metric(label=value_df.index[15], value = value_df.iloc[15])
-        if value_df.index[15] == "ttmEPS":
-            col2.metric(label="ttmPER", value =value_df.iloc[16])
+        col1.metric(label=value_df.index[11], value = value_df.iloc[11])
+        if value_df.index[11] == "ttmEPS":
+            col2.metric(label="ttmPER", value =value_df.loc['ttmPER'])
         else:
-            col2.metric(label="예측PER", value =value_df.iloc[16])
-        col3.metric("시가수익률", value =value_df.iloc['시가수익률'])
+            col2.metric(label="예측PER", value =value_df.loc['예측PER'])
+        col3.metric("시가수익률", value =value_df.loc['시가수익률'])
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="5년PBR", value = value_df.iloc['5년PBR'])
-        col2.metric(label="5년PER", value =value_df.iloc['5년PER'])
-        col3.metric("PER/PBR평균", value =value_df.iloc['PER/PBR평균'])
+        col1.metric(label="5년PBR", value = value_df.loc['5년PBR'])
+        col2.metric(label="5년PER", value =value_df.loc['5년PER'])
+        col3.metric("PER/PBR평균", value =value_df.loc['PER/PBR평균'])
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="요구수익률", value = value_df.iloc['요구수익률'])
-        col2.metric(label="ROE/r", value =value_df.iloc['ROE/r'])
-        col3.metric(label="컨센기업수", value =value_df.iloc['컨센기업수'])
+        col1.metric(label="요구수익률", value = value_df.loc['요구수익률'])
+        col2.metric(label="ROE/r", value =value_df.loc['ROE/r'])
+        col3.metric(label="컨센기업수", value =value_df.loc['컨센기업수'])
         ################채권형 주식 valuation #######################
         #지속가능기간 10년 고정
         lasting_N = 10
@@ -195,13 +195,12 @@ def run(ticker, com_name):
         last_p = round(math.log(current_pbr,log_v),1)
         st.subheader("홍진채 주식 Valuation")
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="PBR", value = value_df.iloc['PBR'])
+        col1.metric(label="PBR", value = value_df.loc['PBR'])
         col2.metric(label="적정PBR", value =target_pbr)
         col3.metric(label="PBR갭수익률", value =gap_yield, delta=current_pbr-target_pbr)
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         col1.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=longp_yield-expect_yield*100)
-        col2.metric(label="기대수익률(RIM)", value =value_df.iloc[6])
-        col3.metric(label="지속가능기간", value =last_p+"년")
+        col2.metric(label="지속가능기간", value =last_p+"년")
         #######################################################
         # with st.container():
         #     col1, col2, col3 = st.columns([30,2,30])
