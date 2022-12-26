@@ -566,9 +566,9 @@ def make_Valuation(firm_code, firm_name, bond_y):
   datalist.append(total_period)
   # print("step 18. 총년수 END ==========================")
   onedf = pd.Series(index=["종목코드", "종목명", "평가일","현재주가", "BPS", "PBR", eps_flag, "ttmPER", "DPS(MRY)","ROE","요구수익률","배당수익률","시가수익률", "r","ROE/r","적정주가(RIM)","패리티", "기대수익률(RIM)", \
-     "적정PBR", "5년 연평균수익률", "PBR갭수익률", "지속가능기간","컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
+    "컨센서스","컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"], data=datalist)
   #인덱스 순서 변경
-  onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가(RIM)", "컨센서스", "기대수익률(RIM)", "5년 연평균수익률", "PBR갭수익률", "배당수익률","시가수익률", "지속가능기간",\
+  onedf = onedf[["종목코드", "종목명", "평가일","현재주가", "적정주가(RIM)", "컨센서스", "기대수익률(RIM)",  "배당수익률","시가수익률", \
       "BPS", "PBR", "적정PBR", eps_flag, "ttmPER", "DPS(MRY)","ROE","요구수익률","r","ROE/r", "패리티", "컨센기업수","5년PER","5년PBR","PERR","PBRR","PER/PBR평균"]]
 
   return onedf
