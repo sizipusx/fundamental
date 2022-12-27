@@ -340,7 +340,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
-def valuation_change(com_name, fr_df)
+def valuation_change(com_name, fr_df):
     title = '('  + com_name + ') <b>기대수익률 변화</b>'
     titles = dict(text= title, x=0.5, y = 0.85)
     fig = go.Figure()
