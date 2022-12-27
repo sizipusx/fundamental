@@ -233,6 +233,7 @@ def pbr_chart(company_name, income_df, income_df_q):
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="배", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = '%Y.%m')
+            fig.add_hline(y=income_df.loc[:,'ROE'], line_width=2, line_dash="solid", line_color="blue",  annotation_text="ROE 평균", annotation_position="bottom right")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
         with col2:
@@ -261,6 +262,7 @@ def pbr_chart(company_name, income_df, income_df_q):
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="배", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.add_hline(y=income_df.loc[:,'ROE'], line_width=2, line_dash="solid", line_color="blue",  annotation_text="ROE 평균", annotation_position="bottom right")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
