@@ -402,8 +402,8 @@ def run(ticker, com_name):
                 time_gap= datetime.timedelta(hours=9)
                 kor_time= utcnow+ time_gap
                 now_date = kor_time.strftime('%Y%m%d')
-                getData.
-                drawkorchart.valuation_change(ticker, com_name, price_df)
+                fn_history = getData.load_pykrx_data(ticker)
+                drawkorchart.valuation_change(ticker, com_name, fn_history)
             with col2:
                 st.write("")
             with col3:
