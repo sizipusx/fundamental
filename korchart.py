@@ -81,7 +81,7 @@ def load_data():
 def convert_str_to_float(value):
     if type(value) == float: # nan의 자료형은 float임
         return value
-    elif value == '-' or value == 'N/A(IFRS)': # -로 되어 있으면 0으로 변환
+    elif value == '-' or value == 'N/A(IFRS)' or value == '완전잠식': # -로 되어 있으면 0으로 변환
         return np.NaN
     else:
         return float(value.replace(',', ''))
