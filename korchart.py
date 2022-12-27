@@ -1,5 +1,7 @@
 import time
 from datetime import datetime
+import datetime
+from dateutil.relativedelta import relativedelta
 
 import numpy as np
 import pandas as pd
@@ -396,8 +398,7 @@ def run(ticker, com_name):
             with col1:
                 # candlestick chart
                 st.subheader("Valuation Change")
-                import datetime
-                from dateutil.relativedelta import relativedelta
+
                 utcnow= datetime.datetime.utcnow()
                 time_gap= datetime.timedelta(hours=9)
                 kor_time= utcnow+ time_gap
