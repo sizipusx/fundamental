@@ -77,15 +77,6 @@ def load_data():
     krx = krx[~(krx['Market'].str.endswith('X'))]
     return tickers, krx
 
-def load_pykrx_data(ticker, now_date):
-    #재무데이터 
-    fr_df = stock.get_market_fundamental("20000101", now_date, ticker, freq="y")
-    #가격 데이터 가져오기
-    pr_df = stock.get_market_ohlcv("20000101", now_date, ticker, freq="y")
-    #pr_df
-    fr_df['Close'] = pr_df['종가']
-    return fr_df
-
 # 숫자로 모두 변환
 def convert_str_to_float(value):
     if type(value) == float: # nan의 자료형은 float임
