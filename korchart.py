@@ -171,8 +171,9 @@ def run(ticker, com_name):
         roe_sum = len(roe_s) - roe_s.isnull().sum()
         roe_est = round(roe_s.iloc[5:].mean(),2)
         st.subheader("채권형 주식 Valuation")
+        current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE", value =value_df.loc['ROE'].replace(',','').replace('원', ''))
+        col1.metric(label="현재 ROE", value =current_roe)
         col2.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
         col3.metric(label="과거 5년 평균", value =roe_real)
         col4.metric(label="예측 3년 평균", value =roe_est)
@@ -187,20 +188,21 @@ def run(ticker, com_name):
         ################홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 10년
         log_v = (1+roe_min/100)/(1+expect_yield)
         target_pbr = round((log_v)**lasting_N,2)
-        ### 장기 기대수익률
-        longp_yield = round(((1+roe_min/100)/current_pbr**(1/lasting_N)-1)*100,2)
+        ### 장기 기대수익률(채권현 주식(roe_min)과 다르게 현재 ROE로 계산 해 보자)
+        longp_yield = round(((1+current_roe/100)/current_pbr**(1/lasting_N)-1)*100,2)
         ### 갭수익률 적정PBR/시가PBR -1
         gap_yield = round((target_pbr/current_pbr -1)*100,2)
         ### 지속 가능 기간
         last_p = round(math.log(current_pbr,log_v),1)
         st.subheader("홍진채 주식 Valuation")
         col1, col2, col3 = st.columns(3)
+        col1.metric(label="현재 ROE", value =current_roe)
+        col2.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=longp_yield-expect_yield*100)
+        col2.metric(label="지속가능기간", value =str(last_p)+"년")
+        col1, col2, col3 = st.columns(3)
         col1.metric(label="PBR", value = value_df.loc['PBR'])
         col2.metric(label="적정PBR", value =target_pbr)
         col3.metric(label="PBR갭수익률", value =gap_yield, delta=current_pbr-target_pbr)
-        col1, col2 = st.columns(2)
-        col1.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=longp_yield-expect_yield*100)
-        col2.metric(label="지속가능기간", value =str(last_p)+"년")
         #######################################################
         # with st.container():
         #     col1, col2, col3 = st.columns([30,2,30])
