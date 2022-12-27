@@ -119,7 +119,7 @@ def run(ticker, com_name):
     #     st.write("별도")
     # else:
     #     st.write("연결")
-    tab1, tab2 = st.tabs(["🗃 Valuation", "📈 Chart"])
+    tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "Valuation Chart"])
     with tab1:
         st.subheader("BED Valuation")
         #######################################################
@@ -390,7 +390,28 @@ def run(ticker, com_name):
             except ValueError :
                 st.dataframe(invest_table)
         drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
-    
+    with tab3:
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                # candlestick chart
+                st.subheader("Valuation Change")
+                import datetime
+                from dateutil.relativedelta import relativedelta
+                utcnow= datetime.datetime.utcnow()
+                time_gap= datetime.timedelta(hours=9)
+                kor_time= utcnow+ time_gap
+                now_date = kor_time.strftime('%Y%m%d')
+                getData.
+                drawkorchart.valuation_change(ticker, com_name, price_df)
+            with col2:
+                st.write("")
+            with col3:
+                drawkorchart.dividend_chart(com_name, fn_ann_df.T)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
