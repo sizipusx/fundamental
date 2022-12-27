@@ -339,3 +339,34 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
+
+def valuation_change(com_name, fr_df)
+    title = '('  + com_name + ') <b>기대수익률 변화</b>'
+    titles = dict(text= title, x=0.5, y = 0.85)
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=fr_df.index,
+        y=fr_df['expect_py'],
+        text=fr_df['expect_py'],
+        textposition='auto',
+        name='현재ROE 기준 기대수익률',
+        marker_color='indianred'
+    ))
+    fig.add_trace(go.Bar(
+        x=fr_df.index,
+        y=fr_df['expect_ay'],
+        text=fr_df['expect_ay'],
+        textposition='auto',
+        name='평균ROE 기준 기대수익률',
+        marker_color='lightsalmon'
+    ))
+
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig.update_layout(barmode='group', xaxis_tickangle=-45)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m')
+    fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%")
+    fig.add_hline(y=fr_df.loc[:,'expect_py'].mean(), line_width=1.5, line_dash="dot", line_color="indianred",  annotation_text=round(fr_df.loc[:,'expect_py'].mean(),2), annotation_position="bottom right")
+    fig.add_hline(y=fr_df.loc[:,'expect_ay'].mean(), line_width=1.5, line_dash="dot", line_color="lightsalmon",  annotation_text=round(fr_df.loc[:,'expect_ay'].mean(),2), annotation_position="bottom right")
+    fig.add_hline(y=15.0, line_width=1, line_dash="solid", line_color="black",  annotation_text="기준 기대수익률", annotation_position="bottom right")
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
