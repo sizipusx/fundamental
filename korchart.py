@@ -198,7 +198,7 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 ROE", value =current_roe)
         col2.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=longp_yield-expect_yield*100)
-        col2.metric(label="지속가능기간", value =str(last_p)+"년")
+        col3.metric(label="지속가능기간", value =str(last_p)+"년")
         col1, col2, col3 = st.columns(3)
         col1.metric(label="PBR", value = value_df.loc['PBR'])
         col2.metric(label="적정PBR", value =target_pbr)
