@@ -121,7 +121,7 @@ def run(ticker, com_name):
     #     st.write("별도")
     # else:
     #     st.write("연결")
-    tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "Valuation Chart"])
+    tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
         st.subheader("BED Valuation")
         #######################################################
