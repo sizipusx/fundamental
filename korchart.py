@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+# from datetime import datetime
 import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -305,7 +305,7 @@ def run(ticker, com_name):
             with col1:
                 # candlestick chart
                 st.subheader("Candlestick Chart")
-                now = datetime.now() +pd.DateOffset(days=-4000)
+                now = datetime.datetime.now() +pd.DateOffset(days=-4000)
                 start_date = '%s-%s-%s' % ( now.year, now.month, now.day)
                 price_df = fdr.DataReader(ticker,start_date)
                 chart.price_chart(ticker, com_name, price_df)
@@ -403,7 +403,7 @@ def run(ticker, com_name):
                 time_gap= datetime.timedelta(hours=9)
                 kor_time= utcnow+ time_gap
                 now_date = kor_time.strftime('%Y%m%d')
-                fn_history = getData.load_pykrx_data(ticker)
+                fn_history = getData.load_pykrx_data(ticker,now_date)
                 drawkorchart.valuation_change(com_name, fn_history)
             with col2:
                 st.write("")
