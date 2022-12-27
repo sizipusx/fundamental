@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from alpha_vantage.fundamentaldata import FundamentalData 
 import FinanceDataReader as fdr
+from pykrx import stock
 import requests
 import json
 from pandas.io.json import json_normalize
@@ -618,5 +619,22 @@ def get_html_fnguide(ticker,gb):
         return None
 
     return fs_tables
+
+    def load_pykrx_data(ticker, now_date):
+      #재무데이터 
+      fr_df = stock.get_market_fundamental("20000101", now_date, ticker, freq="y")
+      #가격 데이터 가져오기
+      pr_df = stock.get_market_ohlcv("20000101", now_date, ticker, freq="y")
+      #pr_df
+      fr_df['Close'] = pr_df['종가']
+      fr_df['ROE'] = fr_df['EPS']/fr_df['BPS']
+      fr_df['ROE10'] = fr_df['ROE'].rolling(10).mean()
+      #현재 ROE가 10년 지속될 때 자산가치
+      fr_df['p10bps'] = fr_df['BPS']*(1+fr_df['ROE'])**10
+      #과거 ROE 10년 평균이 10년 지속될 때 자산가치
+      fr_df['a10bps'] = fr_df['BPS']*(1+fr_df['ROE10'])**10
+      fr_df['expect_py'] = round(((fr_df['p10bps']/fr_df['Close'])**(1/10)-1)*100,2)
+      fr_df['expect_ay'] = round(((fr_df['a10bps']/fr_df['Close'])**(1/10)-1)*100,2)
+      return fr_df
   
 
