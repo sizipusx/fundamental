@@ -403,7 +403,7 @@ def run(ticker, com_name):
                 kor_time= utcnow+ time_gap
                 now_date = kor_time.strftime('%Y%m%d')
                 fn_history = getData.load_pykrx_data(ticker)
-                drawkorchart.valuation_change(ticker, com_name, fn_history)
+                drawkorchart.valuation_change(com_name, fn_history)
             with col2:
                 st.write("")
             with col3:
