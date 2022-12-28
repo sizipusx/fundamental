@@ -422,22 +422,26 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        ### Draw 광역시도 전체 기간 누적 차트 ##########
+        ### Draw 광역시도 2년 누적 차트 ##########
+        cum_mdf_slice = (1+mdf_change.iloc[-104:]/100).cumprod() -1
+        cum_mdf_slice = cum_mdf_slice.round(decimals=3)
+        cum_jdf_slice = (1+jdf_change.iloc[-104:]/100).cumprod() -1
+        cum_jdf_slice = cum_jdf_slice.round(decimals=3)
+        cum_omdf_slice = (1+omdf_change.iloc[-104:]/100).cumprod() -1
+        cum_omdf_slice = cum_omdf_slice.round(decimals=3)
+        cum_ojdf_slice = (1+ojdf_change.iloc[-104:]/100).cumprod() -1
+        cum_ojdf_slice = cum_ojdf_slice.round(decimals=3)
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 flag = 'KB'
                 citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
-                cum_mdf_slice = cum_mdf.iloc[-104:]
-                cum_jdf_slice = cum_jdf.iloc[-104:]
                 drawAPT_weekly.draw_flower_together(citys, cum_mdf_slice, cum_jdf_slice, flag)
 
             with col2:
                 st.write("")
             with col3:
                 flag = '부동산원'
-                cum_omdf_slice = cum_mdf.iloc[-104:]
-                cum_ojdf_slice = cum_mdf.iloc[-104:]
                 drawAPT_weekly.draw_flower_together(citys, cum_omdf_slice, cum_ojdf_slice, flag)
                 
         html_br="""
