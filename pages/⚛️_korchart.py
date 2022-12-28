@@ -387,15 +387,21 @@ def run(ticker, com_name):
                 st.dataframe(invest_table)
         drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
     with tab3:
+        st.subheader("Valuation Change")
+        utcnow= datetime.datetime.utcnow()
+        time_gap= datetime.timedelta(hours=9)
+        kor_time= utcnow+ time_gap
+        now_date = kor_time.strftime('%Y%m%d')
+        fn_history = getData.load_pykrx_data(ticker,now_date)
+        with st.expander("See Raw Data"):
+            try:
+                st.dataframe(fn_history.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.dataframe(fn_history)
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                st.subheader("Valuation Change")
-                utcnow= datetime.datetime.utcnow()
-                time_gap= datetime.timedelta(hours=9)
-                kor_time= utcnow+ time_gap
-                now_date = kor_time.strftime('%Y%m%d')
-                fn_history = getData.load_pykrx_data(ticker,now_date)
                 drawkorchart.valuation_change(com_name, fn_history)
             with col2:
                 st.write("")
