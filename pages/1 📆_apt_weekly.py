@@ -842,7 +842,6 @@ if __name__ == "__main__":
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
     s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
-    st.dataframe(s_df)
     data_load_state.text("Data retrieve Done!")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
