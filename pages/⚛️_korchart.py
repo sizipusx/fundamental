@@ -232,7 +232,7 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="PBR", value = value_df.loc['PBR'])
         col2.metric(label="적정PBR", value =target_pbr)
-        col3.metric(label="PBR갭수익률", value =gap_yield, delta=current_pbr-target_pbr)
+        col3.metric(label="PBR갭수익률", value =gap_yield, delta=round(current_pbr-target_pbr,2))
         #######################################################
         # with st.container():
         #     col1, col2, col3 = st.columns([30,2,30])

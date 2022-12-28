@@ -354,7 +354,7 @@ def valuation_change(com_name, fr_df):
     for y_data, color in zip(y_data_line, marker_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
-                                    text= fr_df[y_data], textposition = 'top center', marker_color = color),
+                                    text= round(fr_df[y_data]*100,2), textposition = 'top center', marker_color = color),
                                     secondary_y = True)
     #fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='기대수익률', range=[0, max(fr_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
