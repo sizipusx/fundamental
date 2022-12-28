@@ -428,13 +428,17 @@ def draw_basic():
             with col1:
                 flag = 'KB'
                 citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
-                drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+                cum_mdf_slice = cum_mdf.iloc[-1:-104]
+                cum_jdf_slice = cum_jdf.iloc[-1:-104]
+                drawAPT_weekly.draw_flower_together(citys, cum_mdf_slice, cum_jdf_slice, flag)
 
             with col2:
                 st.write("")
             with col3:
                 flag = '부동산원'
-                drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+                cum_omdf_slice = cum_mdf.iloc[-1:-104]
+                cum_ojdf_slice = cum_mdf.iloc[-1:-104]
+                drawAPT_weekly.draw_flower_together(citys, cum_omdf_slice, cum_ojdf_slice, flag)
                 
         html_br="""
         <br>
@@ -446,13 +450,13 @@ def draw_basic():
             with col1:
                 flag = 'KB'
                 citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-                drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+                drawAPT_weekly.draw_flower_together(citys, cum_mdf_slice, cum_jdf_slice, flag)
 
             with col2:
                 st.write("")
             with col3:
                 flag = '부동산원'
-                drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+                drawAPT_weekly.draw_flower_together(citys, cum_ojdf_slice, cum_ojdf_slice, flag)
                 
         html_br="""
         <br>
