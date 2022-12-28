@@ -375,13 +375,13 @@ def pykrx_chart(com_name, fr_df):
     y_data_line = ['Close']
     y_data_bar = ['PBR']
     for y_data, color in zip(y_data_bar, marker_colors) :
-        fig.add_trace(go.Bar(name = y_data, x = fr_df.index, y = fr_df.loc[:,y_data], 
+        fig.add_trace(go.Bar(name = y_data, x = fr_df.index, y = round(fr_df.loc[:,y_data],2), 
                             text= fr_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
     
     for y_data, color in zip(y_data_line, marker_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
-                                    text= fr_df[y_data], textposition = 'top center', marker_color = color),
+                                    text= fr_df[y_data], textposition = 'top center', marker_color = marker_colors[1]),
                                     secondary_y = True)
     #fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='PBR', range=[0, max(fr_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
