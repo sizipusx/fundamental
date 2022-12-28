@@ -381,11 +381,11 @@ def pykrx_chart(com_name, fr_df):
     for y_data, color in zip(y_data_line, marker_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
-                                    text= fr_df[y_data], textposition = 'top center', marker_color = marker_colors[1]),
+                                    text= round(fr_df[y_data],2), textposition = 'top center', marker_color = marker_colors[1]),
                                     secondary_y = True)
     #fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(title_text='PBR', range=[0, max(fr_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-    fig.update_yaxes(title_text='종가', range=[-max(fr_df.loc[:,y_data_line[0]]), max(fr_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(title_text='PBR',  secondary_y = False) #range=[0, max(fr_df.loc[:,y_data_bar[0]])*2],
+    fig.update_yaxes(title_text='종가',  secondary_y = True) #range=[-max(fr_df.loc[:,y_data_line[0]]), max(fr_df.loc[:,y_data_line[0]])* 1.2],
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="배", secondary_y = False)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="원", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y')
