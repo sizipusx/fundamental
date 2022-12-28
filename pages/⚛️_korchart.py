@@ -393,12 +393,6 @@ def run(ticker, com_name):
         kor_time= utcnow+ time_gap
         now_date = kor_time.strftime('%Y%m%d')
         fn_history = getData.load_pykrx_data(ticker,now_date)
-        with st.expander("See Raw Data"):
-            try:
-                st.dataframe(fn_history.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-            except ValueError :
-                st.dataframe(fn_history)
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -411,6 +405,12 @@ def run(ticker, com_name):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        with st.expander("See Raw Data"):
+            try:
+                st.dataframe(fn_history.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.dataframe(fn_history)
         
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
