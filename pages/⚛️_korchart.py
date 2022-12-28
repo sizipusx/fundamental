@@ -163,21 +163,13 @@ def run(ticker, com_name):
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
-                #PEG 
-                # fig = go.Figure(go.Indicator(
-                # mode = "number+delta",
-                # value = value_df.iloc[7,0],
-                # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
-                # domain = {'x': [0, 1], 'y': [0, 1]},
-                # delta = {'reference': 1.5}))
-                # st.plotly_chart(fig)
             with col2:
                 st.write("")
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = longp_yield,
-                title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -215,8 +207,8 @@ def run(ticker, com_name):
         col2.metric(label="5년PER", value =value_df.loc['5년PER'])
         col3.metric("PER/PBR평균", value =value_df.loc['PER/PBR평균'])
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="PBRR", value =value_df.loc['PBRR'], delta=2.0)
-        col2.metric(label="PERR", value =value_df.loc['PERR'], delta=2.0)
+        col1.metric(label="PBRR", value =value_df.loc['PBRR'], delta=float(value_df.loc['PBRR'])-2.0)
+        col2.metric(label="PERR", value =value_df.loc['PERR'], delta=float(value_df.loc['PERR'])-2.0)
         col3.metric(label="요구수익률", value = value_df.loc['요구수익률'])
         col4.metric(label="ROE/r", value =value_df.loc['ROE/r'])
         #############################################
