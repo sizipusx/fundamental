@@ -97,15 +97,41 @@ def run(ticker, com_name):
     yeild = in_tables[0].iloc[-1,-1]
     #make BED valuation
     value_df = getData.make_Valuation(ticker, com_name, yeild)
-    
+    # Fnguide에서 원본 데이터 가져오기
+    sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(ticker)
+    ################채권형 주식 valuation #######################
+    #지속가능기간 10년 고정
+    lasting_N = 10
+    #기대수익률 15% 고정
+    expect_yield = 0.15
+    for ind in fn_ann_df.columns:
+        fn_ann_df[ind] = fn_ann_df[ind].apply(convert_str_to_float)
+    bps = int(value_df.loc['BPS'].replace(',','').replace('원', ''))
+    #ROE 평균 구해보자
+    roe_s = fn_ann_df.loc['ROE']
+    roe_total = round(roe_s.mean(),2)
+    roe_real = round(roe_s.iloc[:5].mean(),2)
+    roe_sum = len(roe_s) - roe_s.isnull().sum()
+    roe_est = round(roe_s.iloc[5:].mean(),2)
+    current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
+    roe_min = min(roe_total,roe_real,roe_est)
+    current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
+    f_bps = bps*(1+roe_min/100)**lasting_N
+    est_yield = round(((f_bps/current_price)**(1/lasting_N)-1)*100,2)
+    #######홍진채###########
+    log_v = (1+roe_min/100)/(1+expect_yield)
+    target_pbr = round((log_v)**lasting_N,2)
+    ### 장기 기대수익률(채권현 주식(roe_min)과 다르게 현재 ROE로 계산 해 보자)
+    longp_yield = round(((1+current_roe/100)/current_pbr**(1/lasting_N)-1)*100,2)
+    ### 갭수익률 적정PBR/시가PBR -1
+    gap_yield = round((target_pbr/current_pbr -1)*100,2)
+    ### 지속 가능 기간
+    last_p = round(math.log(current_pbr,log_v),1)
     #네이버 4년 데이타
     #naver_ann, naver_q = getData.get_naver_finance(code)
     # st.dataframe(naver_ann)
     # st.dataframe(naver_q)
     # st.write(naver_ann.index)
-
-    # Fnguide에서 원본 데이터 가져오기
-    sep_flag, fn_ann_df, fn_qu_df, fs_tables = getData.get_fdata_fnguide(ticker)
     with st.expander("See Raw Data"):
         try:
             st.dataframe(value_df.to_frame().T)
@@ -124,6 +150,40 @@ def run(ticker, com_name):
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
         st.subheader("BED Valuation")
+         ### PERR, PBRR 같이 보기 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                # #PERR, PBRR
+                fig = go.Figure(go.Indicator(
+                mode = "number+delta",
+                value = est_yield,
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균ROE 기준</span>"},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                delta = {'reference': 15.0}))
+                st.plotly_chart(fig)
+                #PEG 
+                # fig = go.Figure(go.Indicator(
+                # mode = "number+delta",
+                # value = value_df.iloc[7,0],
+                # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
+                # domain = {'x': [0, 1], 'y': [0, 1]},
+                # delta = {'reference': 1.5}))
+                # st.plotly_chart(fig)
+            with col2:
+                st.write("")
+            with col3:
+                fig = go.Figure(go.Indicator(
+                mode = "number+delta",
+                value = longp_yield,
+                title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                delta = {'reference': 15.0}))
+                st.plotly_chart(fig)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         #######################################################
         rim_price = int(value_df.loc['적정주가(RIM)'].replace(',','').replace('원', ''))
         current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
@@ -154,48 +214,24 @@ def run(ticker, com_name):
         col1.metric(label="5년PBR", value = value_df.loc['5년PBR'])
         col2.metric(label="5년PER", value =value_df.loc['5년PER'])
         col3.metric("PER/PBR평균", value =value_df.loc['PER/PBR평균'])
-        col1, col2, col3 = st.columns(3)
-        col1.metric(label="요구수익률", value = value_df.loc['요구수익률'])
-        col2.metric(label="ROE/r", value =value_df.loc['ROE/r'])
-        col3.metric(label="컨센기업수", value =value_df.loc['컨센기업수'])
-        ################채권형 주식 valuation #######################
-        #지속가능기간 10년 고정
-        lasting_N = 10
-        #기대수익률 15% 고정
-        expect_yield = 0.15
-        for ind in fn_ann_df.columns:
-            fn_ann_df[ind] = fn_ann_df[ind].apply(convert_str_to_float)
-        bps = int(value_df.loc['BPS'].replace(',','').replace('원', ''))
-        #ROE 평균 구해보자
-        roe_s = fn_ann_df.loc['ROE']
-        roe_total = round(roe_s.mean(),2)
-        roe_real = round(roe_s.iloc[:5].mean(),2)
-        roe_sum = len(roe_s) - roe_s.isnull().sum()
-        roe_est = round(roe_s.iloc[5:].mean(),2)
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric(label="PBRR", value =value_df.loc['PBRR'], delta=2.0)
+        col2.metric(label="PERR", value =value_df.loc['PERR'], delta=2.0)
+        col3.metric(label="요구수익률", value = value_df.loc['요구수익률'])
+        col4.metric(label="ROE/r", value =value_df.loc['ROE/r'])
+        #############################################
         st.subheader("채권형 주식 Valuation")
-        current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 ROE", value =current_roe)
         col2.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
         col3.metric(label="과거 5년 평균", value =roe_real)
         col4.metric(label="예측 3년 평균", value =roe_est)
-        roe_min = min(roe_total,roe_real,roe_est)
-        current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
-        f_bps = bps*(1+roe_min/100)**lasting_N
-        est_yield = round(((f_bps/current_price)**(1/lasting_N)-1)*100,2)
         col1, col2, col3 = st.columns(3)
         col1.metric(label="bps", value = value_df.loc['BPS'])
         col2.metric(label="추정 미래 ROE", value =roe_min)
         col3.metric(label="10년 기대수익률(CAGR)", value =est_yield,  delta=est_yield-expect_yield*100)
         ################홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 10년
-        log_v = (1+roe_min/100)/(1+expect_yield)
-        target_pbr = round((log_v)**lasting_N,2)
-        ### 장기 기대수익률(채권현 주식(roe_min)과 다르게 현재 ROE로 계산 해 보자)
-        longp_yield = round(((1+current_roe/100)/current_pbr**(1/lasting_N)-1)*100,2)
-        ### 갭수익률 적정PBR/시가PBR -1
-        gap_yield = round((target_pbr/current_pbr -1)*100,2)
-        ### 지속 가능 기간
-        last_p = round(math.log(current_pbr,log_v),1)
+        
         st.subheader("홍진채 주식 Valuation")
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 ROE", value =current_roe)
