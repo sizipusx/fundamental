@@ -272,40 +272,6 @@ def run(ticker, com_name):
         #         ))
         #         fig.update_layout(height = 250)
         #         st.plotly_chart(fig)
-        ### PERR, PBRR 같이 보기 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                # #PERR, PBRR
-                fig = go.Figure(go.Indicator(
-                mode = "number+delta",
-                value = float(value_df.iloc[-3]),
-                title = {"text": "PERR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-                domain = {'x': [0, 1], 'y': [0, 1]},
-                delta = {'reference': 2}))
-                st.plotly_chart(fig)
-                #PEG 
-                # fig = go.Figure(go.Indicator(
-                # mode = "number+delta",
-                # value = value_df.iloc[7,0],
-                # title = {"text": "PEG<br><span style='font-size:0.8em;color:gray'>5 Year Average</span>"},
-                # domain = {'x': [0, 1], 'y': [0, 1]},
-                # delta = {'reference': 1.5}))
-                # st.plotly_chart(fig)
-            with col2:
-                st.write("")
-            with col3:
-                fig = go.Figure(go.Indicator(
-                mode = "number+delta",
-                value = float(value_df.iloc[-2]),
-                title = {"text": "PBRR<br><span style='font-size:0.8em;color:gray'>Over 2 is Not Invest</span>"},
-                domain = {'x': [0, 1], 'y': [0, 1]},
-                delta = {'reference': 2}))
-                st.plotly_chart(fig)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
         #######################################################
         # 좀더 자세히
         n_url_f = 'https://navercomp.wisereport.co.kr/v2/company/c1010001.aspx?cmp_cd='+ ticker+ '&amp;target=finsum_more'
@@ -424,9 +390,7 @@ def run(ticker, com_name):
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                # candlestick chart
                 st.subheader("Valuation Change")
-
                 utcnow= datetime.datetime.utcnow()
                 time_gap= datetime.timedelta(hours=9)
                 kor_time= utcnow+ time_gap
