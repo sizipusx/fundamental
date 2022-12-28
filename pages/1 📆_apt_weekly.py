@@ -392,6 +392,36 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 매매증감 bar chart #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','매매증감']
+                drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','매매증감']
+                drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 전세증감 bar chart #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','전세증감']
+                drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','전세증감']
+                drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         ### Draw 광역시도 전체 기간 누적 차트 ##########
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -410,36 +440,6 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        ### Draw 매매증감 bar chart #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = ['KB','매매증감']
-                drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
-            with col2:
-                st.write("")
-            with col3:
-                flag = ['부동산원','매매증감']
-                drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
-            ### Draw 전세증감 bar chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = ['KB','전세증감']
-                    drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = ['부동산원','전세증감']
-                    drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
         ### Draw 도 전체 기간 누적 차트 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
