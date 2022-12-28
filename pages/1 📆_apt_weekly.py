@@ -448,7 +448,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        ### Draw 도 전체 기간 누적 차트 #########################################################################################
+        ### Draw 도지역 2년 누적 flower 차트 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -460,7 +460,7 @@ def draw_basic():
                 st.write("")
             with col3:
                 flag = '부동산원'
-                drawAPT_weekly.draw_flower_together(citys, cum_ojdf_slice, cum_ojdf_slice, flag)
+                drawAPT_weekly.draw_flower_together(citys, cum_omdf_slice, cum_ojdf_slice, flag)
                 
         html_br="""
         <br>
@@ -842,6 +842,7 @@ if __name__ == "__main__":
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
     s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
+    st.dataframe(s_df)
     data_load_state.text("Data retrieve Done!")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
