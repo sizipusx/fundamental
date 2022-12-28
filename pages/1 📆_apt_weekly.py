@@ -373,377 +373,299 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
 
 
 def draw_basic():
-    # kb_df, k_geo_data, last_df, kb_mdf = load_index_data()
-    # one_df, o_geo_data, one_last_odf = load_one_data()
-     ### Draw Bubble chart #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag, kb_last_week)
+    tab1, tab2, tab3, tab4 = st.tabs(["⏰ 한주보기", "📈 심리지수", "🗺️ 지도", "🔣 Raw Data"])
+    with tab1:
+        ### Draw Bubble chart ##############
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = 'KB'
+                drawAPT_weekly.draw_index_change_with_bubble(kb_last_df, flag, kb_last_week)
 
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag, one_last_week)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
-            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+            with col2:
+                st.write("")
+            with col3:
+                flag = '부동산원'
+                drawAPT_weekly.draw_index_change_with_bubble(last_odf, flag, one_last_week)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 광역시도 전체 기간 누적 차트 ##########
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = 'KB'
+                citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
+                drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
 
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 도 전체 기간 누적 차트 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = 'KB'
-            citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-            drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
+            with col2:
+                st.write("")
+            with col3:
+                flag = '부동산원'
+                drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 매매증감 bar chart #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','매매증감']
+                drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','매매증감']
+                drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+            ### Draw 전세증감 bar chart #########################################################################################
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = ['KB','전세증감']
+                    drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = ['부동산원','전세증감']
+                    drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 도 전체 기간 누적 차트 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = 'KB'
+                citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+                drawAPT_weekly.draw_flower_together(citys, cum_mdf, cum_jdf, flag)
 
-        with col2:
-            st.write("")
-        with col3:
-            flag = '부동산원'
-            drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Block 0#########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['KB','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['부동산원','매매증감']
-            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 전국 지도 chart #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['KB','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['부동산원','전세증감']
-            drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### Draw 매매증감 bar chart #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['KB','매매증감']
-            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['부동산원','매매증감']
-            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-     ### Draw 전세증감 bar chart #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['KB','전세증감']
-            drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['부동산원','전세증감']
-            drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-   
-    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            drawAPT_weekly.draw_senti_last(index_df, kb_last_week)
-            #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
-        with col2:
-            st.write("")
-        with col3:
-            city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
-            drawAPT_weekly.draw_senti_together(s_df, city_list,kb_last_week)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ######매수우위지수 각 지역별 보기
-    ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
-            drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)
-        with col2:
-            st.write("")
-        with col3:
-            city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
-            drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### draw 매매지수 Table ######################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['KB','매매증감']
-            #kb_last_df = kb_last_df.set_index("index")
-            #kb_last_df = round(kb_last_df,2)
-            rank_df = pd.DataFrame()
-            rank_df['1w'] = kb_last_df['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['1w%'] = kb_last_df['1w'].round(decimals=2)
-            rank_df['2w%'] = kb_last_df['2w'].round(decimals=2)
-            rank_df['3w%'] = kb_last_df['3w'].round(decimals=2)
-            rank_df['1m%'] = kb_last_df['1m'].round(decimals=2)
-            rank_df['1y%'] = kb_last_df['1y'].round(decimals=2)
-            kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
-            kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
-            
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            ## 칼럼 헤더 셀 배경색 바꾸기
-            column = '1w' ## 원하는 칼럼이름
-            col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
-            rank_df = rank_df.reset_index()
-            #add aggrid table
-            #response  = aggrid_interactive_table(df=rank_df)
-            st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['KB','전세증감']
-            #kb_last_df = kb_last_df.set_index("index")
-            #kb_last_df = round(kb_last_df,2)
-            rank_jdf = pd.DataFrame()
-            rank_jdf['1w'] = kb_last_jdf['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['2w'] = kb_last_jdf['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['3w'] = kb_last_jdf['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['1m'] = kb_last_jdf['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['1y'] = kb_last_jdf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['1w%'] = kb_last_jdf['1w'].round(decimals=2)
-            rank_jdf['2w%'] = kb_last_jdf['2w'].round(decimals=2)
-            rank_jdf['3w%'] = kb_last_jdf['3w'].round(decimals=2)
-            rank_jdf['1m%'] = kb_last_jdf['1m'].round(decimals=2)
-            rank_jdf['1y%'] = kb_last_jdf['1y'].round(decimals=2)
-            
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            ## 칼럼 헤더 셀 배경색 바꾸기
-            column = '1w' ## 원하는 칼럼이름
-            col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB 186개 지역 _전세지수_ 기간별 순위")
-            rank_jdf = rank_jdf.reset_index()
-            #response  = aggrid_interactive_table(df=rank_jdf)
+            with col2:
+                st.write("")
+            with col3:
+                flag = '부동산원'
+                drawAPT_weekly.draw_flower_together(citys, cum_omdf, cum_ojdf, flag)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+    
+    
+    with tab2:
+        ### Draw 매수우위지수와 전세수급지수 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                drawAPT_weekly.draw_senti_last(index_df, kb_last_week)
+                #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+            with col2:
+                st.write("")
+            with col3:
+                city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
+                drawAPT_weekly.draw_senti_together(s_df, city_list,kb_last_week)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        ######매수우위지수 각 지역별 보기
+        ### Draw 매수우위지수와 전세수급지수 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
+                drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
+                drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+    with tab3:
+        ### Block 0#########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','매매증감']
+                drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','매매증감']
+                drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+    
+        ### Draw 전국 지도 chart #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','전세증감']
+                drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','전세증감']
+                drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+    with tab4:
+        ### draw 매매지수 Table ######################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','매매증감']
+                #kb_last_df = kb_last_df.set_index("index")
+                #kb_last_df = round(kb_last_df,2)
+                rank_df = pd.DataFrame()
+                rank_df['1w'] = kb_last_df['1w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
+                rank_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
+                rank_df['1w%'] = kb_last_df['1w'].round(decimals=2)
+                rank_df['2w%'] = kb_last_df['2w'].round(decimals=2)
+                rank_df['3w%'] = kb_last_df['3w'].round(decimals=2)
+                rank_df['1m%'] = kb_last_df['1m'].round(decimals=2)
+                rank_df['1y%'] = kb_last_df['1y'].round(decimals=2)
+                kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
+                kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
+                
+                slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+                slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+                ## 칼럼 헤더 셀 배경색 바꾸기
+                column = '1w' ## 원하는 칼럼이름
+                col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
+                st.markdown("KB 186개 지역 _매매지수_ 변화율 기간별 순위")
+                rank_df = rank_df.reset_index()
+                #add aggrid table
+                #response  = aggrid_interactive_table(df=rank_df)
+                st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                    .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                    .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                    .set_table_styles(
+                            [{'selector': f'th.col_heading.level0.col{col_loc}',
+                            'props': [('background-color', '#67c5a4')]},
+                            ])\
+                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['KB','전세증감']
+                #kb_last_df = kb_last_df.set_index("index")
+                #kb_last_df = round(kb_last_df,2)
+                rank_jdf = pd.DataFrame()
+                rank_jdf['1w'] = kb_last_jdf['1w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_jdf['2w'] = kb_last_jdf['2w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_jdf['3w'] = kb_last_jdf['3w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_jdf['1m'] = kb_last_jdf['1m'].rank(ascending=True, method='min').round(decimals=1)
+                rank_jdf['1y'] = kb_last_jdf['1y'].rank(ascending=True, method='min').round(decimals=1)
+                rank_jdf['1w%'] = kb_last_jdf['1w'].round(decimals=2)
+                rank_jdf['2w%'] = kb_last_jdf['2w'].round(decimals=2)
+                rank_jdf['3w%'] = kb_last_jdf['3w'].round(decimals=2)
+                rank_jdf['1m%'] = kb_last_jdf['1m'].round(decimals=2)
+                rank_jdf['1y%'] = kb_last_jdf['1y'].round(decimals=2)
+                
+                slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+                slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+                ## 칼럼 헤더 셀 배경색 바꾸기
+                column = '1w' ## 원하는 칼럼이름
+                col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
+                st.markdown("KB 186개 지역 _전세지수_ 기간별 순위")
+                rank_jdf = rank_jdf.reset_index()
+                #response  = aggrid_interactive_table(df=rank_jdf)
 
-            st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### 규제지역 해제 매매지수 Table ######################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['KB','매매증감']
-            #kb_last_df = kb_last_df.set_index("index")
-            #kb_last_df = round(kb_last_df,2)
-            rank_df = pd.DataFrame()
-            rank_df['1w'] = kb_last_df['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['2w'] = kb_last_df['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['3w'] = kb_last_df['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['1m'] = kb_last_df['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['1y'] = kb_last_df['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_df['1w%'] = kb_last_df['1w'].round(decimals=2)
-            rank_df['2w%'] = kb_last_df['2w'].round(decimals=2)
-            rank_df['3w%'] = kb_last_df['3w'].round(decimals=2)
-            rank_df['1m%'] = kb_last_df['1m'].round(decimals=2)
-            rank_df['1y%'] = kb_last_df['1y'].round(decimals=2)
-            kb_last_df['매매증감'] = round(kb_last_df['매매증감'], 2)
-            kb_last_df['전세증감'] = kb_last_df['전세증감'].round(decimals=2)
-
-            #규제 해제 지역
-            un_lock = ['대구 동구', '대구 서구', '대구 남구', '대구 북구', '대구 중구', \
-                '대구 달서구', '대구 달성군', '경산', '여수', '순천', '광양', \
-                    '대구 수성구', '대전 동구', '대전 중구', '대전 서구', '대전 유성구', '창원 의창구']
-            
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            ## 칼럼 헤더 셀 배경색 바꾸기
-            column = '1w' ## 원하는 칼럼이름
-            col_loc = rank_df.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB 매매지수 조정지역/투기과열지역 해제 지역 기간별 순위 변화")
-            un_lock_df = rank_df.loc[un_lock]
-            un_lock_df = un_lock_df.reset_index()
-            #add aggrid table
-            #response  = aggrid_interactive_table(df=rank_df)
-            st.dataframe(un_lock_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['KB','전세증감']
-            #kb_last_df = kb_last_df.set_index("index")
-            #kb_last_df = round(kb_last_df,2)
-            rank_jdf = pd.DataFrame()
-            rank_jdf['1w'] = kb_last_jdf['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['2w'] = kb_last_jdf['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['3w'] = kb_last_jdf['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['1m'] = kb_last_jdf['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['1y'] = kb_last_jdf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_jdf['1w%'] = kb_last_jdf['1w'].round(decimals=2)
-            rank_jdf['2w%'] = kb_last_jdf['2w'].round(decimals=2)
-            rank_jdf['3w%'] = kb_last_jdf['3w'].round(decimals=2)
-            rank_jdf['1m%'] = kb_last_jdf['1m'].round(decimals=2)
-            rank_jdf['1y%'] = kb_last_jdf['1y'].round(decimals=2)
-            
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            ## 칼럼 헤더 셀 배경색 바꾸기
-            column = '1w' ## 원하는 칼럼이름
-            col_loc = rank_jdf.columns.get_loc(column) ## 원하는 칼럼의 인덱스
-            st.markdown("KB 전세지수 조정지역/투기과열지역 해제 지역 기간별 순위 변화")
-            un_lock_jdf = rank_jdf.loc[un_lock]
-            un_lock_jdf = un_lock_jdf.reset_index()
-            #response  = aggrid_interactive_table(df=rank_jdf)
-
-            st.dataframe(un_lock_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ])\
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
-    ### draw 전세지수 Table ######################################################################################
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            flag = ['부동산원','매매증감']
-            rank_odf = pd.DataFrame()
-            rank_odf['1w'] = last_odf['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_odf['1w%'] = last_odf['1w'].round(decimals=2)
-            rank_odf['2w%'] = last_odf['2w'].round(decimals=2)
-            rank_odf['3w%'] = last_odf['3w'].round(decimals=2)
-            rank_odf['1m%'] = last_odf['1m'].round(decimals=2)
-            rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.markdown("부동산원 235개 지역 _매매지수_ 변화율 기간별 순위")
-            rank_odf = rank_odf.reset_index()
-            st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ]) \
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)   
-        with col2:
-            st.write("")
-        with col3:
-            flag = ['부동산원','전세증감']
-            rank_ojdf = pd.DataFrame()
-            rank_ojdf['1w'] = last_ojdf['1w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_ojdf['2w'] = last_ojdf['2w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_ojdf['3w'] = last_ojdf['3w'].rank(ascending=True, method='min').round(decimals=1)
-            rank_ojdf['1m'] = last_ojdf['1m'].rank(ascending=True, method='min').round(decimals=1)
-            rank_ojdf['1y'] = last_ojdf['1y'].rank(ascending=True, method='min').round(decimals=1)
-            rank_ojdf['1w%'] = last_ojdf['1w'].round(decimals=2)
-            rank_ojdf['2w%'] = last_ojdf['2w'].round(decimals=2)
-            rank_ojdf['3w%'] = last_ojdf['3w'].round(decimals=2)
-            rank_ojdf['1m%'] = last_ojdf['1m'].round(decimals=2)
-            rank_ojdf['1y%'] = last_ojdf['1y'].round(decimals=2)
-            slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
-            slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
-            st.markdown("부동산원 235개 지역 _전세지수_ 기간별 순위")
-            rank_ojdf = rank_ojdf.reset_index()
-            st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
-                .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
-                .set_table_styles(
-                        [{'selector': f'th.col_heading.level0.col{col_loc}',
-                        'props': [('background-color', '#67c5a4')]},
-                        ]) \
-                .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
-            
-    html_br="""
-    <br>
-    """
-    st.markdown(html_br, unsafe_allow_html=True)
+                st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                    .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
+                    .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
+                    .set_table_styles(
+                            [{'selector': f'th.col_heading.level0.col{col_loc}',
+                            'props': [('background-color', '#67c5a4')]},
+                            ])\
+                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        
+        ### draw 전세지수 Table ######################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['부동산원','매매증감']
+                rank_odf = pd.DataFrame()
+                rank_odf['1w'] = last_odf['1w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_odf['2w'] = last_odf['2w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_odf['3w'] = last_odf['3w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_odf['1m'] = last_odf['1m'].rank(ascending=True, method='min').round(decimals=1)
+                rank_odf['1y'] = last_odf['1y'].rank(ascending=True, method='min').round(decimals=1)
+                rank_odf['1w%'] = last_odf['1w'].round(decimals=2)
+                rank_odf['2w%'] = last_odf['2w'].round(decimals=2)
+                rank_odf['3w%'] = last_odf['3w'].round(decimals=2)
+                rank_odf['1m%'] = last_odf['1m'].round(decimals=2)
+                rank_odf['1y%'] = last_odf['1y'].round(decimals=2)
+                slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+                slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+                st.markdown("부동산원 235개 지역 _매매지수_ 변화율 기간별 순위")
+                rank_odf = rank_odf.reset_index()
+                st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                    .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
+                    .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
+                    #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
+                    .set_table_styles(
+                            [{'selector': f'th.col_heading.level0.col{col_loc}',
+                            'props': [('background-color', '#67c5a4')]},
+                            ]) \
+                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)   
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','전세증감']
+                rank_ojdf = pd.DataFrame()
+                rank_ojdf['1w'] = last_ojdf['1w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_ojdf['2w'] = last_ojdf['2w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_ojdf['3w'] = last_ojdf['3w'].rank(ascending=True, method='min').round(decimals=1)
+                rank_ojdf['1m'] = last_ojdf['1m'].rank(ascending=True, method='min').round(decimals=1)
+                rank_ojdf['1y'] = last_ojdf['1y'].rank(ascending=True, method='min').round(decimals=1)
+                rank_ojdf['1w%'] = last_ojdf['1w'].round(decimals=2)
+                rank_ojdf['2w%'] = last_ojdf['2w'].round(decimals=2)
+                rank_ojdf['3w%'] = last_ojdf['3w'].round(decimals=2)
+                rank_ojdf['1m%'] = last_ojdf['1m'].round(decimals=2)
+                rank_ojdf['1y%'] = last_ojdf['1y'].round(decimals=2)
+                slice_1 = ['1w%', '2w%', '3w%', '1m%', '1y%' ]
+                slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
+                st.markdown("부동산원 235개 지역 _전세지수_ 기간별 순위")
+                rank_ojdf = rank_ojdf.reset_index()
+                st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
+                    .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
+                    .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
+                    #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
+                    .set_table_styles(
+                            [{'selector': f'th.col_heading.level0.col{col_loc}',
+                            'props': [('background-color', '#67c5a4')]},
+                            ]) \
+                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
