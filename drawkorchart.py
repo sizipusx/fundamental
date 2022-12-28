@@ -343,30 +343,52 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
 def valuation_change(com_name, fr_df):
     title = '('  + com_name + ') <b>기대수익률 변화</b>'
     titles = dict(text= title, x=0.5, y = 0.85)
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
-        x=fr_df.index,
-        y=fr_df['expect_py'],
-        text=fr_df['expect_py'],
-        textposition='auto',
-        name='현재ROE 기준 기대수익률',
-        marker_color='indianred'
-    ))
-    fig.add_trace(go.Bar(
-        x=fr_df.index,
-        y=fr_df['expect_ay'],
-        text=fr_df['expect_ay'],
-        textposition='auto',
-        name='평균ROE 기준 기대수익률',
-        marker_color='lightsalmon'
-    ))
-
-    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
-    fig.update_layout(barmode='group', xaxis_tickangle=-45)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m')
-    fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%")
-    fig.add_hline(y=fr_df.loc[:,'expect_py'].mean(), line_width=1.5, line_dash="dot", line_color="indianred",  annotation_text=round(fr_df.loc[:,'expect_py'].mean(),2), annotation_position="bottom right")
-    fig.add_hline(y=fr_df.loc[:,'expect_ay'].mean(), line_width=1.5, line_dash="dot", line_color="lightsalmon",  annotation_text=round(fr_df.loc[:,'expect_ay'].mean(),2), annotation_position="bottom right")
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_line = ['ROE','ROE10']
+    y_data_bar = ['expect_py', 'expect_ay']
+    real_name = ['현재ROE기준_기대수익률', '10Y평균ROE기준_기대수익률']
+    for y_data, color, r_n in zip(y_data_bar, marker_colors, real_name) :
+        fig.add_trace(go.Bar(name = r_n, x = fr_df, y = fr_df.loc[:,y_data], 
+                            text= fr_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+    
+    for y_data, color in zip(y_data_line, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
+                                    text= fr_df[y_data], textposition = 'top center', marker_color = color),
+                                    secondary_y = True)
+    #fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='기대수익률', range=[0, max(fr_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='ROE', range=[-max(fr_df.loc[:,y_data_line[0]]), max(fr_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y')
+    fig.add_hline(y=fr_df.loc[:,'expect_py'].mean(), line_width=1.5, line_dash="dot", line_color=marker_colors[0],  annotation_text=round(fr_df.loc[:,'expect_py'].mean(),2), annotation_position="bottom right")
+    fig.add_hline(y=fr_df.loc[:,'expect_ay'].mean(), line_width=1.5, line_dash="dot", line_color=marker_colors[1],  annotation_text=round(fr_df.loc[:,'expect_ay'].mean(),2), annotation_position="bottom right")
     fig.add_hline(y=15.0, line_width=1, line_dash="solid", line_color="black",  annotation_text="기준 기대수익률", annotation_position="bottom right")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+def pykrx_chart(com_name, fr_df):
+    title = '('  + com_name + ') <b>연간 지표</b>'
+    titles = dict(text= title, x=0.5, y = 0.85)
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_line = ['Close']
+    y_data_bar = ['PBR']
+    for y_data, color in zip(y_data_bar, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x = fr_df, y = fr_df.loc[:,y_data], 
+                            text= fr_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+    
+    for y_data, color in zip(y_data_line, marker_colors): 
+        fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                    name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
+                                    text= fr_df[y_data], textposition = 'top center', marker_color = color),
+                                    secondary_y = True)
+    #fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='PBR', range=[0, max(fr_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+    fig.update_yaxes(title_text='종가', range=[-max(fr_df.loc[:,y_data_line[0]]), max(fr_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="배", secondary_y = False)
+    fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="원", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y')
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
