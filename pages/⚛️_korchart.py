@@ -113,6 +113,7 @@ def run(ticker, com_name):
     roe_real = round(roe_s.iloc[:5].mean(),2)
     roe_sum = len(roe_s) - roe_s.isnull().sum()
     roe_est = round(roe_s.iloc[5:].mean(),2)
+    current_pbr = round(float(value_df.loc['PBR']),2)
     current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
     roe_min = min(roe_total,roe_real,roe_est)
     current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
@@ -191,7 +192,6 @@ def run(ticker, com_name):
             conse_price = int(value_df.loc['컨센서스'])
         else:
             conse_price = int(value_df.loc['컨센서스'].replace(',','').replace('원', ''))
-        current_pbr = round(float(value_df.loc['PBR']),2)
         a_yield = float(value_df.iloc[7].replace('%',''))
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta=current_price-rim_price)
