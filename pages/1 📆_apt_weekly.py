@@ -478,7 +478,7 @@ def draw_basic():
             with col2:
                 st.write("")
             with col3:
-                city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
+                city_list = ['전국', '서울', '6대광역시', '수도권', '기타지방']
                 drawAPT_weekly.draw_senti_together(s_df, city_list,kb_last_week)
                 
         html_br="""
@@ -842,7 +842,6 @@ if __name__ == "__main__":
     # odf, o_geo_data, last_odf, last_ojdf, omdf, ojdf, omdf_change, ojdf_change, cumomdf, cumojdf = load_one_data()
     #수급지수
     s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
-    st.dataframe(s_df)
     data_load_state.text("Data retrieve Done!")
     #마지막 주
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
