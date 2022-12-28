@@ -376,7 +376,7 @@ def pykrx_chart(com_name, fr_df):
     y_data_bar = ['PBR']
     for y_data, color in zip(y_data_bar, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = fr_df.index, y = round(fr_df.loc[:,y_data],2), 
-                            text= fr_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                            text= round(fr_df[y_data],2), textposition = 'inside', marker_color= color), secondary_y = False) 
     
     for y_data, color in zip(y_data_line, marker_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
