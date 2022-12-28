@@ -478,7 +478,7 @@ def draw_basic():
             with col2:
                 st.write("")
             with col3:
-                city_list = ['전국', '서울', '6대광역시', '수도권', '기타지방']
+                city_list = ['전국', '서울', '6대광역시', '수도권', '지방']
                 drawAPT_weekly.draw_senti_together(s_df, city_list,kb_last_week)
                 
         html_br="""
