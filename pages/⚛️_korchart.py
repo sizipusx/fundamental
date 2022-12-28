@@ -400,7 +400,7 @@ def run(ticker, com_name):
             with col2:
                 st.write("")
             with col3:
-                drawkorchart.dividend_chart(com_name, fn_ann_df.T)
+                drawkorchart.pykrx_chart(com_name, fn_history)
         html_br="""
         <br>
         """
