@@ -241,7 +241,7 @@ def run(ticker):
     title = com_name + '('  + input_ticker + ') <b>Profit & Cost</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    y_data_bar1 = ['totalRevenue', 'costOfRevenue', 'totalOperatingExpense']
+    y_data_bar1 = ['totalRevenue', 'costOfRevenue', 'operatingExpenses']
     y_data_line1 = ['grossProfit', 'ebit', 'operatingIncome', 'netIncome']
 
     for y_data, color in zip(y_data_bar1, marker_colors) :
@@ -433,7 +433,7 @@ def make_data(ticker):
     income.set_index('fiscalDateEnding', inplace=True)
     income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
     income = income.iloc[::-1]
-    sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'operatingIncome', 'ebit', 'netIncome']
+    sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'operatingIncome', 'operatingExpenses', 'ebit', 'netIncome']
     income_df = income[sub].replace('None','0').astype(float).round(0)
     #연매출액 증가율
     gp_cagr = (income_df['totalRevenue'].iloc[-1]/income_df['totalRevenue'].iloc[0])**(1/5) -1
