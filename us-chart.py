@@ -42,7 +42,7 @@ def change_per_value(x):
         pass
     return x
 
-def run():
+def run(ticker):
     data_load_state = st.text('Loading All Company data...')
     tickers = load_data()
     # ticker_list = tickers['Symbol'].values.tolist()
@@ -50,9 +50,9 @@ def run():
     data_load_state.text("Done! (using st.cache)")
 
     #Income 데이터 가져오기
-    earning_df, income_df, balance_df, cashflow_df = make_data(input_ticker)
+    earning_df, income_df, balance_df, cashflow_df = make_data(ticker)
     #Summary 데이터 가져오기    
-    OV = fd.get_company_overview(input_ticker)
+    OV = fd.get_company_overview(ticker)
     split_OV=OV[0]
     df = pd.json_normalize(split_OV)
     df = df.T
@@ -665,4 +665,4 @@ if __name__ == "__main__":
     input_ticker = input_ticker.upper()
     submit = st.sidebar.button('Run app')
     if submit:
-        run()
+        run(input_ticker)
