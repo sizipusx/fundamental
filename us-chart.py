@@ -61,7 +61,7 @@ def run():
     df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
     df.loc['RIM'] = round(df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08),2)
     close_price = fdr.DataReader(input_ticker, today)
-    df.loc['Close'] = close_price.iloc[0,0]
+    df.loc['Close'] = close_price.iloc[0,3]
     earningY = df.loc['Earnings Yield'][0]
     if earningY < 15.0 :
         df.loc['Target Price'] = round(df.loc['DilutedEPSTTM'].astype(float)/0.15,2)
