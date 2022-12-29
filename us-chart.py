@@ -452,8 +452,8 @@ def make_data(ticker):
     balance.index =  pd.to_datetime(balance.index, format='%Y-%m-%d')
     balance = balance.iloc[::-1]
     sub = ['totalAssets', 'intangibleAssets', 'totalLiabilities', 'totalShareholderEquity', 'retainedEarnings', 'totalCurrentLiabilities', \
-         'totalCurrentAssets', 'netTangibleAssets', 'netReceivables', 'inventory', 'accountsPayable', 'accumulatedAmortization', \
-         'totalNonCurrentAssets', 'accumulatedDepreciation', 'cashAndShortTermInvestments', 'commonStockSharesOutstanding']
+         'totalCurrentAssets', 'inventory',  \
+         'totalNonCurrentAssets', 'cashAndShortTermInvestments', 'commonStockSharesOutstanding']
     balance_df = balance[sub].replace('None','0').astype(float).round(0)
     #부채비율
     balance_df['Debt/Equity'] = balance_df['totalLiabilities'] / balance_df['totalShareholderEquity']*100
@@ -473,8 +473,8 @@ def make_data(ticker):
     cashflow.set_index('fiscalDateEnding', inplace=True)
     cashflow.index =  pd.to_datetime(cashflow.index, format='%Y-%m-%d')
     cashflow = cashflow.iloc[::-1]
-    sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'depreciation', 'dividendPayout', \
-         'stockSaleAndPurchase', 'capitalExpenditures', 'changeInCashAndCashEquivalents']
+    sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'dividendPayout', \
+         'capitalExpenditures', 'changeInCashAndCashEquivalents']
     cashflow_df = cashflow[sub].replace('None','0').astype(float).round(0)
     cashflow_df["FCF"] = cashflow_df['operatingCashflow'] - cashflow_df['capitalExpenditures']
 
