@@ -433,7 +433,7 @@ def make_data(ticker):
     income.set_index('fiscalDateEnding', inplace=True)
     income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
     income = income.iloc[::-1]
-    sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'totalOperatingExpense', 'operatingIncome', 'ebit', 'netIncome']
+    sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'operatingIncome', 'ebit', 'netIncome']
     income_df = income[sub].replace('None','0').astype(float).round(0)
     #연매출액 증가율
     gp_cagr = (income_df['totalRevenue'].iloc[-1]/income_df['totalRevenue'].iloc[0])**(1/5) -1
