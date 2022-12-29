@@ -77,17 +77,17 @@ def run(ticker):
     #gauge chart
     fig = go.Figure(go.Indicator(
         mode = "gauge+number+delta",
-        value = df.iloc[-3,0],
-        delta = {'reference': df.iloc[-4,0], 'relative': True},
+        value = round(float(df.iloc[-3,0]),2),
+        delta = {'reference': round(float(df.iloc[-4,0]),2), 'relative': True},
         title = {'text': "RIM-Price"},
         domain = {'x': [0, 1], 'y': [0, 0.5]}
     ))
     fig.add_trace(go.Indicator(
         mode = "number+delta",
-        value = df.iloc[-5,0],
+        value = round(float(df.iloc[-5,0]),2),
         title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
         domain = {'x': [0, 1], 'y': [0.6, 1]},
-        delta = {'reference': 15}))
+        delta = {'reference': 15.0}))
     st.plotly_chart(fig)
 
     fig = go.Figure()
