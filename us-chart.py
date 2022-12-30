@@ -77,7 +77,7 @@ def run(ticker):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = y_df.iloc[-1,3],
+                value = round(y_df.iloc[-1,3]*100,2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -87,7 +87,7 @@ def run(ticker):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = y_df.iloc[-1,4],
+                value = round(y_df.iloc[-1,4],2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -482,11 +482,11 @@ if __name__ == "__main__":
     
     input_ticker = input_ticker.upper()
     #Summary 데이터 가져오기    
-    OV = fd.get_company_overview(input_ticker)
-    split_OV=OV[0]
-    df = pd.json_normalize(split_OV)
-    df = df.T
-    st.table(df)
+    # OV = fd.get_company_overview(input_ticker)
+    # split_OV=OV[0]
+    # df = pd.json_normalize(split_OV)
+    # df = df.T
+    # st.table(df)
     submit = st.sidebar.button('Run app')
     if submit:
         run(input_ticker)
