@@ -116,6 +116,18 @@ def run(ticker):
     with tab1:
         st.subheader("Valuation")
         f_df, v_df, y_df = getData.get_finterstellar(ticker)
+        with st.expander("See Raw Data"):
+            try:
+                st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                st.dataframe(y_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.dataframe(f_df.to_frame().T)
+                st.dataframe(v_df)
+                st.dataframe(y_df)
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -142,6 +154,19 @@ def run(ticker):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        ###========
+        expect_yield = 15.0
+        st.subheader("채권형 주식 Valuation")
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,4]*100,2))
+        col2.metric(label="3년 평균", value =round(v_df.iloc[-1,5]*100,2))
+        col3.metric(label="5년 평균", value =round(v_df.iloc[-1,6]*100,2))
+        col4.metric(label="10년 평균", value =round(v_df.iloc[-1,7]*100,2))
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="현재 ROE 기준 기대수익률", value = round(v_df.iloc[-1,4]*100,2), delta=round((round(v_df.iloc[-1,4]*100,2)-expect_yield*100),2))
+        col2.metric(label="최소 평균 기준 기대수익률", value =round(v_df.iloc[-1,3]*100,2), delta=round((round(v_df.iloc[-1,3]*100,2)-expect_yield*100),2))
+        col3.metric(label="최소 평균 기준 기대수익률", value =round(v_df.iloc[-1,5]*100,2), delta=round((round(v_df.iloc[-1,5]*100,2)-expect_yield*100),2))
+
     with tab2:
         #Income 데이터 가져오기
         earning_df, income_df, balance_df, cashflow_df = make_data(ticker)
