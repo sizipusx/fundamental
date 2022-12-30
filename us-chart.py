@@ -100,57 +100,57 @@ def run(ticker):
         #Income 데이터 가져오기
         earning_df, income_df, balance_df, cashflow_df = make_data(ticker)
         #Summary 데이터 가져오기    
-        OV = fd.get_company_overview(ticker)
-        split_OV=OV[0]
-        df = pd.json_normalize(split_OV)
-        df = df.T
-        #Rim 즉석 계산
-        df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
-        df.loc['RIM'] = round(df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08),2)
-        close_price = fdr.DataReader(input_ticker, today)
-        df.loc['Price'] = close_price.iloc[0,4]
-        earningY = df.loc['Earnings Yield'][0]
-        if earningY < 15.0 :
-            df.loc['Target Price'] = round(df.loc['DilutedEPSTTM'].astype(float)/0.15,2)
-        df.loc['Margin Of Safety'] = (df.loc['RIM']/df.loc['Price'] -1)*100
-        last_value = df.iloc[-1,0]
-        last_value= str(round(last_value,2)) + '%'
-        df.iloc[-1,0] = last_value
-        df.style.applymap(draw_color_cell,color='#ff9090',subset=pd.IndexSlice[-1,0])
-        df.columns = ['Description']
-        df.update(df.select_dtypes(include=np.number).applymap('{:,}'.format))
-        st.table(df)
+        # OV = fd.get_company_overview(ticker)
+        # split_OV=OV[0]
+        # df = pd.json_normalize(split_OV)
+        # df = df.T
+        # #Rim 즉석 계산
+        # df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
+        # df.loc['RIM'] = round(df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08),2)
+        # close_price = fdr.DataReader(input_ticker, today)
+        # df.loc['Price'] = close_price.iloc[0,4]
+        # earningY = df.loc['Earnings Yield'][0]
+        # if earningY < 15.0 :
+        #     df.loc['Target Price'] = round(df.loc['DilutedEPSTTM'].astype(float)/0.15,2)
+        # df.loc['Margin Of Safety'] = (df.loc['RIM']/df.loc['Price'] -1)*100
+        # last_value = df.iloc[-1,0]
+        # last_value= str(round(last_value,2)) + '%'
+        # df.iloc[-1,0] = last_value
+        # df.style.applymap(draw_color_cell,color='#ff9090',subset=pd.IndexSlice[-1,0])
+        # df.columns = ['Description']
+        # df.update(df.select_dtypes(include=np.number).applymap('{:,}'.format))
+        # st.table(df)
         # st.write('Description:', df.loc['Description',0])
         #gauge chart
-        fig = go.Figure(go.Indicator(
-            mode = "gauge+number+delta",
-            value = round(float(df.iloc[-3,0]),2),
-            delta = {'reference': round(float(df.iloc[-4,0]),2), 'relative': True},
-            title = {'text': "RIM-Price"},
-            domain = {'x': [0, 1], 'y': [0, 0.5]}
-        ))
-        fig.add_trace(go.Indicator(
-            mode = "number+delta",
-            value = round(float(df.iloc[-5,0]),2),
-            title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
-            domain = {'x': [0, 1], 'y': [0.6, 1]},
-            delta = {'reference': 15.0}))
-        st.plotly_chart(fig)
+        # fig = go.Figure(go.Indicator(
+        #     mode = "gauge+number+delta",
+        #     value = round(float(df.iloc[-3,0]),2),
+        #     delta = {'reference': round(float(df.iloc[-4,0]),2), 'relative': True},
+        #     title = {'text': "RIM-Price"},
+        #     domain = {'x': [0, 1], 'y': [0, 0.5]}
+        # ))
+        # fig.add_trace(go.Indicator(
+        #     mode = "number+delta",
+        #     value = round(float(df.iloc[-5,0]),2),
+        #     title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
+        #     domain = {'x': [0, 1], 'y': [0.6, 1]},
+        #     delta = {'reference': 15.0}))
+        # st.plotly_chart(fig)
 
-        fig = go.Figure()
-        fig.add_trace(go.Indicator(
-            mode = "number+delta",
-            value = 200,
-            title = {"text": "RIM<br><span style='font-size:0.8em;color:gray'>Current Price</span>"},
-            domain = {'x': [0, 1], 'y': [0, 0.5]},
-            delta = {'reference': 400, 'relative': True, 'position' : "top"}))
+        # fig = go.Figure()
+        # fig.add_trace(go.Indicator(
+        #     mode = "number+delta",
+        #     value = 200,
+        #     title = {"text": "RIM<br><span style='font-size:0.8em;color:gray'>Current Price</span>"},
+        #     domain = {'x': [0, 1], 'y': [0, 0.5]},
+        #     delta = {'reference': 400, 'relative': True, 'position' : "top"}))
 
-        fig.add_trace(go.Indicator(
-            mode = "number+delta",
-            value = 350,
-            title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Subtitle</span><br><span style='font-size:0.8em;color:gray'>Subsubtitle</span>"},
-            delta = {'reference': 400, 'relative': True},
-            domain = {'x': [0, 1], 'y': [0.5, 1]}))
+        # fig.add_trace(go.Indicator(
+        #     mode = "number+delta",
+        #     value = 350,
+        #     title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Subtitle</span><br><span style='font-size:0.8em;color:gray'>Subsubtitle</span>"},
+        #     delta = {'reference': 400, 'relative': True},
+        #     domain = {'x': [0, 1], 'y': [0.5, 1]}))
 
         
 
