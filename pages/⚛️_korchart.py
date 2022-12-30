@@ -75,7 +75,7 @@ def load_data():
     tickers = stock.get_market_ticker_list()
     krx = fdr.StockListing('KRX')
     krx = krx[~krx['Name'].str.endswith(('우','A', 'B', '스팩', 'C', ')', '호', '풋', '콜', 'ETN'))]
-    krx = krx[~(krx['Symbol'].str.len() != 6)]
+    krx = krx[~(krx['Code'].str.len() != 6)]
     krx = krx[~(krx['Market'].str.endswith('X'))]
     return tickers, krx
 
