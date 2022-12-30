@@ -102,7 +102,6 @@ def run(ticker):
         split_OV=OV[0]
         df = pd.json_normalize(split_OV)
         df = df.T
-
         #Rim 즉석 계산
         df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
         df.loc['RIM'] = round(df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08),2)
@@ -480,6 +479,12 @@ if __name__ == "__main__":
         )
     
     input_ticker = input_ticker.upper()
+    #Summary 데이터 가져오기    
+    OV = fd.get_company_overview(input_ticker)
+    split_OV=OV[0]
+    df = pd.json_normalize(split_OV)
+    df = df.T
+    st.table(df)
     submit = st.sidebar.button('Run app')
     if submit:
         run(input_ticker)
