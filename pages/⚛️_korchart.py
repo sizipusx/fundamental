@@ -419,8 +419,8 @@ if __name__ == "__main__":
     # st.dataframe(tickers)
     # st.dataframe(krx)
     try:
-        etf = krx[krx['Sector'].isnull()]
-        krx = krx[~krx['Sector'].isnull()]
+        # etf = krx[krx['Sector'].isnull()]
+        # krx = krx[~krx['Sector'].isnull()]
         com_name = st.sidebar.text_input("Company Name")
 
         if com_name == "":
