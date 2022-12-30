@@ -187,7 +187,7 @@ def visualize_PER_band(ticker, com_name, fun_df):
     #     st.subheader('PER Band Data') 
     st.dataframe(df.style.highlight_max(axis=0))
 
-    title = com_name +'('  + input_ticker + ') ttmEPS & Price & PER'
+    title = com_name +'('  + ticker + ') ttmEPS & Price & PER'
     titles = dict(text= title, x=0.5, y = 0.9) 
     x_data = df.index # EPS발표 날짜로 
     marker_colors = ['#ff7473', '#47b8e0', '#34314c', '#ffc952', '#3ac569']
