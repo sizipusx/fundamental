@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from alpha_vantage.fundamentaldata import FundamentalData 
 import FinanceDataReader as fdr
+import finterstellar as fs
 from pykrx import stock
 import requests
 import json
@@ -14,7 +15,7 @@ import makeData
 import requests
 import bs4
 
-# key='XA7Y92OE6LDOTLLE'
+finterstellar_key='16348685551051101001'
 key='CBALDIGECB3UFF5R'
 fd = FundamentalData(key, output_format='pandas')
 now = datetime.now() +pd.DateOffset(days=-5)
@@ -246,7 +247,43 @@ def get_overview(ticker):
     
     return description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_df, valuation_df
 
-    
+def get_finterstellar(ticker):
+  df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
+  df['Market Cap'] = df['Price'] * df['Shares'] 
+  df['BPS'] = df['Shareholders Equity'] / df['Shares']
+  df['Net Income']
+  df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
+  #재무비율
+  ratio_df = pd.DataFrame()
+  ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
+  ratio_df['Operating Margin'] = df['Operating Income'] / df['Revenue']
+  ratio_df['Profit Margin'] = df['Net Income'] / df['Revenue']
+  ratio_df['Liability/Equity'] = df['Total Liabilities'] / df['Shareholders Equity']
+  #valuation
+  v_df = pd.DataFrame()
+  v_df['EPS'] = df['EPS']
+  v_df['BPS'] = df['Shareholders Equity'] / df['Shares']
+  v_df['PER'] = df['Price'] / df['EPS']
+  v_df['PBR'] = df['Price'] / v_df['BPS']
+  v_df['ROE'] = df['Net Income'] / df['Avg Equity']
+  v_df['ROE3'] = v_df['ROE'].rolling(3).mean()
+  v_df['ROE5'] = v_df['ROE'].rolling(5).mean()
+  v_df['ROE10'] = v_df['ROE'].rolling(10).mean()
+  #ROE 값만
+  roe_min = min(v_df.iloc[-1,4:].to_list())
+  roe_max = max(v_df.iloc[-1,4:].to_list())
+  roe_curr = v_df.iloc[-1,4]
+ #기대수익률 테이블
+  y_df = pd.DataFrame()
+  y_df['fBPS'] = v_df['BPS']*(1+roe_min)**10
+  y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE'])**10
+  y_df['mBPS'] = v_df['BPS']*(1+roe_max)**10
+  y_df['yield_min'] = (y_df['fBPS']/df['Price'])**(1/10)-1
+  y_df['yield_c'] = (y_df['cBPS']/df['Price'])**(1/10)-1
+  y_df['yield_m'] = (y_df['mBPS']/df['Price'])**(1/10)-1
+
+  return df, v_df, y_df
+
 def get_kor_itooza(code):
     i_url = 'http://search.itooza.com/index.htm?seName='+ code
     fs_page = requests.get(i_url)

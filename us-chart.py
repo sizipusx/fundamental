@@ -14,6 +14,7 @@ import streamlit as st
 from alpha_vantage.fundamentaldata import FundamentalData as FD
 import FinanceDataReader as fdr
 import chart
+import getData
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 now = datetime.now() +pd.DateOffset(days=-1)
@@ -67,7 +68,8 @@ def run(ticker):
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
-        st.subheader("BED Valuation")
+        st.subheader("Valuation")
+        f_df, v_df, y_df = getData.get_finterstellar
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -75,8 +77,8 @@ def run(ticker):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = 22.0,
-                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균ROE 기준</span>"},
+                value = y_df.iloc[-1,3],
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -85,7 +87,7 @@ def run(ticker):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = 25.0,
+                value = y_df.iloc[-1,4],
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
