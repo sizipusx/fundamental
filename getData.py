@@ -377,18 +377,17 @@ def make_Valuation(firm_code, firm_name, bond_y):
 
   #연결 일때
   if  np.isnan(fs_tables[12].iloc[19,5]) == False: 
-    bps = float(fs_tables[12].iloc[19,5]) #2021.11.18 수정
-    #분기 5개 평균으로 바꿔볼까? 다시 최근분기값으로 변경 2022.12.23.
-    # bps_value = qu_df.iloc[19,1:5] #22.11.29 EPS [17,] => [18,] 변경
-    # list4 = [float(x) for x in bps_value.values]
-    # bps = sum(list4)/4 #이전 4분기 BPS 평균
+    #bps = float(fs_tables[12].iloc[19,5]) #2021.11.18 수정
+    #분기 4개 평균으로 바꿔볼까? 다시 최근분기값으로 변경 2022.12.23.
+    bps_value = qu_df.iloc[19,1:5] #22.11.29 EPS [17,] => [18,] 변경
+    list4 = [float(x) for x in bps_value.values]
+    bps = sum(list4)/4 #이전 4분기 BPS 평균
     # print(f"연결이고 BPS가 있을 때  = {BPS}")
-  else:
-    #연결이면서 4분기 평균으로
-    # bps_value = fs_tables[15].iloc[15,2:6]
-    # list4 = [float(x) for x in bps_value.values]
-    # bps = sum(list4)/len(list4) #이전 분기 BPS 평균
-    bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
+  else: #별도일 때
+    bps_value = fs_tables[15].iloc[15,2:6]
+    list4 = [float(x) for x in bps_value.values]
+    bps = sum(list4)/len(list4) #이전 분기 BPS 평균
+    # bps = float(fs_tables[15].iloc[15,5]) #2021.11.30 수정
     # print(f"연결이 아니고 BPS가 있을 때  = {BPS}")
   datalist.append('{0:,}'.format(int(bps))+"원")
   #PBR
