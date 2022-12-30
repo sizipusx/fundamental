@@ -43,11 +43,7 @@ def change_per_value(x):
     return x
 
 def run(ticker):
-    data_load_state = st.text('Loading All Company data...')
-    tickers = load_data()
-    # ticker_list = tickers['Symbol'].values.tolist()
-        # st.dataframe(tickers)
-    data_load_state.text("Done! (using st.cache)")
+    
 
     #Income 데이터 가져오기
     earning_df, income_df, balance_df, cashflow_df = make_data(ticker)
@@ -366,14 +362,16 @@ def load_data():
     df_n= fdr.StockListing('NYSE')
     # American 증권거래소 상장종목 전체
     df_a= fdr.StockListing('AMEX')
+    sp500 = fdr.StockListing('S&P500')
     # 각 거래소 이름 추가
-    df_q.iloc[:,-1] = "NASDAQ"
-    df_n.iloc[:,-1] = "NYSE"
-    df_a.iloc[:,-1] = "AMEX"
-    #세 데이터 모두 합치자
-    ticker_list = df_q.append(df_n).append(df_a)
+    df_q["Market"] = "NASDAQ"
+    df_n["Market"] = "NYSE"
+    df_a["Market"] = "AMEX"
 
-    return ticker_list
+    #세 데이터 모두 합치자
+    ticker_list = df_n.append(df_q).append(df_a)
+
+    return ticker_list, sp500
 
 def make_df(funct, ticker):
     API_URL = "https://www.alphavantage.co/query" 
@@ -650,13 +648,33 @@ def visualize_PBR_band(ticker, com_name, fun_df):
         
 
 if __name__ == "__main__":
-
+    data_load_state = st.text('Loading All Company data...')
+    tickers, sp500 = load_data()
+    # ticker_list = tickers['Symbol'].values.tolist()
+        # st.dataframe(tickers)
+    data_load_state.text("Done! (using st.cache)")
+    market = st.sidebar.radio(
+            label = "Choose the Market", 
+            options=('S&P500', 'NYSE:3270개', 'NASDAQ:4466개', 'AMEX:325'),
+            index = 0,
+            horizontal= True)
+    if market == "S&P500":
+        ticker_list = sp500['Symbol'].to_list()
+    elif market == "NYSE:3270개" :
+        ticker_slice = tickers[tickers['Market'] == 'NYSE']  
+        ticker_list = ticker_slice['Symbol'].to_list()
+    elif market == "NASDAQ:4466개" :
+        ticker_slice = tickers[tickers['Market'] == 'NASDAQ']
+        ticker_list = ticker_slice['Symbol'].to_list()
+    else:
+        ticker_slice = tickers[tickers['Market'] == 'AMEX']
+        ticker_list = ticker_slice['Symbol'].to_list()
     input_ticker = st.sidebar.text_input("ticker").upper()
     
-    ticker_list = [ "SENEA", "IMKTA", "KBAL", "CMC", \
-                    "APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
-                    "MO", "T", "O", "OMC", "SBUX", \
-                    "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
+    # ticker_list = [ "SENEA", "IMKTA", "KBAL", "CMC", \
+    #                 "APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
+    #                 "MO", "T", "O", "OMC", "SBUX", \
+    #                 "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
     if input_ticker == "":
         input_ticker = st.sidebar.selectbox(
             'Ticker',ticker_list
