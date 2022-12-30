@@ -75,7 +75,7 @@ def run(ticker):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = est_yield,
+                value = 22.0,
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -85,7 +85,7 @@ def run(ticker):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = longp_yield,
+                value = 25.0,
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -208,8 +208,8 @@ def run(ticker):
         #주가와 EPS
         chart.earning_chart(input_ticker, earning_df, price_df)
         #PER 밴드 챠트
-        visualize_PER_band(input_ticker, com_name, band_df)
-        visualize_PBR_band(input_ticker, com_name, pbr_df)
+        chart.visualize_PER_band(input_ticker, com_name, band_df)
+        chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
 
         # Profit and Cost
         st.subheader('Profit, Cost, Growth')
