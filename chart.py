@@ -74,7 +74,7 @@ def price_chart(input_ticker, company_name, price_df):
     st.plotly_chart(fig)
 
 
-def earning_chart(input_ticker, earning_df, ea_df, price_df):
+def earning_chart(input_ticker, earning_df, price_df):
     
     #주가와 EPS
     title = '('  + input_ticker + ') EPS & Price'
