@@ -221,14 +221,14 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="bps", value = value_df.loc['BPS'])
         col2.metric(label="추정 미래 ROE", value =roe_min)
-        col3.metric(label="10년 기대수익률(CAGR)", value =est_yield,  delta=round((est_yield-expect_yield)*100,2))
+        col3.metric(label="10년 기대수익률(CAGR)", value =est_yield,  delta=round((est_yield-expect_yield*100),2))
         ################홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 10년
         
         st.subheader("홍진채 주식 Valuation")
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 ROE", value =current_roe)
         col2.metric(label="지속가능기간", value =str(last_p)+"년")
-        col3.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=round((longp_yield-expect_yield),2))
+        col3.metric(label="10년 기대수익률(CAGR)", value = longp_yield, delta=round((longp_yield-expect_yield*100),2))
         col1, col2, col3 = st.columns(3)
         col1.metric(label="PBR", value = value_df.loc['PBR'])
         col2.metric(label="적정PBR", value =target_pbr)
