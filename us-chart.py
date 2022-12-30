@@ -69,7 +69,7 @@ def run(ticker):
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
         st.subheader("Valuation")
-        f_df, v_df, y_df = getData.get_finterstellar
+        f_df, v_df, y_df = getData.get_finterstellar(ticker)
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
