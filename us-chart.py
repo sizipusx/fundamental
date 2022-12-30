@@ -10,6 +10,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
+from matplotlib import font_manager, rc
+import seaborn as sns
+cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 import streamlit as st
 from alpha_vantage.fundamentaldata import FundamentalData as FD
