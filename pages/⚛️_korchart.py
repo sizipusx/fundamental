@@ -216,7 +216,7 @@ def run(ticker, com_name):
         col3.metric(label="ROE/r", value =value_df.loc['ROE/r'])
         col1, col2, col3 = st.columns(3)
         col1.metric(label="국고채3Y", value =bond3_y, delta=round(float(value_df.loc['PBRR'])-2.0,2))
-        col2.metric(label="시장 평균 기대수익률", value = str(round(1/msci_fper,2))+"%", delta=round(est_yield-(1/msci_fper),2))
+        col2.metric(label="시장 평균 기대수익률", value = str(round(1/msci_fper*100,2))+"%", delta=round(est_yield-(1/msci_fper*100),2))
         col3.metric(label="회사채BBB-5Y", value = value_df.loc['요구수익률'])
         #############################################
         st.subheader("채권형 주식 Valuation")
