@@ -478,7 +478,7 @@ def draw_basic():
             with col2:
                 st.write("")
             with col3:
-                city_list = ['전국', '서울', '6대광역시', '수도권', '지방']
+                city_list = ['전국', '서울', '6개광역시', '수도권', '기타지방']
                 drawAPT_weekly.draw_senti_together(s_df, city_list,kb_last_week)
                 
         html_br="""
@@ -490,12 +490,12 @@ def draw_basic():
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                city_list = ['서울', '인천', '경기', '세종', '부산', '대구', '광주', '대전', '울산']
+                city_list = ['서울', '인천', '경기도', '세종', '부산', '대구', '광주', '대전', '울산']
                 drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)
             with col2:
                 st.write("")
             with col3:
-                city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+                city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주']
                 drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
         html_br="""
         <br>
