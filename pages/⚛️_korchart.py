@@ -213,7 +213,7 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="PBRR", value =value_df.loc['PBRR'], delta=round(float(value_df.loc['PBRR'])-2.0,2))
         col2.metric(label="PERR", value =value_df.loc['PERR'], delta=round(float(value_df.loc['PERR'])-2.0,2))
-        col4.metric(label="ROE/r", value =value_df.loc['ROE/r'])
+        col3.metric(label="ROE/r", value =value_df.loc['ROE/r'])
         col1, col2, col3 = st.columns(3)
         col1.metric(label="국고채3Y", value =bond3_y, delta=round(float(value_df.loc['PBRR'])-2.0,2))
         col2.metric(label="시장 평균 기대수익률", value = str(round(1/msci_fper,2))+"%", delta=round(est_yield-(1/msci_fper),2))
