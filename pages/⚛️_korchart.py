@@ -119,6 +119,7 @@ def run(ticker, com_name):
     current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
     f_bps = bps*(1+roe_min/100)**lasting_N
     est_yield = round(((f_bps/current_price)**(1/lasting_N)-1)*100,2)
+    proper_price = int(f_bps/(1+expect_yield)**10)
     #######홍진채###########
     log_v = (1+roe_min/100)/(1+expect_yield)
     target_pbr = round((log_v)**lasting_N,2)
@@ -187,7 +188,7 @@ def run(ticker, com_name):
         a_yield = float(value_df.iloc[7].replace('%',''))
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta=current_price-rim_price)
-        col2.metric(label="RIM Price", value =value_df.loc['적정주가(RIM)'], delta=rim_price-current_price)
+        col2.metric(label="적정 주가", value =proper_price, delta=current_price-proper_price)
         col3.metric(label="컨센 주가", value =value_df.loc['컨센서스'], delta=conse_price-current_price)
 
         col1, col2, col3 = st.columns(3)
