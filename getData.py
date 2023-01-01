@@ -266,9 +266,9 @@ def get_finterstellar(ticker):
   v_df['PER'] = df['Price'] / df['EPS']
   v_df['PBR'] = df['Price'] / v_df['BPS']
   v_df['ROE'] = df['Net Income'] / df['Avg Equity']
-  v_df['ROE3'] = v_df['ROE'].rolling(3).mean()
-  v_df['ROE5'] = v_df['ROE'].rolling(5).mean()
-  v_df['ROE10'] = v_df['ROE'].rolling(10).mean()
+  v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
+  v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
+  v_df['ROE10'] = v_df['ROE'].rolling(40).mean()
   #ROE 값만
   roe_min = min(v_df.iloc[-1,4:].to_list())
   roe_max = max(v_df.iloc[-1,4:].to_list())
