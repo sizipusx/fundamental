@@ -160,7 +160,7 @@ def run(ticker, com_name):
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = est_yield,
-                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균ROE 기준</span>"},
+                title = {f"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 평균 ROE {roe_min} 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -170,7 +170,7 @@ def run(ticker, com_name):
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = longp_yield,
-                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
+                title = {f"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE {current_roe} 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -189,7 +189,7 @@ def run(ticker, com_name):
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta='{0:,}'.format(int(current_price-rim_price)))
         col2.metric(label="매수 가격", value ='{0:,}'.format(int(proper_price)), delta='{0:,}'.format(int(current_price-proper_price)))
-        col3.metric(label="컨센 주가", value =value_df.loc['컨센서스'], delta=conse_price-current_price)
+        col3.metric(label="컨센 주가", value =value_df.loc['컨센서스'], delta='{0:,}'.format(int(conse_price-current_price)))
 
         col1, col2, col3 = st.columns(3)
         col1.metric(label="DPS(mry)", value = value_df.loc['DPS(MRY)'])
