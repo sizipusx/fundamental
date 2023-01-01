@@ -95,6 +95,7 @@ def run(ticker, com_name):
     in_page = requests.get(in_url)
     in_tables = pd.read_html(in_page.text)
     yeild = in_tables[0].iloc[-1,-1]
+    bond3_y = in_tables[0].iloc[0,-2]
     #make BED valuation
     value_df = getData.make_Valuation(ticker, com_name, yeild)
     # Fnguide에서 원본 데이터 가져오기
@@ -160,7 +161,7 @@ def run(ticker, com_name):
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = est_yield,
-                title = {f"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 평균 ROE {roe_min} 기준</span>"},
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 평균 ROE "+roe_min+" 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -170,7 +171,7 @@ def run(ticker, com_name):
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = longp_yield,
-                title = {f"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE {current_roe} 기준</span>"},
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE "+current_roe+" 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -186,6 +187,8 @@ def run(ticker, com_name):
         else:
             conse_price = int(value_df.loc['컨센서스'].replace(',','').replace('원', ''))
         a_yield = float(value_df.iloc[7].replace('%',''))
+        #MSCI korea PER: 하드 코딩 -> 추후 크롤링으로 수정해야함
+        msci_fper = 10.80 
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 주가", value = value_df.loc['현재주가'], delta='{0:,}'.format(int(current_price-rim_price)))
         col2.metric(label="매수 가격", value ='{0:,}'.format(int(proper_price)), delta='{0:,}'.format(int(current_price-proper_price)))
@@ -202,16 +205,19 @@ def run(ticker, com_name):
             col2.metric(label="ttmPER", value =value_df.loc['ttmPER'])
         else:
             col2.metric(label="예측PER", value =value_df.loc['ttmPER'])
-        col3.metric("시가수익률", value =value_df.loc['시가수익률'])
+        col3.metric("MSCI fPER", value =msci_fper)
         col1, col2, col3 = st.columns(3)
         col1.metric(label="5년PBR", value = value_df.loc['5년PBR'])
         col2.metric(label="5년PER", value =value_df.loc['5년PER'])
         col3.metric("PER/PBR평균", value =value_df.loc['PER/PBR평균'])
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3 = st.columns(3)
         col1.metric(label="PBRR", value =value_df.loc['PBRR'], delta=round(float(value_df.loc['PBRR'])-2.0,2))
         col2.metric(label="PERR", value =value_df.loc['PERR'], delta=round(float(value_df.loc['PERR'])-2.0,2))
-        col3.metric(label="요구수익률", value = value_df.loc['요구수익률'])
         col4.metric(label="ROE/r", value =value_df.loc['ROE/r'])
+        col1, col2, col3 = st.columns(3)
+        col1.metric(label="국고채3Y", value =bond3_y, delta=round(float(value_df.loc['PBRR'])-2.0,2))
+        col2.metric(label="시장 평균 기대수익률", value = str(round(1/msci_fper,2))+"%", delta=round(est_yield-(1/msci_fper),2))
+        col3.metric(label="회사채BBB-5Y", value = value_df.loc['요구수익률'])
         #############################################
         st.subheader("채권형 주식 Valuation")
         col1, col2, col3, col4 = st.columns(4)
