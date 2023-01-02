@@ -459,7 +459,7 @@ if __name__ == "__main__":
     tickers, krx = load_data()
     #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
     #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
-    krx['Volume'] = str('{0:,}'.format(krx['Volume']))
+    krx['Volume'] = '{0:,}'.format(krx['Volume'])
     krx['Amount'] = round('{0:,}'.format(krx['Volumn']/100000000),1)
     krx['Marcap'] = round('{0:,}'.format(krx['Marcap']/100000000),1)
     krx['Stocks'] = round('{0:,}'.format(krx['Marcap']/100000000),1)
