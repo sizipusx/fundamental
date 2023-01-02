@@ -263,7 +263,7 @@ def run(ticker, com_name):
             col1, col2, col3 = st.columns(3)
             col1.metric(label="추정 미래 ROE(MAX)", value = roe_max)
             col2.metric(label="10년 기대수익률(CAGR)", value =max_est_yield,  delta=round((max_est_yield-expect_yield*100),2))
-            col3.metric(label="매수 가격", value ='{0:,}'.format(int(max_proper_price)), delta='{0:,}'.format(int(max_proper_price-current_price-max_proper_price)))
+            col3.metric(label="매수 가격", value ='{0:,}'.format(int(max_proper_price)), delta='{0:,}'.format(int(max_proper_price-current_price)))
             col1, col2, col3 = st.columns(3)
             col1.metric(label="추정 미래 ROE(MIN)", value = roe_min)
             col2.metric(label="10년 기대수익률(CAGR)", value =min_est_yield,  delta=round((min_est_yield-expect_yield*100),2))
