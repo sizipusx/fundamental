@@ -457,6 +457,12 @@ def run(ticker, com_name):
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
     tickers, krx = load_data()
+    #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
+    #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
+    krx['Volumn'] = str('{0:,}'.format(krx['Volumn']))
+    krx['Amount'] = round('{0:,}'.format(krx['Volumn']/100000000),1)
+    krx['Marcap'] = round('{0:,}'.format(krx['Marcap']/100000000),1)
+    krx['Stocks'] = round('{0:,}'.format(krx['Marcap']/100000000),1)
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
@@ -480,13 +486,7 @@ if __name__ == "__main__":
         code = comany_info.iloc[0,0]
     st.subheader('<'+company_name_+'> 회사 기본 정보')
     basic_df = comany_info.T
-    #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
-    #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
-    basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
-    basic_df['Amount'] = round('{0:,}'.format(basic_df['Volumn']/100000000),1)
-    basic_df['Marcap'] = round('{0:,}'.format(basic_df['Marcap']/100000000),1)
-    basic_df['Stocks'] = round('{0:,}'.format(basic_df['Marcap']/100000000),1)
-    st.table(comany_info.T)
+    st.table(basic_df)
     submit = st.sidebar.button('Analysis')
 
     if submit:
