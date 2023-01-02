@@ -77,9 +77,16 @@ def load_data():
     krx = krx[~krx['Name'].str.endswith(('우','A', 'B', '스팩', 'C', ')', '호', '풋', '콜', 'ETN'))]
     krx = krx[~(krx['Code'].str.len() != 6)]
     krx = krx[~(krx['Market'].str.endswith('X'))]
+    krx['Close'] = krx['Close'].apply(lambda int_num: '{:,}'.format(int_num))
+    krx['Open'] = krx['Open'].apply(lambda int_num: '{:,}'.format(int_num))
+    krx['High'] = krx['High'].apply(lambda int_num: '{:,}'.format(int_num))
+    krx['Low'] = krx['Low'].apply(lambda int_num: '{:,}'.format(int_num))
     krx['Amount'] = round(krx['Amount']/100000000,1)
+    krx['Amount'] = krx['Amount'].apply(lambda int_num: '{:,}'.format(int_num))
     krx['Marcap'] = round(krx['Marcap']/100000000,1)
+    krx['Marcap'] = krx['Marcap'].apply(lambda int_num: '{:,}'.format(int_num))
     krx['Stocks'] = round(krx['Stocks']/100000000,1)
+    krx['Stocks'] = krx['Stocks'].apply(lambda int_num: '{:,}'.format(int_num))
     krx.loc[:,"Close":"Low"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     return tickers, krx
@@ -488,7 +495,7 @@ if __name__ == "__main__":
     st.subheader('<'+company_name_+'> 회사 기본 정보')
     basic_df = comany_info.T
     st.table(basic_df)
-    st.dataframe(basic_df)
+    #st.dataframe(basic_df)
     submit = st.sidebar.button('Analysis')
 
     if submit:
