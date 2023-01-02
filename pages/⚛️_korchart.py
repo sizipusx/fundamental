@@ -460,9 +460,10 @@ if __name__ == "__main__":
     #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
     #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
     krx['Volume'] = '{0:,}'.format(krx['Volume'])
-    krx['Amount'] = round('{0:,}'.format(krx['Volumn']/100000000),1)
-    krx['Marcap'] = round('{0:,}'.format(krx['Marcap']/100000000),1)
-    krx['Stocks'] = round('{0:,}'.format(krx['Marcap']/100000000),1)
+    krx['Amount'] = round(krx['Volumn']/100000000,1)
+    krx['Marcap'] = round(krx['Marcap']/100000000,1)
+    krx['Stocks'] = round(krx['Marcap']/100000000,1)
+    krx.astype(float).fillna(0).round(decimals=2).format(precision=2, na_rep='MISSING', thousands=",")
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
