@@ -459,9 +459,9 @@ if __name__ == "__main__":
     tickers, krx = load_data()
     #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
     #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
-    krx['Amount'] = round(krx['Volumn']/100000000,1)
+    krx['Amount'] = round(krx['Amount']/100000000,1)
     krx['Marcap'] = round(krx['Marcap']/100000000,1)
-    krx['Stocks'] = round(krx['Marcap']/100000000,1)
+    krx['Stocks'] = round(krx['Stocks']/100000000,1)
     krx.astype(float).fillna(0).round(decimals=2).format(precision=2, na_rep='MISSING', thousands=",")
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
