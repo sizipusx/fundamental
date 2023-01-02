@@ -77,6 +77,11 @@ def load_data():
     krx = krx[~krx['Name'].str.endswith(('우','A', 'B', '스팩', 'C', ')', '호', '풋', '콜', 'ETN'))]
     krx = krx[~(krx['Code'].str.len() != 6)]
     krx = krx[~(krx['Market'].str.endswith('X'))]
+    krx['Amount'] = round(krx['Amount']/100000000,1)
+    krx['Marcap'] = round(krx['Marcap']/100000000,1)
+    krx['Stocks'] = round(krx['Stocks']/100000000,1)
+    krx.loc[:,"Close":"Low"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
+    krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     return tickers, krx
 
 # 숫자로 모두 변환
@@ -459,11 +464,6 @@ if __name__ == "__main__":
     tickers, krx = load_data()
     #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
     #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
-    krx['Amount'] = round(krx['Amount']/100000000,1)
-    krx['Marcap'] = round(krx['Marcap']/100000000,1)
-    krx['Stocks'] = round(krx['Stocks']/100000000,1)
-    krx.loc[:,"Close":"Low"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
-    krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
@@ -488,6 +488,7 @@ if __name__ == "__main__":
     st.subheader('<'+company_name_+'> 회사 기본 정보')
     basic_df = comany_info.T
     st.table(basic_df)
+    st.dataframe(basic_df)
     submit = st.sidebar.button('Analysis')
 
     if submit:
