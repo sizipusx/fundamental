@@ -480,8 +480,8 @@ if __name__ == "__main__":
         code = comany_info.iloc[0,0]
     st.subheader('<'+company_name_+'> 회사 기본 정보')
     basic_df = comany_info.T
-    basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
-    basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
+    #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
+    #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
     basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
     basic_df['Amount'] = round('{0:,}'.format(basic_df['Volumn']/100000000),1)
     basic_df['Marcap'] = round('{0:,}'.format(basic_df['Marcap']/100000000),1)
