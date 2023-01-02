@@ -87,8 +87,8 @@ def load_data():
     krx['Marcap'] = krx['Marcap'].apply(lambda int_num: '{:,}'.format(int_num))
     krx['Stocks'] = round(krx['Stocks']/100000000,1)
     krx['Stocks'] = krx['Stocks'].apply(lambda int_num: '{:,}'.format(int_num))
-    krx.loc[:,"Close":"Low"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
-    krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
+    #krx.loc[:,"Close":"Low"].style.format(precision=2, na_rep='MISSING', thousands=",")
+    #krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     return tickers, krx
 
 # 숫자로 모두 변환
