@@ -108,21 +108,40 @@ def run(ticker, com_name):
     for ind in fn_ann_df.columns:
         fn_ann_df[ind] = fn_ann_df[ind].apply(convert_str_to_float)
     bps = int(value_df.loc['BPS'].replace(',','').replace('원', ''))
+    current_pbr = round(float(value_df.loc['PBR']),2)
+    current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
     #ROE 평균 구해보자
     roe_s = fn_ann_df.loc['ROE']
     roe_total = round(roe_s.mean(),2)
     roe_real = round(roe_s.iloc[:5].mean(),2)
     roe_sum = len(roe_s) - roe_s.isnull().sum()
     roe_est = round(roe_s.iloc[5:].mean(),2)
-    current_pbr = round(float(value_df.loc['PBR']),2)
-    current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
-    roe_min = min(roe_total,roe_real,roe_est)
+    if np.isnan(roe_s[5]) == False:
+        
+        roe_mean = np.mean([roe_total, roe_real, roe_est])
+        roe_min = min(roe_total,roe_real,roe_est)
+        roe_max = max(roe_total,roe_real,roe_est)
+    else:
+        roe_mean = roe_real
+        roe_min = roe_real
+        roe_max = roe_real
+    
     current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
-    f_bps = bps*(1+roe_min/100)**lasting_N
+    #ROE 추정치를 무얼로 하느냐에 따라 기대수익률이 모두 달라짐
+    #ROE_min
+    min_f_bps = bps*(1+roe_min/100)**lasting_N
+    min_est_yield = round(((min_f_bps/current_price)**(1/lasting_N)-1)*100,2)
+    min_proper_price = int(min_f_bps/(1+expect_yield)**10)
+    # ROE_max
+    max_f_bps = bps*(1+roe_max/100)**lasting_N
+    max_est_yield = round(((max_f_bps/current_price)**(1/lasting_N)-1)*100,2)
+    max_proper_price = int(max_f_bps/(1+expect_yield)**10)
+    # ROE_mean
+    f_bps = bps*(1+roe_mean/100)**lasting_N
     est_yield = round(((f_bps/current_price)**(1/lasting_N)-1)*100,2)
     proper_price = int(f_bps/(1+expect_yield)**10)
     #######홍진채###########
-    log_v = (1+roe_min/100)/(1+expect_yield)
+    log_v = (1+roe_mean/100)/(1+expect_yield)
     target_pbr = round((log_v)**lasting_N,2)
     ### 장기 기대수익률(채권현 주식(roe_min)과 다르게 현재 ROE로 계산 해 보자)
     longp_yield = round(((1+current_roe/100)/current_pbr**(1/lasting_N)-1)*100,2)
@@ -220,17 +239,33 @@ def run(ticker, com_name):
         col3.metric(label="회사채BBB-5Y", value = value_df.loc['요구수익률'])
         #############################################
         st.subheader("채권형 주식 Valuation")
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE", value =current_roe)
-        col2.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
-        col3.metric(label="과거 5년 평균", value =roe_real)
-        col4.metric(label="예측 3년 평균", value =roe_est)
+        if np.isnan(roe_s[5]) == False:
+            col1, col2, col3 = st.columns(3)
+            col1.metric(label=f"{roe_sum}년 ROE 평균", value = roe_total)
+            col2.metric(label="과거 5년 평균", value =roe_real)
+            col3.metric(label="예측 3년 평균", value =roe_est)
+            col1, col2, col3 = st.columns(3)
+            col1.metric(label="BPS", value =value_df.loc['BPS'])
+            col2.metric(label="현재 ROE", value =current_roe)
+            col3.metric(label="평균 ROE", value =roe_mean)
+            col1, col2, col3 = st.columns(3)
+            col1.metric(label="추정 미래 ROE(MAX)", value = roe_max)
+            col2.metric(label="10년 기대수익률(CAGR)", value =max_est_yield,  delta=round((max_est_yield-expect_yield*100),2))
+            col3.metric(label="매수 가격", value ='{0:,}'.format(int(max_proper_price)), delta='{0:,}'.format(int(current_price-max_proper_price)))
+            col1, col2, col3 = st.columns(3)
+            col1.metric(label="추정 미래 ROE(MIN)", value = roe_min)
+            col2.metric(label="10년 기대수익률(CAGR)", value =min_est_yield,  delta=round((min_est_yield-expect_yield*100),2))
+            col3.metric(label="매수 가격", value ='{0:,}'.format(int(min_proper_price)), delta='{0:,}'.format(int(current_price-min_proper_price)))
+        else:
+            col1, col2, col3 = st.columns(3)
+            col1.metric(label="BPS", value =value_df.loc['BPS'])
+            col2.metric(label="현재 ROE", value =current_roe)
+            col3.metric(label="과거 5년 평균", value =roe_real)
         col1, col2, col3 = st.columns(3)
-        col1.metric(label="bps", value = value_df.loc['BPS'])
-        col2.metric(label="추정 미래 ROE", value =roe_min)
-        col3.metric(label="10년 기대수익률(CAGR)", value =est_yield,  delta=round((est_yield-expect_yield*100),2))
+        col1.metric(label="추정 미래 ROE(평균)", value =roe_min)
+        col2.metric(label="10년 기대수익률(CAGR)", value =est_yield,  delta=round((est_yield-expect_yield*100),2))
+        col3.metric(label="매수 가격", value ='{0:,}'.format(int(proper_price)), delta='{0:,}'.format(int(current_price-proper_price)))
         ################홍진채 적정 PBR 추가 22.12.23, 지속가능기간N = 10년
-        
         st.subheader("홍진채 주식 Valuation")
         col1, col2, col3 = st.columns(3)
         col1.metric(label="현재 ROE", value =current_roe)
