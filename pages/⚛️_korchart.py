@@ -77,7 +77,7 @@ def load_data():
     krx = krx[~krx['Name'].str.endswith(('우','A', 'B', '스팩', 'C', ')', '호', '풋', '콜', 'ETN'))]
     krx = krx[~(krx['Code'].str.len() != 6)]
     krx = krx[~(krx['Market'].str.endswith('X'))]
-    krx['Close'] = krx['Close'].apply(lambda int_num: '{:,}'.format(int_num))
+    krx['Close'] = krx['Close'].astype(int).apply(lambda int_num: '{:,}'.format(int_num))
     krx['Open'] = krx['Open'].apply(lambda int_num: '{:,}'.format(int_num))
     krx['High'] = krx['High'].apply(lambda int_num: '{:,}'.format(int_num))
     krx['Low'] = krx['Low'].apply(lambda int_num: '{:,}'.format(int_num))
