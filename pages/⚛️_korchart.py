@@ -462,6 +462,8 @@ if __name__ == "__main__":
     krx['Amount'] = round(krx['Amount']/100000000,1)
     krx['Marcap'] = round(krx['Marcap']/100000000,1)
     krx['Stocks'] = round(krx['Stocks']/100000000,1)
+    krx.loc[:,"Close":"Low"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
+    krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
@@ -485,8 +487,6 @@ if __name__ == "__main__":
         code = comany_info.iloc[0,0]
     st.subheader('<'+company_name_+'> 회사 기본 정보')
     basic_df = comany_info.T
-    krx.loc[:,"Close":"Low"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
-    krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
     st.table(basic_df)
     submit = st.sidebar.button('Analysis')
 
