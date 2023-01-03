@@ -124,19 +124,21 @@ def run(ticker, com_name):
     current_roe = round(float(value_df.loc['ROE'].replace('%','')),2)
     #ROE 평균 구해보자
     roe_s = fn_ann_df.loc['ROE']
+    roe_q = fn_qu_df.loc['ROE']
+    #예측 포함 최근 분기 평균
+    roe_qmean = round(roe_q.mean(),2)
     roe_total = round(roe_s.mean(),2)
     roe_real = round(roe_s.iloc[:5].mean(),2)
     roe_sum = len(roe_s) - roe_s.isnull().sum()
     roe_est = round(roe_s.iloc[5:].mean(),2)
     if np.isnan(roe_s[5]) == False:
-        
-        roe_mean = np.mean([roe_total, roe_real, roe_est])
-        roe_min = min(roe_total,roe_real,roe_est)
-        roe_max = max(roe_total,roe_real,roe_est)
+        roe_mean = np.mean([roe_qmean, roe_total, roe_real, roe_est])
+        roe_min = min(roe_qmean, roe_total,roe_real,roe_est)
+        roe_max = max(roe_qmean, roe_total,roe_real,roe_est)
     else:
-        roe_mean = roe_real
-        roe_min = roe_real
-        roe_max = roe_real
+        roe_mean = np.mean([roe_real, roe_qmean])
+        roe_min = min(roe_real, roe_qmean)
+        roe_max = max(roe_real, roe_qmean)
     
     current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
     #ROE 추정치를 무얼로 하느냐에 따라 기대수익률이 모두 달라짐
@@ -257,7 +259,7 @@ def run(ticker, com_name):
             col2.metric(label="과거 5년 평균", value =roe_real)
             col3.metric(label="예측 3년 평균", value =roe_est)
             col1, col2, col3 = st.columns(3)
-            col1.metric(label="BPS", value =value_df.loc['BPS'])
+            col1.metric(label="최근 분기 ROE 평균", value =roe_qmean)
             col2.metric(label="현재 ROE", value =current_roe)
             col3.metric(label="평균 ROE", value =round(roe_mean,2))
             col1, col2, col3 = st.columns(3)
