@@ -57,7 +57,8 @@ def upload_data():
             conn.close()
         except Exception as e:
             st.write(e)
-
+    else:
+        st.warning("you need to upload excel file.")
 def run_query():
     st.markdown("# Run Query")
     # sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
