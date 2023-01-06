@@ -190,7 +190,6 @@ def run(ticker, com_name):
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = est_yield,
@@ -199,12 +198,18 @@ def run(ticker, com_name):
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
             with col2:
-                st.write("")
+                fig = go.Figure(go.Indicator(
+                mode = "number+delta",
+                value = est_yield,
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균 ROE "+str(roe_mean)+" 기준</span>"},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                delta = {'reference': 15.0}))
+                st.plotly_chart(fig)
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = longp_yield,
-                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE "+str(current_roe)+" 기준</span>"},
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최대 ROE "+str(roe_max)+" 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
