@@ -280,6 +280,7 @@ def show_local(select_city, city_apt, city_total):
 if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
     s_df, t_df, stat_df = load_data()
+    st.dataframe(t_df)
     stat_df = stat_df.iloc[1:]
     stat_df = stat_df.set_index("date")
     stat_df.replace([np.inf, -np.inf], "0", inplace=True)
