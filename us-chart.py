@@ -119,6 +119,8 @@ def run(ticker):
     with tab1:
         st.subheader("Valuation")
         f_df, v_df, y_df = getData.get_finterstellar(ticker)
+        roe_mean = v_df.iloc[-1,4:].mean()
+        current_roe = v_df.iloc[-1,4]
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -142,7 +144,7 @@ def run(ticker):
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = round(y_df.iloc[-1,3]*100,2),
-                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 ROE 기준</span>"},
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균 ROE ("+str(roe_mean)+") 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -152,7 +154,7 @@ def run(ticker):
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
                 value = round(y_df.iloc[-1,4],2),
-                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE 기준</span>"},
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE("+str(current_roe)+")기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
@@ -169,10 +171,10 @@ def run(ticker):
         col3.metric(label="5년 평균", value =round(v_df.iloc[-1,6]*100,2))
         col4.metric(label="8년 평균", value =round(v_df.iloc[-1,7]*100,2))
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
-        col2.metric(label="최소 평균 기준 기대수익률", value =round(y_df.iloc[-1,3]*100,2), delta=round((round(y_df.iloc[-1,3]*100,2)-expect_yield),2))
-        col3.metric(label="최대 평균 기준 기대수익률", value =round(y_df.iloc[-1,5]*100,2), delta=round((round(y_df.iloc[-1,5]*100,2)-expect_yield),2))
-        col4.metric(label="평균 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
+        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,5]*100,2), delta=round((round(y_df.iloc[-1,5]*100,2)-expect_yield),2))
+        col2.metric(label="최소 평균 기준 기대수익률", value =round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
+        col3.metric(label="최대 평균 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
+        col4.metric(label="평균 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,2), delta=round((round(y_df.iloc[-1,7]*100,2)-expect_yield),2))
 
     with tab2:
         #Income 데이터 가져오기
