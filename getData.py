@@ -253,6 +253,7 @@ def get_finterstellar(ticker):
   df['BPS'] = df['Shareholders Equity'] / df['Shares']
   df['Net Income']
   df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
+  df = df.iloc[4:]
   #재무비율
   ratio_df = pd.DataFrame()
   ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
