@@ -128,8 +128,11 @@ def run(ticker):
                 st.dataframe(y_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                     .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
+                st.subheader("financial statements")
                 st.dataframe(f_df.to_frame().T)
+                st.subheader("Valuations")
                 st.dataframe(v_df)
+                st.subheader("Expecting Yield")
                 st.dataframe(y_df)
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
