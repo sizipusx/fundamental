@@ -231,23 +231,35 @@ def run(ticker):
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   
-        st.header(com_name + " Fundamental Chart")
-        
-        ##주가 EPS
-        price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
-        # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
-        earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
-        band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
-        band_df['ttmEPS'] = band_df['reportedEPS'].rolling(4).sum()
-        earning_df['ttmEPS'] = earning_df['reportedEPS'].rolling(4).sum()
-        earning_df['EPS Change'] = round(earning_df['ttmEPS'].pct_change(5)*100,2)
-        earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
-        earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
-        band_df.set_index('reportedDate', inplace=True)
-        if  st.checkbox('See Earning Data'):
-            st.subheader('Earning Raw Data') 
-            st.dataframe(earning_df.style.highlight_max(axis=0))
-
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                st.header(com_name + " Fundamental Chart")
+                
+                ##주가 EPS
+                price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
+                # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
+                earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
+                band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
+                band_df['ttmEPS'] = band_df['reportedEPS'].rolling(4).sum()
+                earning_df['ttmEPS'] = earning_df['reportedEPS'].rolling(4).sum()
+                earning_df['EPS Change'] = round(earning_df['ttmEPS'].pct_change(5)*100,2)
+                earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
+                earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
+                band_df.set_index('reportedDate', inplace=True)
+                with st.expander("See Raw Data"):
+                #if  st.checkbox('See Earning Data'):
+                    st.subheader('Earning Raw Data') 
+                    st.dataframe(earning_df.style.highlight_max(axis=0))
+            with col2:
+                st.write("")
+            with col3:
+                #주가와 EPS
+                chart.earning_chart(input_ticker, earning_df, price_df)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         # #EPS 증감률
         # eps_10 = band_df.iloc[-41:, -1]
         # eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
@@ -279,108 +291,132 @@ def run(ticker):
         marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
         # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
         template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-
-        #주가와 EPS
-        chart.earning_chart(input_ticker, earning_df, price_df)
-        #PER 밴드 챠트
-        chart.visualize_PER_band(input_ticker, com_name, band_df)
-        chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
-
+        #P밴드 챠트
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                chart.visualize_PER_band(input_ticker, com_name, band_df)
+            with col2:
+                st.write("")
+            with col3:
+                chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         # Profit and Cost
-        st.subheader('Profit, Cost, Growth')
-        x_data = income_df.index
-        title = com_name + '('  + input_ticker + ') <b>Profit & Cost</b>'
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_bar1 = ['totalRevenue', 'costOfRevenue', 'operatingExpenses']
-        y_data_line1 = ['grossProfit', 'ebit', 'operatingIncome', 'netIncome']
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                st.subheader('Profit, Cost, Growth')
+                x_data = income_df.index
+                title = com_name + '('  + input_ticker + ') <b>Profit & Cost</b>'
+                titles = dict(text= title, x=0.5, y = 0.85) 
+                fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+                y_data_bar1 = ['totalRevenue', 'costOfRevenue', 'operatingExpenses']
+                y_data_line1 = ['grossProfit', 'ebit', 'operatingIncome', 'netIncome']
 
-        for y_data, color in zip(y_data_bar1, marker_colors) :
-            fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data],marker_color= color), secondary_y = False) 
+                for y_data, color in zip(y_data_bar1, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data],marker_color= color), secondary_y = False) 
+                
+                for y_data, color in zip(y_data_line1, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= income_df.loc[:,y_data],
+                                                text= income_df[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
+                fig.update_traces(texttemplate='%{text:.3s}') 
+                fig.update_yaxes(title_text='Revenue', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
+                fig.update_yaxes(title_text='Income', range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                st.plotly_chart(fig)
+            with col2:
+                st.write("")
+            with col3:
+                # 마진율과 성장률
+                x_data = income_df.index
+                title = com_name + '('  + input_ticker + ') Margin & Growth Rate' 
+                titles = dict(text= title, x=0.5, y = 0.85) 
+                fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+                y_data_line2 = ['GPM', 'OPM', 'NPM']
+                y_data_bar2 = ['TR Change', 'OI Change', 'NI Change']
+
+                for y_data, color in zip(y_data_line2, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data, x = x_data, y=income_df[y_data],
+                    text = income_df[y_data], textposition = 'top center', marker_color = color),
+                    secondary_y = True)
+
+                for y_data, color in zip(y_data_bar2, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data], 
+                                        text = income_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+
+                fig.update_traces(texttemplate='%{text:.3s}') 
+                fig.update_yaxes(title_text='Growth Rate', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
+                fig.update_yaxes(title_text='Margin Rate', range=[-max(income_df.loc[:,y_data_line2[0]]), max(income_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                st.plotly_chart(fig)
         
-        for y_data, color in zip(y_data_line1, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                        name = y_data, x =  x_data, y= income_df.loc[:,y_data],
-                                        text= income_df[y_data], textposition = 'top center', marker_color = color),
-                                        secondary_y = True)
-        fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='Revenue', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
-        fig.update_yaxes(title_text='Income', range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], secondary_y = True)
-        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                #부채비율, 유동비율, 당좌비율
+                st.subheader('Asset, Liabilities, ShareholderEquity')
+                x_data = balance_df.index
+                title = com_name + '('  + input_ticker + ') <b>Asset & Liabilities</b>'
+                titles = dict(text= title, x=0.5, y = 0.85) 
+                fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+                #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
+                y_data_bar3 = ['totalLiabilities', 'totalShareholderEquity']
+                y_data_line3 = ['Debt/Equity', 'QuickRatio', '유동부채/자기자본']
 
-        # 마진율과 성장률
-        x_data = income_df.index
-        title = com_name + '('  + input_ticker + ') Margin & Growth Rate' 
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_line2 = ['GPM', 'OPM', 'NPM']
-        y_data_bar2 = ['TR Change', 'OI Change', 'NI Change']
-
-        for y_data, color in zip(y_data_line2, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data, x = x_data, y=income_df[y_data],
-            text = income_df[y_data], textposition = 'top center', marker_color = color),
-            secondary_y = True)
-
-        for y_data, color in zip(y_data_bar2, marker_colors) :
-            fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data], 
-                                text = income_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
-
-        fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='Growth Rate', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
-        fig.update_yaxes(title_text='Margin Rate', range=[-max(income_df.loc[:,y_data_line2[0]]), max(income_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
-        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig)
-
-        #부채비율, 유동비율, 당좌비율
-        st.subheader('Asset, Liabilities, ShareholderEquity')
-        x_data = balance_df.index
-        title = com_name + '('  + input_ticker + ') <b>Asset & Liabilities</b>'
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
-        y_data_bar3 = ['totalLiabilities', 'totalShareholderEquity']
-        y_data_line3 = ['Debt/Equity', 'QuickRatio', '유동부채/자기자본']
-
-        for y_data, color in zip(y_data_bar3, marker_colors) :
-            fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], 
-                                text = balance_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
-        
-        for y_data, color in zip(y_data_line3, marker_colors): 
-            fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                        name = y_data, x =  x_data, y= balance_df.loc[:,y_data],
-                                        text= balance_df[y_data], textposition = 'top center', marker_color = color),
-                                        secondary_y = True)
-        fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
-        fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
-        fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
-        fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        fig.update_layout(barmode='stack')
-        st.plotly_chart(fig)
-
-        #무형자산총자금비율, 현금자산비율
-        x_data = balance_df.index
-        title = com_name + '('  + input_ticker + ') <b>IntangibleAssets & Cash And ShortTermInvestments</b>'
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_bar4 = ['무형자산비율', '현금성자산비율']
-        y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
-        fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], 
-                            text = balance_df[y_data_bar4[1]], textposition = 'outside', 
-                            marker_color= marker_colors[0]), secondary_y = False) 
-        fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                        name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
-                                        text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[2]),
-                                        secondary_y = True)
-        fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
-        fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig)
+                for y_data, color in zip(y_data_bar3, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = balance_df[y_data], 
+                                        text = balance_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+                
+                for y_data, color in zip(y_data_line3, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= balance_df.loc[:,y_data],
+                                                text= balance_df[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
+                fig.update_traces(texttemplate='%{text:.3s}') 
+                fig.update_yaxes(range=[0, max(balance_df.loc[:,y_data_bar3[0]])*2], secondary_y = False)
+                fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
+                fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(barmode='stack')
+                st.plotly_chart(fig)
+            with col2:
+                st.write("")
+            with col3:
+                #무형자산총자금비율, 현금자산비율
+                x_data = balance_df.index
+                title = com_name + '('  + input_ticker + ') <b>IntangibleAssets & Cash And ShortTermInvestments</b>'
+                titles = dict(text= title, x=0.5, y = 0.85) 
+                fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+                y_data_bar4 = ['무형자산비율', '현금성자산비율']
+                y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
+                fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], 
+                                    text = balance_df[y_data_bar4[1]], textposition = 'outside', 
+                                    marker_color= marker_colors[0]), secondary_y = False) 
+                fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
+                                                text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[2]),
+                                                secondary_y = True)
+                fig.update_traces(texttemplate='%{text:.3s}') 
+                fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
+                fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                st.plotly_chart(fig)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
 
         #현금흐름
         #영업활동현금흐름, 순이익, 투자활동현금흐름, 재무활동현금흐름
