@@ -150,14 +150,14 @@ def earning_chart(input_ticker, earning_df, price_df):
         )
     st.plotly_chart(fig)
 
-    fig2 = go.Figure()
-    title = '('  + input_ticker + ') reportedEPS Statistics'
-    titles = dict(text= title, x=0.5, y = 0.9) 
-    fig2.add_trace(go.Box(x=earning_df.loc[:,'reportedEPS'], name='reportedEPS', boxpoints='all', marker_color = 'indianred',
-                    boxmean='sd', jitter=0.3, pointpos=-1.8 ))
-    fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-    # fig2.add_trace(go.Box(x=earning_df.loc[:,'EPS Change'], name='EPS Change'))
-    st.plotly_chart(fig2)
+    # fig2 = go.Figure()
+    # title = '('  + input_ticker + ') reportedEPS Statistics'
+    # titles = dict(text= title, x=0.5, y = 0.9) 
+    # fig2.add_trace(go.Box(x=earning_df.loc[:,'reportedEPS'], name='reportedEPS', boxpoints='all', marker_color = 'indianred',
+    #                 boxmean='sd', jitter=0.3, pointpos=-1.8 ))
+    # fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    # # fig2.add_trace(go.Box(x=earning_df.loc[:,'EPS Change'], name='EPS Change'))
+    # st.plotly_chart(fig2)
 
 def visualize_PER_band(ticker, com_name, fun_df):
     
