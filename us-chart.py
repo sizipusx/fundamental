@@ -247,7 +247,7 @@ def run(ticker):
                 earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
                 earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
                 band_df.set_index('reportedDate', inplace=True)
-                chart.earning_chart(input_ticker, com_name, earning_df)
+                chart.earning_chart(input_ticker, earning_df, price_df)
             with col2:
                 st.write("")
             with col3:
