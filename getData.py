@@ -270,12 +270,12 @@ def get_finterstellar(ticker):
   v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
   v_df['ROE8'] = v_df['ROE'].rolling(32).mean()
-  v_df['meanROE'] = v_df.iloc[:,4:].mean()
+  #v_df['meanROE'] = v_df.iloc[:,4:].mean()
   #ROE 값만
   roe_min = min(v_df.iloc[-1,4:].to_list())
   roe_max = max(v_df.iloc[-1,4:].to_list())
   roe_curr = v_df.iloc[-1,4]
-  roe_mean = v_df.iloc[-1,-1]
+  roe_mean = v_df.iloc[-1,4:].mean()
  #기대수익률 테이블
   y_df = pd.DataFrame()
   y_df['fBPS'] = v_df['BPS']*(1+roe_min)**10
