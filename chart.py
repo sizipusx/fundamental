@@ -164,22 +164,7 @@ def ttmEPS_PER_chart(ticker, com_name, fun_df):
     df = fun_df[['Close', 'ttmEPS']]
     df.loc[:,'PER'] = round((df['Close'] / df['ttmEPS']),2)
     df.loc[:,'PER'] = df['PER'].map(lambda x: change_per_value(x))
-    #PER Max/Min/half/3/1
-    e_max = round(df['PER'].max(),1)
-    if(e_max >= 50.00):
-        e_max = 50.00
-    e_min = round(df['PER'].min(),1)
-    e_half = round((e_max + e_min)/2,1)
-    e_3 = round((e_max-e_half)/2 + e_half,1)
-    e_1 = round((e_half-e_min)/2 + e_min,1)
-
-    #가격 데이터 만들기
-    df.loc[:,str(e_max)+"X"] = (df['ttmEPS']*e_max).round(2)
-    df.loc[:,str(e_3)+"X"] = (df['ttmEPS']*e_3).round(2)
-    df.loc[:,str(e_half)+"X"] = (df['ttmEPS']*e_half).round(2)
-    df.loc[:,str(e_1)+"X"] = (df['ttmEPS']*e_1).round(2)
-    df.loc[:,str(e_min)+"X"] = (df['ttmEPS']*e_min).round(2)
-
+  
      #ttmEPS, PER, 가격 변동
     # if  st.checkbox('See PER Band Data'):
     #     st.subheader('PER Band Data') 
