@@ -252,7 +252,7 @@ def run(ticker):
                 st.write("")
             with col3:
                 #주가와 EPS
-                
+                chart.ttmEPS_PER_chart(input_ticker, earning_df, price_df)
         html_br="""
         <br>
         """

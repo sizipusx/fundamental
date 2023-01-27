@@ -183,7 +183,7 @@ def ttmEPS_PER_chart(ticker, com_name, fun_df):
      #ttmEPS, PER, 가격 변동
     # if  st.checkbox('See PER Band Data'):
     #     st.subheader('PER Band Data') 
-    st.dataframe(df.style.highlight_max(axis=0))
+    #st.dataframe(df.style.highlight_max(axis=0))
 
     title = com_name +'('  + ticker + ') ttmEPS & Price & PER'
     titles = dict(text= title, x=0.5, y = 0.9) 
