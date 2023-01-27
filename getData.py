@@ -268,7 +268,7 @@ def get_finterstellar(ticker):
   v_df['ROE'] = df['Net Income'] / df['Avg Equity']
   v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
-  v_df['ROE9'] = v_df['ROE'].rolling(37).mean()
+  v_df['ROE9'] = v_df['ROE'].rolling(36).mean()
   #ROE 값만
   roe_min = min(v_df.iloc[-1,4:].to_list())
   roe_max = max(v_df.iloc[-1,4:].to_list())
