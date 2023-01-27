@@ -625,11 +625,11 @@ if __name__ == "__main__":
     
     input_ticker = input_ticker.upper()
     #Summary 데이터 가져오기    
-    # OV = fd.get_company_overview(input_ticker)
-    # split_OV=OV[0]
-    # df = pd.json_normalize(split_OV)
-    # df = df.T
-    # st.table(df)
+    OV = fd.get_company_overview(input_ticker)
+    split_OV=OV[0]
+    df = pd.json_normalize(split_OV)
+    df = df.T
+    st.table(df)
     submit = st.sidebar.button('Run app')
     if submit:
         run(input_ticker)
