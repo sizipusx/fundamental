@@ -235,10 +235,11 @@ def run(ticker):
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   
+        st.subheader(com_name + " Fundamental Chart")
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                st.header(com_name + " Fundamental Chart")
+               
                 ##주가 EPS
                 price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
                 # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
@@ -291,7 +292,7 @@ def run(ticker):
         marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
         # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
         template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-        #P밴드 챠트
+        st.subheader('Band Chart')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -305,10 +306,10 @@ def run(ticker):
         """
         st.markdown(html_br, unsafe_allow_html=True)
         # Profit and Cost
+        st.subheader('Profit, Cost, Growth')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                st.subheader('Profit, Cost, Growth')
                 x_data = income_df.index
                 title = com_name + '('  + input_ticker + ') <b>Profit & Cost</b>'
                 titles = dict(text= title, x=0.5, y = 0.85) 
@@ -361,11 +362,11 @@ def run(ticker):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        #부채비율, 유동비율, 당좌비율
+        st.subheader('Asset, Liabilities, ShareholderEquity')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                #부채비율, 유동비율, 당좌비율
-                st.subheader('Asset, Liabilities, ShareholderEquity')
                 x_data = balance_df.index
                 title = com_name + '('  + input_ticker + ') <b>Asset & Liabilities</b>'
                 titles = dict(text= title, x=0.5, y = 0.85) 
