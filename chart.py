@@ -303,9 +303,9 @@ def visualize_PBR_band(ticker, com_name, fun_df):
     fun_df.loc[:,str(b_1)+"X"] = (fun_df['BPS']*b_1).round(2)
     fun_df.loc[:,str(b_min)+"bX"] = (fun_df['BPS']*b_min).round(2)
     
-    if  st.checkbox('See PBR Band Data'):
-        st.subheader('PBR Band Data') 
-        st.dataframe(fun_df.style.highlight_max(axis=0))
+    # if  st.checkbox('See PBR Band Data'):
+    #     st.subheader('PBR Band Data') 
+    #     st.dataframe(fun_df.style.highlight_max(axis=0))
     
     title = com_name + '('  + ticker + ') <b>PBR Band</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
