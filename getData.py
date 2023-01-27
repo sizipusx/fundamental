@@ -269,19 +269,23 @@ def get_finterstellar(ticker):
   v_df['ROE'] = df['Net Income'] / df['Avg Equity']
   v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
-  v_df['ROE9'] = v_df['ROE'].rolling(36).mean()
+  v_df['ROE8'] = v_df['ROE'].rolling(33).mean()
+  v_df['meanROE'] = v_df['ROE'].iloc[:,4:].mean()
   #ROE 값만
   roe_min = min(v_df.iloc[-1,4:].to_list())
   roe_max = max(v_df.iloc[-1,4:].to_list())
   roe_curr = v_df.iloc[-1,4]
+  roe_mean = v_df.iloc[-1,-1]
  #기대수익률 테이블
   y_df = pd.DataFrame()
   y_df['fBPS'] = v_df['BPS']*(1+roe_min)**10
   y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE'])**10
   y_df['mBPS'] = v_df['BPS']*(1+roe_max)**10
+  y_df['meanBPS'] = v_df['BPS']*(1+roe_mean)**10
   y_df['yield_min'] = (y_df['fBPS']/df['Price'])**(1/10)-1
   y_df['yield_c'] = (y_df['cBPS']/df['Price'])**(1/10)-1
-  y_df['yield_m'] = (y_df['mBPS']/df['Price'])**(1/10)-1
+  y_df['yield_max'] = (y_df['mBPS']/df['Price'])**(1/10)-1
+  y_df['yield_mean'] = (y_df['meanBPS']/df['Price'])**(1/10)-1
 
   return df, v_df, y_df
 

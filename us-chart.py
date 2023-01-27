@@ -167,11 +167,12 @@ def run(ticker):
         col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,4]*100,2))
         col2.metric(label="3년 평균", value =round(v_df.iloc[-1,5]*100,2))
         col3.metric(label="5년 평균", value =round(v_df.iloc[-1,6]*100,2))
-        col4.metric(label="9년 평균", value =round(v_df.iloc[-1,7]*100,2))
-        col1, col2, col3 = st.columns(3)
+        col4.metric(label="8년 평균", value =round(v_df.iloc[-1,7]*100,2))
+        col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
         col2.metric(label="최소 평균 기준 기대수익률", value =round(y_df.iloc[-1,3]*100,2), delta=round((round(y_df.iloc[-1,3]*100,2)-expect_yield),2))
         col3.metric(label="최대 평균 기준 기대수익률", value =round(y_df.iloc[-1,5]*100,2), delta=round((round(y_df.iloc[-1,5]*100,2)-expect_yield),2))
+        col4.metric(label="평균 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
 
     with tab2:
         #Income 데이터 가져오기
