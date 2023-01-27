@@ -230,8 +230,8 @@ def run(ticker):
         #     domain = {'x': [0, 1], 'y': [0.5, 1]}))
         with st.expander("See Raw Data"):
                 #if  st.checkbox('See Earning Data'):
-                    st.subheader('Earning Raw Data') 
-                    st.dataframe(earning_df.style.highlight_max(axis=0))     
+            st.subheader('Earning Raw Data') 
+            st.dataframe(earning_df.style.highlight_max(axis=0))     
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   
@@ -293,6 +293,12 @@ def run(ticker):
         # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
         template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
         st.subheader('Band Chart')
+        with st.expander("See Raw Data"):
+                #if  st.checkbox('See Earning Data'):
+            st.subheader('PER Band Raw Data') 
+            st.dataframe(band_df.style.highlight_max(axis=0)) 
+            st.subheader('PBR Band Raw Data') 
+            st.dataframe(pbr_df.style.highlight_max(axis=0))
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
