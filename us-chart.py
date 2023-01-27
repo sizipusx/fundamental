@@ -225,9 +225,10 @@ def run(ticker):
         #     title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Subtitle</span><br><span style='font-size:0.8em;color:gray'>Subsubtitle</span>"},
         #     delta = {'reference': 400, 'relative': True},
         #     domain = {'x': [0, 1], 'y': [0.5, 1]}))
-
-        
-
+        with st.expander("See Raw Data"):
+                #if  st.checkbox('See Earning Data'):
+                    st.subheader('Earning Raw Data') 
+                    st.dataframe(earning_df.style.highlight_max(axis=0))     
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   
@@ -235,7 +236,6 @@ def run(ticker):
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 st.header(com_name + " Fundamental Chart")
-                
                 ##주가 EPS
                 price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
                 # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
@@ -247,10 +247,6 @@ def run(ticker):
                 earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
                 earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
                 band_df.set_index('reportedDate', inplace=True)
-                with st.expander("See Raw Data"):
-                #if  st.checkbox('See Earning Data'):
-                    st.subheader('Earning Raw Data') 
-                    st.dataframe(earning_df.style.highlight_max(axis=0))
             with col2:
                 st.write("")
             with col3:
