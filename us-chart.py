@@ -119,8 +119,8 @@ def run(ticker):
     with tab1:
         st.subheader("Valuation")
         f_df, v_df, y_df = getData.get_finterstellar(ticker)
-        roe_mean = v_df.iloc[-1,4:].mean()
-        current_roe = v_df.iloc[-1,4]
+        roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
+        current_roe = round(v_df.iloc[-1,4]*100,2)
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -143,7 +143,7 @@ def run(ticker):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,3]*100,2),
+                value = round(y_df.iloc[-1,7]*100,2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균 ROE ("+str(roe_mean)+") 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -153,7 +153,7 @@ def run(ticker):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,4],2),
+                value = round(y_df.iloc[-1,5]*100,2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE("+str(current_roe)+")기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
