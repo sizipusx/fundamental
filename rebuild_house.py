@@ -200,7 +200,7 @@ def load_data():
         data = query.fetchall(), 
         columns = cols
     )
-    #st.dataframe(total_df)
+    st.dataframe(sum_df)
     t_old = len(total_df)
     st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매매 매물이 있습니다!")
     # total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
