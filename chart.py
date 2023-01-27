@@ -259,9 +259,6 @@ def visualize_PER_band(ticker, com_name, fun_df):
     df.loc[:,str(e_1)+"X"] = (df['ttmEPS']*e_1).round(2)
     df.loc[:,str(e_min)+"X"] = (df['ttmEPS']*e_min).round(2)
 
-   
-
-    st.subheader('Band Chart')
     title = com_name + '('  + ticker + ') <b>PER Band</b>'
     titles = dict(text= title, x=0.5, y = 0.85) 
 
