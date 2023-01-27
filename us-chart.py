@@ -118,9 +118,20 @@ def run(ticker):
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
         st.subheader("Valuation")
+        expect_yield = 0.15
         f_df, v_df, y_df = getData.get_finterstellar(ticker)
         roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
         current_roe = round(v_df.iloc[-1,4]*100,2)
+        min_f_bps = min(y_df.iloc[-1,:4])
+        max_f_bps = max(y_df.iloc[-1,:4])
+        mean_f_bps = y_df.iloc[-1,3]
+        current_f_bps = y_df.iloc[-1,1]
+        min_proper_price = int(min_f_bps/(1+expect_yield)**10)
+        max_proper_price = int(max_f_bps/(1+expect_yield)**10)
+        mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
+        current_proper_price = int(current_f_bps/(1+expect_yield)**10)
+        #평가일 현재 주가(종가)
+        close_price = fdr.DataReader(ticker).iloc[-1,3]
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -175,6 +186,18 @@ def run(ticker):
         col2.metric(label="최소 평균 기준 기대수익률", value =round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
         col3.metric(label="최대 평균 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
         col4.metric(label="평균 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,2), delta=round((round(y_df.iloc[-1,7]*100,2)-expect_yield),2))
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric(label="현재 ROE 기준 매수가격", value = current_proper_price, delta=current_proper_price-close_price)
+        col2.metric(label="최소 평균 기준 매수가격", value =min_proper_price, delta=min_proper_price-close_price)
+        col3.metric(label="최대 평균 기준 매수가격", value =max_proper_price, delta=min_proper_price-close_price)
+        col4.metric(label="평균 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
+
+        st.subheader("Fundamental Value")
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric(label="현재 주가", value = close_price)
+        col2.metric(label="PER", value =min_proper_price, delta=min_proper_price-close_price)
+        col3.metric(label="PBR", value =max_proper_price, delta=min_proper_price-close_price)
+        col4.metric(label="평균 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
 
     with tab2:
         #Income 데이터 가져오기
