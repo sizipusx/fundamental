@@ -204,14 +204,14 @@ def run(ticker, overview_df):
         st.subheader("Fundamental Value")
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 주가", value = close_price)
-        col2.metric(label="PER", value =overview_df.loc['PERatio'])
-        col3.metric(label="TrailingPE", value =overview_df.loc['TrailingPE'])
-        col4.metric(label="ForwardPE", value =overview_df.loc['ForwardPE'])
+        col2.metric(label="PER", value =round(overview_df.loc['PERatio'].astype(float),2))
+        col3.metric(label="TrailingPE", value =round(overview_df.loc['TrailingPE'].astype(float),2))
+        col4.metric(label="ForwardPE", value =round(overview_df.loc['ForwardPE'].astype(float),2))
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="DPS", value = overview_df.loc['DividendPerShare'])
+        col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
         col2.metric(label="DividendYield", value =str(overview_df.loc['DividendYield']*100)+"%")
         col3.metric(label="DPR", value =str(div_df.iloc[-1,1]*100)+"%")
-        col4.metric(label="ExDividendDate", value =overview_df.loc['ExDividendDate'])
+        col4.metric(label="ExDividendDate", value =str(overview_df.loc['ExDividendDate']))
 
     with tab2:
         #Income 데이터 가져오기
