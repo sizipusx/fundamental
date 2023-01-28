@@ -55,7 +55,7 @@ def price_chart(input_ticker, company_name, price_df):
     fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(hovermode="x unified")
-
+    fig.update_layout(template="myID")
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -122,6 +122,7 @@ def earning_chart(input_ticker, earning_df, price_df):
     fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_yaxes(title_text='EPS',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    fig.update_layout(template="myID")
     # fig.update_layout(
     #         showlegend=True,
     #         legend=dict(
@@ -196,6 +197,7 @@ def dividend_chart(ticker, com_name, div_df):
     fig.update_yaxes(title_text='DividendYield',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_yaxes(title_text='DPS',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def visualize_PER_band(ticker, com_name, fun_df):
@@ -242,6 +244,7 @@ def visualize_PER_band(ticker, com_name, fun_df):
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text="Price", showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def visualize_PBR_band(ticker, com_name, fun_df):
@@ -291,6 +294,7 @@ def visualize_PBR_band(ticker, com_name, fun_df):
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text="Price", showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def income_chart(input_ticker, income_df, ia_df):
@@ -316,6 +320,7 @@ def income_chart(input_ticker, income_df, ia_df):
     fig.update_yaxes(title_text='Income', range=[-max(income_df.loc[:,y_data_line[0]].astype(float)), max(income_df.loc[:,y_data_line[0]].astype(float))* 1.2], secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def income_margin_chart(input_ticker, income_df):
@@ -339,6 +344,7 @@ def income_margin_chart(input_ticker, income_df):
     fig.update_yaxes(title_text='Margin Rate', range=[-max(income_df.loc[:,y_data_line[0]]), max(income_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def balance_chart(input_ticker, balance_df):
@@ -368,6 +374,7 @@ def balance_chart(input_ticker, balance_df):
     fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     fig.update_layout(barmode='stack')
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
     #무형자산총자금비율, 현금자산비율
@@ -388,6 +395,7 @@ def balance_chart(input_ticker, balance_df):
     fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
     fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def cashflow_chart(input_ticker, cashflow_df, income_df):
@@ -407,6 +415,7 @@ def cashflow_chart(input_ticker, cashflow_df, income_df):
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
@@ -457,6 +466,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text='Annual EPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
     fig2 = go.Figure()
@@ -492,6 +502,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     fig.update_yaxes(title_text='PBR', secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
      # ROE와 마진율
@@ -516,6 +527,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     fig.update_yaxes(title_text='Margin Rate', range=[-max(ttm_df.loc[:,y_data_line2[0]]), max(ttm_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
     fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
     #배당
@@ -539,6 +551,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     fig.update_yaxes(title_text='Dividend Yeild',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
     fig.update_yaxes(title_text='Annual DPS',showticklabels= True, showgrid = True, zeroline=True, secondary_y = False, ticksuffix="원")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
 def candlestick_chart(code):
@@ -560,6 +573,7 @@ def candlestick_chart(code):
     fig.update_yaxes(title_text='Volume',showticklabels= True, showgrid = False, zeroline=False, secondary_y = True)
     fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
     fig.update_layout(
             showlegend=True,
             legend=dict(

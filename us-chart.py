@@ -409,6 +409,7 @@ def run(ticker, overview_df):
                 fig.update_yaxes(title_text='Margin', range=[-max(r_df.loc[:,y_data_line1[0]]), max(r_df.loc[:,y_data_line1[0]])* 1.2], ticksuffix="%", secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(template="myID")
                 st.plotly_chart(fig)
             with col2:
                 st.write("")
@@ -435,6 +436,7 @@ def run(ticker, overview_df):
                 fig.update_yaxes(title_text='Margin Rate', range=[-max(income_df.loc[:,y_data_line2[0]]), max(income_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(template="myID")
                 st.plotly_chart(fig)
         
         html_br="""
@@ -470,6 +472,7 @@ def run(ticker, overview_df):
                 fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
                 fig.update_layout(barmode='stack')
+                fig.update_layout(template="myID")
                 st.plotly_chart(fig)
             with col2:
                 st.write("")
@@ -492,6 +495,7 @@ def run(ticker, overview_df):
                 fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
                 fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(template="myID")
                 st.plotly_chart(fig)
         html_br="""
         <br>
@@ -527,6 +531,7 @@ def run(ticker, overview_df):
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
                 fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(template="myID")
                 st.plotly_chart(fig)
 
             with col2:
@@ -553,6 +558,7 @@ def run(ticker, overview_df):
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
                 fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(template="myID")
                 st.plotly_chart(fig)
 
         #조회시 1분 기다려야 함
