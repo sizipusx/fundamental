@@ -132,13 +132,13 @@ def run(ticker, overview_df):
         current_proper_price = int(current_f_bps/(1+expect_yield)**10)
         #평가일 현재 주가(종가)
         from datetime import datetime
-        yes = datetime.now() + pd.DateOffset(days=-1)
+        yes = datetime.now() + pd.DateOffset(days=-2)
         end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
         close_price = fdr.DataReader(ticker)
         cprice = fdr.DataReader(ticker, end_date)
         st.dataframe(close_price)
         st.dataframe(cprice)
-        #st.write(f"close_price: {close_price}")
+        st.write(f"close_price: {end_date}")
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
