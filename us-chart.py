@@ -132,7 +132,7 @@ def run(ticker, overview_df):
             max_proper_price = int(max_f_bps/(1+expect_yield)**10)
             mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
             current_proper_price = int(current_f_bps/(1+expect_yield)**10)
-        except ValueError e:
+        except ValueError:
             min_proper_price = 0
             max_proper_price = 0
             mean_proper_price = 0
