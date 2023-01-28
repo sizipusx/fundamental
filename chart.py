@@ -99,8 +99,8 @@ def earning_chart(input_ticker, earning_df, price_df):
         fig.add_trace(go.Bar(name = y_data, x = x_data, y = earning_df[y_data], marker_color= color), secondary_y = True) 
     
     fig.add_trace(go.Scatter(mode='lines', 
-                            name = 'Close', x =  price_df.index, y= price_df['Close'],
-                            text= price_df['Close'], textposition = 'top center', marker_color = 'rgb(0,0,0)'),# marker_colorscale='RdBu'),
+                            name = 'Close', x =  price_df.index, y= price_df.iloc[:,0],
+                            text= price_df.iloc[:,0], textposition = 'top center', marker_color = 'rgb(0,0,0)'),# marker_colorscale='RdBu'),
                             secondary_y = False)
 
     fig.update_traces(texttemplate='%{text:.3s}') 

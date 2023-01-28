@@ -210,7 +210,7 @@ def run(ticker, overview_df):
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
         col2.metric(label="DividendYield", value =str(overview_df.loc['DividendYield']*100)+"%")
-        col3.metric(label="DPR", value =str(div_df.iloc[-1,1]*100)+"%")
+        col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
         col4.metric(label="ExDividendDate", value =str(overview_df.loc['ExDividendDate']))
 
     with tab2:
@@ -281,7 +281,8 @@ def run(ticker, overview_df):
             with col1:
                
                 ##주가 EPS
-                price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Close'].to_frame()
+                # price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Adj Close'].to_frame()
+                price_df = fs.get_price(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])
                 # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
                 earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
                 band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
