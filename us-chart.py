@@ -515,7 +515,7 @@ def run(ticker, overview_df):
                                                 text= cashflow_df[y_data], textposition = 'top center', marker_color = color),
                                                 secondary_y = True)
         fig.add_trace(go.Bar(name = 'Net Income', x = x_data, y = income_df['Net Income'], 
-                            text= income_df['Net Income'], textposition = 'outside', marker_color= '#ff7473'), secondary_y = False)
+                            text= income_df['Net Income'], textposition = 'outside', marker_color= 'rgb(255,69,0)'), secondary_y = False)
         fig.update_traces(texttemplate='%{text:.3s}') 
         fig.update_yaxes(title_text='Cash Flow', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
         fig.update_yaxes(title_text='FCF', range=[-max(cashflow_df.loc[:,y_data_line5[0]]), max(cashflow_df.loc[:,y_data_line5[0]])* 1.2], secondary_y = True)
