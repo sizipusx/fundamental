@@ -127,10 +127,16 @@ def run(ticker, overview_df):
         max_f_bps = max(y_df.iloc[-1,:4])
         mean_f_bps = y_df.iloc[-1,3]
         current_f_bps = y_df.iloc[-1,1]
-        min_proper_price = int(min_f_bps/(1+expect_yield)**10)
-        max_proper_price = int(max_f_bps/(1+expect_yield)**10)
-        mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
-        current_proper_price = int(current_f_bps/(1+expect_yield)**10)
+        try:
+            min_proper_price = int(min_f_bps/(1+expect_yield)**10)
+            max_proper_price = int(max_f_bps/(1+expect_yield)**10)
+            mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
+            current_proper_price = int(current_f_bps/(1+expect_yield)**10)
+        except ValueError e:
+            min_proper_price = 0
+            max_proper_price = 0
+            mean_proper_price = 0
+            current_proper_price = int(current_f_bps/(1+expect_yield)**10)
         #평가일 현재 주가(종가)
         # from datetime import datetime
         # yes = datetime.now() + pd.DateOffset(days=-2)
