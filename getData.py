@@ -258,7 +258,7 @@ def get_finterstellar(ticker):
   div_df = pd.DataFrame()
   div_df['DPS'] = abs(df['Dividends'])/df['Shares']
   div_df['payoutR'] = abs(df['Dividends'])/df['Net Income']
-  div_df['DividendYield'] = df['DPS']/df['Price']
+  div_df['DividendYield'] = div_df['DPS']/df['Price']
   #재무비율
   ratio_df = pd.DataFrame()
   ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
