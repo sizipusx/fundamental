@@ -221,7 +221,7 @@ def run(ticker, overview_df):
         col3.metric(label="최대 ROE 기준 매수가격", value =max_proper_price, delta=min_proper_price-close_price)
         col4.metric(label="평균 ROE 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
 
-        st.subheader("Fundamental Value")
+        st.subheader("Fundamental")
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 주가", value = close_price)
         col2.metric(label="PER", value =round(overview_df.loc['PERatio'].astype(float),2))
@@ -577,7 +577,7 @@ def make_data(ticker, f_df):
     # income.set_index('fiscalDateEnding', inplace=True)
     # income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
     # income = income.iloc[::-1]
-    sub = ['Revenue', 'Gross Profit', 'Operating Income', 'SG&A', 'EBIT', 'Net Income']
+    sub = ['Revenue', 'Gross Profit', 'Operating Income', 'EBIT', 'Net Income']
     income_df = f_df[sub].replace('None','0').astype(float).round(0)
     #연매출액 증가율
     gp_cagr = (income_df['Revenue'].iloc[-1]/income_df['Revenue'].iloc[0])**(1/5) -1
@@ -665,6 +665,7 @@ if __name__ == "__main__":
     split_OV=OV[0]
     ov_df = pd.json_normalize(split_OV)
     overview_df = ov_df.T
+    overview_df.columns = ['기본 정보']
     st.table(overview_df)
     submit = st.sidebar.button('Run app')
     if submit:
