@@ -218,8 +218,8 @@ def run(ticker, overview_df):
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 ROE 기준 매수가격", value = current_proper_price, delta=current_proper_price-close_price)
         col2.metric(label="최소 ROE 기준 매수가격", value =min_proper_price, delta=min_proper_price-close_price)
-        col3.metric(label="최대 ROE 기준 매수가격", value =max_proper_price, delta=min_proper_price-close_price)
-        col4.metric(label="평균 ROE 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
+        col3.metric(label="최대 ROE 기준 매수가격", value =max_proper_price, delta=max_proper_price-close_price)
+        col4.metric(label="평균 ROE 기준 매수가격", value =mean_proper_price, delta=mean_proper_price-close_price)
 
         st.subheader("Fundamental")
         col1, col2, col3, col4 = st.columns(4)
@@ -543,7 +543,7 @@ def run(ticker, overview_df):
                 for y_data, color in zip(y_data_line6, marker_colors): 
                             fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                                         name = y_data, x =  x_data, y= round(v_df.loc[:,y_data]*100,2),
-                                                        text= round(v_df[y_data]*100,2), textposition = 'top center', marker_color = color),
+                                                        text= round(v_df[y_data]*100,2), textposition = 'top center', marker_color = marker_colors[2]),
                                                         secondary_y = True)
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text='BPS', range=[0, max(v_df.loc[:,y_data_bar6[0]])*2], secondary_y = False)
