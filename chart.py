@@ -2,8 +2,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import plotly.io as pio
 import FinanceDataReader as fdr
-
 import streamlit as st
 from datetime import datetime
 
