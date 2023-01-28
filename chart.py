@@ -158,10 +158,10 @@ def earning_chart(input_ticker, earning_df, price_df):
     # fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
     # # fig2.add_trace(go.Box(x=earning_df.loc[:,'EPS Change'], name='EPS Change'))
     # st.plotly_chart(fig2)
-def ttmEPS_PER_chart(ticker, com_name, fun_df):
+def dividend_chart(ticker, com_name, div_df):
     # st.write(option)
-    fun_df.dropna(inplace=True)
-    df = fun_df[['Close', 'ttmEPS']]
+    div_df.dropna(inplace=True)
+    df = div_df[['Close', 'ttmEPS']]
     df.loc[:,'PER'] = round((df['Close'] / df['ttmEPS']),2)
     df.loc[:,'PER'] = df['PER'].map(lambda x: change_per_value(x))
   

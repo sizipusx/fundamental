@@ -289,6 +289,7 @@ def run(ticker, overview_df):
                 ##주가 EPS
                 # price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Adj Close'].to_frame()
                 price_df = fs.get_price(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])
+                price_df.index = pd.to_datetime(price_df.index, format='%Y-%m-%d')
                 # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
                 earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
                 band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
@@ -303,7 +304,7 @@ def run(ticker, overview_df):
                 st.write("")
             with col3:
                 #주가와 EPS
-                chart.ttmEPS_PER_chart(input_ticker, com_name, band_df)
+                chart.dividend_chart(input_ticker, com_name, div_df)
         html_br="""
         <br>
         """
@@ -551,13 +552,13 @@ def make_df(funct, ticker):
     return df
 
 def make_data(ticker):   
-    edf = make_df('EARNINGS',ticker) #get earning sheet quarterly data
+    edf = make_df('EARNINGS',ticker) #get earning sheet quarterly data 1번
     # income = make_df('INCOME_STATEMENT',ticker) #get income statement quarterly data
     # cashflow = make_df('BALANCE_SHEET',ticker) #get cash flow quarterly data
     # balance = make_df('CASH_FLOW',ticker) #get balance sheet quarterly data
     
     #income_statement
-    income, meta_data = fd.get_income_statement_quarterly(ticker)
+    income, meta_data = fd.get_income_statement_quarterly(ticker) #2번
     income.set_index('fiscalDateEnding', inplace=True)
     income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
     income = income.iloc[::-1]
@@ -575,7 +576,7 @@ def make_data(ticker):
     income_df['NI Change'] = income_df['netIncome'].pct_change()*100
 
     #balance sheet 
-    balance, meta_data = fd.get_balance_sheet_quarterly(ticker)
+    balance, meta_data = fd.get_balance_sheet_quarterly(ticker) #3번
     balance.set_index('fiscalDateEnding', inplace=True)
     balance.index =  pd.to_datetime(balance.index, format='%Y-%m-%d')
     balance = balance.iloc[::-1]
@@ -597,7 +598,7 @@ def make_data(ticker):
     balance_df['현금성자산비율'] = balance_df['cashAndShortTermInvestments'] / balance_df['totalAssets']*100
     
     #cash-flow 
-    cashflow, meta_data = fd.get_cash_flow_quarterly(ticker)
+    cashflow, meta_data = fd.get_cash_flow_quarterly(ticker) #4번
     cashflow.set_index('fiscalDateEnding', inplace=True)
     cashflow.index =  pd.to_datetime(cashflow.index, format='%Y-%m-%d')
     cashflow = cashflow.iloc[::-1]
@@ -646,7 +647,7 @@ if __name__ == "__main__":
     
     input_ticker = input_ticker.upper()
     #Summary 데이터 가져오기    
-    OV = fd.get_company_overview(input_ticker)
+    OV = fd.get_company_overview(input_ticker) #5번
     split_OV=OV[0]
     ov_df = pd.json_normalize(split_OV)
     overview_df = ov_df.T
