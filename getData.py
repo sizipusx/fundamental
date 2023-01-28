@@ -251,6 +251,9 @@ def get_finterstellar(ticker):
   df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
   df['Market Cap'] = df['Price'] * df['Shares'] 
   df['BPS'] = df['Shareholders Equity'] / df['Shares']
+  df['DPS'] = abs(df['Dividends'])/df['Shares']
+  df['payoutR'] = abs(df['Dividends'])/df['Net Income']
+  df['DividendYield'] = df['DPS']/df['Price']
   df['Net Income']
   df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
   df = df.iloc[4:]
