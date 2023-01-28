@@ -77,6 +77,8 @@ pio.templates["myID"] = go.layout.Template(
         )
     ]
 )
+marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+template = 'ggplot2' 
 
 ## 특정 위치의 배경색 바꾸기
 @st.cache

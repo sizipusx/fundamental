@@ -12,7 +12,22 @@ from datetime import datetime
 # marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-
+pio.templates["myID"] = go.layout.Template(
+    layout_annotations=[
+        dict(
+            name="draft watermark",
+            text="graph by 기하급수적",
+            textangle=0,
+            opacity=0.2,
+            font=dict(color="black", size=10),
+            xref="paper",
+            yref="paper",
+            x=0.9,
+            y=0.1,
+            showarrow=False,
+        )
+    ]
+)
 # PER 값 변경    
 @st.cache
 def change_per_value(x):
@@ -165,9 +180,6 @@ def dividend_chart(ticker, com_name, div_df):
     title = com_name +'('  + ticker + ') Dividend & Yield'
     titles = dict(text= title, x=0.5, y = 0.9) 
     x_data = div_df.index # EPS발표 날짜로 
-    marker_colors = ['#ff7473', '#47b8e0', '#34314c', '#ffc952', '#3ac569']
-    # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar = ['DPS']
     
@@ -178,7 +190,7 @@ def dividend_chart(ticker, com_name, div_df):
 
     fig.add_trace(go.Scatter(mode='lines', 
                             name = 'Div Yield', x =div_df.index, y= round(div_df['DividendYield']*100,2),
-                            text= round(div_df['DividendYield']*100,2), textposition = 'top center', marker_color = '#34314c'),# marker_colorscale='RdBu'),
+                            text= round(div_df['DividendYield']*100,2), textposition = 'top center', marker_color = marker_colors[2]'),# marker_colorscale='RdBu'),
                             secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='DividendYield',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
