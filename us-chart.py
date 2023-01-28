@@ -135,6 +135,7 @@ def run(ticker, overview_df):
         today = date.today()
         today.isoformat()
         close_price = fdr.DataReader(ticker)
+        st.write(f"close_price: {close_price}")
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
