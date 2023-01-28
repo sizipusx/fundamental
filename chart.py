@@ -200,6 +200,31 @@ def dividend_chart(ticker, com_name, div_df):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
+def dividend_chart_right(ticker, com_name, div_df):
+    # st.write(option)
+    div_df.dropna(inplace=True)
+    title = com_name +'('  + ticker + ') Dividend & Yield'
+    titles = dict(text= title, x=0.5, y = 0.9) 
+    x_data = div_df.index
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    y_data_bar = ['DPS']
+    
+    for y_data, color in zip(y_data_bar, marker_colors) :
+        fig.add_trace(go.Bar(name = y_data, x =x_data, y = div_df[y_data], marker_color= color, 
+                        text= div_df[y_data], textposition = 'auto'),
+                        secondary_y = False) 
+
+    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                            name = 'Payout Ratio', x =div_df.index, y= round(div_df['payoutR']*100,2),
+                            text= round(div_df['payoutR']*100,2), textposition = 'top center', marker_color = marker_colors[1]),# marker_colorscale='RdBu'),
+                            secondary_y = True)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.update_yaxes(title_text='payoutR',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text='DPS',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
 def visualize_PER_band(ticker, com_name, fun_df):
     # st.write(option)
     fun_df.dropna(inplace=True)

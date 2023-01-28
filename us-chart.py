@@ -320,12 +320,25 @@ def run(ticker, overview_df):
             with col2:
                 st.write("")
             with col3:
-                #주가와 EPS
-                chart.dividend_chart(input_ticker, com_name, div_df)
+                #주가 캔들차트
+                from datetime import datetime
+                yes = datetime.now() + pd.DateOffset(days=-3)
+                end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
+                fdr_df = fdr.DataReader(input_ticker,earning_df.iloc[0,0],end_date)
+                chart.price_chart(fdr_df)
+                st.dataframe(fdr_df)
         html_br="""
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                chart.dividend_chart(input_ticker, com_name, div_df)
+            with col2:
+                st.write("")
+            with col3:
+                chart.dividend_chart_right(input_ticker, com_name, div_df)
         # #EPS 증감률
         # eps_10 = band_df.iloc[-41:, -1]
         # eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
