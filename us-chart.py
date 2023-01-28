@@ -144,10 +144,16 @@ def run(ticker, overview_df):
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                             .format(precision=2, na_rep='MISSING', thousands=","))
-                st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-                st.dataframe(y_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                with col2:
+                    st.dataframe(y_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+                with col3:
+                    st.dataframe(div_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                     .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 st.subheader("financial statements")
