@@ -132,15 +132,15 @@ def run(ticker, overview_df):
         mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
         current_proper_price = int(current_f_bps/(1+expect_yield)**10)
         #평가일 현재 주가(종가)
-        from datetime import datetime
-        yes = datetime.now() + pd.DateOffset(days=-2)
-        end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
+        # from datetime import datetime
+        # yes = datetime.now() + pd.DateOffset(days=-2)
+        # end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
         #close_price = fdr.DataReader(ticker)
-        cprice = fdr.DataReader(ticker, end_date)
+        # cprice = fdr.DataReader(ticker, end_date)
         close_price = fs.get_price(ticker).iloc[-1,0]
         # st.dataframe(close_price)
-        st.dataframe(cprice)
-        st.write(f"close_price: {close_price}")
+        # st.dataframe(cprice)
+        # st.write(f"close_price: {close_price}")
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -208,10 +208,10 @@ def run(ticker, overview_df):
         col3.metric(label="TrailingPE", value =max_proper_price, delta=min_proper_price-close_price)
         col4.metric(label="ForwardPE", value =mean_proper_price, delta=min_proper_price-close_price)
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="DPS", value = overview_df['DividendPerShare'])
-        col2.metric(label="DividendYield", value =str(overview_df['DividendYield']*100)+"%")
+        col1.metric(label="DPS", value = overview_df.loc['DividendPerShare'])
+        col2.metric(label="DividendYield", value =str(overview_df.loc['DividendYield']*100)+"%")
         col3.metric(label="DPR", value =str(div_df.iloc[-1,1]*100)+"%")
-        col4.metric(label="ExDividendDate", value =overview_df['ExDividendDate'])
+        col4.metric(label="ExDividendDate", value =overview_df.loc['ExDividendDate'])
 
     with tab2:
         #Income 데이터 가져오기
