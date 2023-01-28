@@ -231,7 +231,7 @@ def run(ticker, overview_df):
         col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
         col2.metric(label="DividendYield", value =round(overview_df.loc['DividendYield'].astype(float)*100,2))
         col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
-        col4.metric(label="ExDividendDate", value =str(overview_df.iloc[-1]))
+        col4.metric(label="ExDividendDate", value =str(overview_df.iloc[-1,0]))
 
     with tab2:
         #Income 데이터 가져오기
@@ -392,7 +392,7 @@ def run(ticker, overview_df):
                 titles = dict(text= title, x=0.5, y = 0.85) 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_bar1 = ['Revenue', 'Operating Income', 'Net Income']
-                y_data_line1 = ['Gross Margin', 'Operating Margin', 'Profit Margin', 'netIncome']
+                y_data_line1 = ['Gross Margin', 'Operating Margin', 'Profit Margin']
 
                 for y_data, color in zip(y_data_bar1, marker_colors) :
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data],marker_color= color), secondary_y = False) 
