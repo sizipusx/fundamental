@@ -325,7 +325,7 @@ def run(ticker, overview_df):
                 yes = datetime.now() + pd.DateOffset(days=-3)
                 end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
                 fdr_df = fdr.DataReader(input_ticker,earning_df.iloc[0,0],end_date)
-                chart.price_chart(fdr_df)
+                chart.price_chart(ticker, com_name, fdr_df)
                 st.dataframe(fdr_df)
         html_br="""
         <br>
