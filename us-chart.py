@@ -131,7 +131,10 @@ def run(ticker):
         mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
         current_proper_price = int(current_f_bps/(1+expect_yield)**10)
         #평가일 현재 주가(종가)
-        close_price = fdr.DataReader(ticker).iloc[-1,3]
+        from datetime import date
+        today = date.today()
+        today.isoformat()
+        close_price = fdr.DataReader(ticker)
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -196,8 +199,13 @@ def run(ticker):
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 주가", value = close_price)
         col2.metric(label="PER", value =min_proper_price, delta=min_proper_price-close_price)
-        col3.metric(label="PBR", value =max_proper_price, delta=min_proper_price-close_price)
-        col4.metric(label="평균 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
+        col3.metric(label="TrailingPE", value =max_proper_price, delta=min_proper_price-close_price)
+        col4.metric(label="ForwardPE", value =mean_proper_price, delta=min_proper_price-close_price)
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric(label="DPS", value = close_price)
+        col2.metric(label="DividendYield", value =min_proper_price, delta=min_proper_price-close_price)
+        col3.metric(label="DPR", value =max_proper_price, delta=min_proper_price-close_price)
+        col4.metric(label="ExDividendDate", value =mean_proper_price, delta=min_proper_price-close_price)
 
     with tab2:
         #Income 데이터 가져오기
