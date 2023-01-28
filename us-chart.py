@@ -145,7 +145,7 @@ def run(ticker, overview_df):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
-                col1, col2, col3 = st.columns([30,2,30])
+                col1, col2, col3 = st.columns([30,30,30])
                 with col1:
                     st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                             .format(precision=2, na_rep='MISSING', thousands=","))
@@ -221,7 +221,7 @@ def run(ticker, overview_df):
 
     with tab2:
         #Income 데이터 가져오기
-        earning_df, income_df, balance_df, cashflow_df = make_data(ticker)
+        earning_df, income_df, balance_df, cashflow_df = make_data(ticker, f_df)
         #Summary 데이터 가져오기    
         # OV = fd.get_company_overview(ticker)
         # split_OV=OV[0]
@@ -551,29 +551,29 @@ def make_df(funct, ticker):
 
     return df
 
-def make_data(ticker):   
+def make_data(ticker, f_df):   
     edf = make_df('EARNINGS',ticker) #get earning sheet quarterly data 1번
     # income = make_df('INCOME_STATEMENT',ticker) #get income statement quarterly data
     # cashflow = make_df('BALANCE_SHEET',ticker) #get cash flow quarterly data
     # balance = make_df('CASH_FLOW',ticker) #get balance sheet quarterly data
     
     #income_statement
-    income, meta_data = fd.get_income_statement_quarterly(ticker) #2번
-    income.set_index('fiscalDateEnding', inplace=True)
-    income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
-    income = income.iloc[::-1]
-    sub = ['totalRevenue', 'costOfRevenue', 'grossProfit', 'operatingIncome', 'operatingExpenses', 'ebit', 'netIncome']
-    income_df = income[sub].replace('None','0').astype(float).round(0)
+    # income, meta_data = fd.get_income_statement_quarterly(ticker) #2번
+    # income.set_index('fiscalDateEnding', inplace=True)
+    # income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
+    # income = income.iloc[::-1]
+    sub = ['Revenue', 'COGS', 'Gross Profit', 'Operating Income', 'SG&A', 'EBIT', 'Net Income']
+    income_df = f_df[sub].replace('None','0').astype(float).round(0)
     #연매출액 증가율
-    gp_cagr = (income_df['totalRevenue'].iloc[-1]/income_df['totalRevenue'].iloc[0])**(1/5) -1
+    gp_cagr = (income_df['Revenue'].iloc[-1]/income_df['Revenue'].iloc[0])**(1/5) -1
 
-    income_df['GPM'] = income_df['grossProfit'] / income_df['totalRevenue']*100
-    income_df['OPM'] = income_df['operatingIncome'] / income_df['totalRevenue']*100
-    income_df['NPM'] = income_df['netIncome'] / income_df['totalRevenue']*100
+    income_df['GPM'] = income_df['Gross Profit'] / income_df['Revenue']*100
+    income_df['OPM'] = income_df['Operating Income'] / income_df['Revenue']*100
+    income_df['NPM'] = income_df['Net Income'] / income_df['Revenue']*100
 
-    income_df['TR Change'] = income_df['totalRevenue'].pct_change()*100
-    income_df['OI Change'] = income_df['operatingIncome'].pct_change()*100
-    income_df['NI Change'] = income_df['netIncome'].pct_change()*100
+    income_df['TR Change'] = income_df['Revenue'].pct_change()*100
+    income_df['OI Change'] = income_df['Operating Income'].pct_change()*100
+    income_df['NI Change'] = income_df['Net Income'].pct_change()*100
 
     #balance sheet 
     balance, meta_data = fd.get_balance_sheet_quarterly(ticker) #3번
@@ -598,14 +598,14 @@ def make_data(ticker):
     balance_df['현금성자산비율'] = balance_df['cashAndShortTermInvestments'] / balance_df['totalAssets']*100
     
     #cash-flow 
-    cashflow, meta_data = fd.get_cash_flow_quarterly(ticker) #4번
-    cashflow.set_index('fiscalDateEnding', inplace=True)
-    cashflow.index =  pd.to_datetime(cashflow.index, format='%Y-%m-%d')
-    cashflow = cashflow.iloc[::-1]
-    sub = ['netIncome', 'operatingCashflow', 'cashflowFromInvestment', 'cashflowFromFinancing', 'dividendPayout', \
-         'capitalExpenditures', 'changeInCashAndCashEquivalents']
-    cashflow_df = cashflow[sub].replace('None','0').astype(float).round(0)
-    cashflow_df["FCF"] = cashflow_df['operatingCashflow'] - cashflow_df['capitalExpenditures']
+    # cashflow, meta_data = fd.get_cash_flow_quarterly(ticker) #4번
+    # cashflow.set_index('fiscalDateEnding', inplace=True)
+    # cashflow.index =  pd.to_datetime(cashflow.index, format='%Y-%m-%d')
+    # cashflow = cashflow.iloc[::-1]
+    sub = ['Net Income', 'Operating Cash Flow', 'Financing cash flow',  'Capital Expenditure', 'Investing cash flow', 'dividendPayout', \
+        'changeInCashAndCashEquivalents']
+    cashflow_df = f_df[sub].replace('None','0').astype(float).round(0)
+    cashflow_df["FCF"] = cashflow_df['Operating Cash Flow'] - cashflow_df['Capital Expenditure']
 
     return edf, income_df, balance_df, cashflow_df
 
