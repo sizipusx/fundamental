@@ -161,83 +161,32 @@ def earning_chart(input_ticker, earning_df, price_df):
 def dividend_chart(ticker, com_name, div_df):
     # st.write(option)
     div_df.dropna(inplace=True)
-    df = div_df[['Close', 'ttmEPS']]
-    df.loc[:,'PER'] = round((df['Close'] / df['ttmEPS']),2)
-    df.loc[:,'PER'] = df['PER'].map(lambda x: change_per_value(x))
-  
-     #ttmEPS, PER, 가격 변동
-    # if  st.checkbox('See PER Band Data'):
-    #     st.subheader('PER Band Data') 
-    #st.dataframe(df.style.highlight_max(axis=0))
-
-    title = com_name +'('  + ticker + ') ttmEPS & Price & PER'
+ 
+    title = com_name +'('  + ticker + ') Dividend & Yield'
     titles = dict(text= title, x=0.5, y = 0.9) 
-    x_data = df.index # EPS발표 날짜로 
+    x_data = div_df.index # EPS발표 날짜로 
     marker_colors = ['#ff7473', '#47b8e0', '#34314c', '#ffc952', '#3ac569']
     # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-    template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+    template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    y_data_bar = ['PER', 'ttmEPS']
+    y_data_bar = ['DPS']
     
     for y_data, color in zip(y_data_bar, marker_colors) :
-        fig.add_trace(go.Bar(name = y_data, x =x_data, y = df[y_data], marker_color= color, 
-                        text= df[y_data], textposition = 'auto'),
+        fig.add_trace(go.Bar(name = y_data, x =x_data, y = div_df[y_data], marker_color= color, 
+                        text= div_df[y_data], textposition = 'auto'),
                         secondary_y = False) 
 
     fig.add_trace(go.Scatter(mode='lines', 
-                            name = 'Close', x =df.index, y= df['Close'],
-                            text= df['Close'], textposition = 'top center', marker_color = '#34314c'),# marker_colorscale='RdBu'),
+                            name = 'Div Yield', x =div_df.index, y= div_df['DividendYield'],
+                            text= div_df['DividendYield'], textposition = 'top center', marker_color = '#34314c'),# marker_colorscale='RdBu'),
                             secondary_y = True)
-
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = True)
-    fig.update_yaxes(title_text='ttmEPS/PER',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.update_yaxes(title_text='DividendYield',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text='DPS',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = False)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
-    fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(
-                visible=True
-            ),
-            type="date"
-            )      
-        )
     st.plotly_chart(fig)
 
 def visualize_PER_band(ticker, com_name, fun_df):
-    
     # st.write(option)
     fun_df.dropna(inplace=True)
     df = fun_df[['Close', 'ttmEPS']]
