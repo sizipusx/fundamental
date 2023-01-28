@@ -122,6 +122,7 @@ def run(ticker, overview_df):
         expect_yield = 0.15
         f_df, v_df, y_df, div_df = getData.get_finterstellar(ticker)
         roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
+        roe_min = round(min(v_df.iloc[-1,4:]),2)
         current_roe = round(v_df.iloc[-1,4]*100,2)
         min_f_bps = min(y_df.iloc[-1,:4])
         max_f_bps = max(y_df.iloc[-1,:4])
@@ -170,8 +171,17 @@ def run(ticker, overview_df):
                 st.dataframe(y_df)
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
+            col1, col2, col3 = st.columns([30,30,30])
             with col1:
+                # #PERR, PBRR
+                fig = go.Figure(go.Indicator(
+                mode = "number+delta",
+                value = round(y_df.iloc[-1,4]*100,2),
+                title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 ROE ("+str(roe_min)+") 기준</span>"},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                delta = {'reference': 15.0}))
+                st.plotly_chart(fig)
+            with col2:
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
@@ -180,8 +190,6 @@ def run(ticker, overview_df):
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
                 st.plotly_chart(fig)
-            with col2:
-                st.write("")
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
@@ -295,6 +303,7 @@ def run(ticker, overview_df):
                 ##주가 EPS
                 # price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Adj Close'].to_frame()
                 price_df = fs.get_price(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])
+                price_df.columns = ['Close']
                 price_df.index = pd.to_datetime(price_df.index, format='%Y-%m-%d')
                 # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
                 earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
