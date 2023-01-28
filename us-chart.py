@@ -17,6 +17,7 @@ cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 import streamlit as st
 from alpha_vantage.fundamentaldata import FundamentalData as FD
 import FinanceDataReader as fdr
+import finterstellar as fs
 import chart
 import getData
 
@@ -134,11 +135,12 @@ def run(ticker, overview_df):
         from datetime import datetime
         yes = datetime.now() + pd.DateOffset(days=-2)
         end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
-        close_price = fdr.DataReader(ticker)
+        #close_price = fdr.DataReader(ticker)
         cprice = fdr.DataReader(ticker, end_date)
-        st.dataframe(close_price)
+        close_price = fs.get_price(ticker).iloc[-1,0]
+        # st.dataframe(close_price)
         st.dataframe(cprice)
-        st.write(f"close_price: {end_date}")
+        st.write(f"close_price: {close_price}")
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
