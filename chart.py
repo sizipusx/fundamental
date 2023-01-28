@@ -177,8 +177,8 @@ def dividend_chart(ticker, com_name, div_df):
                         secondary_y = False) 
 
     fig.add_trace(go.Scatter(mode='lines', 
-                            name = 'Div Yield', x =div_df.index, y= div_df['DividendYield'],
-                            text= div_df['DividendYield'], textposition = 'top center', marker_color = '#34314c'),# marker_colorscale='RdBu'),
+                            name = 'Div Yield', x =div_df.index, y= round(div_df['DividendYield']*100,2),
+                            text= round(div_df['DividendYield']*100,2), textposition = 'top center', marker_color = '#34314c'),# marker_colorscale='RdBu'),
                             secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='DividendYield',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
