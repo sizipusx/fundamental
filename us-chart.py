@@ -120,9 +120,9 @@ def run(ticker, overview_df):
     with tab1:
         st.subheader("Valuation")
         expect_yield = 0.15
-        f_df, v_df, y_df, div_df = getData.get_finterstellar(ticker)
+        f_df, r_df, v_df, y_df, div_df = getData.get_finterstellar(ticker)
         roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
-        roe_min = round(min(v_df.iloc[-1,4:]),2)
+        roe_min = round(min(v_df.iloc[-1,4:]*100),2)
         current_roe = round(v_df.iloc[-1,4]*100,2)
         min_f_bps = min(y_df.iloc[-1,:4])
         max_f_bps = max(y_df.iloc[-1,:4])
@@ -357,11 +357,19 @@ def run(ticker, overview_df):
         template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
         st.subheader('Band Chart')
         with st.expander("See Raw Data"):
-                #if  st.checkbox('See Earning Data'):
-            st.subheader('PER Band Raw Data') 
-            st.dataframe(band_df.style.highlight_max(axis=0)) 
-            st.subheader('PBR Band Raw Data') 
-            st.dataframe(pbr_df.style.highlight_max(axis=0))
+    
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    st.subheader('PER Band Raw Data') 
+                    st.dataframe(band_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                with col2:
+                    st.write("")
+                with col3:
+                    st.subheader('PBR Band Raw Data') 
+                    st.dataframe(pbr_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -383,8 +391,8 @@ def run(ticker, overview_df):
                 title = com_name + '('  + input_ticker + ') <b>Profit & Cost</b>'
                 titles = dict(text= title, x=0.5, y = 0.85) 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-                y_data_bar1 = ['totalRevenue', 'costOfRevenue', 'operatingExpenses']
-                y_data_line1 = ['grossProfit', 'ebit', 'operatingIncome', 'netIncome']
+                y_data_bar1 = ['Revenue', 'Operating Income', 'Net Income']
+                y_data_line1 = ['Gross Margin', 'Operating Margin', 'Profit Margin', 'netIncome']
 
                 for y_data, color in zip(y_data_bar1, marker_colors) :
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data],marker_color= color), secondary_y = False) 
@@ -395,8 +403,8 @@ def run(ticker, overview_df):
                                                 text= income_df[y_data], textposition = 'top center', marker_color = color),
                                                 secondary_y = True)
                 fig.update_traces(texttemplate='%{text:.3s}') 
-                fig.update_yaxes(title_text='Revenue', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
-                fig.update_yaxes(title_text='Income', range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(title_text='Income', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
+                fig.update_yaxes(title_text='Margin', range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], ticksuffix="%", secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
                 st.plotly_chart(fig)

@@ -292,7 +292,7 @@ def get_finterstellar(ticker):
   y_df['yield_max'] = (y_df['mBPS']/df['Price'])**(1/10)-1
   y_df['yield_mean'] = (y_df['meanBPS']/df['Price'])**(1/10)-1
 
-  return df, v_df, y_df, div_df
+  return df, ratio_df, v_df, y_df, div_df
 
 def get_kor_itooza(code):
     i_url = 'http://search.itooza.com/index.htm?seName='+ code
