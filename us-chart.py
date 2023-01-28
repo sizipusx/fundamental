@@ -198,14 +198,14 @@ def run(ticker, overview_df):
         col4.metric(label="8년 평균", value =round(v_df.iloc[-1,7]*100,2))
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,5]*100,2), delta=round((round(y_df.iloc[-1,5]*100,2)-expect_yield),2))
-        col2.metric(label="최소 평균 기준 기대수익률", value =round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
-        col3.metric(label="최대 평균 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
-        col4.metric(label="평균 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,2), delta=round((round(y_df.iloc[-1,7]*100,2)-expect_yield),2))
+        col2.metric(label="최소 ROE 기준 기대수익률", value =round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
+        col3.metric(label="최대 ROE 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
+        col4.metric(label="평균 ROE 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,2), delta=round((round(y_df.iloc[-1,7]*100,2)-expect_yield),2))
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 ROE 기준 매수가격", value = current_proper_price, delta=current_proper_price-close_price)
-        col2.metric(label="최소 평균 기준 매수가격", value =min_proper_price, delta=min_proper_price-close_price)
-        col3.metric(label="최대 평균 기준 매수가격", value =max_proper_price, delta=min_proper_price-close_price)
-        col4.metric(label="평균 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
+        col2.metric(label="최소 ROE 기준 매수가격", value =min_proper_price, delta=min_proper_price-close_price)
+        col3.metric(label="최대 ROE 기준 매수가격", value =max_proper_price, delta=min_proper_price-close_price)
+        col4.metric(label="평균 ROE 기준 매수가격", value =mean_proper_price, delta=min_proper_price-close_price)
 
         st.subheader("Fundamental Value")
         col1, col2, col3, col4 = st.columns(4)
@@ -562,7 +562,7 @@ def make_data(ticker, f_df):
     # income.set_index('fiscalDateEnding', inplace=True)
     # income.index =  pd.to_datetime(income.index, format='%Y-%m-%d')
     # income = income.iloc[::-1]
-    sub = ['Revenue', 'COGS', 'Gross Profit', 'Operating Income', 'SG&A', 'EBIT', 'Net Income']
+    sub = ['Revenue', 'Gross Profit', 'Operating Income', 'SG&A', 'EBIT', 'Net Income']
     income_df = f_df[sub].replace('None','0').astype(float).round(0)
     #연매출액 증가율
     gp_cagr = (income_df['Revenue'].iloc[-1]/income_df['Revenue'].iloc[0])**(1/5) -1
