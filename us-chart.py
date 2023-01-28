@@ -499,31 +499,59 @@ def run(ticker, overview_df):
         #현금흐름
         #영업활동현금흐름, 순이익, 투자활동현금흐름, 재무활동현금흐름
         st.subheader('Cash Flow')
-        x_data = cashflow_df.index
-        title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
-        titles = dict(text= title, x=0.5, y = 0.85) 
-        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_bar5 = ['Operating Cash Flow', 'Financing cash flow', 'Investing cash flow']
-        y_data_line5 = ['FCF']
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                x_data = cashflow_df.index
+                title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
+                titles = dict(text= title, x=0.5, y = 0.85) 
+                fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+                y_data_bar5 = ['Operating Cash Flow', 'Financing cash flow', 'Investing cash flow']
+                y_data_line5 = ['FCF']
 
-        for y_data, color in zip(y_data_bar5, marker_colors) :
-            fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], 
-                                text= cashflow_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
-        for y_data, color in zip(y_data_line5, marker_colors): 
-                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                                name = y_data, x =  x_data, y= cashflow_df.loc[:,y_data],
-                                                text= cashflow_df[y_data], textposition = 'top center', marker_color = color),
-                                                secondary_y = True)
-        fig.add_trace(go.Bar(name = 'Net Income', x = x_data, y = income_df['Net Income'], 
-                            text= income_df['Net Income'], textposition = 'outside', marker_color= 'rgb(255,69,0)'), secondary_y = False)
-        fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(title_text='Cash Flow', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
-        fig.update_yaxes(title_text='FCF', range=[-max(cashflow_df.loc[:,y_data_line5[0]]), max(cashflow_df.loc[:,y_data_line5[0]])* 1.2], secondary_y = True)
-        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
-        fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
-        st.plotly_chart(fig)
+                for y_data, color in zip(y_data_bar5, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], 
+                                        text= cashflow_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+                for y_data, color in zip(y_data_line5, marker_colors): 
+                            fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                        name = y_data, x =  x_data, y= cashflow_df.loc[:,y_data],
+                                                        text= cashflow_df[y_data], textposition = 'top center', marker_color = color),
+                                                        secondary_y = True)
+                fig.add_trace(go.Bar(name = 'Net Income', x = x_data, y = income_df['Net Income'], 
+                                    text= income_df['Net Income'], textposition = 'outside', marker_color= 'rgb(255,69,0)'), secondary_y = False)
+                fig.update_traces(texttemplate='%{text:.3s}') 
+                fig.update_yaxes(title_text='Cash Flow', range=[0, max(income_df.loc[:,y_data_bar5[0]])*2], secondary_y = False)
+                fig.update_yaxes(title_text='FCF', range=[-max(cashflow_df.loc[:,y_data_line5[0]]), max(cashflow_df.loc[:,y_data_line5[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+                fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                st.plotly_chart(fig)
 
+            with col2:
+                st.write("")
+            with col3:
+                x_data = v_df.index
+                title = com_name + '('  + input_ticker + ') <b>BPS and ROE</b>'
+                titles = dict(text= title, x=0.5, y = 0.85) 
+                fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+                y_data_bar6 = ['BPS']
+                y_data_line6 = ['ROE']
+
+                for y_data, color in zip(y_data_bar6, marker_colors) :
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = v_df[y_data], 
+                                        text= v_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+                for y_data, color in zip(y_data_line6, marker_colors): 
+                            fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                        name = y_data, x =  x_data, y= v_df.loc[:,y_data],
+                                                        text= v_df[y_data], textposition = 'top center', marker_color = color),
+                                                        secondary_y = True)
+                fig.update_traces(texttemplate='%{text:.3s}') 
+                fig.update_yaxes(title_text='BPS', range=[0, max(v_df.loc[:,y_data_bar6[0]])*2], secondary_y = False)
+                fig.update_yaxes(title_text='ROE', range=[-max(v_df.loc[:,y_data_line6[0]]), max(v_df.loc[:,y_data_line6[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+                fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                st.plotly_chart(fig)
 
         #조회시 1분 기다려야 함
         st.warning('Please Wait One minute Before Searching Next Company!!!')
