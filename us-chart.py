@@ -231,7 +231,7 @@ def run(ticker, overview_df):
         col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
         col2.metric(label="DividendYield", value =round(overview_df.loc['DividendYield'].astype(float)*100,2))
         col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
-        col4.metric(label="ExDividendDate", value =overview_df.iloc[-1])
+        col4.metric(label="ExDividendDate", value =str(overview_df.iloc[-1]))
 
     with tab2:
         #Income 데이터 가져오기
