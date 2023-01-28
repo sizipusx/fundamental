@@ -503,15 +503,24 @@ def run(ticker, overview_df):
         title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
         titles = dict(text= title, x=0.5, y = 0.85) 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-        y_data_bar5 = ['operatingCashflow', 'FCF']
+        y_data_bar5 = ['Operating Cash Flow', 'Financing cash flow', 'Investing cash flow']
+        y_data_line5 = ['FCF']
 
         for y_data, color in zip(y_data_bar5, marker_colors) :
             fig.add_trace(go.Bar(name = y_data, x = x_data, y = cashflow_df[y_data], 
                                 text= cashflow_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+        for y_data, color in zip(y_data_line5, marker_colors): 
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                                                name = y_data, x =  x_data, y= cashflow_df.loc[:,y_data],
+                                                text= cashflow_df[y_data], textposition = 'top center', marker_color = color),
+                                                secondary_y = True)
         fig.add_trace(go.Bar(name = 'NetIncome', x = x_data, y = income_df['netIncome'], 
                             text= income_df['netIncome'], textposition = 'outside', marker_color= '#ff7473'), secondary_y = False)
         fig.update_traces(texttemplate='%{text:.3s}') 
-        fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$")
+        fig.update_yaxes(title_text='Cash Flow', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
+        fig.update_yaxes(title_text='FCF', range=[-max(cashflow_df.loc[:,y_data_line5[0]]), max(cashflow_df.loc[:,y_data_line5[0]])* 1.2], secondary_y = True)
+        fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+        fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
         st.plotly_chart(fig)
 
