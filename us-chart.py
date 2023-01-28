@@ -229,9 +229,9 @@ def run(ticker, overview_df):
         col4.metric(label="ForwardPE", value =round(overview_df.loc['ForwardPE'].astype(float),2))
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
-        col2.metric(label="DividendYield", value =str(overview_df.loc['DividendYield']*100)+"%")
+        col2.metric(label="DividendYield", value =overview_df.loc['DividendYield']*100+"%")
         col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
-        col4.metric(label="ExDividendDate", value =str(overview_df.loc['ExDividendDate']))
+        col4.metric(label="ExDividendDate", value =overview_df.loc['ExDividendDate'])
 
     with tab2:
         #Income 데이터 가져오기
@@ -399,12 +399,12 @@ def run(ticker, overview_df):
                 
                 for y_data, color in zip(y_data_line1, marker_colors): 
                     fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                                name = y_data, x =  x_data, y= income_df.loc[:,y_data],
-                                                text= income_df[y_data], textposition = 'top center', marker_color = color),
+                                                name = y_data, x =  x_data, y= r_df.loc[:,y_data],
+                                                text= r_df[y_data], textposition = 'top center', marker_color = color),
                                                 secondary_y = True)
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text='Income', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
-                fig.update_yaxes(title_text='Margin', range=[-max(income_df.loc[:,y_data_line1[0]]), max(income_df.loc[:,y_data_line1[0]])* 1.2], ticksuffix="%", secondary_y = True)
+                fig.update_yaxes(title_text='Margin', range=[-max(r_df.loc[:,y_data_line1[0]]), max(r_df.loc[:,y_data_line1[0]])* 1.2], ticksuffix="%", secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
                 st.plotly_chart(fig)
