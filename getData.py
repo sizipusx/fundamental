@@ -251,12 +251,14 @@ def get_finterstellar(ticker):
   df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
   df['Market Cap'] = df['Price'] * df['Shares'] 
   df['BPS'] = df['Shareholders Equity'] / df['Shares']
-  df['DPS'] = abs(df['Dividends'])/df['Shares']
-  df['payoutR'] = abs(df['Dividends'])/df['Net Income']
-  df['DividendYield'] = df['DPS']/df['Price']
   df['Net Income']
   df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
   df = df.iloc[4:]
+  #dividend 
+  div_df = pd.DataFrame()
+  div_df['DPS'] = abs(df['Dividends'])/df['Shares']
+  div_df['payoutR'] = abs(df['Dividends'])/df['Net Income']
+  div_df['DividendYield'] = df['DPS']/df['Price']
   #재무비율
   ratio_df = pd.DataFrame()
   ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
@@ -290,7 +292,7 @@ def get_finterstellar(ticker):
   y_df['yield_max'] = (y_df['mBPS']/df['Price'])**(1/10)-1
   y_df['yield_mean'] = (y_df['meanBPS']/df['Price'])**(1/10)-1
 
-  return df, v_df, y_df
+  return df, v_df, y_df, div_df
 
 def get_kor_itooza(code):
     i_url = 'http://search.itooza.com/index.htm?seName='+ code

@@ -112,14 +112,14 @@ def load_data():
 
     return ticker_list, sp500
 
-def run(ticker):
+def run(ticker, overview_df):
     
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
         st.subheader("Valuation")
         expect_yield = 0.15
-        f_df, v_df, y_df = getData.get_finterstellar(ticker)
+        f_df, v_df, y_df, div_df = getData.get_finterstellar(ticker)
         roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
         current_roe = round(v_df.iloc[-1,4]*100,2)
         min_f_bps = min(y_df.iloc[-1,:4])
@@ -202,10 +202,10 @@ def run(ticker):
         col3.metric(label="TrailingPE", value =max_proper_price, delta=min_proper_price-close_price)
         col4.metric(label="ForwardPE", value =mean_proper_price, delta=min_proper_price-close_price)
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="DPS", value = close_price)
-        col2.metric(label="DividendYield", value =min_proper_price, delta=min_proper_price-close_price)
-        col3.metric(label="DPR", value =max_proper_price, delta=min_proper_price-close_price)
-        col4.metric(label="ExDividendDate", value =mean_proper_price, delta=min_proper_price-close_price)
+        col1.metric(label="DPS", value = overview_df['DividendPerShare'])
+        col2.metric(label="DividendYield", value =str(overview_df['DividendYield']*100)+"%")
+        col3.metric(label="DPR", value =str(div_df.iloc[-1,1]*100)+"%")
+        col4.metric(label="ExDividendDate", value =overview_df['ExDividendDate'])
 
     with tab2:
         #Income 데이터 가져오기
@@ -635,9 +635,9 @@ if __name__ == "__main__":
     #Summary 데이터 가져오기    
     OV = fd.get_company_overview(input_ticker)
     split_OV=OV[0]
-    df = pd.json_normalize(split_OV)
-    df = df.T
-    st.table(df)
+    ov_df = pd.json_normalize(split_OV)
+    overview_df = ov_df.T
+    st.table(overview_df)
     submit = st.sidebar.button('Run app')
     if submit:
-        run(input_ticker)
+        run(input_ticker, overview_df)
