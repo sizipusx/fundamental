@@ -118,12 +118,11 @@ def load_data():
 
     return ticker_list, sp500
 
-def run(ticker, overview_df):
+def run(ticker, overview_df, fdr_df):
     #주가 캔들차트
     # from datetime import datetime
     # yes = datetime.now() + pd.DateOffset(days=-3)
     # end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
-    fdr_df = pdr.DataReader(ticker,start='2000-01-02')
     # st.dataframe(fdr_df)
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
@@ -735,7 +734,13 @@ if __name__ == "__main__":
     ov_df = pd.json_normalize(split_OV)
     overview_df = ov_df.T
     overview_df.columns = ['기본 정보']
+    fdr_df = pdr.DataReader(input_ticker,start='1996-01-02')
+    fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
+    fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
+    fdr_df['ma240'] = fdr_df['Adj Close'].rolling(window=240).mean()
+    overview_df.loc['Close'] = overview_df.iloc[-1,4]
     st.table(overview_df)
+    chart.price_chart(input_ticker, overview_df.loc['Name'], fdr_df)
     submit = st.sidebar.button('Run app')
     if submit:
-        run(input_ticker, overview_df)
+        run(input_ticker, overview_df,fdr_df)
