@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import requests
 import json
+import FinanceDataReader as fdr
 from pandas.io.json import json_normalize
 import plotly.express as px
 import plotly.graph_objects as go
@@ -16,14 +17,12 @@ cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 import streamlit as st
 from alpha_vantage.fundamentaldata import FundamentalData as FD
-import FinanceDataReader as fdr
 import finterstellar as fs
 import chart
 import getData
 
 pd.set_option('display.float_format', '{:.2f}'.format)
-now = datetime.now() +pd.DateOffset(days=-1)
-today = '%s-%s-%s' % ( now.year, now.month, now.day)
+
 
 #API key
 fd = FD(key='XA7Y92OE6LDOTLLE')
@@ -116,7 +115,13 @@ def load_data():
     return ticker_list, sp500
 
 def run(ticker, overview_df):
-    
+    #주가 캔들차트
+    from datetime import datetime
+    yes = datetime.now() + pd.DateOffset(days=-3)
+    end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
+    fdr_df = fdr.DataReader(ticker,earning_df.iloc[0,0])
+    # fdr_df = fdr.DataReader(input_ticker,"2022-01-01", "2023-01-27")
+    st.dataframe(fdr_df)
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
@@ -320,13 +325,6 @@ def run(ticker, overview_df):
             with col2:
                 st.write("")
             with col3:
-                #주가 캔들차트
-                from datetime import datetime
-                yes = datetime.now() + pd.DateOffset(days=-3)
-                end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
-                fdr_df = fdr.DataReader(ticker,earning_df.iloc[0,0])
-                # fdr_df = fdr.DataReader(input_ticker,"2022-01-01", "2023-01-27")
-                st.dataframe(fdr_df)
                 chart.price_chart(ticker, com_name, fdr_df)
         html_br="""
         <br>
