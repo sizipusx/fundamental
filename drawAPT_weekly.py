@@ -94,6 +94,9 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
         fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
         st.plotly_chart(fig)
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
@@ -280,6 +283,9 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
             legend=dict(
@@ -360,6 +366,9 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
@@ -465,6 +474,9 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
@@ -591,6 +603,9 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
     fig.update_layout(hovermode="x unified")
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     st.plotly_chart(fig)
 
@@ -734,6 +749,9 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10 규제지역해제", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
             showlegend=True,
