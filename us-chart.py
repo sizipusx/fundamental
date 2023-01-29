@@ -738,7 +738,7 @@ if __name__ == "__main__":
     fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
     fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
     fdr_df['ma240'] = fdr_df['Adj Close'].rolling(window=240).mean()
-    overview_df.loc['Close'] = fdr_df.iloc[-1,4]
+    overview_df.loc['Close'] = round(fdr_df.iloc[-1,4],2)
     st.table(overview_df)
     # st.write(overview_df.iloc[-1,4])
     chart.price_chart(input_ticker, overview_df.iloc[2,0], fdr_df)
