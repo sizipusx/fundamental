@@ -2,8 +2,10 @@ pip>=22.1.1
 pandas==1.3.5
 alpha-vantage==2.3.1
 finterstellar==0.2.14
+pandas-datareader==0.10.0
+yfinance==0.2.9
 finance-datareader==0.9.50
-beautifulsoup4==4.7.1
+beautifulsoup4==4.11.1
 OpenDartReader==0.1.1
 plotly==5.5.0
 pykrx==1.0.39
