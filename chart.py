@@ -123,47 +123,47 @@ def earning_chart(input_ticker, earning_df, price_df):
     fig.update_yaxes(title_text='EPS',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)' 
     fig.update_layout(template="myID")
-    # fig.update_layout(
-    #         showlegend=True,
-    #         legend=dict(
-    #         orientation="h",
-    #         yanchor="bottom",
-    #         y=1.02,
-    #         xanchor="right",
-    #         x=1
-    #     ),
-    #         xaxis=go.layout.XAxis(
-    #         rangeselector=dict(
-    #             buttons=list([
-    #                 dict(count=6,
-    #                     label="6m",
-    #                     step="month",
-    #                     stepmode="backward"),
-    #                 dict(count=1,
-    #                     label="YTD",
-    #                     step="year",
-    #                     stepmode="todate"),
-    #                 dict(count=1,
-    #                     label="1y",
-    #                     step="year",
-    #                     stepmode="backward"),
-    #                 dict(count=5,
-    #                     label="5y",
-    #                     step="year",
-    #                     stepmode="backward"),
-    #                 dict(count=10,
-    #                     label="10y",
-    #                     step="year",
-    #                     stepmode="backward"),
-    #                 dict(step="all")
-    #             ])
-    #         ),
-    #         rangeslider=dict(
-    #             visible=True
-    #         ),
-    #         type="date"
-    #         )      
-    #     )
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=True
+            ),
+            type="date"
+            )      
+        )
     st.plotly_chart(fig)
 
     # fig2 = go.Figure()
