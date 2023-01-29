@@ -550,6 +550,9 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -575,6 +578,9 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+              annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
