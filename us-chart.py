@@ -119,7 +119,7 @@ def run(ticker, overview_df):
     from datetime import datetime
     yes = datetime.now() + pd.DateOffset(days=-3)
     end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
-    fdr_df = fdr.DataReader(ticker,earning_df.iloc[0,0])
+    fdr_df = fdr.DataReader(ticker,"2022-01-02")
     # fdr_df = fdr.DataReader(input_ticker,"2022-01-01", "2023-01-27")
     st.dataframe(fdr_df)
     #valuation 
