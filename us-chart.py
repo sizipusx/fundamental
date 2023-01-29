@@ -120,7 +120,6 @@ def run(ticker, overview_df):
     yes = datetime.now() + pd.DateOffset(days=-3)
     end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
     fdr_df = fdr.DataReader("MMM","2022-01-02")
-    # fdr_df = fdr.DataReader(input_ticker,"2022-01-01", "2023-01-27")
     st.dataframe(fdr_df)
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
