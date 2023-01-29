@@ -120,11 +120,11 @@ def load_data():
 
 def run(ticker, overview_df):
     #주가 캔들차트
-    from datetime import datetime
-    yes = datetime.now() + pd.DateOffset(days=-3)
-    end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
+    # from datetime import datetime
+    # yes = datetime.now() + pd.DateOffset(days=-3)
+    # end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
     fdr_df = pdr.DataReader(ticker,start='2000-01-02')
-    st.dataframe(fdr_df)
+    # st.dataframe(fdr_df)
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
     with tab1:
