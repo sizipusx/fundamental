@@ -741,7 +741,7 @@ if __name__ == "__main__":
     overview_df.loc['Close'] = fdr_df.iloc[-1,4]
     st.table(overview_df)
     # st.write(overview_df.iloc[-1,4])
-    chart.price_chart(input_ticker, overview_df.loc['Name'], fdr_df)
+    chart.price_chart(input_ticker, overview_df.iloc[2,0], fdr_df)
     submit = st.sidebar.button('Run app')
     if submit:
         run(input_ticker, overview_df,fdr_df)
