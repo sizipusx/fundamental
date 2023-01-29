@@ -416,8 +416,8 @@ def run(ticker, overview_df):
                 
                 for y_data, color in zip(y_data_line1, marker_colors): 
                     fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                                name = y_data, x =  x_data, y= r_df.loc[:,y_data],
-                                                text= r_df[y_data], textposition = 'top center', marker_color = color),
+                                                name = y_data, x =  x_data, y= round(r_df.loc[:,y_data]*100,2),
+                                                text= round(r_df[y_data]*100,1), textposition = 'top center', marker_color = color),
                                                 secondary_y = True)
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text='Income', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
@@ -570,7 +570,7 @@ def run(ticker, overview_df):
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text='BPS', range=[0, max(v_df.loc[:,y_data_bar6[0]])*2], secondary_y = False)
                 # fig.update_yaxes(title_text='ROE', range=[-max(v_df.loc[:,y_data_line6[0]]), max(v_df.loc[:,y_data_line6[0]])* 1.2], secondary_y = True)
-                fig.update_yaxes(title_text='ROE', range=[0, max(v_df.loc[:,y_data_line6[0]])* 1.2], secondary_y = True)
+                fig.update_yaxes(title_text='ROE', secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
                 fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
