@@ -5,6 +5,10 @@ import numpy as np
 import pandas as pd
 import requests
 import json
+from pandas_datareader import data as pdr
+import yfinance as yfin
+yfin.pdr_override()
+
 import FinanceDataReader as fdr
 from pandas.io.json import json_normalize
 import plotly.express as px
@@ -119,7 +123,7 @@ def run(ticker, overview_df):
     from datetime import datetime
     yes = datetime.now() + pd.DateOffset(days=-3)
     end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
-    fdr_df = fdr.DataReader("MMM","2022-01-02")
+    fdr_df = pdr.DataReader(ticker,start='2000-01-02')
     st.dataframe(fdr_df)
     #valuation 
     tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
