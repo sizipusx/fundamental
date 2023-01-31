@@ -361,6 +361,11 @@ def run(ticker, overview_df, fdr_df):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        #챠트 기본 설정
+        # colors 
+        marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+        # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+        template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
         # Profit and Cost
         st.subheader('Profit, Cost, Growth')
         with st.container():
@@ -552,11 +557,7 @@ def run(ticker, overview_df, fdr_df):
             pbr_df = pd.merge_ordered(pbr_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
             pbr_df.set_index('reportedDate', inplace=True)
 
-            #챠트 기본 설정
-            # colors 
-            marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-            # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-            template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+            
             st.subheader('Band Chart')
             with st.expander("See Raw Data"):
                 with st.container():
