@@ -357,43 +357,6 @@ def run(ticker, overview_df, fdr_df):
         # st.write(eps_3_growth)
         # st.write("1Y EPS Growth")
         # st.write(eps_1_growth)
-
-        #PBR 밴드 위해
-        pbr_df = pd.DataFrame()
-        pbr_df.loc[:,'shares'] = balance_df['commonStockSharesOutstanding']
-        pbr_df.loc[:,'Equity'] = balance_df['totalShareholderEquity']
-        pbr_df.loc[:,'reportedDate'] = earning_df['reportedDate']
-        pbr_df = pd.merge_ordered(pbr_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
-        pbr_df.set_index('reportedDate', inplace=True)
-
-        #챠트 기본 설정
-        # colors 
-        marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-        # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-        template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
-        st.subheader('Band Chart')
-        with st.expander("See Raw Data"):
-    
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    st.subheader('PER Band Raw Data') 
-                    st.dataframe(band_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-                with col2:
-                    st.write("")
-                with col3:
-                    st.subheader('PBR Band Raw Data') 
-                    st.dataframe(pbr_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                chart.visualize_PER_band(input_ticker, com_name, band_df)
-            with col2:
-                st.write("")
-            with col3:
-                chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
         html_br="""
         <br>
         """
@@ -575,7 +538,53 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        try:
+            #band chart
+            #PBR 밴드 위해
+            pbr_df = pd.DataFrame()
+            pbr_df.loc[:,'shares'] = balance_df['commonStockSharesOutstanding']
+            pbr_df.loc[:,'Equity'] = balance_df['totalShareholderEquity']
+            pbr_df.loc[:,'reportedDate'] = earning_df['reportedDate']
+            pbr_df = pd.merge_ordered(pbr_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
+            pbr_df.set_index('reportedDate', inplace=True)
 
+            #챠트 기본 설정
+            # colors 
+            marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+            # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+            template = 'seaborn' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+            st.subheader('Band Chart')
+            with st.expander("See Raw Data"):
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        st.subheader('PER Band Raw Data') 
+                        st.dataframe(band_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                    with col2:
+                        st.write("")
+                    with col3:
+                        st.subheader('PBR Band Raw Data') 
+                        st.dataframe(pbr_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    chart.visualize_PER_band(input_ticker, com_name, band_df)
+                with col2:
+                    st.write("")
+                with col3:
+                    chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
+        except IndexError :
+            with st.expander("See Raw Data"):
+                st.subheader('PER Band Raw Data') 
+                st.dataframe(band_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+            chart.visualize_PER_band(input_ticker, com_name, band_df)
         #조회시 1분 기다려야 함
         st.warning('Please Wait One minute Before Searching Next Company!!!')
         my_bar = st.progress(0)
