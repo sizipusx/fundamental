@@ -437,13 +437,13 @@ def run(ticker, overview_df, fdr_df):
                 y_data_bar2 = ['TR Change', 'OI Change', 'NI Change']
 
                 for y_data, color in zip(y_data_line2, marker_colors): 
-                    fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data, x = x_data, y=income_df[y_data],
-                    text = income_df[y_data], textposition = 'top center', marker_color = color),
+                    fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data, x = x_data, y=round(income_df[y_data],2),
+                    text = round(income_df[y_data],1), textposition = 'top center', marker_color = color),
                     secondary_y = True)
 
                 for y_data, color in zip(y_data_bar2, marker_colors) :
-                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df[y_data], 
-                                        text = income_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False)
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = round(income_df[y_data],2), 
+                                        text = round(income_df[y_data],1), textposition = 'outside', marker_color= color), secondary_y = False)
 
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text='Growth Rate', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
