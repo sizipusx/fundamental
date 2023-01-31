@@ -581,11 +581,7 @@ def run(ticker, overview_df, fdr_df):
                 with col3:
                     chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
         except IndexError :
-            with st.expander("See Raw Data"):
-                st.subheader('PER Band Raw Data') 
-                st.dataframe(band_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-            chart.visualize_PER_band(input_ticker, com_name, band_df)
+            st.write("pbr band error occurred")
         #조회시 1분 기다려야 함
         st.warning('Please Wait One minute Before Searching Next Company!!!')
         my_bar = st.progress(0)
