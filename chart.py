@@ -47,7 +47,7 @@ def price_chart(input_ticker, company_name, price_df):
                 open=price_df['Open'],
                 high=price_df['High'],
                 low=price_df['Low'],
-                close=price_df['Adj Close'],
+                close=price_df['Close'],
                 increasing_line_color= 'red', decreasing_line_color= 'blue'), secondary_y = True)
     fig.add_trace(go.Bar(name = 'Volume', x = price_df.index, y = price_df['Volume'], marker_color= '#34314c'), secondary_y = False)
     # fig.update_traces(texttemplate='%{text:.3s}') 
