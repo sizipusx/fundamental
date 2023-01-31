@@ -498,12 +498,12 @@ def run(ticker, overview_df, fdr_df):
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_bar4 = ['무형자산비율', '현금성자산비율']
                 y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
-                fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = balance_df[y_data_bar4[1]], 
-                                    text = balance_df[y_data_bar4[1]], textposition = 'outside', 
+                fig.add_trace(go.Bar(name = y_data_bar4_name[1], x = x_data, y = round(balance_df[y_data_bar4[1]],2), 
+                                    text = round(balance_df[y_data_bar4[1]],1), textposition = 'outside', 
                                     marker_color= marker_colors[0]), secondary_y = False) 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
-                                                name = y_data_bar4_name[0], x =  x_data, y= balance_df[y_data_bar4[0]],
-                                                text= balance_df[y_data_bar4[0]], textposition = 'top center', marker_color = marker_colors[2]),
+                                                name = y_data_bar4_name[0], x =  x_data, y= round(balance_df[y_data_bar4[0]],2),
+                                                text= round(balance_df[y_data_bar4[0]],1), textposition = 'top center', marker_color = marker_colors[2]),
                                                 secondary_y = True)
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
@@ -559,8 +559,8 @@ def run(ticker, overview_df, fdr_df):
                 y_data_line6 = ['ROE']
 
                 for y_data, color in zip(y_data_bar6, marker_colors) :
-                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = v_df[y_data], 
-                                        text= v_df[y_data], textposition = 'outside', marker_color= color), secondary_y = False) 
+                    fig.add_trace(go.Bar(name = y_data, x = x_data, y = round(v_df[y_data],2), 
+                                        text= round(v_df[y_data],1), textposition = 'outside', marker_color= color), secondary_y = False) 
                 for y_data, color in zip(y_data_line6, marker_colors): 
                             fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                                         name = y_data, x =  x_data, y= round(v_df.loc[:,y_data]*100,2),

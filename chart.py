@@ -191,7 +191,7 @@ def dividend_chart(ticker, com_name, div_df):
 
     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                             name = 'Div Yield', x =div_df.index, y= round(div_df['DividendYield']*100,2),
-                            text= round(div_df['DividendYield']*100,2), textposition = 'top center', marker_color = marker_colors[1]),# marker_colorscale='RdBu'),
+                            text= round(div_df['DividendYield']*100,1), textposition = 'top center', marker_color = marker_colors[1]),# marker_colorscale='RdBu'),
                             secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='DividendYield',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
@@ -210,13 +210,13 @@ def dividend_chart_right(ticker, com_name, div_df):
     y_data_bar = ['DPS']
     
     for y_data, color in zip(y_data_bar, marker_colors) :
-        fig.add_trace(go.Bar(name = y_data, x =x_data, y = div_df[y_data], marker_color= color, 
-                        text= div_df[y_data], textposition = 'auto'),
+        fig.add_trace(go.Bar(name = y_data, x =x_data, y = round(div_df[y_data],2), marker_color= color, 
+                        text= round(div_df[y_data],2), textposition = 'auto'),
                         secondary_y = False) 
 
     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                             name = 'Payout Ratio', x =div_df.index, y= round(div_df['payoutR']*100,2),
-                            text= round(div_df['payoutR']*100,2), textposition = 'top center', marker_color = marker_colors[1]),# marker_colorscale='RdBu'),
+                            text= round(div_df['payoutR']*100,1), textposition = 'top center', marker_color = marker_colors[1]),# marker_colorscale='RdBu'),
                             secondary_y = True)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='payoutR',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
