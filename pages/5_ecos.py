@@ -99,7 +99,7 @@ def run(stat_ticker):
     daechul_df.set_index(keys=tempdf['TIME'], inplace=True)
     daechul_df = daechul_df.astype(float)/1000
     daechul_df = daechul_df.round(decimals=1)
-    daechul_ch = daechul_df.pct_change()
+    daechul_ch = daechul_df.pct_change()*100
     daechul_ch = daechul_ch.round(decimals=2)
     ec.ecos_chart(stat_ticker, daechul_df, daechul_ch)
 
