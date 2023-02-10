@@ -126,7 +126,7 @@ if __name__ == "__main__":
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
-   stat_ticker = st.sidebar.selectbox(
+    stat_ticker = st.sidebar.selectbox(
         '주요 통계 정보',
         eco_list #tickers
         )
