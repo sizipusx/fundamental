@@ -2,6 +2,7 @@
 import pandas as pd
 import requests
 import json
+import streamlit as st
 from pandas.io.json import json_normalize
 import numpy as np
 #from tqdm.notebook import tqdm as tn
