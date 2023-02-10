@@ -92,30 +92,30 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
     return df
 
 def run(stat_ticker):
-#가계 신용: 가계대출(주택담보대출+기타대출) + 판매신용
-daechul_index_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
-                          #'주택담보대출':'008Y001/11000A0','기타대출':'008Y001/11000B0'}
-daechul_index_tickers = daechul_index_symbols.values()
-start_date = "200501"
-# end_date = "201910"
-# end_date = rmonth
-end_date = "202212"
-cycle_type = "M"
+    #가계 신용: 가계대출(주택담보대출+기타대출) + 판매신용
+    daechul_index_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+                            #'주택담보대출':'008Y001/11000A0','기타대출':'008Y001/11000B0'}
+    daechul_index_tickers = daechul_index_symbols.values()
+    start_date = "200501"
+    # end_date = "201910"
+    # end_date = rmonth
+    end_date = "202212"
+    cycle_type = "M"
 
-daechul_all_data = {}
-for ticker in daechul_index_tickers:
-    stat_code = ticker.split('/')[0]
-    stat_item = ticker.split('/')[1]
-    daechul_all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
-#컬럼명 종목명으로 변경
-daechul_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in daechul_all_data.items()})
-daechul_df.columns = daechul_index_symbols.keys()
-#날짜 설정
-tempdf = daechul_all_data.get('151Y005/11100A0')
-daechul_df.set_index(keys=tempdf['TIME'], inplace=True)
-daechul_df = daechul_df.astype(float)/1000.round(decimals=1)
-daechul_ch = daechul_df.pct_change()*100
-ec.ecos_chart(daechul_df, daechul_ch)
+    daechul_all_data = {}
+    for ticker in daechul_index_tickers:
+        stat_code = ticker.split('/')[0]
+        stat_item = ticker.split('/')[1]
+        daechul_all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
+    #컬럼명 종목명으로 변경
+    daechul_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in daechul_all_data.items()})
+    daechul_df.columns = daechul_index_symbols.keys()
+    #날짜 설정
+    tempdf = daechul_all_data.get('151Y005/11100A0')
+    daechul_df.set_index(keys=tempdf['TIME'], inplace=True)
+    daechul_df = daechul_df.astype(float)/1000.round(decimals=1)
+    daechul_ch = daechul_df.pct_change()*100
+    ec.ecos_chart(daechul_df, daechul_ch)
 
 
 
