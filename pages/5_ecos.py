@@ -126,13 +126,11 @@ if __name__ == "__main__":
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx)
-    try:
-        stat_ticker = st.sidebar.selectbox(
-            '주요 통계 정보',
-            eco_list #tickers
-            )
-    except IndexError:
-
+   stat_ticker = st.sidebar.selectbox(
+        '주요 통계 정보',
+        eco_list #tickers
+        )
+    
     #st.dataframe(basic_df)
     submit = st.sidebar.button('Get Data')
 
