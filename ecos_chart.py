@@ -33,6 +33,7 @@ pio.templates["myID"] = go.layout.Template(
 def ecos_chart(input_ticker, df1, df2):
     df3 = df1.pct_change(periods=12)
     df3 = df3.fillna(0)
+    df3 = df3.round(decimals=2)
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -88,6 +89,6 @@ def ecos_chart(input_ticker, df1, df2):
             fig.update_yaxes(title_text='전년대비증감', range=[-max(df1.loc[:,y_data_line[0]]), max(df1.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)#, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
