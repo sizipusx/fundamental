@@ -47,19 +47,19 @@ def ecos_chart(input_ticker, df1, df2):
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
+                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = False)
+                                            secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
-            fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*2], secondary_y = True)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='전월대비증감', range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = False)
+            fig.update_yaxes(title_text='전월대비증감', range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.2], secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
@@ -76,19 +76,19 @@ def ecos_chart(input_ticker, df1, df2):
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df3.loc[:,y_data], 
-                                            text= df3[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
+                                            text= df3[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = False)
+                                            secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
-            fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*2], secondary_y = True)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='전년대비증감', range=[-max(df3.loc[:,y_data_line[0]]), max(df3.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = False)
+            fig.update_yaxes(title_text='전년대비증감', range=[-max(df3.loc[:,y_data_line[0]]), max(df3.loc[:,y_data_line[0]])* 1.2], secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
