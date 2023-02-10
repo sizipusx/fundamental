@@ -31,7 +31,7 @@ pio.templates["myID"] = go.layout.Template(
 )
 
 def ecos_chart(input_ticker, df1, df2):
-    df3 = df1.pct_change(periods=12)
+    df3 = df1.pct_change(periods=12)*100
     df3 = df3.fillna(0)
     df3 = df3.round(decimals=2)
     with st.container():
