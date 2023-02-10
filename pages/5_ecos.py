@@ -43,23 +43,6 @@ st.markdown(""" <style>
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
-pio.templates["myID"] = go.layout.Template(
-    layout_annotations=[
-        dict(
-            name="draft watermark",
-            text="graph by 기하급수적",
-            textangle=0,
-            opacity=0.2,
-            font=dict(color="black", size=10),
-            xref="paper",
-            yref="paper",
-            x=0.9,
-            y=0.1,
-            showarrow=False,
-        )
-    ]
-)
-
 
 @st.cache
 def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
