@@ -278,6 +278,7 @@ def show_local(select_city, city_apt, city_total):
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading APT List...')
+    #꼭 이렇게 해야하나?
     s_df, t_df, stat_df = load_data()
     stat_df = stat_df.iloc[1:]
     stat_df = stat_df.set_index("date")
