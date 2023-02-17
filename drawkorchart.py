@@ -370,7 +370,7 @@ def valuation_change(com_name, fr_df):
 
 def pykrx_chart(com_name, fr_df):
     title = '('  + com_name + ') <b>연간 지표</b>'
-    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top'))
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line = ['Close']
     y_data_bar = ['PBR']
