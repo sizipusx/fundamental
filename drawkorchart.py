@@ -40,7 +40,7 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
             title = '('  + company_name + ') <b>Annually Profit & Margin</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.3, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
             if dis_flag == True:
