@@ -45,7 +45,7 @@ pio.templates["myID"] = go.layout.Template(
 )
 
 def draw_pir(selected_city2, pir_df, income_df, price_df):
-    titles = dict(text= '('+selected_city2 +') 분기 PIR 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '('+selected_city2 +') 분기 PIR 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = 'PIR', x =  pir_df.index, y= pir_df[selected_city2], marker_color = marker_colors[0]), secondary_y = False)
@@ -67,7 +67,7 @@ def draw_hai(city, hai_df, info_df):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             # hai_df.index = pd.to_datetime(hai_df.index, format = '%Y.%m')
-            titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.9) 
+            titles = dict(text= '('+city +') 분기 HAI 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             fig.add_trace(go.Scatter(mode='lines', name = 'HAI', x =  hai_df.index, y= hai_df[city], marker_color = marker_colors[1]), secondary_y = False)
             fig.add_trace(go.Bar(name = '전국중위월소득', x = info_df.index, y = info_df['중위월소득'], marker_color=  marker_colors[2], opacity=0.3), secondary_y = True)
@@ -86,7 +86,7 @@ def draw_hai(city, hai_df, info_df):
         with col2:
             st.write("")
         with col3:
-            titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.9) 
+            titles = dict(text= '월별 주담대 금리', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = go.Figure([go.Bar(x=info_df.index, y=info_df['주담대금리'])])
             # fig = px.bar(info_df, x=info_df.index, y="주담대금리")
             fig.add_hline(y=info_df['주담대금리'].mean(axis=0), line_width=1, line_dash='dash', line_color="red", annotation_text="평균: " +str(round(info_df['주담대금리'].mean(axis=0),2)), annotation_position="bottom right")
@@ -102,7 +102,7 @@ def draw_hoi(hoi_df):
     with st.container():
         col1, col2, col3 = st.columns([30,1,30])
         with col1:
-            titles = dict(text= '수도권 분기 HOI 지수', x=0.5, y = 0.9) 
+            titles = dict(text= '수도권 분기 HOI 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             fig.add_trace(go.Scatter(mode='lines', name = '서울 HOI', x =  hoi_s.index, y= hoi_s["KB-HOI"], marker_color = marker_colors[0]), secondary_y = False)
             fig.add_trace(go.Scatter(mode='lines', name = '경기 HOI', x =  hoi_g.index, y= hoi_g["KB-HOI"], marker_color = marker_colors[1]), secondary_y = False)
@@ -122,7 +122,7 @@ def draw_hoi(hoi_df):
         with col2:
             st.write("")
         with col3:
-            titles = dict(text= '연간 지출가능 주거비용/구입가능 주택가격 지수', x=0.5, y = 0.9) 
+            titles = dict(text= '연간 지출가능 주거비용/구입가능 주택가격 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             fig.add_trace(go.Scatter(mode='lines', name = '서울 주거비율', x =  hoi_s.index, y= hoi_s["연간 지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[0]), secondary_y = False)
             fig.add_trace(go.Scatter(mode='lines', name = '경기 주거비율', x =  hoi_g.index, y= hoi_g["연간 지출가능 주거비용"]/hoi_s["구입가능 주택가격"]*100, marker_color = marker_colors[1]), secondary_y = False)
@@ -146,7 +146,7 @@ def draw_sentimental_index(selected_dosi, senti_dfs, df_as, df_bs, mdf_change):
     js_index = senti_dfs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_1 = df_as[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_2 = df_bs[0].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    titles = dict(text= '[<b>'+ selected_dosi + '</b>] 매수우위지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '[<b>'+ selected_dosi + '</b>] 매수우위지수 ', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
@@ -222,7 +222,7 @@ def draw_jsentimental_index(selected_dosi, senti_dfs, df_as, df_bs, jdf_change):
     js_index = senti_dfs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_1 = df_as[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_2 = df_bs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
@@ -313,7 +313,7 @@ def draw_desu_sentiment(select_city, df_as, df_bs, mdf, jdf):
 
     marker_colors = ['rgb(0,0,255)', 'rgb(0,255,225)', 'rgb(255,192,203)', 'rgb(255,0,0)', 'rgb(0,0,0)', 'rgb(255,255,0)']
     title = "<b>KB 심리지수로 보는 [" + select_city+"] 수요공급 비중</b>"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
     fig.add_trace(go.Bar(x=df.index, y=df["전세수요"], name="전세수요", marker_color=marker_colors[0]), secondary_y=False)
@@ -334,7 +334,7 @@ def draw_ds_change(selected_dosi, senti_dfs, mdf_change):
     mdf_change = mdf_change.apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     x_data = mdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 매수우위지수와 매매증감"
-    titles = dict(text= title,  x=0.5, y = 0.9) 
+    titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =mdf_change[selected_dosi], 
                         text = mdf_change[selected_dosi], textposition = 'outside', 
@@ -357,7 +357,7 @@ def draw_jds_change(selected_dosi, senti_dfs, jdf_change):
     jdf_change = jdf_change.apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     x_data = jdf_change.index
     title = "[<b>"+selected_dosi+"</b>] 전세수급지수와 전세증감"
-    titles = dict(text= title,  x=0.5, y = 0.9) 
+    titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =jdf_change[selected_dosi], 
                         text = jdf_change[selected_dosi], textposition = 'outside', 
@@ -381,7 +381,7 @@ def draw_mae_bs(selected_dosi, senti_dfs, df_as, df_bs):
     js_3 = df_as[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_4 = df_bs[1].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     
-    titles = dict(text= '['+ selected_dosi + '] 매매거래지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] 매매거래지수 ', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '활발함', x =  js_3.index, y= js_3[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
@@ -418,7 +418,7 @@ def draw_jeon_bs(selected_dosi, senti_dfs, df_as, df_bs):
     js_j = senti_dfs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_5 = df_as[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_6 = df_bs[2].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    titles = dict(text= '['+ selected_dosi + '] 전세수급지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] 전세수급지수 ', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_5.index, y= js_5[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
@@ -455,8 +455,7 @@ def draw_jeon_trade(selected_dosi, senti_dfs, df_as, df_bs):
     js_js = senti_dfs[3].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_7 = df_as[3].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
     js_8 = df_bs[3].astype(str).apply(lambda x: x.replace('','0')).astype(float).round(decimals=2)
-    titles = dict(text= '['+ selected_dosi + '] 전세거래지수 ', x=0.5, y = 0.9) 
-
+    titles = dict(text= '['+ selected_dosi + '] 전세거래지수 ', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '활발함', x =  js_7.index, y= js_7[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Scatter(line = dict(dash='dot'), name ='한산함', x =  js_8.index, y= js_8[selected_dosi], marker_color = marker_colors[2]), secondary_y = False)                                             
@@ -493,7 +492,7 @@ def draw_kb_mfore(selected_dosi, senti_dfs, df_as, df_bs):
     js_for = senti_dfs[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_9 = df_as[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_10 = df_bs[4].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '['+ selected_dosi + '] KB부동산 매매가격 전망지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] KB부동산 매매가격 전망지수 ', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '약간상승', x =  js_9.index, y= js_9[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
@@ -530,7 +529,7 @@ def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
     js_for_j = senti_dfs[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_11 = df_as[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
     js_12 = df_bs[5].apply(lambda x: x.replace('-','0')).astype(float).round(decimals=2)
-    titles = dict(text= '['+ selected_dosi + '] KB부동산 전세가격 전망지수 ', x=0.5, y = 0.9) 
+    titles = dict(text= '['+ selected_dosi + '] KB부동산 전세가격 전망지수 ', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '약간상승', x =  js_11.index, y= js_11[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
@@ -567,7 +566,7 @@ def draw_kb_jfore(selected_dosi, senti_dfs, df_as, df_bs):
 def run_pop_index(selected_city2, df, df_change, sdf, sdf_change):
     last_month = pd.to_datetime(str(df.index.values[-1])).strftime('%Y.%m')
 
-    titles = dict(text= '['+selected_city2 +'] 세대수 증감', x=0.5, y = 0.9) 
+    titles = dict(text= '['+selected_city2 +'] 세대수 증감', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -616,7 +615,7 @@ def run_not_sell(selected_city, selected_city2, after_df, not_sell_df):
 
     #slice_df =  not_sell_df.xs(city, axis=1, level=0)   
 
-    titles = dict(text= ' <b>['+ selected_city2 + ']</b> 준공 후 미분양', x=0.5, y = 0.9) 
+    titles = dict(text= ' <b>['+ selected_city2 + ']</b> 준공 후 미분양', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '미분양', x =  not_sell_df.index, y= not_sell_df[city], text =not_sell_df[city], textposition = 'outside',\
          marker_color = marker_colors[0]), secondary_y = True)
@@ -633,7 +632,7 @@ def run_not_sell(selected_city, selected_city2, after_df, not_sell_df):
 def run_sell_index(selected_dosi, sadf, sadf_ch):
     x_data = sadf_ch.index
     title = "[<b>"+selected_dosi+"</b>] 부동산원 매매 평균 평단가"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =sadf_ch[selected_dosi], 
                         text = sadf_ch[selected_dosi], textposition = 'outside', 
@@ -655,7 +654,7 @@ def run_sell_index(selected_dosi, sadf, sadf_ch):
 def run_jeon_index(selected_dosi, jadf, jadf_ch):
     x_data = jadf_ch.index
     title = "[<b>"+selected_dosi+"</b>] 부동산원 전세 평균 평단가"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "평단가증감", x = x_data, y =jadf_ch[selected_dosi], 
                         text = jadf_ch[selected_dosi], textposition = 'outside', 
@@ -678,7 +677,7 @@ def run_jeon_ratio(selected_dosi, mr_df, ar_df):
     ar_df = ar_df.round(decimals=1)
     template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
     title = "<b>["+selected_dosi+"]</b> 부동산원 전세가율"
-    titles = dict(text= title, x=0.5, y = 0.95) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': False}]]) 
     # fig = px.line(jratio_df, x=jratio_df.index, y=selected_dosi)
     fig.add_trace(go.Scatter(mode='markers', 
@@ -712,7 +711,7 @@ def run_buy_index(selected_dosi, org_df):
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     #make %
     title = last_month + "월까지 <b>["+selected_dosi+"]</b> 매입자별 전체 거래량"
-    titles = dict(text= title, x=0.5, y = 0.95) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     # fig = px.bar(selected_df, x=selected_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     fig = px.bar(selected_df, x=selected_df.index, y=[selected_df.columns[1], selected_df.columns[2], selected_df.columns[3], selected_df.columns[4]])
     fig.update_layout(title = titles, uniformtext_minsize=8, uniformtext_mode='hide', xaxis_tickformat = '%Y-%m')
@@ -727,7 +726,7 @@ def run_buy_ratio(selected_dosi, org_df):
     per_df = round(selected_df.div(selected_df.iloc[:,0], axis=0)*100,1)
     last_month = pd.to_datetime(str(selected_df.index.values[-1])).strftime('%Y.%m')
     title = last_month + "월까지 <b>["+selected_dosi+"]</b> 매입자별 비중"
-    titles = dict(text= title, x=0.5, y = 0.95) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     #fig = px.bar(per_df, x=per_df.index, y=["관할시군구내", "관할시도내", "관할시도외_서울", "관할시도외_기타"])
     # fig = px.bar(per_df, x=per_df.index, y=[1,2,3,4])
     fig = px.bar(per_df, x=per_df.index, y=[per_df.columns[1], per_df.columns[2], per_df.columns[3], per_df.columns[4]])
@@ -746,7 +745,7 @@ def run_trade_index(selected_dosi, org_df, mdf):
     selected_df = org_df.loc[:,org_df.columns.str.contains(selected_dosi)]
     x_data = selected_df.index
     title = "<b>["+selected_dosi+"]</b> KB 매매지수와 거래량"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매거래량", x = x_data, y =selected_df.iloc[:,0], 
                         text = selected_df.iloc[:,0], textposition = 'outside', 
@@ -768,7 +767,7 @@ def run_trade_index(selected_dosi, org_df, mdf):
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3
-    titles = dict(text= '<b> ['+selected_dosi2 +']'+flag +' 월간 매매-전세 지수</b>', x=0.5, y = 0.9) 
+    titles = dict(text= '<b> ['+selected_dosi2 +']'+flag +' 월간 매매-전세 지수</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[0]), secondary_y = True)
@@ -848,7 +847,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
 
 def run_bubble(selected_city2, bubble_df2, m_power):
     #bubble index chart
-    titles = dict(text= '<b>['+selected_city2 +']</b> 월간 버블 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_city2 +']</b> 월간 버블 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(mode='lines', name = '버블지수', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[0]), secondary_y = True)
@@ -870,7 +869,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
 
     if selected_dosi == '전국':
         title = '전국 인구 동향'
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
@@ -897,7 +896,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
         title = '5광역시도 인구 동향'
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
@@ -925,7 +924,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
         title = '6광역시도 인구 동향'
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
@@ -953,7 +952,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['서울', '경기', '인천']                                                    
         bigc = bigc.loc[city_list,:]
         title = '수도권 인구 동향'
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
@@ -980,7 +979,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
         title = '지방 인구 동향'
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
@@ -1010,7 +1009,7 @@ def draw_basic_info(selected_dosi, basic_df, bigc, smc):
         bigc = smc.loc[draw_list, :]
 
         title = selected_dosi +' 인구 동향'
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('인구', '인구수'), ('세대', '세대수')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [('세대', '12인가구비율'), ('세대', '노인인구비율'), ('세대', '아파트거주비율')]
@@ -1038,7 +1037,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
 
     if selected_dosi == '전국':
         title =  "시도 기업체 수"
-        titles = dict(text= title, x=0.5, y = 0.95) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         size_list = [('종사자규모별 사업체수','1 - 4명'), ('종사자규모별 사업체수', '5 - 9명'),  ('종사자규모별 사업체수', '10 - 19명'), ('종사자규모별 사업체수','20 - 49명'), \
                     ('종사자규모별 사업체수', '100 - 299명'), ('종사자규모별 사업체수', '300 - 499명'), ('종사자규모별 사업체수', '500 - 999명'), ('종사자규모별 사업체수', '1000명 이상')]
@@ -1062,7 +1061,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         bigc = bigc.loc[city_list,:]
 
         title = '5광역시도 기업체 수'
-        titles = dict(text= title, x=0.5, y = 0.95) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -1088,7 +1087,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['인천', '부산', '대구', '대전', '광주', '울산']                                                    
         bigc = bigc.loc[city_list,:]
         title = '6광역시도 기업체 수'
-        titles = dict(text= title, x=0.5, y = 0.95) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -1114,7 +1113,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['서울', '경기', '인천']                                                    
         bigc = bigc.loc[city_list,:]
         title =  "수도권 기업체 수"
-        titles = dict(text= title, x=0.5, y = 0.95) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -1138,7 +1137,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         city_list = ['강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']                                                    
         bigc = bigc.loc[city_list,:]
         title =  "지방 기업체 수"
-        titles = dict(text= title, x=0.5, y = 0.95) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -1166,7 +1165,7 @@ def draw_company_info(selected_dosi, basic_df, bigc, smc):
         bigc = smc.loc[draw_list, :]
 
         title = selected_dosi +' 기업체 수'
-        titles = dict(text= title, x=0.5, y = 0.95) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
 
@@ -1195,7 +1194,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "시도 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]])
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1204,7 +1203,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "시도 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]            
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]])
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1232,7 +1231,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "5개 광역시 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
             for y_data, color in zip(y_data_line, marker_colors): 
@@ -1242,7 +1241,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "5개 광역시 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1271,7 +1270,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title = '6개 광역시 연말정산 인원'
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1280,7 +1279,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title = '6개 광역시 연말정산 금액'
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]])    
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1309,7 +1308,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "수도권 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1318,7 +1317,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "수도권 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
             for y_data, color in zip(y_data_line, marker_colors): 
@@ -1347,7 +1346,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "지방 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1356,7 +1355,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  "지방 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1386,7 +1385,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  selected_dosi + " 연말정산 인원"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '대상인원'), ('연말정산 원천징수',         '대상인원')]
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1395,7 +1394,7 @@ def draw_earning_info(selected_dosi, bigc, smc, flag):
             title =  selected_dosi + " 연말정산 금액"
             y_data_line = [('원천징수지/주소지',           '비율')]
             y_data_bar = [('연말정산 주소지',         '1인당금액'), ('연말정산 원천징수',         '1인당금액')]  
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             for y_data, color in zip(y_data_line, marker_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', name = y_data[0], x = bigc.index, y=round(bigc[y_data_bar[1]]/bigc[y_data_bar[0]]*100,1),
@@ -1421,7 +1420,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
 
     if selected_dosi == '전국':
         title =  "시도 건강보험료 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [( '보험료',        '직장월급여')]
@@ -1447,7 +1446,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         bigc = bigc.loc[city_list,:]
 
         title =  "5개광역시 건강보험료 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [( '보험료',        '직장월급여')]
@@ -1474,7 +1473,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         bigc = bigc.loc[city_list,:]
 
         title =  "6개광역시 건강보험료 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [( '보험료',        '직장월급여')]
@@ -1501,7 +1500,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         bigc = bigc.loc[city_list,:]
 
         title =  "수도권 건강보험료 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [( '보험료',        '직장월급여')]
@@ -1527,7 +1526,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         bigc = bigc.loc[city_list,:]
         
         title =  "지방 건강보험료 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [( '보험료',        '직장월급여')]
@@ -1555,7 +1554,7 @@ def draw_pay_info(selected_dosi, basic_df, bigc, smc):
         bigc = smc.loc[draw_list, :]
 
         title =  selected_dosi + " 건강보험료 현황"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         y_data_bar = [('보험료', '지역가입자'), ('보험료', '직장가입자')]#, ('인구 및 세대수', '인구밀도')]
         y_data_line = [( '보험료',        '직장월급여')]
@@ -1621,7 +1620,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
         draw_list = ['강원', '충북', '충남', '전북', '전남', '경남', '경북', '제주도']
        
     title = "<b>KB 매매지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -1736,7 +1735,7 @@ def run_local_price(peong_df, peongj_df, selected_dosi):
 
     # 사분면 그래프로 그려보자.
     #매매/전세 증감률 Bubble Chart
-    title = dict(text='부동산원 월간 평균 매매/전세평단가', x=0.5, y = 0.9) 
+    title = dict(text='부동산원 월간 평균 매매/전세평단가', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = px.scatter(draw_df, x='평균매매가', y='평균전세가', color='평균매매가', size=abs(draw_df['평균매매가']), 
                         text= draw_df.index, hover_name=draw_df.index, color_continuous_scale='Bluered')
     fig.add_hline(y=draw_df.loc['전국','평균전세가'], line_width=1, line_color="red", line_dash="dot", secondary_y = False)
@@ -1751,7 +1750,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
     if selected_dosi3 is not None:
         select_city = selected_dosi3
     #매매/전세 증감률 flower Chart
-    title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.9)
+    title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
         mode='markers+lines',
         hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
@@ -1771,7 +1770,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
 def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
 
     #매매/전세 증감률 flower Chart
-    title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.9)
+    title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
     for index, value in enumerate(citys):
         fig.add_trace(
