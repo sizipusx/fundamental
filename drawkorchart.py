@@ -73,7 +73,7 @@ def income_chart(input_ticker, company_name, income_df, income_df_q, dis_flag):
             st.subheader('분기 손익계산서')
             x_data = income_df_q.index
             title = '('  + company_name + ') <b>Quarterly Profit & Margin</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [column_name_ch, '영업이익', '당기순이익']
             if dis_flag == True:
@@ -110,7 +110,7 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             column_name_ch = status_an.columns[0]
             x_data = status_an.index
             title = '('  + company_name + ') <b>Annually Asset & Liabilities</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['자본', '부채']
             #안정성 지표로 금융업은 부채비율 없고 '예대율', 창투사 '유보율' 일반 기업 '이자보상배율' 추가
@@ -153,7 +153,7 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             st.subheader('분기 재무 상태표')
             x_data = status_qu.index
             title = '('  + company_name + ') <b>Quarterly Asset & Liabilities</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = ['자본', '부채']
             y_data_line = ['자산']
@@ -181,7 +181,7 @@ def dividend_chart(company_name, income_df):
     st.subheader('DPS & Dividend Yield')
     x_data = income_df.index
     title = '('  + company_name + ') <b>DPS & Dividend Yield</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar4 = ['DPS(원)']
     y_data_line4 = ['배당수익률']
@@ -213,7 +213,7 @@ def pbr_chart(company_name, income_df, income_df_q):
             column_name_ch = income_df.columns[0]
             x_data = income_df.index
             title = '('  + company_name + ') <b>Annually PBR & ROE</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['PBR']
             y_data_bar = ['ROE']
@@ -243,7 +243,7 @@ def pbr_chart(company_name, income_df, income_df_q):
             st.subheader('Quarter PBR-ROE')
             x_data = income_df_q.index
             title = '('  + company_name + ') <b>Quarterly Profit & Margin</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['PBR']
             y_data_bar = ['ROE']
@@ -274,7 +274,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             st.subheader('연간 현금흐름')
             x_data = cf_an.index
             title = '('  + company_name + ') <b>Annually Cashflow</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             try:
                 y_data_line = ['FCFF']
@@ -318,7 +318,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             st.subheader('분기 현금흐름')
             x_data = cf_qu.index
             title = '('  + company_name + ') <b>Quarterly Cashflow</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['현금및현금성자산의증가']
             y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
@@ -342,7 +342,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
 
 def valuation_change(com_name, fr_df):
     title = '('  + com_name + ') <b>기대수익률 변화</b>'
-    titles = dict(text= title, x=0.5, y = 0.85)
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line = ['ROE','ROE10']
     y_data_bar = ['expect_py', 'expect_ay']
@@ -370,7 +370,7 @@ def valuation_change(com_name, fr_df):
 
 def pykrx_chart(com_name, fr_df):
     title = '('  + com_name + ') <b>연간 지표</b>'
-    titles = dict(text= title, x=0.5, y = 0.85)
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top'))
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line = ['Close']
     y_data_bar = ['PBR']
