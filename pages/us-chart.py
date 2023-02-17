@@ -754,16 +754,20 @@ if __name__ == "__main__":
         with col2:
             st.write("")
         with col3:
-            st.subheader("RIM price")
+            st.subheader("Close price")
             fig = go.Figure(go.Indicator(
                 mode = "number+gauge+delta",
                 gauge = {'shape': "bullet"},
                 value = round(fdr_df.iloc[-1,4],2),
-                delta = {'reference': round(overview_df.iloc[-8,0].astype(float),2)},
+                delta = {'reference': overview_df.iloc[-8,0]},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 title = {'text': "<b>Close</b>"}))
             fig.update_layout(height = 250)
             st.plotly_chart(fig)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     submit = st.sidebar.button('Run app')
     if submit:
         run(input_ticker, overview_df,fdr_df)
