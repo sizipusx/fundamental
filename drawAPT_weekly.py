@@ -48,7 +48,7 @@ pio.templates["myID"] = go.layout.Template(
 def make_dynamic_graph(s_df, js_df):
     
     flag = "KB 주간 시계열"
-    title = dict(text='<b>'+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     template = "ggplot2"
     fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
                         text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
@@ -71,7 +71,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
         draw_list = ['경기', '수원', '안양','성남', '용인', '고양', '안산']
     try:
         title = "<b>KB 매매지수 변화 같이 보기</b>"
-        titles = dict(text= title, x=0.5, y = 0.85) 
+        titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
 
         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
         
@@ -103,7 +103,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
 
 def draw_power(selected_dosi2, m_power, bubble_df3, flag):
     #bubble index chart
-    titles = dict(text= '<b>['+selected_dosi2 +']</b>'+  flag+ '주간 전세파워-버블지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b>'+  flag+ '주간 전세파워-버블지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -130,7 +130,7 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
 
 def draw_power_table(power_df):
     #버블지수/전세파워 table 추가
-    title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.9) 
+    title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure(data=[go.Table(
                         header=dict(values=['<b>지역</b>','<b>전세파워</b>', '<b>버블지수</b>', '<b>전세파워 rank</b>', \
                                             '<b>버블지수 rank</b>', '<b>전세+버블 score</b>', '<b>전체 rank</b>'],
@@ -178,7 +178,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
     df['text'] = '<b>' + df['short'] + '</b> <br>' + \
                     '매매증감:' + df['매매증감'] + '<br>' + \
                     '전세증감:' + df['전세증감']
-    title = dict(text='<b>'+last_week+ '기준 '+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.9, xanchor = 'center', yanchor = 'top') 
+    title = dict(text='<b>'+last_week+ '기준 '+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.85, xanchor = 'center', yanchor = 'top') 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
                             colorscale="Bluered", zmin=-0.8, zmax=0.8, marker_line_width=2))
                             #colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=2))
@@ -199,7 +199,7 @@ def draw_index_change_with_bar(last_df, flag, last_week):
     #상위 20과 하위 20만 slice
     kb_last_slice = last_df.iloc[[-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,\
         14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]]
-    title = dict(text='<b>'+last_week+ '기준 '+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.9) 
+    title = dict(text='<b>'+last_week+ '기준 '+flag[0] +' 주간 '+flag[1]+'</b>',  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     if flag[1] == '매매증감':
         fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,0], color=kb_last_slice.iloc[:,0], color_continuous_scale='Bluered', \
                     text=kb_last_slice.index, orientation='h')
@@ -219,7 +219,7 @@ def draw_index_change_with_bar(last_df, flag, last_week):
 
 def draw_index_change_with_bubble(last_df, flag, last_week):
     #매매/전세 증감률 Bubble Chart
-    title = dict(text='<b>'+last_week+ '기준 '+flag+'지수 증감</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+last_week+ '기준 '+flag+'지수 증감</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']*10), 
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -232,7 +232,7 @@ def draw_index_change_with_bubble(last_df, flag, last_week):
 def draw_index_change_with_bubble_slice(citys, last_df, flag):
     slice_df = last_df.loc[citys,:]
     #매매/전세 증감률 Bubble Chart
-    title = dict(text='<b>'+flag+'지수 증감</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+flag+'지수 증감</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = px.scatter(slice_df, x='매매증감', y='전세증감', color='매매증감', size=abs(slice_df['전세증감']*10), 
                         text= slice_df.index, hover_name=slice_df.index, color_continuous_scale='Bluered')
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -245,7 +245,7 @@ def draw_index_change_with_bubble_slice(citys, last_df, flag):
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3
-    titles = dict(text= '<b>['+selected_dosi2 +']</b> KB 주간 매매-전세 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> KB 주간 매매-전세 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
@@ -331,7 +331,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
     st.plotly_chart(fig)
 
 def draw_sentiment(selected_dosi, js_1, js_2, js_index):
-    titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위지수 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위지수 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -417,7 +417,7 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
 def draw_sentiment_change(selected_dosi, mdf_change, js_index):
     x_data = mdf_change.index
     title = "<b>["+selected_dosi+"]</b> 매수우위지수와 매매증감"
-    titles = dict(text= title,  x=0.5, y = 0.9) 
+    titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =round(mdf_change[selected_dosi],2), 
                         text = round(mdf_change[selected_dosi],2), textposition = 'outside', 
@@ -438,7 +438,7 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
 def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_change):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3
-    titles = dict(text= '<b>['+selected_dosi2 +']</b> 부동산원 주간 매매-전세 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> 부동산원 주간 매매-전세 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = omdf.index, y = omdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
@@ -530,7 +530,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
   
     omdf_change = omdf_change.round(decimals=2)
     title = "<b>부동산원 매매지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -559,7 +559,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
 
 def run_one_index_together(draw_list, omdf, omdf_change, flag):
     title = f"<b>{flag} 매매지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -588,7 +588,7 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
 
 def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
     title = f"<b>{flag} 전세지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -619,7 +619,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
     if selected_dosi3 is not None:
         select_city = selected_dosi3
     #매매/전세 증감률 flower Chart
-    title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.9)
+    title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
         mode='markers+lines',
         hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
@@ -641,7 +641,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
 def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
 
     #매매/전세 증감률 flower Chart
-    title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.9)
+    title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
     for index, value in enumerate(citys):
         fig.add_trace(
@@ -666,7 +666,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
 
 def draw_change_table(change_df,flag):
     #버블지수/전세파워 table 추가
-    title = dict(text=f'<b>{flag} 기간 상승률 분석</b>', x=0.5, y = 0.9) 
+    title = dict(text=f'<b>{flag} 기간 상승률 분석</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = go.Figure(data=[go.Table(
                         header=dict(values=['<b>지역</b>','<b>매매증감</b>', '<b>전세증감</b>'],
                                     fill_color='royalblue',
@@ -686,7 +686,7 @@ def draw_change_table(change_df,flag):
 def draw_senti_last(to_df, last_week):
     #매매/전세 증감률 Bubble Chart
     flag = "KB 주간 시계열"
-    title = dict(text='<b>'+last_week+'기준 '+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.9) 
+    title = dict(text='<b>'+last_week+'기준 '+flag+' 매수우위와 전세수급 지수</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     template = "ggplot2"
     fig = px.scatter(to_df, x='매수우위지수', y='전세수급지수', color='매수우위지수', size=abs(to_df['전세수급지수']*10), 
                         text= to_df.index, hover_name=to_df.index, color_continuous_scale='Bluered')
@@ -702,7 +702,7 @@ def draw_senti_last(to_df, last_week):
 def draw_senti_together(maesu_index, city_lists, last_week):
     #매수우위지수 같이 보기
     flag = "KB 주간 시계열"
-    titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9)
+    titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
 
     for index, value in enumerate(city_lists):
@@ -723,7 +723,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     st.plotly_chart(fig)    
 
 def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
-    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9) 
+    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -806,7 +806,7 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
 def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
     x_data = jdf_change.index
     title = "<b>["+selected_dosi+"]</b> 전세수급지수와 전세증감"
-    titles = dict(text= title,  x=0.5, y = 0.9) 
+    titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =round(jdf_change[selected_dosi],2), 
                         text = round(jdf_change[selected_dosi],2), textposition = 'outside', 
@@ -835,7 +835,7 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
 
     marker_colors = ['rgb(0,0,255)', 'rgb(0,255,225)', 'rgb(255,192,203)', 'rgb(255,0,0)', 'rgb(0,0,0)', 'rgb(255,255,0)']
     title = "<b>KB 심리지수로 보는 [" + select_city+"] 수요공급 비중</b>"
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
 
     fig.add_trace(go.Bar(x=df.index, y=df["전세수요"], name="전세수요", marker_color=marker_colors[0]), secondary_y=False)
