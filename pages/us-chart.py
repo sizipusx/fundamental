@@ -759,7 +759,7 @@ if __name__ == "__main__":
                 mode = "number+gauge+delta",
                 gauge = {'shape': "bullet"},
                 value = round(fdr_df.iloc[-1,4],2),
-                delta = {'reference': overview_df.iloc[-8,0]},
+                delta = {'reference': 65.77}, #overview_df.iloc[-8,0]
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 title = {'text': "<b>Close</b>"}))
             fig.update_layout(height = 250)
