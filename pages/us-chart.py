@@ -373,7 +373,7 @@ def run(ticker, overview_df, fdr_df):
             with col1:
                 x_data = income_df.index
                 title = com_name + '('  + input_ticker + ') <b>Profit & Cost</b>'
-                titles = dict(text= title, x=0.5, y = 0.85) 
+                titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_bar1 = ['Revenue', 'Operating Income', 'Net Income']
                 y_data_line1 = ['Gross Margin', 'Operating Margin', 'Profit Margin']
@@ -399,7 +399,7 @@ def run(ticker, overview_df, fdr_df):
                 # 마진율과 성장률
                 x_data = income_df.index
                 title = com_name + '('  + input_ticker + ') Margin & Growth Rate' 
-                titles = dict(text= title, x=0.5, y = 0.85) 
+                titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_line2 = ['GPM', 'OPM', 'NPM']
                 y_data_bar2 = ['TR Change', 'OI Change', 'NI Change']
@@ -432,7 +432,7 @@ def run(ticker, overview_df, fdr_df):
             with col1:
                 x_data = balance_df.index
                 title = com_name + '('  + input_ticker + ') <b>Asset & Liabilities</b>'
-                titles = dict(text= title, x=0.5, y = 0.85) 
+                titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
                 y_data_bar3 = ['totalLiabilities', 'totalShareholderEquity']
@@ -462,7 +462,7 @@ def run(ticker, overview_df, fdr_df):
                 #무형자산총자금비율, 현금자산비율
                 x_data = balance_df.index
                 title = com_name + '('  + input_ticker + ') <b>IntangibleAssets & Cash And ShortTermInvestments</b>'
-                titles = dict(text= title, x=0.5, y = 0.85) 
+                titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_bar4 = ['무형자산비율', '현금성자산비율']
                 y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
@@ -492,7 +492,7 @@ def run(ticker, overview_df, fdr_df):
             with col1:
                 x_data = cashflow_df.index
                 title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
-                titles = dict(text= title, x=0.5, y = 0.85) 
+                titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_bar5 = ['Operating Cash Flow', 'Financing cash flow', 'Investing cash flow']
                 y_data_line5 = ['FCF']
@@ -521,7 +521,7 @@ def run(ticker, overview_df, fdr_df):
             with col3:
                 x_data = v_df.index
                 title = com_name + '('  + input_ticker + ') <b>BPS and ROE</b>'
-                titles = dict(text= title, x=0.5, y = 0.85) 
+                titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
                 y_data_bar6 = ['BPS']
                 y_data_line6 = ['ROE']
