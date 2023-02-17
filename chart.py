@@ -41,7 +41,7 @@ def change_per_value(x):
 
 def price_chart(input_ticker, company_name, price_df):   
     title = '('  + company_name + ') Price'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Candlestick(x=price_df.index,
                 open=price_df['Open'],
@@ -104,7 +104,7 @@ def earning_chart(input_ticker, earning_df, price_df):
     
     #주가와 EPS
     title = '('  + input_ticker + ') EPS & Price'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     x_data = earning_df['reportedDate'] # EPS발표 날짜로 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -179,7 +179,7 @@ def dividend_chart(ticker, com_name, div_df):
     div_df.dropna(inplace=True)
  
     title = com_name +'('  + ticker + ') Dividend & Yield'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     x_data = div_df.index # EPS발표 날짜로 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar = ['DPS']
@@ -204,7 +204,7 @@ def dividend_chart_right(ticker, com_name, div_df):
     # st.write(option)
     div_df.dropna(inplace=True)
     title = com_name +'('  + ticker + ') Dividend & Yield'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     x_data = div_df.index
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar = ['DPS']
@@ -248,7 +248,7 @@ def visualize_PER_band(ticker, com_name, fun_df):
     df.loc[:,str(e_min)+"X"] = (df['ttmEPS']*e_min).round(2)
 
     title = com_name + '('  + ticker + ') <b>PER Band</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{"secondary_y": False}]])
     fig.add_trace(go.Scatter(x=df.index, y=df.iloc[:,3], name=df.columns[3],
@@ -297,7 +297,7 @@ def visualize_PBR_band(ticker, com_name, fun_df):
     #     st.dataframe(fun_df.style.highlight_max(axis=0))
     
     title = com_name + '('  + ticker + ') <b>PBR Band</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{"secondary_y": False}]])
     fig.add_trace(go.Scatter(x=fun_df.index, y=fun_df.iloc[:,5], name=fun_df.columns[5],
@@ -327,7 +327,7 @@ def income_chart(input_ticker, income_df, ia_df):
     st.subheader('Profit, Cost, Growth')
     x_data = income_df.index
     title = '('  + input_ticker + ') <b>Profit & Cost</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar = ['totalRevenue', 'costOfRevenue', 'operatingExpenses']
     y_data_line = ['grossProfit', 'ebit', 'operatingIncome', 'netIncome']
@@ -351,7 +351,7 @@ def income_chart(input_ticker, income_df, ia_df):
 def income_margin_chart(input_ticker, income_df):
     x_data = income_df.index
     title = '('  + input_ticker + ') Margin & Growth Rate' 
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line = ['GPM', 'OPM', 'NPM']
     y_data_bar = ['TR Change', 'OI Change', 'NI Change']
@@ -377,7 +377,7 @@ def balance_chart(input_ticker, balance_df):
     st.subheader('Asset, Liabilities, ShareholderEquity')
     x_data = balance_df.index
     title = '('  + input_ticker + ') <b>Asset & Liabilities</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     #y_data_bar3 = ['totalAssets', 'totalLiabilities', 'totalShareholderEquity']
     y_data_bar3 = ['totalLiabilities', 'totalShareholderEquity']
@@ -405,7 +405,7 @@ def balance_chart(input_ticker, balance_df):
     #무형자산총자금비율, 현금자산비율
     x_data = balance_df.index
     title = '('  + input_ticker + ') <b>IntangibleAssets & Cash And ShortTermInvestments</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar4 = ['무형자산비율', '현금성자산비율']
     y_data_bar4_name = ['intangible/Assets', 'Cash/Assets']
@@ -428,7 +428,7 @@ def cashflow_chart(input_ticker, cashflow_df, income_df):
     st.subheader('Cash Flow')
     x_data = cashflow_df.index
     title = '('  + input_ticker + ') <b>Cash Flow Statement</b>'
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_bar5 = ['operatingCashflow', 'FCF']
 
@@ -447,7 +447,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
     
     #주가와 ttm EPS
     title = '('  + com_name + ') TTM EPS & Price'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     x_data = ttm_df.index # EPS발표 날짜로 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -471,7 +471,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
 
     #주가와 annual EPS
     title = '('  + com_name + ') Annual EPS & Price'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     x_data = annual_df.index # EPS발표 날짜로 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -496,7 +496,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
 
     fig2 = go.Figure()
     title = '('  + com_name + ') EPS Statistics'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig2.add_trace(go.Box(x=ttm_df.loc[:,'EPS'], name='EPS', boxpoints='all', marker_color = 'indianred',
                     boxmean='sd', jitter=0.3, pointpos=-1.8 ))
     fig2.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
@@ -506,7 +506,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
      #PER, PBR, ROE 추이
     x_data = ttm_df.index
     title = com_name + '('  + input_ticker + ') TTM PER PBR & ROE' 
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line2 = ['PER', 'PBR']
     y_data_bar2 = ['ROE']
@@ -533,7 +533,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
      # ROE와 마진율
     x_data = ttm_df.index
     title = com_name + '('  + input_ticker + ') Margin & ROE' 
-    titles = dict(text= title, x=0.5, y = 0.85) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line2 = ['OPM', 'NPM']
     y_data_bar2 = ['ROE']
@@ -557,7 +557,7 @@ def kor_earning_chart(input_ticker, com_name, ttm_df, annual_df):
 
     #배당
     title = '('  + com_name + ') Annual DPS & DY'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     x_data = annual_df.index # EPS발표 날짜로 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
@@ -585,7 +585,7 @@ def candlestick_chart(code):
 
     df = fdr.DataReader(code,start_date)
     title = '('  + code + ') Price'
-    titles = dict(text= title, x=0.5, y = 0.9) 
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig = go.Figure(data=[go.Candlestick(x=df.index,
                 open=df['Open'],
