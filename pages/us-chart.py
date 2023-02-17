@@ -747,7 +747,23 @@ if __name__ == "__main__":
     overview_df.loc['Close'] = round(fdr_df.iloc[-1,4],2)
     st.table(overview_df)
     # st.write(overview_df.iloc[-1,4])
-    chart.price_chart(input_ticker, overview_df.iloc[2,0], fdr_df)
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            chart.price_chart(input_ticker, overview_df.iloc[2,0], fdr_df)
+        with col2:
+            st.write("")
+        with col3:
+            st.subheader("RIM price")
+            fig = go.Figure(go.Indicator(
+                mode = "number+gauge+delta",
+                gauge = {'shape': "bullet"},
+                value = round(fdr_df.iloc[-1,4],2),
+                delta = {'reference': overview_df.loc['52WeekHigh']},
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "<b>Close</b>"}))
+            fig.update_layout(height = 250)
+            st.plotly_chart(fig)
     submit = st.sidebar.button('Run app')
     if submit:
         run(input_ticker, overview_df,fdr_df)
