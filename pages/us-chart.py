@@ -759,7 +759,7 @@ if __name__ == "__main__":
                 mode = "number+gauge+delta",
                 gauge = {'shape': "bullet"},
                 value = round(fdr_df.iloc[-1,4],2),
-                delta = {'reference': overview_df.loc['52WeekHigh']},
+                delta = {'reference': round(overview_df.loc['52WeekHigh', '기본 정보'].astype(float),2)},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 title = {'text': "<b>Close</b>"}))
             fig.update_layout(height = 250)
