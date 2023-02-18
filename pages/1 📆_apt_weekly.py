@@ -984,7 +984,7 @@ if __name__ == "__main__":
             'Select Date to Compare index change', 
             options = period_,
             value = (period_[-105], period_[-1]))
-        st.write('You selected between <b>', start_date, '</b> and <b>', end_date)
+        st.write('You selected between [', start_date, '] and [', end_date)
         #부동산원 / KB
         slice_om = omdf.loc[start_date:end_date]
         slice_oj = ojdf.loc[start_date:end_date]
