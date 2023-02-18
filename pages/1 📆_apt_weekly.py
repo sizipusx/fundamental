@@ -978,7 +978,7 @@ if __name__ == "__main__":
     elif my_choice == '지역 함께 보기':
         citys = omdf.columns.tolist()
         ##추가
-        period_ = omdf.index.strftime("%Y-%m-%d").tolist()
+        period_ = omdf.index.strftime("%Y.%m.%d").tolist()
         st.subheader("기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
