@@ -36,7 +36,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="한국은행 경제통계 조회", page_icon="files/logo2.png", layout="wide")
+st.set_page_config(page_title="Macro 조회", page_icon="files/logo2.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
