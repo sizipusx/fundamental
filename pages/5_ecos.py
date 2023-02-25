@@ -123,7 +123,7 @@ if __name__ == "__main__":
     else:
         org_list = fred_dict.keys()
     stat_ticker = st.sidebar.selectbox(
-        '주요 통계 정보', org_list)
+        '통계 목록', org_list)
     
     #st.dataframe(basic_df)
     submit = st.sidebar.button('Get Data')
