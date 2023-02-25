@@ -106,6 +106,7 @@ def run(stat_ticker, kor_exp):
         ec.ecos_chart(stat_ticker, daechul_df, daechul_ch)
     else:
         fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2020')
+        st.dataframe(fred_df)
         ec.fred_monthly_chart(ticker, kor_exp, fred_df)
 
 
