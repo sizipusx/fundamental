@@ -112,8 +112,8 @@ if __name__ == "__main__":
             options=('Ecos', 'Fred'),
             index = 0,
             horizontal= True)
-    eco_dict = {"가계신용":"151Y005"}
-    fred_dict = {"개인소비지출":"PCE"}
+    eco_dict = {"151Y005":"가계신용"}
+    fred_dict = {"PCE":"개인소비지출"}
 
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
