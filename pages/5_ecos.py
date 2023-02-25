@@ -106,7 +106,12 @@ def run(stat_ticker):
 
 
 if __name__ == "__main__":
-    data_load_state = st.text('Loading Ecos 통계정보 List...')
+    data_load_state = st.text('Loading 통계정보 List...')
+    source = st.sidebar.radio(
+            label = "Choose the Source", 
+            options=('Ecos', 'Fred'),
+            index = 0,
+            horizontal= True)
     eco_list = ['', '가계신용']
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
