@@ -69,7 +69,7 @@ def ecos_chart(input_ticker, df1, df2):
             st.subheader(input_ticker)
             x_data = df1.index
             title = '( 예금취급기관 )<b>가계 대출</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df1.columns[0], df1.columns[1]]
             y_data_line= [df2.columns[0], df2.columns[1]]
@@ -92,3 +92,72 @@ def ecos_chart(input_ticker, df1, df2):
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
+
+
+def fdr_monthly_chart(ticker, kor_exp, df):
+    mom_df = df.pct_change()*100
+    mom_df = mom_df.fillan(0)
+    mom_df = round(decimals=2)
+    yoy_df = df.pct_change(periods=12)*100
+    yoy_df = yoy_df.fillna(0)
+    yoy_df = round(decimals=2)
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            st.subheader(kor_exp)
+            x_data = df.index
+            title = kor_exp
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = [mom_df.columns[0]]
+            y_data_line= [df.columns[0]]
+
+            for y_data, color in zip(y_data_bar, marker_colors) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data], 
+                                            text= mom_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
+            
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers', 
+                                            name = y_data, x =  x_data, y= df.loc[:,y_data],
+                                            marker_color = color),
+                                            secondary_y = False)
+            #fig.update_traces(texttemplate='%{text:.3s}') 
+            fig.update_yaxes(title_text=ticker, range=[0, max(df.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
+            #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='MOM', range=[-max(mom_df.loc[:,y_data_line[0]]), max(mom_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        with col2:
+                st.write("")
+        with col3: 
+            st.subheader(kor_exp)
+            x_data = df.index
+            title = kor_exp
+            titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = [yoy_df.columns[0]]
+            y_data_line= [df.columns[0]]
+
+            for y_data, color in zip(y_data_bar, marker_colors) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data], 
+                                            text= yoy_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
+            
+            for y_data, color in zip(y_data_line, marker_colors): 
+                fig.add_trace(go.Scatter(mode='lines+markers', 
+                                            name = y_data, x =  x_data, y= df.loc[:,y_data],
+                                            marker_color = color),
+                                            secondary_y = False)
+            #fig.update_traces(texttemplate='%{text:.3s}') 
+            fig.update_yaxes(title_text=ticker, range=[0, max(df.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
+            #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+            fig.update_yaxes(title_text='YOY', range=[-max(yoy_df.loc[:,y_data_line[0]]), max(yoy_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+
+

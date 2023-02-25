@@ -8,6 +8,7 @@ import numpy as np
 #from tqdm.notebook import tqdm as tn
 import time
 from datetime import datetime
+import FinanceDataReader as fdr
 import ecos_chart as ec
 
 now = datetime.now()
@@ -75,33 +76,37 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
     return df
 
-def run(stat_ticker):
-    #가계 신용: 가계대출(주택담보대출+기타대출) + 판매신용
-    daechul_index_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
-                            #'주택담보대출':'008Y001/11000A0','기타대출':'008Y001/11000B0'}
-    daechul_index_tickers = daechul_index_symbols.values()
-    start_date = "200501"
-    # end_date = "201910"
-    # end_date = rmonth
-    end_date = "202212"
-    cycle_type = "M"
+def run(stat_ticker, kor_exp):
+    if source == 'Ecos':
+        #가계 신용: 가계대출(주택담보대출+기타대출) + 판매신용
+        daechul_index_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+                                #'주택담보대출':'008Y001/11000A0','기타대출':'008Y001/11000B0'}
+        daechul_index_tickers = daechul_index_symbols.values()
+        start_date = "200501"
+        # end_date = "201910"
+        # end_date = rmonth
+        end_date = "202212"
+        cycle_type = "M"
 
-    daechul_all_data = {}
-    for ticker in daechul_index_tickers:
-        stat_code = ticker.split('/')[0]
-        stat_item = ticker.split('/')[1]
-        daechul_all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
-    #컬럼명 종목명으로 변경
-    daechul_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in daechul_all_data.items()})
-    daechul_df.columns = daechul_index_symbols.keys()
-    #날짜 설정
-    tempdf = daechul_all_data.get('151Y005/11100A0')
-    daechul_df.set_index(keys=tempdf['TIME'], inplace=True)
-    daechul_df = daechul_df.astype(float)/1000
-    daechul_df = daechul_df.round(decimals=1)
-    daechul_ch = daechul_df.pct_change()*100
-    daechul_ch = daechul_ch.round(decimals=2)
-    ec.ecos_chart(stat_ticker, daechul_df, daechul_ch)
+        daechul_all_data = {}
+        for ticker in daechul_index_tickers:
+            stat_code = ticker.split('/')[0]
+            stat_item = ticker.split('/')[1]
+            daechul_all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
+        #컬럼명 종목명으로 변경
+        daechul_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in daechul_all_data.items()})
+        daechul_df.columns = daechul_index_symbols.keys()
+        #날짜 설정
+        tempdf = daechul_all_data.get('151Y005/11100A0')
+        daechul_df.set_index(keys=tempdf['TIME'], inplace=True)
+        daechul_df = daechul_df.astype(float)/1000
+        daechul_df = daechul_df.round(decimals=1)
+        daechul_ch = daechul_df.pct_change()*100
+        daechul_ch = daechul_ch.round(decimals=2)
+        ec.ecos_chart(stat_ticker, daechul_df, daechul_ch)
+    else:
+        fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2020')
+        ec.fred_monthly_chart(ticker, kor_exp, fred_df)
 
 
 
@@ -124,9 +129,12 @@ if __name__ == "__main__":
         org_list = fred_dict.keys()
     stat_ticker = st.sidebar.selectbox(
         '통계 목록', org_list)
-    
+    if source == 'Ecos':
+        kor_exp = eco_dict.get(stat_ticker)
+    else:
+        kor_exp = fred_dict.get(stat_ticker)
     #st.dataframe(basic_df)
     submit = st.sidebar.button('Get Data')
 
     if submit:
-        run(stat_ticker)
+        run(stat_ticker, kor_exp)
