@@ -37,10 +37,9 @@ def ecos_monthly_chart(input_ticker, df1, df2):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            st.subheader(input_ticker)
+            #st.subheader(input_ticker)
             x_data = df1.index
-            title = '( 예금취급기관 )<b>가계 대출</b>'
-            titles = dict(text= title, x=0.5, y = 0.85) 
+            titles = dict(text= input_ticker, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df1.columns[0], df1.columns[1]]
             y_data_line= [df2.columns[0], df2.columns[1]]
