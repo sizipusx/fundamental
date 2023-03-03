@@ -7,13 +7,13 @@ from pandas.io.json import json_normalize
 import numpy as np
 #from tqdm.notebook import tqdm as tn
 import time
-from datetime import datetime
+import datetime
 import FinanceDataReader as fdr
 import ecos_chart as ec
 
-now = datetime.now()
-today = '%s%s%s' % ( now.year, now.month, now.day)
-rmonth = '%s%s' % ( now.year, now.month)
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #############html 영역####################
@@ -118,24 +118,24 @@ if __name__ == "__main__":
             options=('Ecos', 'Fred'),
             index = 0,
             horizontal= True)
-    eco_dict = {"151Y005":"가계신용"}
+    eco_dict = {"151Y005":"가계신용", "722Y001":"한국은행 기준금리"}
     fred_dict = {"PCE":"개인소비지출"}
 
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
     # st.dataframe(krx) 
     if source == 'Ecos':
-        org_list = eco_dict.keys() #tickers
+        org_list = eco_dict.Values() #tickers
     else:
-        org_list = fred_dict.keys()
-    stat_ticker = st.sidebar.selectbox(
+        org_list = fred_dict.Values()
+    stat_name = st.sidebar.selectbox(
         '통계 목록', org_list)
     if source == 'Ecos':
-        kor_exp = eco_dict.get(stat_ticker)
+        stat_ticker = eco_dict.items(stat_name)
     else:
-        kor_exp = fred_dict.get(stat_ticker)
+        stat_ticker = fred_dict.items(stat_name)
     #st.dataframe(basic_df)
     submit = st.sidebar.button('Get Data')
 
     if submit:
-        run(stat_ticker, kor_exp)
+        run(stat_ticker, stat_name)
