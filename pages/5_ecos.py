@@ -89,7 +89,6 @@ def run(stat_ticker, kor_exp):
         else:
             item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
         item_index_tickers = list(item_symbols.values())
-        st.write(item_index_tickers[0])    
         all_data = {}
         for ticker in item_index_tickers:
             stat_code = ticker.split('/')[0]
