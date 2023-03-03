@@ -118,8 +118,8 @@ if __name__ == "__main__":
             options=('Ecos', 'Fred'),
             index = 0,
             horizontal= True)
-    eco_dict = {"151Y005":"가계신용", "722Y001":"한국은행 기준금리"}
-    fred_dict = {"PCE":"개인소비지출"}
+    eco_dict = {"가계신용":"151Y005", "한국은행 기준금리":"722Y001"}
+    fred_dict = {"개인소비지출":"PCE"}
 
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
@@ -131,9 +131,9 @@ if __name__ == "__main__":
     stat_name = st.sidebar.selectbox(
         '통계 목록', org_list)
     if source == 'Ecos':
-        stat_ticker = eco_dict.items(stat_name)
+        stat_ticker = eco_dict.get(stat_name)
     else:
-        stat_ticker = fred_dict.items(stat_name)
+        stat_ticker = fred_dict.get(stat_name)
     #st.dataframe(basic_df)
     submit = st.sidebar.button('Get Data')
 
