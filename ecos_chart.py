@@ -41,8 +41,11 @@ def ecos_monthly_chart(input_ticker, df1, df2):
             x_data = df1.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85) 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_bar = [df1.columns[0], df1.columns[1]]
-            y_data_line= [df2.columns[0], df2.columns[1]]
+            item_list = df1.columns.values.tolist()
+            y_data_bar, y_data_line = []
+            for item in item_list:
+                y_data_bar.append(item)
+                y_data_line.append(item)
 
             for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
