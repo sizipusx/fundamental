@@ -103,10 +103,10 @@ def run(stat_ticker, kor_exp):
         daechul_df = daechul_df.round(decimals=1)
         daechul_ch = daechul_df.pct_change()*100
         daechul_ch = daechul_ch.round(decimals=2)
-        ec.ecos_chart(kor_exp, daechul_df, daechul_ch)
+        ec.ecos_monthly_chart(kor_exp, daechul_df, daechul_ch)
     else:
         fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
-        st.dataframe(fred_df)
+        # st.dataframe(fred_df)
         ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
 
 
