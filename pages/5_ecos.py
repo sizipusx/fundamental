@@ -101,8 +101,11 @@ def run(stat_ticker, kor_exp):
         #날짜 설정
         tempdf = all_data.get(item_index_tickers[0])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
-        data_df = data_df.astype(float)/1000
-        data_df = data_df.round(decimals=1)
+        if stat_ticker == '151Y005':#대출일 경우 조 단위로 변경
+            data_df = data_df.astype(float)/1000
+            data_df = data_df.round(decimals=1)
+        else:
+            data_df = data_df.astype(float)
         data_ch = data_df.pct_change()*100
         data_ch = data_ch.round(decimals=2)
         ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
