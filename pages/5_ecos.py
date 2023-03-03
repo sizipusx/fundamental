@@ -82,10 +82,11 @@ def run(stat_ticker, kor_exp):
         daechul_index_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
                                 #'주택담보대출':'008Y001/11000A0','기타대출':'008Y001/11000B0'}
         daechul_index_tickers = daechul_index_symbols.values()
-        start_date = "200501"
+        start_date = "200001"
         # end_date = "201910"
         # end_date = rmonth
-        end_date = "202212"
+        #end_date = "202212"
+        end_date = kor_time.strftime('%Y%m')
         cycle_type = "M"
 
         daechul_all_data = {}
