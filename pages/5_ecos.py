@@ -98,7 +98,7 @@ def run(stat_ticker, kor_exp):
         data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
         data_df.columns = item_symbols.keys()
         #날짜 설정
-        tempdf = all_data.get('151Y005/11100A0')
+        tempdf = all_data.get(item_index_tickers[0])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
         data_df = data_df.astype(float)/1000
         data_df = data_df.round(decimals=1)
