@@ -26,7 +26,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h2 style="font-size:200%; color:#008080; font-family:Georgia">한국은행 경제통계 조회<br>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia">경제 Macro 조회<br>
 <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
