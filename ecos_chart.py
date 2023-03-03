@@ -94,7 +94,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
             if input_ticker == '가계신용': 
                 fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
             else:
-                fig.update_yaxes(title_text='input_ticker', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
+                fig.update_yaxes(title_text=input_ticker, range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='전년대비증감', range=[-max(df3.loc[:,y_data_line[0]]), max(df3.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
