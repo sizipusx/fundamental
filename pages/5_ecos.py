@@ -87,7 +87,7 @@ def run(stat_ticker, kor_exp):
         elif stat_ticker == '722Y001':
             item_symbols = {'한국은행기준금리':'722Y001/0101000'}
         else:
-            item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+            item_symbols = {'저축성수신':'121Y002/BEABAA2','가계대출':'121Y006/BECBLA03'}
         item_index_tickers = list(item_symbols.values())
         all_data = {}
         for ticker in item_index_tickers:
