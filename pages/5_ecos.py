@@ -125,9 +125,9 @@ if __name__ == "__main__":
     # st.dataframe(tickers)
     # st.dataframe(krx) 
     if source == 'Ecos':
-        org_list = eco_dict.Values() #tickers
+        org_list = eco_dict.values() #tickers
     else:
-        org_list = fred_dict.Values()
+        org_list = fred_dict.values()
     stat_name = st.sidebar.selectbox(
         '통계 목록', org_list)
     if source == 'Ecos':
