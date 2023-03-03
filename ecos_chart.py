@@ -11,7 +11,8 @@ from datetime import datetime
 #챠트 기본 설정
 # colors 
 # marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+marker_colors1 = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+marker_colors2 = ['rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)', 'rgb(27,38,81)', 'rgb(205,32,40)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 pio.templates["myID"] = go.layout.Template(
     layout_annotations=[
@@ -48,11 +49,11 @@ def ecos_monthly_chart(input_ticker, df1, df2):
                 y_data_bar.append(item)
                 y_data_line.append(item)
 
-            for y_data, color in zip(y_data_bar, marker_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors2) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= marker_colors[1]), secondary_y = True) 
+                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
@@ -80,11 +81,11 @@ def ecos_monthly_chart(input_ticker, df1, df2):
                 y_data_bar.append(item)
                 y_data_line.append(item)
 
-            for y_data, color in zip(y_data_bar, marker_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors2) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df3.loc[:,y_data], 
-                                            text= df3[y_data], textposition = 'inside', marker_color= marker_colors[1]), secondary_y = True) 
+                                            text= df3[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
