@@ -112,12 +112,14 @@ def run(stat_ticker, kor_exp):
 
 
 if __name__ == "__main__":
+    st.write(kor_time)
     data_load_state = st.text('Loading 통계정보 List...')
     source = st.sidebar.radio(
             label = "Choose the Source", 
             options=('Ecos', 'Fred'),
             index = 0,
             horizontal= True)
+    
     eco_dict = {"가계신용":"151Y005", "한국은행 기준금리":"722Y001"}
     fred_dict = {"개인소비지출":"PCE"}
 
