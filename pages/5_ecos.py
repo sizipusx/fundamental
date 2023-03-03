@@ -77,34 +77,34 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
     return df
 
 def run(stat_ticker, kor_exp):
+    start_date = "200001"
+    end_date = kor_time.strftime('%Y%m')
+    cycle_type = "M"
     if source == 'Ecos':
+        if stat_code == '151Y005':
         #가계 신용: 가계대출(주택담보대출+기타대출) + 판매신용
-        daechul_index_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
-                                #'주택담보대출':'008Y001/11000A0','기타대출':'008Y001/11000B0'}
-        daechul_index_tickers = daechul_index_symbols.values()
-        start_date = "200001"
-        # end_date = "201910"
-        # end_date = rmonth
-        #end_date = "202212"
-        end_date = kor_time.strftime('%Y%m')
-        cycle_type = "M"
-
-        daechul_all_data = {}
-        for ticker in daechul_index_tickers:
+            item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+        elif stat_code == '722Y001':
+            item_symbols = {'한국은행기준금리':'722Y001/0101000'}
+        else:
+            item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+        item_index_tickers = item_symbols.values()    
+        all_data = {}
+        for ticker in item_index_tickers:
             stat_code = ticker.split('/')[0]
             stat_item = ticker.split('/')[1]
-            daechul_all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
+            all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
         #컬럼명 종목명으로 변경
-        daechul_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in daechul_all_data.items()})
-        daechul_df.columns = daechul_index_symbols.keys()
+        data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
+        data_df.columns = item_symbols.keys()
         #날짜 설정
-        tempdf = daechul_all_data.get('151Y005/11100A0')
-        daechul_df.set_index(keys=tempdf['TIME'], inplace=True)
-        daechul_df = daechul_df.astype(float)/1000
-        daechul_df = daechul_df.round(decimals=1)
-        daechul_ch = daechul_df.pct_change()*100
-        daechul_ch = daechul_ch.round(decimals=2)
-        ec.ecos_monthly_chart(kor_exp, daechul_df, daechul_ch)
+        tempdf = all_data.get('151Y005/11100A0')
+        data_df.set_index(keys=tempdf['TIME'], inplace=True)
+        data_df = data_df.astype(float)/1000
+        data_df = data_df.round(decimals=1)
+        data_ch = data_df.pct_change()*100
+        data_ch = data_ch.round(decimals=2)
+        ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
     else:
         fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
         # st.dataframe(fred_df)
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             index = 0,
             horizontal= True)
     
-    eco_dict = {"가계신용":"151Y005", "한국은행 기준금리":"722Y001"}
+    eco_dict = {"가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
     fred_dict = {"개인소비지출":"PCE"}
 
     data_load_state.text("Done! (using st.cache)")
