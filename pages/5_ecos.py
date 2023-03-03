@@ -45,7 +45,7 @@ footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
 
 
-@st.cache
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
     auth_key = "71BO71RCBA99FVU3BETA/" #발급 받은 Key 를 넣으면 더 많은 데이터 수집 가능
     req_type = "json/"
@@ -125,9 +125,9 @@ if __name__ == "__main__":
     # st.dataframe(tickers)
     # st.dataframe(krx) 
     if source == 'Ecos':
-        org_list = eco_dict.values() #tickers
+        org_list = eco_dict.keys() #tickers
     else:
-        org_list = fred_dict.values()
+        org_list = fred_dict.keys()
     stat_name = st.sidebar.selectbox(
         '통계 목록', org_list)
     if source == 'Ecos':
