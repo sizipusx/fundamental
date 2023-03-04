@@ -1,7 +1,7 @@
 from re import S
 import re
 import time
-from datetime import datetime
+# from datetime import datetime
 import datetime
 from unicodedata import decimal
 import drawAPT_weekly
@@ -90,7 +90,7 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 #오늘날짜까지
-now = datetime.now()
+now = datetime.datetime.now()
 today = '%s-%s-%s' % ( now.year, now.month, now.day)
 
 weekly_db_path = "files/weekly_house.db"
