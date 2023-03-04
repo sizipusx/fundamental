@@ -142,7 +142,7 @@ def get_gsheet_index():
                     columns = cols
             )
     index_list.append(basic_df)
-    conn.close()
+    # conn.close()
     return index_list
 
 #agg table
