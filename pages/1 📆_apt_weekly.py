@@ -196,7 +196,7 @@ def load_senti_data():
         df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         senti_list.append(df)
-    conn.close()
+    # conn.close()
     s_df = senti_list[0].loc[:,senti_list[0].columns.str.contains('매수우위지수')]
     s_maedo = senti_list[0].loc[:,senti_list[0].columns.str.contains('매도자많음')]
     s_maesu = senti_list[0].loc[:,senti_list[0].columns.str.contains('매수자많음')]
