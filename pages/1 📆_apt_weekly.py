@@ -97,7 +97,7 @@ weekly_db_path = "files/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
-@st.cache_resource(ttl=datetime.timedelta(days=7))
+@st.cache_resource(ttl=datetime.timedelta(days=5))
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -112,7 +112,7 @@ def create_connection(db_file):
 
     return conn
 
-@st.cache_data(ttl=datetime.timedelta(days=7))
+@st.cache_data(ttl=datetime.timedelta(days=5))
 def get_gsheet_index():
     #DB에서 읽어오자
     conn = create_connection(weekly_db_path)
@@ -179,7 +179,7 @@ def aggrid_interactive_table(df: pd.DataFrame):
 
     return response
 
-@st.cache_data(ttl=datetime.timedelta(days=7))
+@st.cache_data(ttl=datetime.timedelta(days=5))
 def load_senti_data():
     #2022.9.25 db에서 읽어오기
     conn = create_connection(weekly_db_path)
