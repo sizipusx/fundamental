@@ -10,6 +10,8 @@ import time
 import datetime
 import FinanceDataReader as fdr
 import ecos_chart as ec
+import seaborn as sns
+cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
@@ -109,6 +111,13 @@ def run(stat_ticker, kor_exp):
         #날짜 설정
         tempdf = all_data.get(item_index_tickers[0])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
+        with st.expander("See Raw Data"):
+            try:
+                st.dataframe(data_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.dataframe(data_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
         if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
             data_df = data_df.round(decimals=1)
