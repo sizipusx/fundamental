@@ -38,10 +38,10 @@ def ecos_monthly_chart(input_ticker, df1, df2):
     item_list = df1.columns.values.tolist()
     item_list2 = df2.columns.values.tolist()
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric(label=item_list[0], value = df1.iloc[-1,0])
-    col2.metric(label=item_list[1], value =df1.iloc[-1,1])
-    col3.metric(label=item_list2[0], value =df1.iloc[-1,0])
-    col4.metric(label=item_list2[1], value =df1.iloc[-1,1])
+    col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-2,0])
+    col2.metric(label=item_list2[0]+"YOY", value =df2.iloc[-1,0], delta=df2.iloc[-2,0])
+    col3.metric(label=item_list[1], value =df1.iloc[-1,1], delta=df1.iloc[-2,1])
+    col4.metric(label=item_list2[1]+"YOY", value =df2.iloc[-1,1], delta=df2.iloc[-2,1])
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
