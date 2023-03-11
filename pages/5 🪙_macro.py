@@ -81,7 +81,11 @@ def run(stat_ticker, kor_exp):
     end_date = kor_time.strftime('%Y%m')
     cycle_type = "M"
     if source == 'Ecos':
-        if stat_ticker == '104Y014':
+        if stat_ticker == '901Y009':
+            item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
+        elif stat_ticker == '402Y014':
+            item_symbols = {'수출물가지수':'402Y014/*AA','수입물가지수':'401Y015/*AA'}
+        elif stat_ticker == '104Y014':
             item_symbols = {'예금은행 총수신(말잔)':'104Y013/BCB8', '비예금은행 총수신(말잔)':'111Y007/1000000', '예금은행 대출금(말잔)':'104Y016/BDCA1', '비예금은행 대출금(말잔)':'111Y009/1000000'}
         elif stat_ticker == '151Y005':
         #가계 신용: 가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
@@ -136,7 +140,7 @@ if __name__ == "__main__":
             index = 0,
             horizontal= True)
     
-    eco_dict = {"전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
+    eco_dict = {"물가":"901Y009", "수출입":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
     fred_dict = {"개인소비지출":"PCE"}
 
     data_load_state.text("Done! (using st.cache)")
