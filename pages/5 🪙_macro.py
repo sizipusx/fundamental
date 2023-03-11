@@ -112,7 +112,7 @@ def run(stat_ticker, kor_exp):
         if stat_ticker == '104Y014':
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
             data_df.loc[:,'총수신(말잔)'] = data_df['예금은행 총수신(말잔)']+ data_df['비예금은행 총수신(말잔)']
-            data_df.loc[:,'총대출(말잔)'] = df['예금은행 대출금(말잔)']+ df['비예금은행 대출금(말잔)']
+            data_df.loc[:,'총대출(말잔)'] = data_df['예금은행 대출금(말잔)']+ data_df['비예금은행 대출금(말잔)']
             data_df.loc[:,'스프레드'] = data_df['총수신(말잔)']+ data_df['총대출(말잔)']
             sub_df = sub_df = data_df.iloc[:,4:]
             sub_ch = sub_df.pct_change()*100
