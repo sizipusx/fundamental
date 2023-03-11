@@ -84,7 +84,7 @@ def run(stat_ticker, kor_exp):
         if stat_ticker == '901Y009':
             item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
         elif stat_ticker == '721Y001':
-             item_symbols =  {'국고채(3년)':'721Y001/5020000','국고채(10년)':'721Y001/5050000'} 
+             item_symbols =  {'국고채(3년)':'721Y001/5020000','국고채(10년)':'721Y001/5050000', '기준금리':'722Y001/0101000'} 
         elif stat_ticker == '402Y014':
             item_symbols = {'수출금액지수':'403Y001/*AA','수입금액지수':'403Y003/*AA'}
         elif stat_ticker == '104Y014':
@@ -133,6 +133,8 @@ def run(stat_ticker, kor_exp):
             ec.ecos_monthly_chart(kor_exp, sub_df, sub_ch)
         else:
             data_df = data_df.astype(float)
+            data_ch = data_df.pct_change()*100
+            data_ch = data_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch)           
     else:
         fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
