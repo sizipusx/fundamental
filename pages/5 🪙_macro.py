@@ -81,7 +81,9 @@ def run(stat_ticker, kor_exp):
     end_date = kor_time.strftime('%Y%m')
     cycle_type = "M"
     if source == 'Ecos':
-        if stat_ticker == '151Y005':
+        if stat_ticker == '104Y014':
+            item_symbols = {'예금은행 총수신(말잔)':'104Y013/BCB8', '비예금은행 총수신(말잔)':'111Y007/1000000', '예금은행 대출금(말잔)':'104Y016/BDCA1', '비예금은행 대출금(말잔)':'111Y009/1000000'}
+        elif stat_ticker == '151Y005':
         #가계 신용: 가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
             item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
         elif stat_ticker == '722Y001':
@@ -100,7 +102,7 @@ def run(stat_ticker, kor_exp):
         #날짜 설정
         tempdf = all_data.get(item_index_tickers[0])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
-        if stat_ticker == '151Y005':#대출일 경우 조 단위로 변경
+        if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
             data_df = data_df.round(decimals=1)
         else:
@@ -124,7 +126,7 @@ if __name__ == "__main__":
             index = 0,
             horizontal= True)
     
-    eco_dict = {"가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
+    eco_dict = {"전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
     fred_dict = {"개인소비지출":"PCE"}
 
     data_load_state.text("Done! (using st.cache)")
