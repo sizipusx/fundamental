@@ -118,7 +118,8 @@ def run(stat_ticker, kor_exp):
             sub_ch = sub_df.pct_change()*100
             sub_ch = sub_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, sub_df, sub_ch)
-        ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
+        else :
+            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
     else:
         fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
         # st.dataframe(fred_df)
