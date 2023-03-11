@@ -84,7 +84,7 @@ def run(stat_ticker, kor_exp):
         if stat_ticker == '901Y009':
             item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
         elif stat_ticker == '402Y014':
-            item_symbols = {'수출물가지수':'402Y014/*AA','수입물가지수':'401Y015/*AA'}
+            item_symbols = {'수출물가지수':'403Y001/*AA','수입물가지수':'403Y003/*AA'}
         elif stat_ticker == '104Y014':
             item_symbols = {'예금은행 총수신(말잔)':'104Y013/BCB8', '비예금은행 총수신(말잔)':'111Y007/1000000', '예금은행 대출금(말잔)':'104Y016/BDCA1', '비예금은행 대출금(말잔)':'111Y009/1000000'}
         elif stat_ticker == '151Y005':
@@ -99,6 +99,7 @@ def run(stat_ticker, kor_exp):
         for ticker in item_index_tickers:
             stat_code = ticker.split('/')[0]
             stat_item = ticker.split('/')[1]
+            stat_item = ticker.split('/')[2]
             all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
         #컬럼명 종목명으로 변경
         data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
