@@ -119,9 +119,7 @@ def run(stat_ticker, kor_exp):
             data_df = data_df.astype(float).round(2)
             data_df.loc[:,"장단기금리차"] = round(data_df.loc[:,'국고채(10년)'] - data_df.loc[:,'국고채(3년)'],2)    
             data_df.loc[:,'color'] = np.where(data_df['장단기금리차']<0, 'red', 'blue')
-            data_ch = data_df.pct_change()*100
-            data_ch = data_ch.round(decimals=2)
-            ec.ecos_spread_chart(kor_exp, data_df, data_ch)
+            ec.ecos_spread_chart(kor_exp, data_df)
         elif stat_ticker == '104Y014':
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
             data_df.loc[:,'총수신(말잔)'] = data_df['예금은행 총수신(말잔)']+ data_df['비예금은행 총수신(말잔)']

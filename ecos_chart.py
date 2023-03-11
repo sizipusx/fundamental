@@ -170,7 +170,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
-def ecos_spread_chart(input_ticker, df1, df2):
+def ecos_spread_chart(input_ticker, df1):
     item_list = df1.columns.values.tolist()
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
@@ -210,7 +210,7 @@ def ecos_spread_chart(input_ticker, df1, df2):
             y_data_color = [df1.columns[4]]
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
+                                            text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
