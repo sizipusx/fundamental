@@ -99,7 +99,7 @@ def run(stat_ticker, kor_exp):
         for ticker in item_index_tickers:
             stat_code = ticker.split('/')[0]
             stat_item = ticker.split('/')[1]
-            stat_item = ticker.split('/')[2]
+            #stat_item = ticker.split('/')[2]
             all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
         #컬럼명 종목명으로 변경
         data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
