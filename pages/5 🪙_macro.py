@@ -77,12 +77,14 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
     return df
 
 def run(stat_ticker, kor_exp):
-    start_date = "200001"
+    start_date = "200010"
     end_date = kor_time.strftime('%Y%m')
     cycle_type = "M"
     if source == 'Ecos':
         if stat_ticker == '901Y009':
             item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
+        elif stat_ticker == '721Y001':
+             item_symbols =  {'국고채(3년)':'721Y001/5020000','국고채(10년)':'721Y001/5050000'} 
         elif stat_ticker == '402Y014':
             item_symbols = {'수출금액지수':'403Y001/*AA','수입금액지수':'403Y003/*AA'}
         elif stat_ticker == '104Y014':
@@ -110,11 +112,17 @@ def run(stat_ticker, kor_exp):
         if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
             data_df = data_df.round(decimals=1)
-        else:
-            data_df = data_df.astype(float)
-        data_ch = data_df.pct_change()*100
-        data_ch = data_ch.round(decimals=2)
-        if stat_ticker == '104Y014':
+            data_ch = data_df.pct_change()*100
+            data_ch = data_ch.round(decimals=2)
+            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
+        elif stat_ticker == '721Y001': #장단기금리차
+            data_df = data_df.astype(float).round(2)
+            data_df.loc[:,"장단기금리차"] = round(data_df.loc[:,'국고채(10년)'] - data_df.loc[:,'국고채(3년)'],2)    
+            data_df.loc[:,'color'] = np.where(data_df['장단기금리차']<0, 'red', 'blue')
+            data_ch = data_df.pct_change()*100
+            data_ch = data_ch.round(decimals=2)
+            ec.ecos_spread_chart(kor_exp, data_df, data_ch)
+        elif stat_ticker == '104Y014':
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
             data_df.loc[:,'총수신(말잔)'] = data_df['예금은행 총수신(말잔)']+ data_df['비예금은행 총수신(말잔)']
             data_df.loc[:,'총대출(말잔)'] = data_df['예금은행 대출금(말잔)']+ data_df['비예금은행 대출금(말잔)']
@@ -123,8 +131,9 @@ def run(stat_ticker, kor_exp):
             sub_ch = sub_df.pct_change()*100
             sub_ch = sub_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, sub_df, sub_ch)
-        else :
-            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
+        else:
+            data_df = data_df.astype(float)
+            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)           
     else:
         fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
         # st.dataframe(fred_df)
@@ -141,7 +150,7 @@ if __name__ == "__main__":
             index = 0,
             horizontal= True)
     
-    eco_dict = {"물가":"901Y009", "수출입금액":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
+    eco_dict = {"물가":"901Y009", "장단기금리":"721Y001", "수출입금액":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
     fred_dict = {"개인소비지출":"PCE"}
 
     data_load_state.text("Done! (using st.cache)")
