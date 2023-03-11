@@ -122,7 +122,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
             y_data_bar = [mom_df.columns[0]]
             y_data_line= [df.columns[0]]
 
-            for y_data, color in zip(y_data_bar, marker_colors1) :
+            for y_data, color in zip(y_data_bar, marker_colors2) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data], 
                                             text= mom_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
@@ -151,11 +151,11 @@ def fred_monthly_chart(ticker, kor_exp, df):
             y_data_bar = [yoy_df.columns[0]]
             y_data_line= [df.columns[0]]
 
-            for y_data, color in zip(y_data_bar, marker_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors2) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data], 
                                             text= yoy_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
                                             name = y_data, x =  x_data, y= df.loc[:,y_data],
                                             marker_color = color),
