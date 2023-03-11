@@ -82,7 +82,7 @@ def run(stat_ticker, kor_exp):
     cycle_type = "M"
     if source == 'Ecos':
         if stat_ticker == '151Y005':
-        #가계 신용: 가계대출(주택담보대출+기타대출) + 판매신용
+        #가계 신용: 가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
             item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
         elif stat_ticker == '722Y001':
             item_symbols = {'한국은행기준금리':'722Y001/0101000'}
