@@ -206,7 +206,7 @@ def ecos_spread_chart(input_ticker, df1):
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df1.columns[3]]
-            y_data_line = [df1.columns[2]]
+            y_data_line = [df1.columns[0], df1.columns[1], df1.columns[2]]
             y_data_color = [df1.columns[4]]
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
