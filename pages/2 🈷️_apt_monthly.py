@@ -158,7 +158,13 @@ def get_not_sell_apt():
     not_sold_list = []
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
-        df = pd.read_sql(query, conn, index_col='date')
+        #df = pd.read_sql(query, conn, index_col='date')
+        query = conn.execute(query)
+        cols = [column[0] for column in query.description]
+        df= pd.DataFrame.from_records(
+                    data = query.fetchall(), 
+                    columns = cols
+            )
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         not_sold_list.append(df)
     
