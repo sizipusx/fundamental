@@ -48,8 +48,9 @@ footer {visibility: hidden;}
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 #오늘날짜까지
-now = datetime.now()
-today = '%s-%s-%s' % ( now.year, now.month, now.day)
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
 
 ##################################### 기존 파일 시스템 ##################################
 kb_path = 'https://github.com/sizipusx/fundamental/blob/d1268bcfbbca48adb13193485d0b5990d599bc45/files/kb_monthly.xlsx?raw=true'
