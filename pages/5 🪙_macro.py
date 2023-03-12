@@ -147,7 +147,7 @@ def run(stat_ticker, kor_exp):
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch) 
-            data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'가계대출'] - data_df.loc[:,'저축성수신'],2)
+            data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
             ec.ecos_spread_chart(kor_exp, data_df)
         else:
             data_df = data_df.astype(float)
