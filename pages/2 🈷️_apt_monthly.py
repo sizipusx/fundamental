@@ -154,7 +154,7 @@ def get_not_sell_apt():
     # return df1
 
     #DB에서 읽어오자
-    conn = create_connection(one_db_path, check_same_thread=False)
+    conn = create_connection(one_db_path)
     not_sold_list = []
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
