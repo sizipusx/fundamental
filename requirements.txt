@@ -5,6 +5,7 @@ finterstellar==0.2.14
 pandas-datareader==0.10.0
 yfinance==0.2.9
 finance-datareader==0.9.50
+PublicDataReader==1.0.18
 beautifulsoup4==4.11.1
 OpenDartReader==0.1.1
 plotly==5.5.0
