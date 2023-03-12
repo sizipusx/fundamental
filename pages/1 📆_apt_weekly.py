@@ -97,7 +97,7 @@ weekly_db_path = "files/weekly_house.db"
 #geojson file open
 geo_source = r'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
 
-@st.cache_resource(ttl=datetime.timedelta(days=5))
+@st.cache_resource(ttl=datetime.timedelta(days=1))
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
