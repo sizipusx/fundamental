@@ -92,6 +92,7 @@ bs_doc = gc.open_by_url(basic_url)
 one_db_path = "files/one_monthly.db"
 kb_db_path = "files/kb_monthly.db"
 
+@st.cache_resource(ttl=datetime.timedelta(days=1))
 def create_connection(db_file):
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -125,7 +126,7 @@ def get_basic_df():
 
     return basic_df
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def get_not_sell_apt():
     ## 2021. 9. 23 완공 후 미분양 데이터 가져오기
     # df1 = one_dict.parse("not_sell_after")
@@ -194,7 +195,7 @@ def get_not_sell_apt():
 
     # return omdf, mb_df
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_index_data():
     code_df = header_excel.parse('code', index_col=1)
     code_df.index = code_df.index.str.strip()
@@ -265,7 +266,7 @@ def load_index_data():
     return index_list
 
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_one_data():
     #감정원 월간 데이터
     # one header 변경
@@ -369,7 +370,7 @@ def load_one_data():
     # return odf, one_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf
     return index_list
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_senti_data():
     #kbm_dict = read_source_excel()
     worksheet_list = kb_doc.worksheets()
@@ -480,7 +481,7 @@ def load_senti_data():
 
     return df_dic, df_a, df_b
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_pir_data():
     # pir = kbm_dict.parse('13.KB아파트담보대출PIR', skiprows=1)
     # # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
@@ -547,7 +548,7 @@ def load_pir_data():
 
     return pir_df, income_df, house_df
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_hai_data():
     # hai = kbm_dict.parse('14.NEW_HAI', skiprows=1)
     # hai_old = hai.iloc[:135,2:]
@@ -603,7 +604,7 @@ def load_hai_data():
 
     return hai_apt, info
 
-@st.cache(ttl=86400)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_hoi():
     # 데이터 프레임 만들기
     hoi = kb_doc.worksheet('KBHOI')
