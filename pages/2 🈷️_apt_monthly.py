@@ -268,7 +268,7 @@ def load_index_data():
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
-    conn.close()
+    #conn.close()
 
     return index_list
 
