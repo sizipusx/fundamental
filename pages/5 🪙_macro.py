@@ -97,7 +97,7 @@ def run(stat_ticker, kor_exp):
         elif stat_ticker == '722Y001':
             item_symbols = {'한국은행기준금리':'722Y001/0101000'}
         else:
-            item_symbols = {'가계대출':'121Y006/BECBLA03', '저축성수신':'121Y002/BEABAA2', '기준금리':'722Y001/0101000'}
+            item_symbols = {'기준금리':'722Y001/0101000', '대출금리(신)':'121Y006/BECBLA03', '예금금리(신)':'121Y002/BEABAA2'}
         item_index_tickers = list(item_symbols.values())
         all_data = {}
         for ticker in item_index_tickers:
@@ -109,8 +109,12 @@ def run(stat_ticker, kor_exp):
         data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
         data_df.columns = item_symbols.keys()
         #날짜 설정
-        tempdf = all_data.get(item_index_tickers[0])
-        data_df.set_index(keys=tempdf['TIME'], inplace=True)
+        try:
+            tempdf = all_data.get(item_index_tickers[0])
+            data_df.set_index(keys=tempdf['TIME'], inplace=True)
+        except ValueError:
+            tempdf = all_data.get(item_index_tickers[2])
+            data_df.set_index(keys=tempdf['TIME'], inplace=True)
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(data_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
