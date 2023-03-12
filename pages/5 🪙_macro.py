@@ -97,7 +97,7 @@ def run(stat_ticker, kor_exp):
         elif stat_ticker == '722Y001':
             item_symbols = {'한국은행기준금리':'722Y001/0101000'}
         else:
-            item_symbols = {'저축성수신':'121Y002/BEABAA2','가계대출':'121Y006/BECBLA03'}
+            item_symbols = {'가계대출':'121Y006/BECBLA03', '저축성수신':'121Y002/BEABAA2', '기준금리':'722Y001/0101000'}
         item_index_tickers = list(item_symbols.values())
         all_data = {}
         for ticker in item_index_tickers:
@@ -138,6 +138,13 @@ def run(stat_ticker, kor_exp):
             sub_ch = sub_df.pct_change()*100
             sub_ch = sub_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, sub_df, sub_ch)
+        elif stat_ticker == '121Y002':
+            data_df = data_df.astype(float)
+            data_ch = data_df.pct_change()*100
+            data_ch = data_ch.round(decimals=2)
+            ec.ecos_monthly_chart(kor_exp, data_df, data_ch) 
+            data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'가계대출'] - data_df.loc[:,'저축성수신'],2)
+            ec.ecos_spread_chart(kor_exp, data_df)
         else:
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
