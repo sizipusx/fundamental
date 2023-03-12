@@ -303,7 +303,7 @@ def load_one_data():
     # ojdf.index.name = 'date'
     # ojdf = ojdf.apply(lambda x:x.replace('','0')).astype(float)
     ######DB에서 읽어오기##################
-    conn = create_connection(one_db_path, check_same_thread=False)
+    conn = create_connection(one_db_path)
     index_list = []
     query_list = ["select * from one_mae", "select * from one_jeon"]
     for query in query_list:
