@@ -158,13 +158,13 @@ def get_not_sell_apt():
     not_sold_list = []
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
-        #df = pd.read_sql(query, conn, index_col='date')
-        query = conn.execute(query)
-        cols = [column[0] for column in query.description]
-        df= pd.DataFrame.from_records(
-                    data = query.fetchall(), 
-                    columns = cols
-            )
+        df = pd.read_sql(query, conn, index_col='date')
+        # query = conn.execute(query)
+        # cols = [column[0] for column in query.description]
+        # df= pd.DataFrame.from_records(
+        #             data = query.fetchall(), 
+        #             columns = cols
+        #     )
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         not_sold_list.append(df)
     
@@ -174,7 +174,7 @@ def get_not_sell_apt():
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
 
-    conn.close()
+    #conn.close()
 
 
     return not_sold_list, in_df
@@ -316,7 +316,7 @@ def load_one_data():
         df = pd.read_sql(query, conn, index_col='date')
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
-    conn.close()
+    #conn.close()
     omdf = index_list[0]
     ojdf = index_list[1]
 
