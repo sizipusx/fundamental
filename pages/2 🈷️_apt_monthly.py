@@ -154,7 +154,7 @@ def get_not_sell_apt():
     # return df1
 
     #DB에서 읽어오자
-    conn = create_connection(one_db_path)
+    conn = create_connection(one_db_path, check_same_thread=False)
     not_sold_list = []
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
@@ -253,7 +253,7 @@ def load_index_data():
     # jdf = jdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
     # jdf = jdf.round(decimals=2)
     ######DB에서 읽어오기##################
-    conn = create_connection(kb_db_path)
+    conn = create_connection(kb_db_path, check_same_thread=False)
     index_list = []
     query_list = ["select * from mae", "select * from jeon"]
     for query in query_list:
@@ -303,7 +303,7 @@ def load_one_data():
     # ojdf.index.name = 'date'
     # ojdf = ojdf.apply(lambda x:x.replace('','0')).astype(float)
     ######DB에서 읽어오기##################
-    conn = create_connection(one_db_path)
+    conn = create_connection(one_db_path, check_same_thread=False)
     index_list = []
     query_list = ["select * from one_mae", "select * from one_jeon"]
     for query in query_list:
