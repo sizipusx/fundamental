@@ -10,8 +10,8 @@ from datetime import datetime
 
 #챠트 기본 설정
 # colors 
-# marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
-marker_colors1 = ['rgb(27,38,81)', 'rgb(22,108,150)', 'rgb(205,32,40)', 'rgb(255,69,0)', 'rgb(237,234,255)']
+marker_colors1 = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+#marker_colors1 = ['rgb(27,38,81)', 'rgb(22,108,150)', 'rgb(205,32,40)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 marker_colors2 = ['rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)', 'rgb(27,38,81)', 'rgb(205,32,40)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 pio.templates["myID"] = go.layout.Template(
@@ -73,6 +73,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
             fig.update_yaxes(title_text='전월대비증감', range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
         with col2:
@@ -106,6 +107,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             # fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
@@ -144,6 +146,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
         with col2:
@@ -173,6 +176,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
@@ -208,6 +212,7 @@ def ecos_spread_chart(input_ticker, df1):
             fig.update_yaxes(title_text=df1.columns[3], secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
         with col2:
@@ -231,6 +236,7 @@ def ecos_spread_chart(input_ticker, df1):
             fig.update_yaxes(title_text=df1.columns[2], showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_yaxes(title_text=df1.columns[3], showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
 
