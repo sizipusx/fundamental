@@ -78,6 +78,14 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
     return df
 
+@st.cache_data(ttl=datetime.timedelta(days=1))
+def clean_df(df):
+  df['Date'] = pd.to_datetime(df['Date'])
+  df = df.drop(['20 YR', '30 YR', 'Extrapolation Factor',
+        '8 WEEKS BANK DISCOUNT', 'COUPON EQUIVALENT', '17 WEEKS BANK DISCOUNT', 'COUPON EQUIVALENT.1', '52 WEEKS BANK DISCOUNT',
+        'COUPON EQUIVALENT.2'],axis=1).set_index('Date')
+  return df
+
 def run(stat_ticker, kor_exp):
     start_date = "200010"
     end_date = kor_time.strftime('%Y%m')
@@ -148,7 +156,7 @@ def run(stat_ticker, kor_exp):
             data_ch = data_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch) 
             data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
-            data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, 'red', 'blue')
+            data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, '#FFB8B1', '#E2F0CB')
             ec.ecos_spread_chart(kor_exp, data_df)
         else:
             data_df = data_df.astype(float)
@@ -156,9 +164,31 @@ def run(stat_ticker, kor_exp):
             data_ch = data_ch.round(decimals=2)
             ec.ecos_monthly_chart(kor_exp, data_df, data_ch)           
     else:
-        fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
-        # st.dataframe(fred_df)
-        ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
+        if stat_ticker == "YC":
+            #Yield Curve
+            year = 2023
+            url = f"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value={year}"
+            table_list = pd.read_html(url)
+            df = table_list[0]
+            cdf = clean_df(df)
+            #시장 금리
+            ticker_list = [
+                            ["기준금리", "FRED:RIFSPFFNB"],
+                            ["국채10Y", "FRED:DGS10"],
+                            ["국채2Y", "FRED:DGS2"],
+                            ["국채3M", "FRED:DGS3MO"],
+                            ["금리차10Y2Y", "FRED:T10Y2Y"],
+                            ["금리차10Y3M", "FRED:T10Y3M"]
+                        ]
+            df_list = [fdr.DataReader(ticker, '2000-01-01') for name, ticker in ticker_list]
+            # pd.concat()로 합치기
+            inter_df = pd.concat(df_list, axis=1)
+            inter_df.columns = [name for name, ticker in ticker_list] 
+            ec.fred_inter_chart(cdf, inter_df)
+        else:
+            fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
+            # st.dataframe(fred_df)
+            ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
 
 
 
@@ -172,7 +202,7 @@ if __name__ == "__main__":
             horizontal= True)
     
     eco_dict = {"물가":"901Y009", "장단기금리":"721Y001", "수출입금액":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
-    fred_dict = {"개인소비지출":"PCE"}
+    fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE"}
 
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
