@@ -184,6 +184,25 @@ def run(stat_ticker, kor_exp):
             # pd.concat()로 합치기
             inter_df = pd.concat(df_list, axis=1)
             inter_df.columns = [name for name, ticker in ticker_list] 
+            with st.expander("See Raw Data"):
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        try:
+                            st.dataframe(inter_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                        .format(precision=2, na_rep='MISSING', thousands=","))
+                        except ValueError :
+                            st.dataframe(inter_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                        .format(precision=2, na_rep='MISSING', thousands=","))
+                    with col2:
+                        st.write("")
+                    with col3: 
+                        try:
+                            st.dataframe(cdf.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                        .format(precision=2, na_rep='MISSING', thousands=","))
+                        except ValueError :
+                            st.dataframe(cdf.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                        .format(precision=2, na_rep='MISSING', thousands=","))
             ec.fred_spread_chart(cdf, inter_df)
         else:
             fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
