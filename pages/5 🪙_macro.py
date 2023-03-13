@@ -184,7 +184,7 @@ def run(stat_ticker, kor_exp):
             # pd.concat()로 합치기
             inter_df = pd.concat(df_list, axis=1)
             inter_df.columns = [name for name, ticker in ticker_list] 
-            ec.fred_inter_chart(cdf, inter_df)
+            ec.fred_spread_chart(cdf, inter_df)
         else:
             fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
             # st.dataframe(fred_df)
