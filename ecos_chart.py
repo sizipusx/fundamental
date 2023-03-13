@@ -288,7 +288,7 @@ def fred_spread_chart(df1, df2):
         with col2:
                 st.write("")
         with col3: 
-            x_data = df1.index
+            x_data = df2.index
             titles = dict(text= "주요금리", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df2.columns[0]] #기준금리
@@ -311,7 +311,7 @@ def fred_spread_chart(df1, df2):
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            x_data = df1.index
+            x_data = df2.index
             titles = dict(text= "장단기금리차(10Y2Y)", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df2.columns[4]]
@@ -335,7 +335,7 @@ def fred_spread_chart(df1, df2):
         with col2:
             st.write("")
         with col3: 
-            x_data = df1.index
+            x_data = df2.index
             titles = dict(text= "장단기금리차(10Y3M)", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df2.columns[5]]
