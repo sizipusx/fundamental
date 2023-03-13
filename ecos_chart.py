@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -239,4 +240,120 @@ def ecos_spread_chart(input_ticker, df1):
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
+
+
+def fred_spread_chart(df1, df2):
+    df2 = df2.dropna()
+    last_df = df1.iloc[-1].to_frame()
+    last_df.loc[:,"기준금리차"] = last_df.iloc[:,0] - df2.iloc[-1,0]
+    last_df.loc[:,'color'] = np.where(last_df['기준금리차']<0, '#FFB8B1', '#E2F0CB')
+    df2.loc[:,'10Y2Ycolor'] = np.where(df2['금리차10Y2Y']<0, '#FFB8B1', '#E2F0CB')
+    df2.loc[:,'10Y3Mcolor'] = np.where(df2['금리차10Y3M']<0, '#FFB8B1', '#E2F0CB')
+    item_list = df1.columns.values.tolist()
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric(label=df2.columns[0], value = df2.iloc[-1,0])#기준 금리
+    col2.metric(label=item_list[2], value =df1.iloc[-1,2], delta=df2.iloc[-1,0])  #3개월 금리
+    col3.metric(label=item_list[6], value =df1.iloc[-1,6], delta=df2.iloc[-1,0]) #2년 금리
+    col4.metric(label=item_list[10], value =df1.iloc[-1,10], delta=df2.iloc[-1,0]) # 10년 금리
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            #st.subheader(input_ticker)
+            x_data = last_df.index
+            titles = dict(text= "US Bond Yield Curve", x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = [last_df.columns[1]]
+            y_data_line = [last_df.columns[0]]
+            y_data_color = [last_df.columns[2]]
+
+            for y_data, color in zip(y_data_bar, y_data_color) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = last_df.loc[:,y_data]*100, 
+                                            text= last_df[y_data], textposition = 'inside', marker_color= last_df.loc[:,color]), secondary_y = True) 
+            
+            for y_data, color in zip(y_data_line, marker_colors1): 
+                fig.add_trace(go.Scatter(mode='lines+markers', 
+                                            name = y_data, x =  x_data, y= last_df.loc[:,y_data],
+                                            text= last_df[y_data], textposition = 'top center', marker_color = color),
+                                            secondary_y = False)
+            #fig.update_traces(texttemplate='%{text:.3s}')
+            fig.update_yaxes(title_text='금리', secondary_y = False)
+            fig.update_yaxes(title_text='금리차', secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="bps", secondary_y = True)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+            fig.add_hline(y=df2.iloc[-1,0], line_width=2, line_dash='dot', line_color="red", annotation_text=f"Federal Funds Effective Rate: {df2.iloc[-1,0]}%", annotation_position="bottom right")
+            fig.update_layout(hovermode="x unified")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        with col2:
+                st.write("")
+        with col3: 
+            x_data = df1.index
+            titles = dict(text= "주요금리", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = [df2.columns[0]] #기준금리
+            y_data_line = [df2.columns[1], df2.columns[2], df2.columns[3]] #각 금리
+            for y_data, color in zip(y_data_bar, marker_colors2) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
+                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+            
+            for y_data, color in zip(y_data_line, marker_colors1): 
+                fig.add_trace(go.Scatter(mode='lines+markers', 
+                                            name = y_data, x =  x_data, y= df2.loc[:,y_data],
+                                            text= df2[y_data], textposition = 'top center', marker_color = color),
+                                            secondary_y = True)
+            fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
+            fig.update_yaxes(title_text="기준금리", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+            fig.update_layout(hovermode="x unified")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            x_data = df1.index
+            titles = dict(text= "장단기금리차(10Y2Y)", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = [df2.columns[4]]
+            y_data_line = [df2.columns[1], df2.columns[2]]
+            y_data_color = [df2.columns[6]]
+            for y_data, color in zip(y_data_bar, y_data_color) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
+                                            text= df1[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+            
+            for y_data, color in zip(y_data_line, marker_colors1): 
+                fig.add_trace(go.Scatter(mode='lines+markers', 
+                                            name = y_data, x =  x_data, y= df2.loc[:,y_data],
+                                            text= df2[y_data], textposition = 'top center', marker_color = color),
+                                            secondary_y = False)
+            fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
+            fig.update_yaxes(title_text="금리차", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+            fig.update_layout(hovermode="x unified")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3: 
+            x_data = df1.index
+            titles = dict(text= "장단기금리차(10Y3M)", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+            y_data_bar = [df2.columns[5]]
+            y_data_line = [df2.columns[1], df2.columns[3]]
+            y_data_color = [df2.columns[7]]
+            for y_data, color in zip(y_data_bar, y_data_color) :
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
+                                            text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+            
+            for y_data, color in zip(y_data_line, marker_colors1): 
+                fig.add_trace(go.Scatter(mode='lines+markers', 
+                                            name = y_data, x =  x_data, y= df2.loc[:,y_data],
+                                            text= df2[y_data], textposition = 'top center', marker_color = color),
+                                            secondary_y = False)
+            fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
+            fig.update_yaxes(title_text="금리차", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+            fig.update_layout(hovermode="x unified")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        
 
