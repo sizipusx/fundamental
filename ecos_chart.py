@@ -245,6 +245,7 @@ def ecos_spread_chart(input_ticker, df1):
 def fred_spread_chart(df1, df2):
     df2 = df2.dropna()
     last_df = df1.iloc[-1].to_frame()
+    last_df.columns = [last_df.columns[0].strftime('%Y.%m.%d')]
     last_df.loc[:,"기준금리차"] = last_df.iloc[:,0] - df2.iloc[-1,0]
     last_df.loc[:,'color'] = np.where(last_df['기준금리차']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y2Ycolor'] = np.where(df2['금리차10Y2Y']<0, '#FFB8B1', '#E2F0CB')
@@ -268,7 +269,7 @@ def fred_spread_chart(df1, df2):
 
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = last_df.loc[:,y_data]*100, 
-                                            text= last_df[y_data], textposition = 'inside', marker_color= last_df.loc[:,color]), secondary_y = True) 
+                                            text= round(last_df[y_data]*100,0), textposition = 'inside', marker_color= last_df.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
