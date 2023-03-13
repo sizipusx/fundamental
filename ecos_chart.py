@@ -294,14 +294,13 @@ def fred_spread_chart(df1, df2):
             y_data_bar = [df2.columns[0]] #기준금리
             y_data_line = [df2.columns[1], df2.columns[2], df2.columns[3]] #각 금리
             for y_data, color in zip(y_data_bar, marker_colors2) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], marker_color= color), secondary_y = False) 
+                                            #text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
-                                            name = y_data, x =  x_data, y= df2.loc[:,y_data],
-                                            text= df2[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = True)
+                                            name = y_data, x =  x_data, y= df2.loc[:,y_data], marker_color = color), secondary_y = True)
+                                            #text= df2[y_data], textposition = 'top center', 
             fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_yaxes(title_text="기준금리", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
@@ -318,8 +317,8 @@ def fred_spread_chart(df1, df2):
             y_data_line = [df2.columns[1], df2.columns[2]]
             y_data_color = [df2.columns[6]]
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], marker_color= df2.loc[:,color]), secondary_y = True)
+                                            #text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
@@ -342,14 +341,13 @@ def fred_spread_chart(df1, df2):
             y_data_line = [df2.columns[1], df2.columns[3]]
             y_data_color = [df2.columns[7]]
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], marker_color= df2.loc[:,color]), secondary_y = True)
+                                            #text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
                                             name = y_data, x =  x_data, y= df2.loc[:,y_data],
-                                            text= df2[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = False)
+                                            text= df2[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
             fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_yaxes(title_text="금리차", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
