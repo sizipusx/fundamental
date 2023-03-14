@@ -251,12 +251,11 @@ def fred_spread_chart(df1, df2):
     df1.loc[:,'color'] = np.where(df1['기준금리차']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y2Ycolor'] = np.where(df2['금리차10Y2Y']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y3Mcolor'] = np.where(df2['금리차10Y3M']<0, '#FFB8B1', '#E2F0CB')
-    item_list = df1.columns.values.tolist()
     col1, col2, col3, col4 = st.columns(4)
     col1.metric(label=df2.columns[0], value = df2.iloc[-1,0])#기준 금리
-    col2.metric(label=item_list[2], value =df1.iloc[-1,2], delta=round(df1.iloc[-1,2]-df2.iloc[-1,0],2))  #3개월 금리
-    col3.metric(label=item_list[6], value =df1.iloc[-1,6], delta=round(df1.iloc[-1,6]-df2.iloc[-1,0],2)) #2년 금리
-    col4.metric(label=item_list[10], value =df1.iloc[-1,10], delta=round(df1.iloc[-1,10]-df2.iloc[-1,0],2)) # 10년 금리
+    col2.metric(label=df1.index[2], value =df1.iloc[2,0], delta=round(df1.iloc[2,0]-df2.iloc[-1,0],2))  #3개월 금리
+    col3.metric(label=df1.index[6], value =df1.iloc[6,0], delta=round(df1.iloc[6,0]-df2.iloc[-1,0],2)) #2년 금리
+    col4.metric(label=df1.index[10], value =df1.iloc[10,0], delta=round(df1.iloc[10,0]-df2.iloc[-1,0],2)) # 10년 금리
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
