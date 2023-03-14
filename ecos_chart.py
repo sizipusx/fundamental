@@ -328,6 +328,47 @@ def fred_spread_chart(df1, df2):
             fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_yaxes(title_text="금리차", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+            fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                orientation="h",
+                                yanchor="bottom",
+                                y=1.02,
+                                xanchor="right",
+                                x=1
+                            ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=True
+                                ),
+                                type="date"
+                                )      
+                            )
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
@@ -351,6 +392,47 @@ def fred_spread_chart(df1, df2):
             fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.5], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_yaxes(title_text="금리차", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+            fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                orientation="h",
+                                yanchor="bottom",
+                                y=1.02,
+                                xanchor="right",
+                                x=1
+                            ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date"
+                                )      
+                            )
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
