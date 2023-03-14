@@ -2,6 +2,7 @@
 import pandas as pd
 import requests
 import json
+from bs4 import BeautifulSoup
 import streamlit as st
 from pandas.io.json import json_normalize
 import numpy as np
@@ -11,6 +12,7 @@ import datetime
 import FinanceDataReader as fdr
 import ecos_chart as ec
 import seaborn as sns
+import cloudscraper
 cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 utcnow= datetime.datetime.utcnow()
@@ -77,14 +79,6 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
         df['TIME'] = df['TIME'] + '0101'
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
     return df
-
-@st.cache_data(ttl=datetime.timedelta(days=1))
-def clean_df(df):
-  df['Date'] = pd.to_datetime(df['Date'])
-  df = df.drop(['20 YR', '30 YR', 'Extrapolation Factor',
-        '8 WEEKS BANK DISCOUNT', 'COUPON EQUIVALENT', '17 WEEKS BANK DISCOUNT', 'COUPON EQUIVALENT.1', '52 WEEKS BANK DISCOUNT',
-        'COUPON EQUIVALENT.2'],axis=1).set_index('Date')
-  return df
 
 def run(stat_ticker, kor_exp):
     start_date = "200010"
@@ -166,11 +160,18 @@ def run(stat_ticker, kor_exp):
     else:
         if stat_ticker == "YC":
             #Yield Curve
-            year = 2023
-            url = f"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value={year}"
-            table_list = pd.read_html(url)
-            df = table_list[0]
-            cdf = clean_df(df)
+            #ko_bond = 'https://kr.investing.com/rates-bonds/south-korea-government-bonds'
+            us_bond = "https://kr.investing.com/rates-bonds/usa-government-bonds"
+            url_base = (us_bond)
+            scraper = cloudscraper.create_scraper() 
+            html = scraper.get(url_base).content
+            soup = BeautifulSoup(html, 'html.parser')
+            table = soup.find('table', {'class' : 'genTbl closedTbl crossRatesTbl'})   # 특정 테이블 태그를 가져옴     
+            table_html = str(table)      # 'table'변수는 bs4.element.tag 형태이기 때문에 table를 문자열 형태로 바꿔준다  
+            table_df_list = pd.read_html(table_html)   # read_html 사용해서 html을 데이터프레임들로 이루어진 리스트로 바꿔줌  
+            table_df = table_df_list[0]
+            cdf = table_df.iloc[:,1:-2]
+            cdf = cdf.set_index(['종목'])
             #시장 금리
             ticker_list = [
                             ["기준금리", "FRED:RIFSPFFNB"],
