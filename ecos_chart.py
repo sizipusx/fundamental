@@ -253,9 +253,9 @@ def fred_spread_chart(df1, df2):
     item_list = df1.columns.values.tolist()
     col1, col2, col3, col4 = st.columns(4)
     col1.metric(label=df2.columns[0], value = df2.iloc[-1,0])#기준 금리
-    col2.metric(label=item_list[2], value =df1.iloc[-1,2], delta=df1.iloc[-1,2]-df2.iloc[-1,0])  #3개월 금리
-    col3.metric(label=item_list[6], value =df1.iloc[-1,6], delta=df1.iloc[-1,6]-df2.iloc[-1,0]) #2년 금리
-    col4.metric(label=item_list[10], value =df1.iloc[-1,10], delta=df1.iloc[-1,10]-df2.iloc[-1,0]) # 10년 금리
+    col2.metric(label=item_list[2], value =df1.iloc[-1,2], delta=round(df1.iloc[-1,2]-df2.iloc[-1,0],2))  #3개월 금리
+    col3.metric(label=item_list[6], value =df1.iloc[-1,6], delta=round(df1.iloc[-1,6]-df2.iloc[-1,0],2)) #2년 금리
+    col4.metric(label=item_list[10], value =df1.iloc[-1,10], delta=round(df1.iloc[-1,10]-df2.iloc[-1,0],2)) # 10년 금리
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
