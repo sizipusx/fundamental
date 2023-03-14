@@ -199,8 +199,8 @@ def run(stat_ticker, kor_exp):
                         st.write("")
                     with col3: 
                         try:
-                            st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                        .format(precision=2, na_rep='MISSING', thousands=","))
+                            st.dataframe(cdf.style.background_gradient(cmap, axis=0))
+                                                        
                         except ValueError :
                             st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
