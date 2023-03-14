@@ -289,7 +289,7 @@ def fred_spread_chart(df1, df2):
                 st.write("")
         with col3: 
             x_data = df2.index
-            titles = dict(text= "주요금리", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            titles = dict(text= "주요금리", x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df2.columns[0]] #기준금리
             y_data_line = [df2.columns[1], df2.columns[2], df2.columns[3]] #각 금리
@@ -311,7 +311,7 @@ def fred_spread_chart(df1, df2):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             x_data = df2.index
-            titles = dict(text= "장단기금리차(10Y2Y)", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            titles = dict(text= "장단기금리차(10Y2Y)", x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df2.columns[4]]
             y_data_line = [df2.columns[1], df2.columns[2]]
@@ -331,12 +331,12 @@ def fred_spread_chart(df1, df2):
             fig.update_layout(
                                 showlegend=True,
                                 legend=dict(
-                                orientation="h",
-                                yanchor="bottom",
-                                y=1.02,
-                                xanchor="right",
-                                x=1
-                            ),
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
                                     buttons=list([
@@ -395,12 +395,12 @@ def fred_spread_chart(df1, df2):
             fig.update_layout(
                                 showlegend=True,
                                 legend=dict(
-                                orientation="h",
-                                yanchor="bottom",
-                                y=1.02,
-                                xanchor="right",
-                                x=1
-                            ),
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
                                     buttons=list([
