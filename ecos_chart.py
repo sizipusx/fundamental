@@ -279,7 +279,7 @@ def fred_spread_chart(df1, df2):
             #fig.update_traces(texttemplate='%{text:.3s}')
             fig.update_yaxes(title_text='금리', secondary_y = False)
             fig.update_yaxes(title_text='금리차', secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="bps", secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
             fig.add_hline(y=df2.iloc[-1,0], line_width=2, line_dash='dot', line_color="red", annotation_text=f"Federal Funds Effective Rate: {df2.iloc[-1,0]}%", annotation_position="bottom right")
             fig.update_layout(hovermode="x unified")
