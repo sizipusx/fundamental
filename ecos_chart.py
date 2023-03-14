@@ -248,7 +248,7 @@ def ecos_spread_chart(input_ticker, df1):
 def fred_spread_chart(df1, df2):
     df2 = df2.dropna()
     df1.loc[:,"기준금리차"] = df1.iloc[:,0] - df2.iloc[-1,0]
-    df1.loc[:,'color'] = np.where(df1['기준금리차']<0, '#FFB8B1', '#E2F0CB')
+    df1.loc[:,'color'] = np.where(df1['변동']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y2Ycolor'] = np.where(df2['금리차10Y2Y']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y3Mcolor'] = np.where(df2['금리차10Y3M']<0, '#FFB8B1', '#E2F0CB')
     col1, col2, col3, col4 = st.columns(4)
@@ -278,7 +278,7 @@ def fred_spread_chart(df1, df2):
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}')
             fig.update_yaxes(title_text='금리', secondary_y = False)
-            fig.update_yaxes(title_text='변동', secondary_y = True)
+            fig.update_yaxes(title_text='변동폭', secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
             fig.add_hline(y=df2.iloc[-1,0], line_width=2, line_dash='dot', line_color="red", annotation_text=f"Federal Funds Effective Rate: {df2.iloc[-1,0]}%", annotation_position="bottom right")
