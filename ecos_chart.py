@@ -32,6 +32,10 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
+
 def ecos_monthly_chart(input_ticker, df1, df2):
     df3 = df1.pct_change(periods=12)*100
     df3 = df3.fillna(0)
@@ -244,10 +248,8 @@ def ecos_spread_chart(input_ticker, df1):
 
 def fred_spread_chart(df1, df2):
     df2 = df2.dropna()
-    last_df = df1.iloc[-1].to_frame()
-    last_df.columns = [last_df.columns[0].strftime('%Y.%m.%d')]
-    last_df.loc[:,"기준금리차"] = last_df.iloc[:,0] - df2.iloc[-1,0]
-    last_df.loc[:,'color'] = np.where(last_df['기준금리차']<0, '#FFB8B1', '#E2F0CB')
+    df1.loc[:,"기준금리차"] = df1.iloc[:,0] - df2.iloc[-1,0]
+    df1.loc[:,'color'] = np.where(df1['기준금리차']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y2Ycolor'] = np.where(df2['금리차10Y2Y']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y3Mcolor'] = np.where(df2['금리차10Y3M']<0, '#FFB8B1', '#E2F0CB')
     item_list = df1.columns.values.tolist()
@@ -260,25 +262,25 @@ def fred_spread_chart(df1, df2):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             #st.subheader(input_ticker)
-            x_data = last_df.index
+            x_data = df1.index
             titles = dict(text= "US Bond Yield Curve", x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_bar = [last_df.columns[1]]
-            y_data_line = [last_df.columns[0]]
-            y_data_color = [last_df.columns[2]]
+            y_data_bar = [df1.columns[4]]
+            y_data_line = [df1.columns[0]]
+            y_data_color = [df1.columns[-1]]
 
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = last_df.loc[:,y_data]*100, 
-                                            text= round(last_df[y_data]*100,0), textposition = 'inside', marker_color= last_df.loc[:,color]), secondary_y = True) 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data]*100, 
+                                            text= round(df1[y_data]*100,0), textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
-                                            name = y_data, x =  x_data, y= last_df.loc[:,y_data],
-                                            text= last_df[y_data], textposition = 'top center', marker_color = color),
+                                            name = y_data, x =  x_data, y= df1.loc[:,y_data],
+                                            text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}')
             fig.update_yaxes(title_text='금리', secondary_y = False)
-            fig.update_yaxes(title_text='금리차', secondary_y = True)
+            fig.update_yaxes(title_text='변동', secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
             fig.add_hline(y=df2.iloc[-1,0], line_width=2, line_dash='dot', line_color="red", annotation_text=f"Federal Funds Effective Rate: {df2.iloc[-1,0]}%", annotation_position="bottom right")
