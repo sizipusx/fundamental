@@ -7,7 +7,6 @@ from plotly.subplots import make_subplots
 import FinanceDataReader as fdr
 import datetime
 import streamlit as st
-from datetime import datetime
 
 #챠트 기본 설정
 # colors 
