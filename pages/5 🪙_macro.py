@@ -199,10 +199,10 @@ def run(stat_ticker, kor_exp):
                         st.write("")
                     with col3: 
                         try:
-                            st.dataframe(cdf.iloc[:5].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                            st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
                         except ValueError :
-                            st.dataframe(cdf.iloc[:5].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                            st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
             ec.fred_spread_chart(cdf, inter_df)
         else:
