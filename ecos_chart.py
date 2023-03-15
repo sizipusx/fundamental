@@ -269,7 +269,7 @@ def fred_spread_chart(df1, df2):
 
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data]*100, 
-                                            text= round(df2[y_data]*100,0), textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+                                            text= round(df2[y_data]*100,0), textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
