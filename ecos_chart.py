@@ -389,7 +389,7 @@ def fred_spread_chart(df1, df2):
                 fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data, x =  x_data, y= df2.loc[:,y_data],
                                             text= df2[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
-            fig.update_yaxes(title_text="금리", range=[-max(df2.loc[:,y_data_line[1]]*1.2), max(df2.loc[:,y_data_line[1]])* 2], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
+            fig.update_yaxes(title_text="금리", range=[0, max(df2.loc[:,y_data_line[1]])*2], showgrid = False, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_yaxes(title_text="금리차", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
             fig.update_layout(
@@ -428,7 +428,7 @@ def fred_spread_chart(df1, df2):
                                     ])
                                 ),
                                 rangeslider=dict(
-                                    visible=False
+                                    visible=True
                                 ),
                                 type="date"
                                 )      
