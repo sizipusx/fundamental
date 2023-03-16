@@ -12,7 +12,7 @@ import streamlit as st
 # colors 
 marker_colors1 = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
 #marker_colors1 = ['rgb(27,38,81)', 'rgb(22,108,150)', 'rgb(205,32,40)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-marker_colors2 = ['rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)', 'rgb(27,38,81)', 'rgb(205,32,40)']
+marker_colors2 = ['rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)', 'rgb(27,38,81)', 'rgb(205,32,40)'] # blue, red, purple, 군청색, 
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 pio.templates["myID"] = go.layout.Template(
     layout_annotations=[
@@ -120,9 +120,11 @@ def fred_monthly_chart(ticker, kor_exp, df):
     mom_df = df.pct_change()*100
     mom_df = mom_df.fillna(0)
     mom_df = mom_df.round(decimals=2)
+    mom_df.loc[:,'color'] = np.where(mom_df.ioc[:,0]<0, '#FFB8B1', '#E2F0CB')
     yoy_df = df.pct_change(periods=12)*100
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
+    yoy_df.loc[:,'color'] = np.where(yoy_df.ioc[:,0]<0, '#FFB8B1', '#E2F0CB')
     col1, col2, col3 = st.columns(3)
     col1.metric(label=df.columns[0], value = df.iloc[-1,0])
     col2.metric(label=mom_df.columns[0]+"MOM", value =str(mom_df.iloc[-1,0])+"%")
@@ -137,10 +139,10 @@ def fred_monthly_chart(ticker, kor_exp, df):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [mom_df.columns[0]]
             y_data_line= [df.columns[0]]
-
-            for y_data, color in zip(y_data_bar, marker_colors2) :
+            y_data_color = [mom_df.columns[-1]]
+            for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data]*100, 
-                                            text= mom_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
+                                            text= mom_df[y_data], textposition = 'inside', marker_color= mom_df.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines', 
@@ -171,10 +173,10 @@ def fred_monthly_chart(ticker, kor_exp, df):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [yoy_df.columns[0]]
             y_data_line= [df.columns[0]]
-
-            for y_data, color in zip(y_data_bar, marker_colors2) :
+            y_data_color = [yoy_df.columns[-1]]
+            for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data]*100, 
-                                            text= yoy_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
+                                            text= yoy_df[y_data], textposition = 'inside', marker_color= yoy_df.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
