@@ -149,14 +149,15 @@ def fred_monthly_chart(ticker, kor_exp, df):
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text=ticker, secondary_y = False)
-            #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='MOM', secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             if kor_exp == "개인소비지출":
+                tick_f = '%Y.%m'
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
-            else:
+            else: #기대인플레이션율
+                tick_f = '%Y.%m.%d'
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = tick_f)
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
@@ -186,10 +187,12 @@ def fred_monthly_chart(ticker, kor_exp, df):
             fig.update_yaxes(title_text='YOY', secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             if kor_exp == "개인소비지출":
+                tick_f = '%Y.%m'
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
             else:
+                tick_f = '%Y.%m.%d'
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = tick_f)
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
