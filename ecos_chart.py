@@ -152,7 +152,10 @@ def fred_monthly_chart(ticker, kor_exp, df):
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='MOM', range=[-max(mom_df.loc[:,y_data_line[0]]), max(mom_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+            if kor_exp == "개인소비지출":
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+            else:
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
@@ -160,7 +163,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
         with col2:
                 st.write("")
         with col3: 
-            st.subheader(kor_exp)
+            #st.subheader(kor_exp)
             x_data = df.index
             title = kor_exp
             titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
@@ -182,7 +185,10 @@ def fred_monthly_chart(ticker, kor_exp, df):
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='YOY', range=[-max(yoy_df.loc[:,y_data_line[0]]), max(yoy_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+            if kor_exp == "개인소비지출":
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+            else:
+                fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
