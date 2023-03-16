@@ -120,7 +120,6 @@ def fred_monthly_chart(ticker, kor_exp, df):
     mom_df = df.pct_change()*100
     mom_df = mom_df.fillna(0)
     mom_df = mom_df.round(decimals=2)
-    mom_df.i
     yoy_df = df.pct_change(periods=12)*100
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
