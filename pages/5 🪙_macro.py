@@ -217,7 +217,7 @@ def run(stat_ticker, kor_exp):
             if stat_ticker == 'CPIAUCSL':
                 fred_df2 = fdr.DataReader(f'FRED:CPILFESL', start='2000')
                 ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
-                ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df2)
+                ec.fred_monthly_chart(stat_ticker, "Core CPI", fred_df2)
             else:
                 ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
 
@@ -233,7 +233,7 @@ if __name__ == "__main__":
             horizontal= True)
     
     eco_dict = {"물가":"901Y009", "장단기금리":"721Y001", "수출입금액":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
-    fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE", "기대인플레이션율":"T10YIE", "소비자물가지수":"CPIAUCNS"}
+    fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE", "기대인플레이션율":"T10YIE", "소비자물가지수":"CPIAUCSL"}
 
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
