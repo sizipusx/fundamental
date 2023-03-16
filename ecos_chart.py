@@ -179,7 +179,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
                                             text= yoy_df[y_data], textposition = 'inside', marker_color= yoy_df.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
-                fig.add_trace(go.Scatter(mode='lines+markers', 
+                fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data, x =  x_data, y= df.loc[:,y_data],
                                             marker_color = color),
                                             secondary_y = False)
