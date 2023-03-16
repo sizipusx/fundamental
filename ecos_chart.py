@@ -117,10 +117,10 @@ def ecos_monthly_chart(input_ticker, df1, df2):
 
 
 def fred_monthly_chart(ticker, kor_exp, df):
-    mom_df = df.pct_change()
+    mom_df = df.pct_change()*100
     mom_df = mom_df.fillna(0)
     mom_df = mom_df.round(decimals=2)
-    yoy_df = df.pct_change(periods=12)
+    yoy_df = df.pct_change(periods=12)*100
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
     col1, col2, col3 = st.columns(3)
@@ -143,12 +143,12 @@ def fred_monthly_chart(ticker, kor_exp, df):
                                             text= mom_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
-                fig.add_trace(go.Scatter(mode='lines+markers', 
+                fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data, x =  x_data, y= df.loc[:,y_data],
                                             marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}') 
-            fig.update_yaxes(title_text=ticker, range=[0, max(df.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
+            fig.update_yaxes(title_text=ticker, secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='MOM', secondary_y = True)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
