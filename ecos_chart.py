@@ -117,10 +117,10 @@ def ecos_monthly_chart(input_ticker, df1, df2):
 
 
 def fred_monthly_chart(ticker, kor_exp, df):
-    mom_df = df.pct_change()*100
+    mom_df = df.pct_change()
     mom_df = mom_df.fillna(0)
     mom_df = mom_df.round(decimals=2)
-    yoy_df = df.pct_change(periods=12)*100
+    yoy_df = df.pct_change(periods=12)
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
     col1, col2, col3 = st.columns(3)
