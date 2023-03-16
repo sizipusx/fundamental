@@ -139,7 +139,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
             y_data_line= [df.columns[0]]
 
             for y_data, color in zip(y_data_bar, marker_colors2) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data]*100, 
                                             text= mom_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
@@ -150,8 +150,8 @@ def fred_monthly_chart(ticker, kor_exp, df):
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text=ticker, range=[0, max(df.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='MOM', range=[-max(mom_df.loc[:,y_data_line[0]]), max(mom_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(title_text='MOM', secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             if kor_exp == "개인소비지출":
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
             else:
@@ -172,7 +172,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
             y_data_line= [df.columns[0]]
 
             for y_data, color in zip(y_data_bar, marker_colors2) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data]*100, 
                                             text= yoy_df[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
@@ -183,8 +183,8 @@ def fred_monthly_chart(ticker, kor_exp, df):
             #fig.update_traces(texttemplate='%{text:.3s}') 
             fig.update_yaxes(title_text=ticker, range=[0, max(df.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='YOY', range=[-max(yoy_df.loc[:,y_data_line[0]]), max(yoy_df.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(title_text='YOY', secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
             if kor_exp == "개인소비지출":
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
             else:
