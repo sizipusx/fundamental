@@ -124,9 +124,9 @@ def fred_monthly_chart(ticker, kor_exp, df):
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
     col1, col2, col3 = st.columns(3)
-    col1.metric(label=df[0], value = df.iloc[-1,0])
-    col2.metric(label=mom_df[0]+"MOM", value =str(mom_df.iloc[-1,0])+"%")
-    col3.metric(label=yoy_df[0], value =str(yoy_df.iloc[-1,0])+"%")
+    col1.metric(label=df.columns[0], value = df.iloc[-1,0])
+    col2.metric(label=mom_df.columns[0]+"MOM", value =str(mom_df.iloc[-1,0])+"%")
+    col3.metric(label=yoy_df.columns[0]+"YOY", value =str(yoy_df.iloc[-1,0])+"%")
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
