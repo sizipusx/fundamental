@@ -120,11 +120,11 @@ def fred_monthly_chart(ticker, kor_exp, df):
     mom_df = df.pct_change()*100
     mom_df = mom_df.fillna(0)
     mom_df = mom_df.round(decimals=2)
-    mom_df.loc[:,'color'] = np.where(mom_df.ioc[:,0]<0, '#FFB8B1', '#E2F0CB')
+    mom_df.loc[:,'color'] = np.where(mom_df.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     yoy_df = df.pct_change(periods=12)*100
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
-    yoy_df.loc[:,'color'] = np.where(yoy_df.ioc[:,0]<0, '#FFB8B1', '#E2F0CB')
+    yoy_df.loc[:,'color'] = np.where(yoy_df.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     col1, col2, col3 = st.columns(3)
     col1.metric(label=df.columns[0], value = df.iloc[-1,0])
     col2.metric(label=mom_df.columns[0]+"MOM", value =str(mom_df.iloc[-1,0])+"%")
