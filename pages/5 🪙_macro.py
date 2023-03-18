@@ -209,10 +209,10 @@ def run(stat_ticker, kor_exp):
             fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
             with st.expander("See Raw Data"):
                 try:
-                    st.dataframe(fred_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                    st.dataframe(fred_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
                 except ValueError :
-                    st.dataframe(fred_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                    st.dataframe(fred_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
             if stat_ticker == 'CPIAUCSL':
                 fred_df2 = fdr.DataReader(f'FRED:CPILFESL', start='2000')
