@@ -207,6 +207,7 @@ def run(stat_ticker, kor_exp):
             ec.fred_spread_chart(cdf, inter_df)
         else:
             fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
+            fred_df.index = fred_df.index.strftime('%Y%m%d')
             with st.expander("See Raw Data"):
                 try:
                     st.dataframe(fred_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
