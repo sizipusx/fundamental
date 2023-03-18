@@ -119,10 +119,10 @@ def run(stat_ticker, kor_exp):
             data_df.set_index(keys=tempdf['TIME'], inplace=True)
         with st.expander("See Raw Data"):
             try:
-                st.dataframe(data_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                             .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
-                st.dataframe(data_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                             .format(precision=2, na_rep='MISSING', thousands=","))
         if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
@@ -190,10 +190,10 @@ def run(stat_ticker, kor_exp):
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
                         try:
-                            st.dataframe(inter_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                            st.dataframe(inter_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
                         except ValueError :
-                            st.dataframe(inter_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                            st.dataframe(inter_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
                     with col2:
                         st.write("")
