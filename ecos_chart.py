@@ -453,3 +453,32 @@ def fred_spread_chart(df1, df2):
             st.plotly_chart(fig)
         
 
+def OECD_chart(stat_ticker, kor_exp, cli_df):
+     with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            titles = dict(text= "주요국 경기선행지수", x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+            fig = px.line(cli_df[cli_df['SUBJECT']=="LOLITOAA"], x="TIME_PERIOD", y="value", color='LOCATION')
+            fig.update_yaxes(title_text="index", showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="pt")
+            fig.update_layout(hovermode="x unified")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+        with col2:
+            st.write("")
+        with col3:
+            titles = dict(text= "주요국 경기선행지수 증감", x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+            fig = px.bar(cli_df[cli_df['SUBJECT']=="LOLITOTR_GYSA"], x='TIME_PERIOD', y='value',  color='LOCATION')
+            fig.update_yaxes(title_text="index change", showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%")
+            fig.update_layout(hovermode="x unified")
+            fig.update_layout(template="myID")
+            st.plotly_chart(fig)
+    # with st.container():
+    #     col1, col2, col3 = st.columns([30,2,30])
+    #     with col1:
+
+    #     with col2:
+    #         st.write("")
+    #     with col3:
+
+
+
