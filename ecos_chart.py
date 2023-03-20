@@ -459,7 +459,8 @@ def OECD_chart(stat_ticker, kor_exp, cli_df):
         with col1:
             titles = dict(text= kor_exp, x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
             fig = px.line(cli_df[cli_df['SUBJECT']=="LOLITOAA"], x="TIME_PERIOD", y="value", color='LOCATION')
-            fig.update_yaxes(title_text=stat_ticker, showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="pt")
+            fig.update_yaxes(title = titles, titlefont_size=15, showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="pt")
+            fig.add_hline(y=100.0, line_width=2, line_dash='dot', line_color="red")
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
@@ -468,7 +469,7 @@ def OECD_chart(stat_ticker, kor_exp, cli_df):
         with col3:
             titles = dict(text= kor_exp+" Change", x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
             fig = px.bar(cli_df[cli_df['SUBJECT']=="LOLITOTR_GYSA"], x='TIME_PERIOD', y='value',  color='LOCATION')
-            fig.update_yaxes(title_text=stat_ticker+" change", showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%")
+            fig.update_yaxes(title = titles, titlefont_size=15, showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%")
             fig.update_layout(hovermode="x unified")
             fig.update_layout(template="myID")
             st.plotly_chart(fig)
