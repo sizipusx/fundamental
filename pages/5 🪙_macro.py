@@ -210,7 +210,7 @@ def run(stat_ticker, kor_exp):
             oecd = pdmx.Request("OECD")
             data = oecd.data(
                             resource_id="MEI_CLI",#"PDB_LV",
-                            key= "/LOLITOAA+LOLITOTR_GYSA.JPN+KOR+USA+G4E+OECD+A5M+CHN+IND.M/all?startTime=2000-10", #LOLITOTR_GYSA : 12month change
+                            key= "/LOLITOAA+LOLITOTR_GYSA.KOR+USA+G4E+OECD+A5M+CHN.M/all?startTime=2000-10", #LOLITOTR_GYSA : 12month change
                         ).to_pandas()
             oecd_df = pd.DataFrame(data).reset_index()
             ec.OECD_chart(stat_ticker, kor_exp, oecd_df)
