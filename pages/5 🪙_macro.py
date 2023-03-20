@@ -10,6 +10,7 @@ import numpy as np
 import time
 import datetime
 import FinanceDataReader as fdr
+import pandasdmx as pdmx
 import ecos_chart as ec
 import seaborn as sns
 import cloudscraper
@@ -205,6 +206,14 @@ def run(stat_ticker, kor_exp):
                             st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
             ec.fred_spread_chart(cdf, inter_df)
+        elif stat_ticker == "CLI":
+            oecd = pdmx.Request("OECD")
+            data = oecd.data(
+                            resource_id="MEI_CLI",#"PDB_LV",
+                            key= "/LOLITOAA+LOLITOTR_GYSA.JPN+KOR+USA+G4E+OECD+A5M+CHN+IND.M/all?startTime=2000-10", #LOLITOTR_GYSA : 12month change
+                        ).to_pandas()
+            oecd_df = pd.DataFrame(data).reset_index()
+            ec.OECD_chart(stat_ticker, kor_exp, oecd_df)
         else:
             fred_df = fdr.DataReader(f'FRED:{stat_ticker}', start='2000')
             #fred_df.index = fred_df.index.strftime('%Y%m%d')
@@ -234,7 +243,7 @@ if __name__ == "__main__":
             horizontal= True)
     
     eco_dict = {"물가":"901Y009", "장단기금리":"721Y001", "수출입금액":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "한국은행 기준금리":"722Y001", "은행 수신/대출 금리(신규)":"121Y002"}
-    fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE", "기대인플레이션율":"T10YIE", "CPI":"CPIAUCSL", "Total Assets":"WALCL"}
+    fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE", "기대인플레이션율":"T10YIE", "CPI":"CPIAUCSL", "Total Assets":"WALCL", "Leading Indicators OECD":"CLI"}
 
     data_load_state.text("Done! (using st.cache)")
     # st.dataframe(tickers)
