@@ -359,7 +359,7 @@ def fred_spread_chart(df1, df2):
                                     visible=True
                                 ),
                                 type="date",
-                                range=[kor_time - relativedelta(year=+5), kor_time]
+                                range=[kor_time - relativedelta(years=5), kor_time]
                                 )      
                             )
             fig.update_layout(hovermode="x unified")
@@ -425,7 +425,7 @@ def fred_spread_chart(df1, df2):
                                     visible=True
                                 ),
                                 type="date",
-                                range=[kor_time - relativedelta(year=+5), kor_time]
+                                range=[kor_time - relativedelta(years=5), kor_time]
                                 )      
                             )
             fig.update_layout(hovermode="x unified")
@@ -490,7 +490,7 @@ def fred_spread_chart(df1, df2):
                                     visible=True
                                 ),
                                 type="date",
-                                range=[kor_time - relativedelta(year=+5), kor_time]
+                                range=[kor_time - relativedelta(years=5), kor_time]
                                 )      
                             )
             fig.update_layout(hovermode="x unified")
