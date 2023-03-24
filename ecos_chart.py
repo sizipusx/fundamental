@@ -356,7 +356,7 @@ def fred_spread_chart(df1, df2):
                                     ])
                                 ),
                                 rangeslider=dict(
-                                    visible=True
+                                    visible=False
                                 ),
                                 type="date",
                                 range=[kor_time - relativedelta(years=5), kor_time]
@@ -422,7 +422,7 @@ def fred_spread_chart(df1, df2):
                                     ])
                                 ),
                                 rangeslider=dict(
-                                    visible=True
+                                    visible=False
                                 ),
                                 type="date",
                                 range=[kor_time - relativedelta(years=5), kor_time]
@@ -487,7 +487,7 @@ def fred_spread_chart(df1, df2):
                                     ])
                                 ),
                                 rangeslider=dict(
-                                    visible=True
+                                    visible=False
                                 ),
                                 type="date",
                                 range=[kor_time - relativedelta(years=5), kor_time]
