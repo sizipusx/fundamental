@@ -1,24 +1,23 @@
 from math import nan
 import time
-from datetime import datetime
-
+import datetime
+from dateutil.relativedelta import relativedelta
 import numpy as np
 import pandas as pd
 from pandas.core.dtypes.missing import notnull
-
-
 from pandas.io.json import json_normalize
-
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
-
 import streamlit as st
 
 pd.set_option('display.float_format', '{:.2f}'.format)
 pd.set_option('display.max.colwidth', 50)
 
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
 # 챠트 기본 설정 
 # marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473'] #'rgb(255,69,0)'
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,0,255)', 'rgb(153,204,0)', \
@@ -324,7 +323,8 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
             rangeslider=dict(
                 visible=True
             ),
-            type="date"
+            type="date",
+            range=[kor_time - relativedelta(years=5), kor_time]
             )      
         )
     fig.update_layout(hovermode="x unified")
