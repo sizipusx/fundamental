@@ -321,7 +321,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                 ])
             ),
             rangeslider=dict(
-                visible=True
+                visible=False
             ),
             type="date",
             range=[kor_time - relativedelta(years=5), kor_time]
@@ -406,9 +406,10 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
                 ])
             ),
             rangeslider=dict(
-                visible=True
+                visible=False
             ),
-            type="date"
+            type="date",
+            range=[kor_time - relativedelta(years=5), kor_time]
             )      
         )
     fig.update_layout(hovermode="x unified")
@@ -514,9 +515,10 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
                 ])
             ),
             rangeslider=dict(
-                visible=True
+                visible=False
             ),
-            type="date"
+            type="date",
+            range=[kor_time - relativedelta(years=5), kor_time]
             )      
         )
     fig.update_layout(hovermode="x unified")
@@ -795,9 +797,10 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
                 ])
             ),
             rangeslider=dict(
-                visible=True
+                visible=False
             ),
-            type="date"
+            type="date",
+            range=[kor_time - relativedelta(years=5), kor_time]
             )      
         )
     fig.update_layout(hovermode="x unified")
