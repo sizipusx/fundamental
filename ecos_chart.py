@@ -119,7 +119,8 @@ def ecos_monthly_chart(input_ticker, df1, df2):
 
 def fred_monthly_chart(ticker, kor_exp, df):
     #데이터가 %인 경우 % point 로 계산해야함.
-    if ticker == ""
+    if ticker == "DGS2" or "DGS10":
+        
     mom_df = df.pct_change()*100
     mom_df = mom_df.fillna(0)
     mom_df = mom_df.round(decimals=2)
