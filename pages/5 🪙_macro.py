@@ -209,9 +209,8 @@ def run(stat_ticker, kor_exp):
             ec.fred_spread_chart(cdf, inter_df)
             st.markdown("""---""")
             #10년물만
-            df_10 = inter_df.loc[:,"국채10Y"]
-            df_2 = inter_df.loc[:,"국채2Y"]
-            st.dataframe(df_10)
+            df_10 = inter_df.loc[:,"국채10Y"].to_frame()
+            df_2 = inter_df.loc[:,"국채2Y"].to_frame()
             ec.fred_monthly_chart("국채10Y", "DGS10", df_10)
             st.markdown("""---""")
             ec.fred_monthly_chart("국채2Y", "DGS2", df_2)
