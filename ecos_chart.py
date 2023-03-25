@@ -263,7 +263,7 @@ def ecos_spread_chart(input_ticker, df1):
 def transform_color(x):
     if x < 0:
         return '#FFB8B1'
-    elif x == 0:
+    elif x == -0.0:
         return 'white'
     else:
         return '#E2F0CB'
@@ -272,7 +272,7 @@ def fred_spread_chart(df1, df2):
     df2 = df2.dropna()
     df1.loc[:,"기준금리차"] = df1.iloc[:,0] - df2.iloc[-1,0]
     # df1.loc[:,'color'] = np.where(df1['변동']<=0, '#FFB8B1', '#E2F0CB')
-    df1['color'] = df1['변동'].apppy(lambda x: transform_color(x))
+    df1.loc[:,'color'] = df1['변동'].apppy(lambda x: transform_color(x))
     df2.loc[:,'10Y2Ycolor'] = np.where(df2['금리차10Y2Y']<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'10Y3Mcolor'] = np.where(df2['금리차10Y3M']<0, '#FFB8B1', '#E2F0CB')
     col1, col2, col3, col4 = st.columns(4)
