@@ -118,7 +118,9 @@ def ecos_monthly_chart(input_ticker, df1, df2):
 
 
 def fred_monthly_chart(ticker, kor_exp, df):
+    df = df.dropna()
     #데이터가 %인 경우 % point 로 계산해야함.
+    col1, col2, col3 = st.columns(3)
     if ticker == "DGS2" or "DGS10":
         mom_df = df.sub(df.shift(1))
         yoy_df = df.sub(df.shift(252))
@@ -132,7 +134,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
     yoy_df = yoy_df.fillna(0)
     yoy_df = yoy_df.round(decimals=2)
     yoy_df.loc[:,'color'] = np.where(yoy_df.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
-    col1, col2, col3 = st.columns(3)
+    
     col1.metric(label=df.columns[0], value = df.iloc[-1,0])
     col2.metric(label=mom_df.columns[0]+"_MOM", value =str(mom_df.iloc[-1,0])+"%")
     col3.metric(label=yoy_df.columns[0]+"_YOY", value =str(yoy_df.iloc[-1,0])+"%")
