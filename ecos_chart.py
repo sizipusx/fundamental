@@ -121,7 +121,7 @@ def fred_monthly_chart(ticker, kor_exp, df):
     #데이터가 %인 경우 % point 로 계산해야함.
     if ticker == "DGS2" or "DGS10":
         mom_df = df.sub(df.shift(1))
-        yoy_df = df.sube(df.shift(252))
+        yoy_df = df.sub(df.shift(252))
     else:
         mom_df = df.pct_change()*100
         yoy_df = df.pct_change(periods=12)*100
