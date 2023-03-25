@@ -208,12 +208,12 @@ def run(stat_ticker, kor_exp):
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
             ec.fred_spread_chart(cdf, inter_df)
             st.markdown("""---""")
-            #10년물만
+            #10년물만 데이터가 %인 경우 
             df_10 = inter_df.loc[:,"국채10Y"].to_frame()
             df_2 = inter_df.loc[:,"국채2Y"].to_frame()
-            ec.fred_monthly_chart("국채10Y", "DGS10", df_10)
+            ec.fred_monthly_chart("DGS10", "국채10Y", df_10)
             st.markdown("""---""")
-            ec.fred_monthly_chart("국채2Y", "DGS2", df_2)
+            ec.fred_monthly_chart("DGS2", "국채2Y", df_2)
         elif stat_ticker == "CLI":
             oecd = pdmx.Request("OECD")
             data = oecd.data(
