@@ -207,6 +207,13 @@ def run(stat_ticker, kor_exp):
                             st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                         .format(precision=2, na_rep='MISSING', thousands=","))
             ec.fred_spread_chart(cdf, inter_df)
+            st.markdown("""---""")
+            #10년물만
+            df_10 = inter_df.loc[:,"국채10Y"]
+            df_2 = inter_df.loc[:,"국채2Y"]
+            ec.fred_monthly_chart("국채10Y", "DGS10", df_10)
+            st.markdown("""---""")
+            ec.fred_monthly_chart("국채2Y", "DGS2", df_2)
         elif stat_ticker == "CLI":
             oecd = pdmx.Request("OECD")
             data = oecd.data(
@@ -228,6 +235,7 @@ def run(stat_ticker, kor_exp):
             if stat_ticker == 'CPIAUCSL':
                 fred_df2 = fdr.DataReader(f'FRED:CPILFESL', start='2000')
                 ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
+                st.markdown("""---""")
                 ec.fred_monthly_chart(stat_ticker, "Core CPI", fred_df2)
             else:
                 ec.fred_monthly_chart(stat_ticker, kor_exp, fred_df)
