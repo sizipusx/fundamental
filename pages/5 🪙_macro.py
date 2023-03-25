@@ -171,6 +171,7 @@ def run(stat_ticker, kor_exp):
             table_html = str(table)      # 'table'변수는 bs4.element.tag 형태이기 때문에 table를 문자열 형태로 바꿔준다  
             table_df_list = pd.read_html(table_html)   # read_html 사용해서 html을 데이터프레임들로 이루어진 리스트로 바꿔줌  
             table_df = table_df_list[0]
+            table_df.loc[:,'변동'] = table_df['채권수익률'] - table_df['베이스']
             cdf = table_df.iloc[:,1:-1]
             cdf = cdf.set_index(['종목'])
             #시장 금리
