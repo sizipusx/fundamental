@@ -704,7 +704,7 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
                                 legend=dict(
                                             orientation="h",
                                             yanchor="bottom",
-                                            y=1.02,
+                                            y=-0.2,
                                             xanchor="right",
                                             x=1
                                         ),
@@ -854,7 +854,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
                                             yanchor="bottom",
                                             y=-0.2,
                                             xanchor="left",
-                                            x=1
+                                            x=0
                                         ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
