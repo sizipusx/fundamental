@@ -852,7 +852,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
                                 legend=dict(
                                             orientation="h",
                                             yanchor="bottom",
-                                            y=-0.5,
+                                            y=-0.2,
                                             xanchor="right",
                                             x=1
                                         ),
