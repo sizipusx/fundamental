@@ -788,7 +788,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
         )
     fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0), template=template)
     fig.update_layout(hovermode="x unified", template="myID")
     st.plotly_chart(fig)
 
