@@ -853,7 +853,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
                                             orientation="h",
                                             yanchor="bottom",
                                             y=-0.2,
-                                            xanchor="right",
+                                            xanchor="left",
                                             x=1
                                         ),
                                 xaxis=go.layout.XAxis(
