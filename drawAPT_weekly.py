@@ -852,9 +852,9 @@ def draw_senti_together(maesu_index, city_lists, last_week):
                                 legend=dict(
                                             orientation="h",
                                             yanchor="bottom",
-                                            y=0.02,
+                                            y=-1.02,
                                             xanchor="right",
-                                            x=1
+                                            x=0
                                         ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
