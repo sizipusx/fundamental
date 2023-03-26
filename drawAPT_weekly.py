@@ -555,6 +555,48 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
+    fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date",
+                                range=[kor_time - relativedelta(years=5), kor_time]
+                                )      
+                            )
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -586,6 +628,48 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
+    fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date",
+                                range=[kor_time - relativedelta(years=5), kor_time]
+                                )      
+                            )
     st.plotly_chart(fig)
 
 def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
@@ -615,6 +699,48 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
+    fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date",
+                                range=[kor_time - relativedelta(years=5), kor_time]
+                                )      
+                            )
     st.plotly_chart(fig)
 
 def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
@@ -721,6 +847,48 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     fig.add_hline(y=100.0, line_width=1, line_dash="dot", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
     fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승 ", annotation_position="bottom right")
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date",
+                                range=[kor_time - relativedelta(years=5), kor_time]
+                                )      
+                            )
     fig.update_layout(template="myID")
     st.plotly_chart(fig)    
 
@@ -822,6 +990,48 @@ def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
     fig.update_yaxes(title_text="전세증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m-%d')
     fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
+    fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date",
+                                range=[kor_time - relativedelta(years=5), kor_time]
+                                )      
+                            )
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
