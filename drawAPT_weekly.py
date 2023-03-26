@@ -290,9 +290,9 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
             legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
+            y=-0.2,
+            xanchor="left",
+            x=0
         ),
             xaxis=go.layout.XAxis(
             rangeselector=dict(
@@ -375,9 +375,9 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
             legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
+            y=-0.2,
+            xanchor="left",
+            x=0
         ),
             xaxis=go.layout.XAxis(
             rangeselector=dict(
@@ -484,9 +484,9 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
             legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
+            y=-0.2,
+            xanchor="left",
+            x=0
         ),
             xaxis=go.layout.XAxis(
             rangeselector=dict(
@@ -560,9 +560,9 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
                                 legend=dict(
                                             orientation="h",
                                             yanchor="bottom",
-                                            y=1.02,
-                                            xanchor="right",
-                                            x=1
+                                            y=-0.2,
+                                            xanchor="left",
+                                            x=0
                                         ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
@@ -633,9 +633,9 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
                                 legend=dict(
                                             orientation="h",
                                             yanchor="bottom",
-                                            y=1.02,
-                                            xanchor="right",
-                                            x=1
+                                            y=-0.2,
+                                            xanchor="left",
+                                            x=0
                                         ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
@@ -705,8 +705,8 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
                                             orientation="h",
                                             yanchor="bottom",
                                             y=-0.2,
-                                            xanchor="right",
-                                            x=1
+                                            xanchor="left",
+                                            x=0
                                         ),
                                 xaxis=go.layout.XAxis(
                                 rangeselector=dict(
@@ -830,7 +830,7 @@ def draw_senti_last(to_df, last_week):
 def draw_senti_together(maesu_index, city_lists, last_week):
     #매수우위지수 같이 보기
     flag = "KB 주간 시계열"
-    titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
     fig = go.Figure()
 
     for index, value in enumerate(city_lists):
