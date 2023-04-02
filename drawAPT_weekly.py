@@ -432,7 +432,49 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m-%d')
-    fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
+    #fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
+    fig.update_layout(
+                                showlegend=True,
+                                legend=dict(
+                                            orientation="h",
+                                            yanchor="bottom",
+                                            y=1.02,
+                                            xanchor="right",
+                                            x=1
+                                        ),
+                                xaxis=go.layout.XAxis(
+                                rangeselector=dict(
+                                    buttons=list([
+                                        dict(count=6,
+                                            label="6m",
+                                            step="month",
+                                            stepmode="backward"),
+                                        dict(count=1,
+                                            label="YTD",
+                                            step="year",
+                                            stepmode="todate"),
+                                        dict(count=1,
+                                            label="1y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=5,
+                                            label="5y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(count=10,
+                                            label="10y",
+                                            step="year",
+                                            stepmode="backward"),
+                                        dict(step="all")
+                                    ])
+                                ),
+                                rangeslider=dict(
+                                    visible=False
+                                ),
+                                type="date",
+                                range=[kor_time - relativedelta(years=5), kor_time]
+                                )      
+                            )
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
@@ -979,7 +1021,7 @@ def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
     jdf_change.loc[:,'color'] = np.where(jdf_change.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     x_data = jdf_change.index
     title = "<b>["+selected_dosi+"]</b> 전세수급지수와 전세증감"
-    titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= title,  x=0.5, y = 0.95, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =round(jdf_change[selected_dosi],2), 
                         text = round(jdf_change[selected_dosi],2), textposition = 'outside', 
@@ -991,7 +1033,7 @@ def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
     fig.update_yaxes(title_text="전세수급지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="전세증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, template=template, xaxis_tickformat = '%Y-%m-%d')
-    fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
+    #fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
     fig.update_layout(
                                 showlegend=True,
                                 legend=dict(
