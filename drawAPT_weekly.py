@@ -244,7 +244,7 @@ def draw_index_change_with_bubble_slice(citys, last_df, flag):
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3
-    titles = dict(text= '<b>['+selected_dosi2 +']</b> KB 주간 매매-전세 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> KB 주간 매매-전세 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
@@ -331,7 +331,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
     st.plotly_chart(fig)
 
 def draw_sentiment(selected_dosi, js_1, js_2, js_index):
-    titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위 지수', x=0.5, y = 0.95, xanchor='center', yanchor= 'top') 
+    titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '매도자 많음', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -419,7 +419,7 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
     mdf_change.loc[:,'color'] = np.where(mdf_change.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     x_data = mdf_change.index
     title = "<b>["+selected_dosi+"]</b> 매수우위지수와 매매증감"
-    titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= title,  x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =round(mdf_change[selected_dosi],2), 
                         text = round(mdf_change[selected_dosi],2), textposition = 'outside', 
@@ -482,7 +482,7 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
 def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_change):
     if selected_dosi3 is not None:
         selected_dosi2 = selected_dosi3
-    titles = dict(text= '<b>['+selected_dosi2 +']</b> 부동산원 주간 매매-전세 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> 부동산원 주간 매매-전세 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = '매매지수증감', x = omdf.index, y = omdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
@@ -575,7 +575,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
   
     omdf_change = omdf_change.round(decimals=2)
     title = "<b>부동산원 매매지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= title, x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -646,7 +646,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
 
 def run_one_index_together(draw_list, omdf, omdf_change, flag):
     title = f"<b>{flag} 매매지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    titles = dict(text= title, x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -717,7 +717,7 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
 
 def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
     title = f"<b>{flag} 전세지수 변화 같이 보기</b>"
-    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= title, x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     
@@ -936,7 +936,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     st.plotly_chart(fig)    
 
 def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
-    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Scatter(line = dict(dash='dash'), name = '수요>공급', x =  js_1.index, y= js_1[selected_dosi], marker_color = marker_colors[0]), secondary_y = False)
@@ -1021,7 +1021,7 @@ def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
     jdf_change.loc[:,'color'] = np.where(jdf_change.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     x_data = jdf_change.index
     title = "<b>["+selected_dosi+"]</b> 전세수급지수와 전세증감"
-    titles = dict(text= title,  x=0.5, y = 0.95, xanchor='center', yanchor= 'top') 
+    titles = dict(text= title,  x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =round(jdf_change[selected_dosi],2), 
                         text = round(jdf_change[selected_dosi],2), textposition = 'outside', 
