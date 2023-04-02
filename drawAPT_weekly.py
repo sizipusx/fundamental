@@ -416,13 +416,14 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
     st.plotly_chart(fig)
 
 def draw_sentiment_change(selected_dosi, mdf_change, js_index):
+    mdf_change.loc[:,'color'] = np.where(mdf_change.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     x_data = mdf_change.index
     title = "<b>["+selected_dosi+"]</b> 매수우위지수와 매매증감"
     titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "매매증감", x = x_data, y =round(mdf_change[selected_dosi],2), 
                         text = round(mdf_change[selected_dosi],2), textposition = 'outside', 
-                        marker_color= marker_colors[0]), secondary_y = True) 
+                        marker_color= mdf_change.loc[:,'color']), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', name ='매수매도 지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     #fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
@@ -975,13 +976,14 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
     st.plotly_chart(fig)
 
 def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
+    jdf_change.loc[:,'color'] = np.where(jdf_change.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     x_data = jdf_change.index
     title = "<b>["+selected_dosi+"]</b> 전세수급지수와 전세증감"
     titles = dict(text= title,  x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "전세증감", x = x_data, y =round(jdf_change[selected_dosi],2), 
                         text = round(jdf_change[selected_dosi],2), textposition = 'outside', 
-                        marker_color= marker_colors[0]), secondary_y = True) 
+                        marker_color= jdf_change.loc[:,'color']), secondary_y = True) 
     fig.add_trace(go.Scatter(mode='lines', name ='전세수급지수', x =  js_index.index, y= js_index[selected_dosi], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
     fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
