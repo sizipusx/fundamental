@@ -255,9 +255,9 @@ if __name__ == "__main__":
     fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE", "기대인플레이션율":"T10YIE", "CPI":"CPIAUCSL", "Total Assets":"WALCL", "Leading Indicators OECD":"CLI"}
     
     # fred_dict = {"Key Economic Indicators":{
-    #                     "Real GDP":"",
-    #                     "Unemployment Rate":"",
-    #                     "PCE Inflation":"",
+    #                     "Real GDP":"GDPC1",
+    #                     "Unemployment Rate":"UNRATE",
+    #                     "PCE Inflation":"PCEPI",
     #                     "Effectiv Federal Funds Rate":""
     #                     },
     #             "Labor Markets": {
@@ -266,9 +266,15 @@ if __name__ == "__main__":
     #                     "":""
     #                 },
     #             "Inflation": {
-    #                     "":"",
-    #                     "":"",
-    #                     "":""
+    #                     "Personal Consumption Expenditures":"PCEPI",
+    #                     "Consumer Price Index":"CPIAUCSL",
+    #                      "CPI Less Food and Energy":"CPILFESL",
+    #                     "Producer Price Index":"PPIFIS",
+    #                      "PPI Less Foods and Energy"::"PPIFES",
+    #                     "Year-Ahead Inflation Expectations":"",
+    #                     "5-Year Breakeven Inflation Rate":"T5YIE",
+    #                     "5-Year, 5-Year Forward Inflation Expectation Rate":"T5YIFR",
+    #                      "University of Michigan: Inflation Expectation":"MICH"
     #                 },
     #             "GDP Breakdown": {
     #                     "":"",
