@@ -203,7 +203,7 @@ def load_data():
     #st.dataframe(total_df)
     t_old = len(total_df)
     st.write(f"아파트분양권, 재개발, 재건축을 모두 합한 총 [{t_old}] 개의 매매 매물이 있습니다!")
-    # total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
+    total_df['공급면적'].replace([np.inf, -np.inf], '0', inplace=True)
     total_df['공급면적'] = total_df['공급면적'].fillna(0).astype(int)
     #sum_df.update(sum_df.select_dtypes(include=np.number).applymap('{:,}'.format))
     total_df['위도'] = total_df['위도'].astype(float)
