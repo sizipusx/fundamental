@@ -874,6 +874,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     #매수우위지수 같이 보기
     flag = "KB 주간 시계열"
     maesu_index.index = pd.to_datetime(maesu_index.index, format = '%Y-%m-%d')
+    st.dataframe(maesu_index)
     titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
     fig = go.Figure()
 
