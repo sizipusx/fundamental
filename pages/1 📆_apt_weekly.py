@@ -112,7 +112,7 @@ def create_connection(db_file):
 
     return conn
 
-@st.cache_data(ttl=datetime.timedelta(days=1))
+@st.cache_data(ttl=datetime.timedelta(days=2))
 def get_gsheet_index():
     #DB에서 읽어오자
     conn = create_connection(weekly_db_path)
