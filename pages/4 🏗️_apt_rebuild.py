@@ -328,11 +328,10 @@ if __name__ == "__main__":
         if response:
             st.write("선택한 아파트 위치:")
             selected_df = response["selected_rows"]
-            st.dataframe(selected_df)
-            st.write(type(selected_df))
+
             if selected_df:
                 px.set_mapbox_access_token(token)
-                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도", color="매물종류", size="공급면적", hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도명"],
+                fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도", color="매물종류", size=10, hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도명"],
                                 color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=500)
                 fig.update_layout(
                     title='선택한 아파트 네이버 시세',
