@@ -126,11 +126,11 @@ def run(ticker, com_name):
     roe_s = fn_ann_df.loc['ROE']
     roe_q = fn_qu_df.loc['ROE']
     #예측 포함 최근 분기 평균
-    roe_qmean = round(roe_q.mean(),2)
-    roe_total = round(roe_s.mean(),2)
-    roe_real = round(roe_s.iloc[:5].mean(),2)
+    roe_qmean = round(roe_q.mean(),1)
+    roe_total = round(roe_s.mean(),1)
+    roe_real = round(roe_s.iloc[:5].mean(),1)
     roe_sum = len(roe_s) - roe_s.isnull().sum()
-    roe_est = round(roe_s.iloc[5:].mean(),2)
+    roe_est = round(roe_s.iloc[5:].mean(),1)
     if np.isnan(roe_s[5]) == False:
         roe_mean = np.mean([roe_qmean, roe_total, roe_real, roe_est])
         roe_min = min(roe_qmean, roe_total,roe_real,roe_est)
@@ -139,7 +139,7 @@ def run(ticker, com_name):
         roe_mean = np.mean([roe_real, roe_qmean])
         roe_min = min(roe_real, roe_qmean)
         roe_max = max(roe_real, roe_qmean)
-    
+    roe_mean = round(roe_mean,1)
     current_price = int(value_df.loc['현재주가'].replace(',','').replace('원', ''))
     #ROE 추정치를 무얼로 하느냐에 따라 기대수익률이 모두 달라짐
     #ROE_min
