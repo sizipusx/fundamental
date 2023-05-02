@@ -188,7 +188,7 @@ def run(ticker, com_name):
         st.subheader("BED Valuation")
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
+            col1, col2, col3 = st.columns([30,30,30])
             with col1:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
