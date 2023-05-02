@@ -192,7 +192,7 @@ def run(ticker, com_name):
             with col1:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = est_yield,
+                value = min_est_yield,
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 평균 ROE "+str(roe_min)+" 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -208,7 +208,7 @@ def run(ticker, com_name):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = longp_yield,
+                value = max_est_yield,
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최대 ROE "+str(roe_max)+" 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
