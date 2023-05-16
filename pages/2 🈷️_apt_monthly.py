@@ -61,6 +61,7 @@ header_path = r'https://github.com/sizipusx/fundamental/blob/bc990c892ec68351be5
 header_excel = pd.ExcelFile(header_path)
 kbh = header_excel.parse('KB')
 oneh = header_excel.parse('one')
+citys = header_excel.parse('city')
 # KB 데이터
 kbm_dict = pd.ExcelFile(kb_path)
 one_dict = pd.ExcelFile(one_path)
@@ -495,6 +496,14 @@ def load_senti_data():
     return df_dic, df_a, df_b
 
 @st.cache_data(ttl=datetime.timedelta(days=1))
+def load_ratio_data():
+    ######DB에서 읽어오기##################
+    conn = create_connection(one_db_path)
+    rdf = pd.read_sql("SELECT * FROM jratio", conn, index_col='date', parse_dates={'date', "%Y-%m"}) 
+    return rdf
+
+
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_pir_data():
     # pir = kbm_dict.parse('13.KB아파트담보대출PIR', skiprows=1)
     # # file_path = 'https://github.com/sizipusx/fundamental/blob/75a46e5c6a1f343da71927fc6de0dd14fdf136eb/files/KB_monthly(6A).xlsx?raw=true'
@@ -827,7 +836,7 @@ if __name__ == "__main__":
     
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('Basic','Price Index', 'PIR','HAI-HOI', 'Sentiment','투자자별매매동향', '지역같이보기', '기간보기')
+                    "Select Menu", ('Basic','Price Index', '전세가율','PIR','HAI-HOI', 'Sentiment','투자자별매매동향', '지역같이보기', '기간보기')
                     )
     if my_choice == 'Basic':
         #st.subheader("전세파워 높고 버블지수 낮은 지역 상위 50곳")
@@ -1420,6 +1429,63 @@ if __name__ == "__main__":
             <br>
             """
             st.markdown(html_br, unsafe_allow_html=True)
+    elif my_choice == '전세가율':
+        st.subheader("전국 매매전세가 비율")
+        jratio_df = load_ratio_data()
+        #마지막 행만 가져오기
+        rlast_df = pd.DataFrame()
+        rlast_df['전세가율'] = ratio_df.iloc[-1].T.to_frame()
+        rlast_df = rlast_df.reset_index()
+        rlast_df['시군구코드'] = rlast_df['시군구코드'].astype(int)
+        r_df = pd.merge(rlast_df, citys, how='inner', left_on='시군구코드', right_on='code')
+        
+        tab1, tab2 = st.tabs(["⏰ 비율보기", "🗺️ 지도로 보기"])
+        with tab1:
+            ratio_value = st.slider(
+                'Select ratio to Compare index change', 0, 100, 50)
+            r_50 = rlast_df[rlast_df['전세가율'] >= 70.0]
+            r_user = rlast_df[rlast_df['전세가율'] >= ratio_value]
+            with st.container():
+                        col1, col2, col3 = st.columns([30,2,30])
+                        with col1:
+                            st.subheader("전세가율이 50% 이상인 지역")
+                            st.dataframe(r_50.style.background_gradient(cmap, axis=0)\
+                                                    .format(precision=1, na_rep='MISSING', thousands=","), 600, 600)
+                        with col2:
+                            st.write("")
+                        with col3:
+                            st.subheader("내 마음대로 비율 살펴보기")
+                            st.dataframe(r_user.style.background_gradient(cmap, axis=0)\
+                                                    .format(precision=1, na_rep='MISSING', thousands=","), 600, 600)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)  
+        with tab2:
+            with urlopen(geo_source) as response:
+                kb_geo_data = json.load(response)
+                
+            #geojson file 변경
+            for idx, sigun_dict in enumerate(kb_geo_data['features']):
+                sigun_id = sigun_dict['properties']['SIG_CD']
+                sigun_name = sigun_dict['properties']['SIG_KOR_NM']
+                try:
+                    sell_change = r_df.loc[(r_df.code == sigun_id), '전세가율'].iloc[0]
+                except:
+                    sell_change = 0
+                    jeon_change =0
+                # continue
+                
+                txt = f'<b><h4>{sigun_name}</h4></b>전세가율: {sell_change:.2f}<br>'
+                # print(txt)
+                
+                kb_geo_data['features'][idx]['id'] = sigun_id
+                kb_geo_data['features'][idx]['properties']['sell_change'] = sell_change
+                kb_geo_data['features'][idx]['properties']['tooltip'] = txt
+
+            kb_last_m = pd.to_datetime(str(ratio_df.index.values[-1])).strftime('%Y.%m')
+
+            drawAPT_update.draw_ratio_Choroplethmapbox(r_df, kb_geo_data, kb_last_m):
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()

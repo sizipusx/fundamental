@@ -1768,7 +1768,6 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
     st.plotly_chart(fig)
 
 def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
-
     #매매/전세 증감률 flower Chart
     title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
@@ -1789,5 +1788,28 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
     fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def draw_ratio_Choroplethmapbox(r_df, geo_data, kb_last_m):
+    #choroplethmapbax
+    token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
+    for col in r_df.columns:
+        r_df[col] = r_df[col].astype(str)
+    r_df['text'] = '<b>' + r_df['short'] + '</b> <br>' + \
+                    '전세가율:' + r_df['전세가율'] + '<br>'
+    title = dict(text='<b>'+kb_last_m+ '기준  KB 월간 전세가율</b>',  x=0.5, y = 0.85, xanchor = 'center', yanchor = 'top') 
+    fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=r_df['code'], z=r_df['전세가율'].astype(float),
+                            colorscale="Bluered", zmin=30.0, zmax=95.0, marker_line_width=2))
+    #Blackbody,Bluered,Blues,Cividis,Earth,Electric,Greens,Greys,Hot,Jet,Picnic,Portland,Rainbow,RdBu,Reds,Viridis,YlGnBu,YlOrRd.
+    fig.update_traces(  autocolorscale=False,
+                        text=r_df['text'], # hover text
+                        marker_line_color='black', # line markers between states
+                        colorbar_title='전세가율')
+    # fig.update_traces(hovertext=df['index'])
+    fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+                    mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
+    fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
