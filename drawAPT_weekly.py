@@ -5,7 +5,6 @@ from dateutil.relativedelta import relativedelta
 import numpy as np
 import pandas as pd
 from pandas.core.dtypes.missing import notnull
-from pandas.io.json import json_normalize
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio

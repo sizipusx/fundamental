@@ -3,11 +3,6 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-
-import requests
-import json
-from pandas.io.json import json_normalize
-
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio

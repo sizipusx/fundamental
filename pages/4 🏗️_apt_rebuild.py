@@ -11,9 +11,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
 
-from pandas.io.json import json_normalize
-from urllib.request import urlopen
-
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
