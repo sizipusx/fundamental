@@ -498,7 +498,7 @@ def load_senti_data():
 @st.cache_data(ttl=datetime.timedelta(days=1))
 def load_ratio_data():
     ######DB에서 읽어오기##################
-    conn = create_connection(one_db_path)
+    conn = create_connection(kb_db_path)
     rdf = pd.read_sql("SELECT * FROM jratio", conn, index_col='date', parse_dates={'date', "%Y-%m"}) 
     return rdf
 
