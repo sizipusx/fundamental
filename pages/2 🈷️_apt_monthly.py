@@ -275,7 +275,7 @@ def load_index_data():
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
-    #conn.close()
+    conn.close()
 
     return index_list
 
@@ -323,7 +323,7 @@ def load_one_data():
         df = pd.read_sql(query, conn, index_col='date')
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
-    # conn.close()
+    conn.close()
     # omdf = index_list[0]
     # ojdf = index_list[1]
 
@@ -658,6 +658,7 @@ if __name__ == "__main__":
     index_list = load_index_data()
     mdf = index_list[0]
     jdf = index_list[1]
+    jratio_df = index_list[2]
     #odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
     oindex_list = load_one_data()
     omdf = oindex_list[0]
@@ -667,7 +668,7 @@ if __name__ == "__main__":
     not_sell_apt = oindex_list[2]
     un_df = oindex_list[3]
     in_df = oindex_list[4]
-    jratio_df = oindex_list[4]
+    
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
