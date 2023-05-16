@@ -1486,7 +1486,7 @@ if __name__ == "__main__":
                 kb_geo_data['features'][idx]['properties']['sell_change'] = sell_change
                 kb_geo_data['features'][idx]['properties']['tooltip'] = txt
 
-            kb_last_m = pd.to_datetime(str(ratio_df.index.values[-1])).strftime('%Y.%m')
+            kb_last_m = pd.to_datetime(str(jratio_df.index.values[-1])).strftime('%Y.%m')
 
             drawAPT_update.draw_ratio_Choroplethmapbox(r_df, kb_geo_data, kb_last_m)
     elif my_choice == 'PIR':
