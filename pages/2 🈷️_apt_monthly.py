@@ -175,7 +175,7 @@ def get_not_sell_apt():
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
 
-    conn.close()
+    #conn.close()
 
 
     return not_sold_list, in_df
@@ -275,7 +275,7 @@ def load_index_data():
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
-    conn.close()
+    #conn.close()
 
     return index_list
 
@@ -323,7 +323,7 @@ def load_one_data():
         df = pd.read_sql(query, conn, index_col='date')
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
-    conn.close()
+    # conn.close()
     omdf = index_list[0]
     ojdf = index_list[1]
 
@@ -500,7 +500,7 @@ def load_ratio_data():
     ######DB에서 읽어오기##################
     conn = create_connection(kb_db_path)
     rdf = pd.read_sql("SELECT * FROM jratio", conn, index_col='date', parse_dates={'date', "%Y-%m"}) 
-    conn.close()
+    # conn.close()
 
     return rdf
 
