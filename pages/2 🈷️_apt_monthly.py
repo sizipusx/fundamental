@@ -1436,7 +1436,7 @@ if __name__ == "__main__":
         jratio_df = load_ratio_data()
         #마지막 행만 가져오기
         rlast_df = pd.DataFrame()
-        rlast_df['전세가율'] = ratio_df.iloc[-1].T.to_frame()
+        rlast_df['전세가율'] = jratio_df.iloc[-1].T.to_frame()
         rlast_df = rlast_df.reset_index()
         rlast_df['시군구코드'] = rlast_df['시군구코드'].astype(int)
         r_df = pd.merge(rlast_df, citys, how='inner', left_on='시군구코드', right_on='code')
