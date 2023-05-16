@@ -94,6 +94,13 @@ bs_doc = gc.open_by_url(basic_url)
 one_db_path = "files/one_monthly.db"
 kb_db_path = "files/kb_monthly.db"
 
+conn = None
+try:
+    kb_conn = sqlite3.connect(kb_db_path)#, check_same_thread=False)
+    one_conn = sqlite3.connect(one_db_path)
+except Exception as e:
+    print(e)
+
 @st.cache_resource(ttl=datetime.timedelta(days=1))
 def create_connection(db_file):
     """ create a database connection to the SQLite database
@@ -155,11 +162,11 @@ def get_not_sell_apt():
     # return df1
 
     #DB에서 읽어오자
-    conn = create_connection(one_db_path)
+    #conn = create_connection(one_db_path)
     not_sold_list = []
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
-        df = pd.read_sql(query, conn, index_col='date')
+        df = pd.read_sql(query, one_conn, index_col='date')
         # query = conn.execute(query)
         # cols = [column[0] for column in query.description]
         # df= pd.DataFrame.from_records(
@@ -260,11 +267,11 @@ def load_index_data():
     # jdf = jdf.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
     # jdf = jdf.round(decimals=2)
     ######DB에서 읽어오기##################
-    conn = create_connection(kb_db_path)
+    #conn = create_connection(kb_db_path)
     index_list = []
     query_list = ["select * from mae", "select * from jeon"]
     for query in query_list:
-        df = pd.read_sql(query, conn, index_col='date')
+        df = pd.read_sql(query, kb_conn, index_col='date')
         # query = conn.execute(query)
         # cols = [column[0] for column in query.description]
         # df= pd.DataFrame.from_records(
@@ -316,11 +323,11 @@ def load_one_data():
     # ojdf.index.name = 'date'
     # ojdf = ojdf.apply(lambda x:x.replace('','0')).astype(float)
     ######DB에서 읽어오기##################
-    conn = create_connection(one_db_path)
+    #conn = create_connection(one_db_path)
     index_list = []
     query_list = ["select * from one_mae", "select * from one_jeon"]
     for query in query_list:
-        df = pd.read_sql(query, conn, index_col='date')
+        df = pd.read_sql(query, one_conn, index_col='date')
         df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
     # conn.close()
@@ -498,8 +505,8 @@ def load_senti_data():
 @st.cache_data(ttl=datetime.timedelta(days=1))
 def load_ratio_data():
     ######DB에서 읽어오기##################
-    conn = create_connection(kb_db_path)
-    rdf = pd.read_sql("SELECT * FROM jratio", conn, index_col='date', parse_dates={'date', "%Y-%m"}) 
+    #conn = create_connection(kb_db_path)
+    rdf = pd.read_sql("SELECT * FROM jratio", kb_conn, index_col='date', parse_dates={'date', "%Y-%m"}) 
     # conn.close()
 
     return rdf
