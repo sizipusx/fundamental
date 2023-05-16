@@ -1485,7 +1485,7 @@ if __name__ == "__main__":
 
             kb_last_m = pd.to_datetime(str(ratio_df.index.values[-1])).strftime('%Y.%m')
 
-            drawAPT_update.draw_ratio_Choroplethmapbox(r_df, kb_geo_data, kb_last_m):
+            drawAPT_update.draw_ratio_Choroplethmapbox(r_df, kb_geo_data, kb_last_m)
     elif my_choice == 'PIR':
         data_load_state = st.text('Loading PIR index Data...')
         pir_df, income_df, price_df = load_pir_data()
