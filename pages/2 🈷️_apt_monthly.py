@@ -174,7 +174,7 @@ def get_not_sell_apt():
     in_df = in_df.apply(lambda x: x.replace('-','0'))
     in_df = in_df.astype(int)
 
-    #conn.close()
+    conn.close()
 
 
     return not_sold_list, in_df
