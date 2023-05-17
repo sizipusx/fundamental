@@ -671,7 +671,6 @@ if __name__ == "__main__":
     not_sell_apt = not_sell_list[0]
     st.dataframe(not_sell_apt)
     un_df = not_sell_list[1]
-    st.dataframe(un_df)
     #in_df = oindex_list[4]
     
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
