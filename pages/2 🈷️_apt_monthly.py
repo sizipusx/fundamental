@@ -270,7 +270,7 @@ def load_index_data():
         #             data = query.fetchall(), 
         #             columns = cols
         #     )
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        df.index = pd.to_datetime(df.index, format = '%Y-%m')
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
