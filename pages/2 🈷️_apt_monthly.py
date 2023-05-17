@@ -663,10 +663,10 @@ if __name__ == "__main__":
     omdf = oindex_list[0]
     ojdf = oindex_list[1]
 
-    #not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
-    not_sell_apt = oindex_list[2]
-    un_df = oindex_list[3]
-    in_df = oindex_list[4]
+    not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
+    not_sell_apt = not_sell_list[0]
+    un_df = not_sell_list[1]
+    #in_df = oindex_list[4]
     
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
