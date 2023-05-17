@@ -660,7 +660,6 @@ if __name__ == "__main__":
     data_load_state = st.text('Loading index & pop Data...')
     index_list = load_index_data()
     mdf = index_list[0]
-    st.dataframe(mdf)
     jdf = index_list[1]
     #jratio_df = index_list[2]
     #odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
@@ -670,7 +669,9 @@ if __name__ == "__main__":
 
     not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[0]
+    st.dataframe(not_sell_apt)
     un_df = not_sell_list[1]
+    st.dataframe(un_df)
     #in_df = oindex_list[4]
     
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
