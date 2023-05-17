@@ -158,14 +158,14 @@ def get_not_sell_apt():
     not_sold_list = []
     query_list = ["select * from not_sold", "select * from after_not_sold"]
     for query in query_list:
-        df = pd.read_sql(query, buy_conn, index_col='date')
+        df = pd.read_sql(query, buy_conn, index_col='date', parse_dates={'date', "%Y-%m"})
         # query = conn.execute(query)
         # cols = [column[0] for column in query.description]
         # df= pd.DataFrame.from_records(
         #             data = query.fetchall(), 
         #             columns = cols
         #     )
-        df.index = pd.to_datetime(df.index, format = '%Y-%m')
+        #df.index = pd.to_datetime(df.index, format = '%Y-%m')
         not_sold_list.append(df)
     
     #투자자 거주지별 매매동향
@@ -317,10 +317,10 @@ def load_one_data():
     ######DB에서 읽어오기##################
     one_conn = create_connection(one_db_path)
     index_list = []
-    query_list = ["select * from one_mae", "select * from one_jeon", "select * from not_sold", "select * from after_not_sold", "SELECT * FROM 'investor'", "SELECT * FROM jratio"]
+    query_list = ["select * from one_mae", "select * from one_jeon"]#, "select * from not_sold", "select * from after_not_sold", "SELECT * FROM 'investor'"]
     for query in query_list:
-        df = pd.read_sql(query, one_conn, index_col='date')
-        df.index = pd.to_datetime(df.index, format = '%Y-%m')
+        df = pd.read_sql(query, one_conn, index_col='date', parse_dates={'date', "%Y-%m"})
+        #df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
     one_conn.close()
     # omdf = index_list[0]
