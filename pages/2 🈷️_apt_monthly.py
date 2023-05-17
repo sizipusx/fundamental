@@ -326,7 +326,7 @@ def load_one_data():
         df = pd.read_sql(query, one_conn, index_col='date', parse_dates={'date', "%Y-%m"})
         #df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
-    one_conn.close()
+    #one_conn.close()
     # omdf = index_list[0]
     # ojdf = index_list[1]
 
