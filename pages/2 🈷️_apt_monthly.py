@@ -156,27 +156,28 @@ def get_not_sell_apt():
     #DB에서 읽어오자
     try:
         buy_conn = create_connection(one_db_path)
-        not_sold_list = []
-        query_list = ["select * from not_sold", "select * from after_not_sold"]
-        for query in query_list:
-            df = pd.read_sql(query, buy_conn, index_col='date', parse_dates={'date', "%Y-%m"})
-            # query = conn.execute(query)
-            # cols = [column[0] for column in query.description]
-            # df= pd.DataFrame.from_records(
-            #             data = query.fetchall(), 
-            #             columns = cols
-            #     )
-            #df.index = pd.to_datetime(df.index, format = '%Y-%m')
-            not_sold_list.append(df)
-        
-        #투자자 거주지별 매매동향
-        ### db에서 읽기
-        in_df = pd.read_sql("SELECT * FROM 'investor'", buy_conn, index_col='index')
-        in_df = in_df.apply(lambda x: x.replace('-','0'))
-        in_df = in_df.astype(int)
     except Exception as e:
         print(e)
-        
+    not_sold_list = []
+    query_list = ["select * from not_sold", "select * from after_not_sold"]
+    for query in query_list:
+        df = pd.read_sql(query, buy_conn, index_col='date', parse_dates={'date', "%Y-%m"})
+        # query = conn.execute(query)
+        # cols = [column[0] for column in query.description]
+        # df= pd.DataFrame.from_records(
+        #             data = query.fetchall(), 
+        #             columns = cols
+        #     )
+        #df.index = pd.to_datetime(df.index, format = '%Y-%m')
+        not_sold_list.append(df)
+    
+    #투자자 거주지별 매매동향
+    ### db에서 읽기
+    in_df = pd.read_sql("SELECT * FROM 'investor'", buy_conn, index_col='index')
+    in_df = in_df.apply(lambda x: x.replace('-','0'))
+    in_df = in_df.astype(int)
+   
+
     buy_conn.close()
 
 
