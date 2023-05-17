@@ -178,7 +178,7 @@ def get_not_sell_apt():
     in_df = in_df.astype(int)
    
 
-    buy_conn.close()
+    #buy_conn.close()
 
 
     return not_sold_list, in_df
