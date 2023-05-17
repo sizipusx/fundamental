@@ -657,7 +657,7 @@ if __name__ == "__main__":
     index_list = load_index_data()
     mdf = index_list[0]
     jdf = index_list[1]
-    jratio_df = index_list[2]
+    #jratio_df = index_list[2]
     #odf, o_geo_data, last_odf, omdf, ojdf, omdf_change, ojdf_change, cum_omdf, cum_ojdf = load_one_data()
     oindex_list = load_one_data()
     omdf = oindex_list[0]
