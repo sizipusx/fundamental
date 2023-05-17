@@ -263,14 +263,14 @@ def load_index_data():
     index_list = []
     query_list = ["select * from mae", "select * from jeon"]#, "SELECT * FROM jratio"]
     for query in query_list:
-        df = pd.read_sql(query, kb_conn, index_col='date')
+        df = pd.read_sql(query, kb_conn, index_col='date', parse_dates={'date', "%Y-%m"})
         # query = conn.execute(query)
         # cols = [column[0] for column in query.description]
         # df= pd.DataFrame.from_records(
         #             data = query.fetchall(), 
         #             columns = cols
         #     )
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        #df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
