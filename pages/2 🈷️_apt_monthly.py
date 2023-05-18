@@ -669,7 +669,6 @@ if __name__ == "__main__":
 
     not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[0]
-    st.dataframe(not_sell_apt)
     un_df = not_sell_list[1]
     #in_df = oindex_list[4]
     
