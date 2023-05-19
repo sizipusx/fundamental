@@ -849,6 +849,7 @@ if __name__ == "__main__":
     s_df, s_maedo, s_maesu, js_df, js_su, js_go, index_df = load_senti_data()
     data_load_state.text("Data retrieve Done!")
     #마지막 주
+    st.dataframe(omdf)
     kb_last_week = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m.%d')
     one_last_week = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m.%d')
     with st.expander("See Data Update"):
