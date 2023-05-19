@@ -118,18 +118,19 @@ def get_gsheet_index():
     index_list = []
     query_list = ["select * from kbm", "select * from kbj", "select * from onem",  "select * from onej"]
     for query in query_list:
-        query = conn.execute(query)
-        cols = [column[0] for column in query.description]
-        df= pd.DataFrame.from_records(
-                    data = query.fetchall(), 
-                    columns = cols
-            )
-        df = df.set_index(keys='날짜')
-        df.index.name = 'date'
-        df.index = df.index.str.strip()
-        st.dataframe(df)
-        st.write(df.info())
-        df.index = pd.to_datetime(df.index).date
+        df = pd.read_sql(query, conn, index_col='date', parse_dates={'date', "%Y-%m-%d"})
+        # query = conn.execute(query)
+        # cols = [column[0] for column in query.description]
+        # df= pd.DataFrame.from_records(
+        #             data = query.fetchall(), 
+        #             columns = cols
+        #     )
+        # df = df.set_index(keys='날짜')
+        # df.index.name = 'date'
+        # df.index = df.index.str.strip()
+        # st.dataframe(df)
+        # st.write(df.info())
+        # df.index = pd.to_datetime(df.index).date
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
@@ -183,18 +184,19 @@ def aggrid_interactive_table(df: pd.DataFrame):
 @st.cache_data(ttl=datetime.timedelta(days=5))
 def load_senti_data():
     #2022.9.25 db에서 읽어오기
-    conn = create_connection(weekly_db_path)
+    senti_conn = create_connection(weekly_db_path)
     senti_list = []
     senti_query_list = ["select * from kbs", "select * from kbjs"]
     for query in senti_query_list:
-        query = conn.execute(query)
-        cols = [column[0] for column in query.description]
-        df= pd.DataFrame.from_records(
-                    data = query.fetchall(), 
-                    columns = cols
-            )
-        df = df.set_index(keys='날짜')
-        df.index = pd.to_datetime(df.index).date
+        df = pd.read_sql(query, senti_conn, index_col='date', parse_dates={'date', "%Y-%m"})
+        # query = conn.execute(query)
+        # cols = [column[0] for column in query.description]
+        # df= pd.DataFrame.from_records(
+        #             data = query.fetchall(), 
+        #             columns = cols
+        #     )
+        # df = df.set_index(keys='날짜')
+        # df.index = pd.to_datetime(df.index).date
         df = df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         senti_list.append(df)
