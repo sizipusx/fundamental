@@ -129,7 +129,7 @@ def get_gsheet_index():
         df.index = df.index.str.strip()
         st.dataframe(df)
         st.write(df.info())
-        df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
+        df.index = pd.to_datetime(df.index).date
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
         df = df.round(decimals=2)
         index_list.append(df)
