@@ -13,7 +13,6 @@ from pandas.io.formats import style
 
 import streamlit as st
 import json
-from pandas.io.json import json_normalize
 from urllib.request import urlopen
 
 import plotly.express as px
