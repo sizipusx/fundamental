@@ -118,7 +118,7 @@ def get_gsheet_index():
     index_list = []
     query_list = ["select * from kbm", "select * from kbj", "select * from onem",  "select * from onej"]
     for query in query_list:
-        df = pd.read_sql(query, conn, index_col='date', parse_dates={'date', "%Y-%m-%d"})
+        df = pd.read_sql(query, conn, index_col='날짜', parse_dates={'날짜', "%Y-%m-%d"})
         # query = conn.execute(query)
         # cols = [column[0] for column in query.description]
         # df= pd.DataFrame.from_records(
@@ -188,7 +188,7 @@ def load_senti_data():
     senti_list = []
     senti_query_list = ["select * from kbs", "select * from kbjs"]
     for query in senti_query_list:
-        df = pd.read_sql(query, senti_conn, index_col='date', parse_dates={'date', "%Y-%m"})
+        df = pd.read_sql(query, senti_conn, index_col='날짜', parse_dates={'날짜', "%Y-%m"})
         # query = conn.execute(query)
         # cols = [column[0] for column in query.description]
         # df= pd.DataFrame.from_records(
