@@ -76,7 +76,7 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
     print(jo)
     df = pd.json_normalize(jo['StatisticSearch']['row'])
     if cycle_type != 'Q':
-        df['TIME'] = df['TIME'] + '0101'
+        df['TIME'] = df['TIME'] #+ '0101'
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
     return df
 
