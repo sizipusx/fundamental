@@ -51,7 +51,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             #st.subheader(input_ticker)
-            x_data = df1.index
+            x_data = df2.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
@@ -84,7 +84,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
         with col2:
                 st.write("")
         with col3: 
-            x_data = df1.index
+            x_data = df3.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
