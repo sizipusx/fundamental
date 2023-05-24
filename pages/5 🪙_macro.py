@@ -88,7 +88,7 @@ def run(stat_ticker, fred_dict):
         if stat_ticker == '901Y009':
             item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
         elif stat_ticker == '721Y001':
-             item_symbols =  {'CD91':'721Y001/2010000', '국고채(1Y)':'721Y001/5030000','국고채(10Y)':'721Y001/5050000', '기준금리':'722Y001/0101000'} 
+             item_symbols =  {'CD91':'721Y001/2010000', '국고채(1Y)':'721Y001/5030000','국고채(10Y)':'721Y001/5050000'} 
         elif stat_ticker == '402Y014':
             item_symbols = {'수출금액지수':'403Y001/*AA','수입금액지수':'403Y003/*AA'}
         elif stat_ticker == '104Y014':
