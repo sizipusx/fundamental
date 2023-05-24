@@ -129,29 +129,29 @@ def run(stat_ticker, fred_dict):
             data_df = data_df.round(decimals=1)
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=2)
-            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
+            ec.ecos_monthly_chart("가계 신용", data_df, data_ch)
         elif stat_ticker == '721Y001': #장단기금리차
             data_df = data_df.astype(float).round(2)
             data_df.loc[:,"장단기금리차"] = round(data_df.loc[:,'국고채(10년)'] - data_df.loc[:,'국고채(3년)'],2)    
             data_df.loc[:,'color'] = np.where(data_df['장단기금리차']<0, 'red', 'blue')
-            ec.ecos_spread_chart(kor_exp, data_df)
+            ec.ecos_spread_chart("장단기금리차", data_df)
         elif stat_ticker == '104Y014':
-            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)
+            ec.ecos_monthly_chart("전체 여수신", data_df, data_ch)
             data_df.loc[:,'총수신(말잔)'] = data_df['예금은행 총수신(말잔)']+ data_df['비예금은행 총수신(말잔)']
             data_df.loc[:,'총대출(말잔)'] = data_df['예금은행 대출금(말잔)']+ data_df['비예금은행 대출금(말잔)']
             data_df.loc[:,'스프레드'] = data_df['총수신(말잔)']+ data_df['총대출(말잔)']
             sub_df = sub_df = data_df.iloc[:,4:]
             sub_ch = sub_df.pct_change()*100
             sub_ch = sub_ch.round(decimals=2)
-            ec.ecos_monthly_chart(kor_exp, sub_df, sub_ch)
+            ec.ecos_monthly_chart("여수신 스프레드", sub_df, sub_ch)
         elif stat_ticker == '121Y002':
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=2)
-            ec.ecos_monthly_chart(kor_exp, data_df, data_ch) 
+            ec.ecos_monthly_chart("여수신금리", data_df, data_ch) 
             data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
             data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, '#FFB8B1', '#E2F0CB')
-            ec.ecos_spread_chart(kor_exp, data_df)
+            ec.ecos_spread_chart("여수신금리", data_df)
         else:
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
