@@ -381,8 +381,8 @@ def ecos_spread_chart(input_ticker, df1):
     col1, col2, col3, col4 = st.columns(4)
     col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-1,3])
     col2.metric(label=item_list[1], value =df1.iloc[-1,1], delta=df1.iloc[-1,3])
-    col3.metric(label=item_list[2], value =df1.iloc[-1,3])
-    col4.metric(label=item_list[3], value =df1.iloc[-1,2])
+    col3.metric(label=item_list[2], value =df1.iloc[-1,2])
+    col4.metric(label=item_list[3], value =df1.iloc[-1,3])
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -390,9 +390,9 @@ def ecos_spread_chart(input_ticker, df1):
             x_data = df1.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_bar = [df1.columns[3]]
-            y_data_line = [df1.columns[0], df1.columns[1]]
-            y_data_color = [df1.columns[4]]
+            y_data_bar = [df1.columns[5]]
+            y_data_line = [df1.columns[0], df1.columns[2],  df1.columns[3]]
+            y_data_color = [df1.columns[8]]
 
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
@@ -405,7 +405,7 @@ def ecos_spread_chart(input_ticker, df1):
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}')
             fig.update_yaxes(title_text=input_ticker, range=[-max(df1.loc[:,y_data_line[1]]), max(df1.loc[:,y_data_line[1]])* 1.5], secondary_y = True)
-            fig.update_yaxes(title_text=df1.columns[3], secondary_y = False)
+            fig.update_yaxes(title_text=df1.columns[5], secondary_y = False)
             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(
@@ -459,9 +459,9 @@ def ecos_spread_chart(input_ticker, df1):
             x_data = df1.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-            y_data_bar = [df1.columns[3]]
-            y_data_line = [df1.columns[0], df1.columns[1], df1.columns[2]]
-            y_data_color = [df1.columns[4]]
+            y_data_bar = [df1.columns[4]]
+            y_data_line = [df1.columns[0], df1.columns[1], df1.columns[3]]
+            y_data_color = [df1.columns[7]]
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
                                             text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
@@ -472,7 +472,7 @@ def ecos_spread_chart(input_ticker, df1):
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
             fig.update_yaxes(title_text=input_ticker, range=[-max(df1.loc[:,y_data_line[0]]), max(df1.loc[:,y_data_line[0]])* 1.5], showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
-            fig.update_yaxes(title_text=df1.columns[3], showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(title_text=df1.columns[4], showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(
                                 showlegend=True,
