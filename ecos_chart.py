@@ -388,7 +388,7 @@ def ecos_spread_chart(input_ticker, df1):
         with col1:
             #st.subheader(input_ticker)
             x_data = df1.index
-            titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+            titles = dict(text= input_ticker, x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df1.columns[4]]
             y_data_line = [df1.columns[0], df1.columns[2],  df1.columns[3]]
@@ -457,7 +457,7 @@ def ecos_spread_chart(input_ticker, df1):
                 st.write("")
         with col3: 
             x_data = df1.index
-            titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            titles = dict(text= input_ticker, x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = [df1.columns[5]]
             y_data_line = [df1.columns[1], df1.columns[2], df1.columns[3]]
