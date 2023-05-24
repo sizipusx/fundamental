@@ -8,7 +8,6 @@ import pandas as pd
 import requests
 import json
 import math
-from pandas.io.json import json_normalize
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots

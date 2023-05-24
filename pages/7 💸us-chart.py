@@ -10,7 +10,6 @@ import yfinance as yfin
 yfin.pdr_override()
 
 import FinanceDataReader as fdr
-from pandas.io.json import json_normalize
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
