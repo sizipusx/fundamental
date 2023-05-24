@@ -140,7 +140,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
                                             text= df3[y_data], textposition = 'inside', marker_color= color), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
-                fig.add_trace(go.Scatter(mode='lines+markers+text', 
+                fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data, x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
