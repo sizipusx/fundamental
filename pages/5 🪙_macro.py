@@ -156,7 +156,7 @@ def run(stat_ticker, fred_dict):
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=2)
-            ec.ecos_monthly_chart(kor_exp, data_df, data_ch)           
+            ec.ecos_monthly_chart("물가", data_df, data_ch)           
     else:
         if stat_ticker == "Market Interest":
             #Yield Curve
