@@ -381,8 +381,8 @@ def ecos_spread_chart(input_ticker, df1):
     col1, col2, col3, col4 = st.columns(4)
     col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-1,3])
     col2.metric(label=item_list[1], value =df1.iloc[-1,1], delta=df1.iloc[-1,3])
-    col3.metric(label=item_list[2], value =df1.iloc[-1,2])
-    col4.metric(label=item_list[3], value =df1.iloc[-1,3])
+    col3.metric(label=item_list[2], value =df1.iloc[-1,3])
+    col4.metric(label=item_list[3], value =df1.iloc[-1,2])
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
