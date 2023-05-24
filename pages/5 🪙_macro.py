@@ -88,7 +88,7 @@ def run(stat_ticker, fred_dict):
         if stat_ticker == '901Y009':
             item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
         elif stat_ticker == '721Y001':
-             item_symbols =  {'CD91':'721Y001/2010000', '국고채(1년)':'721Y001/5030000','국고채(10년)':'721Y001/5050000', '기준금리':'722Y001/0101000'} 
+             item_symbols =  {'CD91':'721Y001/2010000', '국고채(1Y)':'721Y001/5030000','국고채(10Y)':'721Y001/5050000', '기준금리':'722Y001/0101000'} 
         elif stat_ticker == '402Y014':
             item_symbols = {'수출금액지수':'403Y001/*AA','수입금액지수':'403Y003/*AA'}
         elif stat_ticker == '104Y014':
@@ -135,10 +135,10 @@ def run(stat_ticker, fred_dict):
             ec.ecos_monthly_chart("가계 신용", data_df, data_ch)
         elif stat_ticker == '721Y001': #장단기금리차
             data_df = data_df.astype(float).round(2)
-            data_df.loc[:,"금리차(10-1)"] = round(data_df.loc[:,'국고채(10년)'] - data_df.loc[:,'국고채(1년)'],2)
-            data_df.loc[:,"금리차(10-CD)"] = round(data_df.loc[:,'국고채(10년)'] - data_df.loc[:,'CD91'],2)    
-            data_df.loc[:,'color'] = np.where(data_df['금리차(10-1)']<0, 'red', 'blue')
-            data_df.loc[:,'color'] = np.where(data_df['금리차(10-CD)']<0, 'red', 'blue')
+            data_df.loc[:,"금리차(10-CD)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'CD91'],2) 
+            data_df.loc[:,"금리차(10-1)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'국고채(1Y)'],2)
+            data_df.loc[:,'color1'] = np.where(data_df['금리차(10-CD)']<0, 'red', 'blue')
+            data_df.loc[:,'color2'] = np.where(data_df['금리차(10-1)']<0, 'red', 'blue')
             ec.ecos_spread_chart("장단기금리차", data_df)
         elif stat_ticker == '104Y014':
             ec.ecos_monthly_chart("전체 여수신", data_df, data_ch)
