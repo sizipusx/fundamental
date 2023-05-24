@@ -80,7 +80,7 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
     return df
 
-def run(stat_ticker, fred_dict):
+def run(stat_name, stat_ticker, fred_dict):
     start_date = "200010"
     end_date = kor_time.strftime('%Y%m')
     cycle_type = "M"
@@ -132,14 +132,14 @@ def run(stat_ticker, fred_dict):
             data_df = data_df.round(decimals=1)
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=2)
-            ec.ecos_monthly_chart("가계 신용", data_df, data_ch)
+            ec.ecos_monthly_chart(stat_name, data_df, data_ch)
         elif stat_ticker == '721Y001': #장단기금리차
             data_df = data_df.astype(float).round(2)
             data_df.loc[:,"금리차(10-CD)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'CD91'],2) 
             data_df.loc[:,"금리차(10-1)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'국고채(1Y)'],2)
             data_df.loc[:,'color1'] = np.where(data_df['금리차(10-CD)']<0, 'red', 'blue')
             data_df.loc[:,'color2'] = np.where(data_df['금리차(10-1)']<0, 'red', 'blue')
-            ec.ecos_spread_chart("장단기금리차", data_df)
+            ec.ecos_spread_chart(stat_name, data_df)
         elif stat_ticker == '104Y014':
             ec.ecos_monthly_chart("전체 여수신", data_df, data_ch)
             data_df.loc[:,'총수신(말잔)'] = data_df['예금은행 총수신(말잔)']+ data_df['비예금은행 총수신(말잔)']
@@ -148,7 +148,7 @@ def run(stat_ticker, fred_dict):
             sub_df = sub_df = data_df.iloc[:,4:]
             sub_ch = sub_df.pct_change()*100
             sub_ch = sub_ch.round(decimals=2)
-            ec.ecos_monthly_chart("여수신 스프레드", sub_df, sub_ch)
+            ec.ecos_monthly_chart(stat_name, sub_df, sub_ch)
         elif stat_ticker == '121Y002':
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
@@ -156,12 +156,12 @@ def run(stat_ticker, fred_dict):
             ec.ecos_monthly_chart("여수신금리", data_df, data_ch) 
             data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
             data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, '#FFB8B1', '#E2F0CB')
-            ec.ecos_spread_chart("여수신금리", data_df)
+            ec.ecos_spread_chart(stat_name, data_df)
         else:
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=2)
-            ec.ecos_monthly_chart("물가", data_df, data_ch)           
+            ec.ecos_monthly_chart(stat_name, data_df, data_ch)           
     else:
         if stat_ticker == "Market Interest":
             #Yield Curve
@@ -305,4 +305,4 @@ if __name__ == "__main__":
     submit = st.sidebar.button('Get Data')
 
     if submit:
-        run(stat_ticker, fred_dict)
+        run(stat_name, stat_ticker, fred_dict)
