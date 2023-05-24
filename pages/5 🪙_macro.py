@@ -115,7 +115,8 @@ def run(stat_ticker, fred_dict):
             tempdf = all_data.get(item_index_tickers[0])
             data_df.set_index(keys=tempdf['TIME'], inplace=True)
             data_df.index = pd.to_datetime(data_df.index)
-        except ValueError:
+        except Exception as e:
+            st.write(e)
             tempdf = all_data.get(item_index_tickers[0])
             data_df.set_index(keys=tempdf['TIME'], inplace=True)
             #ata_df.index = pd.to_datetime(data_df.index)
