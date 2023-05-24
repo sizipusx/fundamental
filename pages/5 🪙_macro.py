@@ -4,7 +4,6 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import streamlit as st
-from pandas.io.json import json_normalize
 import numpy as np
 #from tqdm.notebook import tqdm as tn
 import time
