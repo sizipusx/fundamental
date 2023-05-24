@@ -114,9 +114,11 @@ def run(stat_ticker, fred_dict):
         try:
             tempdf = all_data.get(item_index_tickers[0])
             data_df.set_index(keys=tempdf['TIME'], inplace=True)
+            data_df.index = pd.to_datetime(data_df.index, format="%Y.%m")
         except ValueError:
             tempdf = all_data.get(item_index_tickers[2])
             data_df.set_index(keys=tempdf['TIME'], inplace=True)
+            data_df.index = pd.to_datetime(data_df.index, format="%Y.%m")
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
