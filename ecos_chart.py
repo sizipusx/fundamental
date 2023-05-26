@@ -798,5 +798,226 @@ def OECD_chart(stat_ticker, kor_exp, cli_df):
     #         st.write("")
     #     with col3:
 
+def ecos_one_two_window(kor_exp, total_df):
+    #column one
+    #marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
+    col1, col2, col3 = st.columns(3) 
+    col1.metric(label=total_df.columns[-1], value = str(total_df.iloc[-1,-1])+"%")
+    col2.metric(label=total_df.columns[-2], value =str(total_df.iloc[-1,-2])+"%")
+    col3.metric(label=total_df.columns[-3], value =str(total_df.iloc[-1,-3])+"%")
 
-
+    titles = dict(text= kor_exp, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x= total_df['TIME'], y= total_df['NBindex'],
+                        mode='lines', marker_color= marker_colors1[1],
+                        name='버핏지수(명목GDP)'))
+    fig.add_trace(go.Scatter(x= total_df['TIME'], y= total_df['RBindex'],
+                        mode='lines', marker_color= marker_colors1[2],
+                        name='버핏지수(실질GDP)'))
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+    fig.add_hline(y=100.0, line_width=2, line_dash='dot', line_color="red", annotation_text="100이상 과열", annotation_position="bottom right")
+    fig.add_hline(y=total_df['버핏지수(명목GDP)'], line_width=2, line_dash='dash', line_color=marker_colors1[1], annotation_text="명목평균", annotation_position="bottom right")
+    fig.add_hline(y=total_df['버핏지수(실질GDP)'], line_width=2, line_dash='dash', line_color=marker_colors1[2], annotation_text="실질평균", annotation_position="bottom right")
+    fig.update_layout(
+                        showlegend=True,
+                        legend=dict(
+                                    orientation="h",
+                                    yanchor="bottom",
+                                    y=1.02,
+                                    xanchor="right",
+                                    x=1
+                                ),
+                        xaxis=go.layout.XAxis(
+                        rangeselector=dict(
+                            buttons=list([
+                                dict(count=6,
+                                    label="6m",
+                                    step="month",
+                                    stepmode="backward"),
+                                dict(count=1,
+                                    label="YTD",
+                                    step="year",
+                                    stepmode="todate"),
+                                dict(count=1,
+                                    label="1y",
+                                    step="year",
+                                    stepmode="backward"),
+                                dict(count=5,
+                                    label="5y",
+                                    step="year",
+                                    stepmode="backward"),
+                                dict(count=10,
+                                    label="10y",
+                                    step="year",
+                                    stepmode="backward"),
+                                dict(step="all")
+                            ])
+                        ),
+                        rangeslider=dict(
+                            visible=False
+                        ),
+                        type="date",
+                        range=[kor_time - relativedelta(years=5), kor_time]
+                        )      
+                    )
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+    #columns two
+    # col1, col2, col3 = st.columns(3) 
+    # col1.metric(label=df.columns[0], value = df.iloc[-1,0])
+    # col2.metric(label=mom_df.columns[0]+"_MOM", value =str(mom_df.iloc[-1,0])+"%")
+    # col3.metric(label=yoy_df.columns[0]+"_YOY", value =str(yoy_df.iloc[-1,0])+"%")
+    # with st.container():
+    #     col1, col2, col3 = st.columns([30,2,30])
+    #     with col1:
+    #         # st.subheader(kor_exp)
+    #         x_data = df.index
+    #         title = kor_exp
+    #         titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    #         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    #         y_data_bar = [mom_df.columns[0]]
+    #         y_data_line= [df.columns[0]]
+    #         y_data_color = [mom_df.columns[-1]]
+    #         for y_data, color in zip(y_data_bar, y_data_color) :
+    #             fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data]*100, 
+    #                                         text= mom_df[y_data], textposition = 'inside', marker_color= mom_df.loc[:,color]), secondary_y = True) 
+            
+    #         for y_data, color in zip(y_data_line, marker_colors1): 
+    #             fig.add_trace(go.Scatter(mode='lines', 
+    #                                         name = y_data, x =  x_data, y= df.loc[:,y_data],
+    #                                         marker_color = color),
+    #                                         secondary_y = False)
+    #         #fig.update_traces(texttemplate='%{text:.3s}') 
+    #         fig.update_yaxes(title_text=ticker, secondary_y = False)
+    #         fig.update_yaxes(title_text='MOM', secondary_y = True)
+    #         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
+    #         if kor_exp == "개인소비지출":
+    #             tick_f = '%Y.%m'
+    #             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+    #         else: #기대인플레이션율
+    #             tick_f = '%Y.%m.%d'
+    #             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+    #         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = tick_f)
+    #         fig.update_layout(
+    #                             showlegend=True,
+    #                             legend=dict(
+    #                                         orientation="h",
+    #                                         yanchor="bottom",
+    #                                         y=1.02,
+    #                                         xanchor="right",
+    #                                         x=1
+    #                                     ),
+    #                             xaxis=go.layout.XAxis(
+    #                             rangeselector=dict(
+    #                                 buttons=list([
+    #                                     dict(count=6,
+    #                                         label="6m",
+    #                                         step="month",
+    #                                         stepmode="backward"),
+    #                                     dict(count=1,
+    #                                         label="YTD",
+    #                                         step="year",
+    #                                         stepmode="todate"),
+    #                                     dict(count=1,
+    #                                         label="1y",
+    #                                         step="year",
+    #                                         stepmode="backward"),
+    #                                     dict(count=5,
+    #                                         label="5y",
+    #                                         step="year",
+    #                                         stepmode="backward"),
+    #                                     dict(count=10,
+    #                                         label="10y",
+    #                                         step="year",
+    #                                         stepmode="backward"),
+    #                                     dict(step="all")
+    #                                 ])
+    #                             ),
+    #                             rangeslider=dict(
+    #                                 visible=False
+    #                             ),
+    #                             type="date",
+    #                             range=[kor_time - relativedelta(years=5), kor_time]
+    #                             )      
+    #                         )
+    #         fig.update_layout(hovermode="x unified")
+    #         fig.update_layout(template="myID")
+    #         st.plotly_chart(fig)
+    #     with col2:
+    #             st.write("")
+    #     with col3: 
+    #         #st.subheader(kor_exp)
+    #         x_data = df.index
+    #         title = kor_exp
+    #         titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    #         fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    #         y_data_bar = [yoy_df.columns[0]]
+    #         y_data_line= [df.columns[0]]
+    #         y_data_color = [yoy_df.columns[-1]]
+    #         for y_data, color in zip(y_data_bar, y_data_color) :
+    #             fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data]*100, 
+    #                                         text= yoy_df[y_data], textposition = 'inside', marker_color= yoy_df.loc[:,color]), secondary_y = True) 
+            
+    #         for y_data, color in zip(y_data_line, marker_colors1): 
+    #             fig.add_trace(go.Scatter(mode='lines', 
+    #                                         name = y_data, x =  x_data, y= df.loc[:,y_data],
+    #                                         marker_color = color),
+    #                                         secondary_y = False)
+    #         #fig.update_traces(texttemplate='%{text:.3s}') 
+    #         fig.update_yaxes(title_text=ticker, range=[0, max(df.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
+    #         #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
+    #         fig.update_yaxes(title_text='YOY', secondary_y = True)
+    #         fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="bp", secondary_y = True)
+    #         if kor_exp == "개인소비지출":
+    #             tick_f = '%Y.%m'
+    #             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="Billions of Dollars", secondary_y = False)
+    #         else:
+    #             tick_f = '%Y.%m.%d'
+    #             fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+    #         fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = tick_f)
+    #         fig.update_layout(
+    #                             showlegend=True,
+    #                             legend=dict(
+    #                                         orientation="h",
+    #                                         yanchor="bottom",
+    #                                         y=1.02,
+    #                                         xanchor="right",
+    #                                         x=1
+    #                                     ),
+    #                             xaxis=go.layout.XAxis(
+    #                             rangeselector=dict(
+    #                                 buttons=list([
+    #                                     dict(count=6,
+    #                                         label="6m",
+    #                                         step="month",
+    #                                         stepmode="backward"),
+    #                                     dict(count=1,
+    #                                         label="YTD",
+    #                                         step="year",
+    #                                         stepmode="todate"),
+    #                                     dict(count=1,
+    #                                         label="1y",
+    #                                         step="year",
+    #                                         stepmode="backward"),
+    #                                     dict(count=5,
+    #                                         label="5y",
+    #                                         step="year",
+    #                                         stepmode="backward"),
+    #                                     dict(count=10,
+    #                                         label="10y",
+    #                                         step="year",
+    #                                         stepmode="backward"),
+    #                                     dict(step="all")
+    #                                 ])
+    #                             ),
+    #                             rangeslider=dict(
+    #                                 visible=False
+    #                             ),
+    #                             type="date",
+    #                             range=[kor_time - relativedelta(years=5), kor_time]
+    #                             )      
+    #                         )
+    #         fig.update_layout(hovermode="x unified")
+    #         fig.update_layout(template="myID")
+    #         st.plotly_chart(fig)

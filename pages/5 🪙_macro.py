@@ -80,46 +80,93 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
     return df
 
+def make_df(item_symbols, start_date, end_date, cycle_type):
+    item_index_tickers = list(item_symbols.values())
+    all_data = {}
+    for ticker in item_index_tickers:
+        stat_code = ticker.split('/')[0]
+        stat_item = ticker.split('/')[1]
+        #stat_item = ticker.split('/')[2]
+        all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
+    #컬럼명 종목명으로 변경
+    data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
+    data_df.columns = item_symbols.keys()
+    #날짜 설정
+    try:
+        tempdf = all_data.get(item_index_tickers[0])
+        data_df.set_index(keys=tempdf['TIME'], inplace=True)
+        if cycle_type == "M":
+            data_df.index = pd.to_datetime(data_df.index, format="%Y%m").date
+    except Exception as e:
+        st.write(e)
+        tempdf = all_data.get(item_index_tickers[1])
+        data_df.set_index(keys=tempdf['TIME'], inplace=True)
+        if cycle_type == "M":
+            data_df.index = pd.to_datetime(data_df.index, format="%Y%m").date
+    return data_df
+
 def run(stat_name, stat_ticker, fred_dict):
-    start_date = "200010"
-    end_date = kor_time.strftime('%Y%m')
-    cycle_type = "M"
+    
     if source == 'Ecos':
         if stat_ticker == '901Y009':
             item_symbols = {'소비자물가지수':'901Y009/0','생산자물가지수':'404Y014/*AA'}
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
         elif stat_ticker == '721Y001':
-             item_symbols =  {'CD91':'721Y001/2010000', '국고채(1Y)':'721Y001/5030000','국고채(10Y)':'721Y001/5050000'} 
+            item_symbols =  {'CD91':'721Y001/2010000', '국고채(1Y)':'721Y001/5030000','국고채(10Y)':'721Y001/5050000'} 
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
         elif stat_ticker == '402Y014':
             item_symbols = {'수출금액지수':'403Y001/*AA','수입금액지수':'403Y003/*AA'}
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
         elif stat_ticker == '104Y014':
             item_symbols = {'예금은행 총수신(말잔)':'104Y013/BCB8', '비예금은행 총수신(말잔)':'111Y007/1000000', '예금은행 대출금(말잔)':'104Y016/BDCA1', '비예금은행 대출금(말잔)':'111Y009/1000000'}
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
         elif stat_ticker == '151Y005':
-        #가계 신용: 가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
+            #가계 신용: 가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
             item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
         elif stat_ticker == '722Y001':
             item_symbols = {'한국은행기준금리':'722Y001/0101000'}
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
+        elif stat_ticker == '200Y003': #월별 시가총액은 따로 받아야 함
+            item_symbols = {'명목GDP':'200Y003/1400','실질GDP':'200Y004/1400'} 
+            start_date = "200501"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "Q" #default
+            gdata_df = make_df(item_symbols, start_date, end_date, cycle_type)
+            gdata_df = gdata_df.fillna(method='ffill').astype(float).round(decimals=1)
+            gdata_ch = gdata_df.pct_change()*100
+            gdata_ch = gdata_ch.fillna(0).round(decimals=2)
+            gdata_df['RGDP'] = gdata_df['실질GDP'].rolling(window=4).sum().fillna(0)
+            gdata_df['NGDP'] = gdata_df['명목GDP'].rolling(window=4).sum().fillna(0)
+            #시가 총액 받기
+            item_symbols2 = {'KOSPI':'901Y014/1040000','KQ':'901Y014/2040000'} 
+            data_df = make_df(item_symbols2, start_date, end_date, cycle_type="M")
+            data_df.index = data_df.index.astype(str)
+            # Check the length of the string index
+            if len(data_df.index[0]) == 6:
+                # Convert 'YYYYMM' format to 'YYYY-MM' format
+                data_df.index = pd.to_datetime(data_df.index, format='%Y%m').strftime('%Y-%m')
+            data_df = data_df.astype(int)/1000000
+            data_df['TQ'] = data_df['KOSPI'].add(data_df['KQ'])
+            data_df = data_df.reset_index()
         else:
             item_symbols = {'대출금리(신)':'121Y006/BECBLA03', '예금금리(신)':'121Y002/BEABAA2', '기준금리':'722Y001/0101000'}
-        item_index_tickers = list(item_symbols.values())
-        all_data = {}
-        for ticker in item_index_tickers:
-            stat_code = ticker.split('/')[0]
-            stat_item = ticker.split('/')[1]
-            #stat_item = ticker.split('/')[2]
-            all_data[ticker] = query_ecos(stat_code, stat_item, start_date, end_date, cycle_type)    
-        #컬럼명 종목명으로 변경
-        data_df = pd.DataFrame({tic: data['DATA_VALUE'] for tic, data in all_data.items()})
-        data_df.columns = item_symbols.keys()
-        #날짜 설정
-        try:
-            tempdf = all_data.get(item_index_tickers[0])
-            data_df.set_index(keys=tempdf['TIME'], inplace=True)
-            data_df.index = pd.to_datetime(data_df.index, format="%Y%m").date
-        except Exception as e:
-            st.write(e)
-            tempdf = all_data.get(item_index_tickers[0])
-            data_df.set_index(keys=tempdf['TIME'], inplace=True)
-            data_df.index = pd.to_datetime(data_df.index, format="%Y%m").date
+            start_date = "200010"
+            end_date = kor_time.strftime('%Y%m')
+            cycle_type = "M" #default
+            data_df = make_df(item_symbols, start_date, end_date, cycle_type)
         with st.expander("See Raw Data"):
             try:
                 st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -157,6 +204,32 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
             data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, '#FFB8B1', '#E2F0CB')
             ec.ecos_spread_chart(stat_name, data_df)
+        elif stat_ticker == '121Y002':
+            # Create a new DataFrame with monthly index
+            df_monthly = pd.DataFrame(columns=['RGDP'])
+            # Iterate over each row in the quarterly DataFrame
+            for index, row in gdata_df.iterrows():
+                quarterly_index = index
+                year = int(quarterly_index[:4])
+                quarter = int(quarterly_index[-1])
+                # Generate monthly indexes for the quarter
+                start_month = 3 * quarter - 2
+                end_month = 3 * quarter
+                monthly_indexes = [f'{year}-{str(month).zfill(2)}' for month in range(start_month, end_month + 1)]
+                # Expand the quarterly value to monthly values
+                expanded_values = [row['RGDP']] * len(monthly_indexes)
+                expanded_values2 = [row['NGDP']] * len(monthly_indexes)
+                # Add the expanded values to the new DataFrame
+                df_monthly = df_monthly.append(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
+            # Sort the DataFrame by index
+            df_monthly.sort_index(inplace=True)
+            df_monthly = df_monthly.reset_index()
+            total_df = pd.merge(data_df, df_monthly, how='inner', left_on="TIME", right_on="index")
+            total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,2)
+            total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
+            total_df['NBindex'] = round(total_df['TQ']/total_df['NGDP']*100,2)
+            total_df = total_df.fillna(0)
+            ec.ecos_one_two_window(stat_name, total_df)
         else:
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
@@ -258,7 +331,8 @@ if __name__ == "__main__":
             index = 0,
             horizontal= True)
     
-    eco_dict = {"물가":"901Y009", "장단기금리":"721Y001", "수출입금액":"402Y014","전체여수신":"104Y014","가계신용":"151Y005", "은행 수신/대출 금리(신규)":"121Y002"} # "한국은행 기준금리":"722Y001", 
+    eco_dict = {"물가":"901Y009", "장단기금리":"721Y001", "가계신용":"151Y005", "전체여수신":"104Y014", "수출입금액":"402Y014", \
+                "은행 수신/대출 금리(신규)":"121Y002", "버핏지수":"200Y003"} # "한국은행 기준금리":"722Y001", 
     #fred_dict = {"수익률곡선":"YC","개인소비지출":"PCE", "기대인플레이션율":"T10YIE", "CPI":"CPIAUCSL", "Total Assets":"WALCL", "Leading Indicators OECD":"CLI"}
     
     fred_dict = {"Key Economic Indicators":{
