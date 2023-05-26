@@ -63,18 +63,20 @@ def query_ecos(stat_code, stat_item, start_date, end_date, cycle_type="Q"):
     end_date = end_date + "/"
     #item_no = stat_code.split('/')[1]
     item_no = stat_item
-
-    url = "http://ecos.bok.or.kr/api/StatisticSearch/" +  \
-        auth_key + req_type + lang + start_no + end_no + \
-        stat_code + cycle_type + start_date + end_date + item_no
-    print(url)
-    r = requests.get(url)
-    if '해당하는 데이터가 없습니다' in r.text:
-        return None
-    
-    jo = json.loads(r.text)
-    print(jo)
-    df = pd.json_normalize(jo['StatisticSearch']['row'])
+    try:
+        url = "http://ecos.bok.or.kr/api/StatisticSearch/" +  \
+            auth_key + req_type + lang + start_no + end_no + \
+            stat_code + cycle_type + start_date + end_date + item_no
+        print(url)
+        r = requests.get(url)
+        if '해당하는 데이터가 없습니다' in r.text:
+            return None
+        
+        jo = json.loads(r.text)
+        print(jo)
+        df = pd.json_normalize(jo['StatisticSearch']['row'])
+    except Exception as e:
+        st.write(e)
     if cycle_type != 'Q':
         df['TIME'] = df['TIME'] #+ '0101'
         df['TIME'] = df['TIME'].str.replace(r'(\d{4})(\d{2})(\d{2})(.*)', r'\1-\2-\3')
