@@ -808,10 +808,10 @@ def ecos_one_two_window(kor_exp, total_df):
 
     titles = dict(text= kor_exp, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x= total_df['TIME'], y= total_df['NBindex'],
+    fig.add_trace(go.Scatter(x= total_df.index, y= total_df['NBindex'],
                         mode='lines', marker_color= marker_colors1[1],
                         name='버핏지수(명목GDP)'))
-    fig.add_trace(go.Scatter(x= total_df['TIME'], y= total_df['RBindex'],
+    fig.add_trace(go.Scatter(x= total_df.index, y= total_df['RBindex'],
                         mode='lines', marker_color= marker_colors1[2],
                         name='버핏지수(실질GDP)'))
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
