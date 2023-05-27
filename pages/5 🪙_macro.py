@@ -196,7 +196,7 @@ def run(stat_name, stat_ticker, fred_dict):
                 expanded_values2 = [row['NGDP']] * len(monthly_indexes)
                 # Add the expanded values to the new DataFrame
                 try:
-                    df_monthly = df_monthly.concat(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
+                    df_monthly = df_monthly.append(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
                 except Exception as e:
                     st.error(e)
             # Sort the DataFrame by index
