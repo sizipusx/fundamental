@@ -237,9 +237,9 @@ def run(stat_name, stat_ticker, fred_dict):
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 if stat_ticker == '200Y003':
-                    st.dataframe(total_df)
+                    st.dataframe(total_df.loc[::-1])
                 else:
-                    st.dataframe(data_df)
+                    st.dataframe(data_df.loc[::-1])
         #세부 항목 조정
         if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
