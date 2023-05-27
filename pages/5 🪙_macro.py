@@ -229,6 +229,7 @@ def run(stat_name, stat_ticker, fred_dict):
             try:
                 if stat_ticker == '200Y003':
                     total_df = total_df.set_index(keys=total_df['TIME'])
+                    total_df = total_df.drop(['index'], axis=1)
                     st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
                 else:
