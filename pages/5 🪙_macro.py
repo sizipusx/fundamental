@@ -230,7 +230,7 @@ def run(stat_name, stat_ticker, fred_dict):
                     st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
                 else:
-                    st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                    st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 if stat_ticker == '200Y003':
