@@ -163,7 +163,7 @@ def run(stat_name, stat_ticker, fred_dict):
             elif end_date_month in ['10', '11', '12']:
                 end_date= end_date_year+ 'Q4'
             gdata_df = make_df(item_symbols, start_date, end_date, cycle_type)
-            gdata_df = gdata_df.fillna(method='ffill').astype(float).round(decimals=1)
+            gdata_df = gdata_df.fillna(method='ffill').astype(float).round(decimals=1)/1000
             gdata_ch = gdata_df.pct_change()*100
             gdata_ch = gdata_ch.fillna(0).round(decimals=1)
             gdata_df['RGDP'] = gdata_df['실질GDP'].rolling(window=4).sum().fillna(0)
