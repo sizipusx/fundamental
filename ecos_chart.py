@@ -139,7 +139,7 @@ def ecos_monthly_chart(input_ticker, df1, df2):
                 y_data_bar.append(item)
                 y_data_line.append(item)
 
-            for y_data, color in zip(y_data_bar, marker_colors2) :
+            for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df3.loc[:,y_data], 
                                             text= df3[y_data], textposition = 'inside', marker_color= df3.loc[:,color]), secondary_y = True) 
             
