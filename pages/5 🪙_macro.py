@@ -98,14 +98,14 @@ def make_df(item_symbols, start_date, end_date, cycle_type):
     try:
         tempdf = all_data.get(item_index_tickers[1])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
-        if cycle_type == "M":
-            data_df.index = pd.to_datetime(data_df.index, format="%Y%m")
+        # if cycle_type == "M":
+        #     data_df.index = pd.to_datetime(data_df.index, format="%Y%m")
     except ValueError as e:
         st.write(e)
         tempdf = all_data.get(item_index_tickers[0])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
-        if cycle_type == "M":
-            data_df.index = pd.to_datetime(data_df.index, format="%Y%m")
+        # if cycle_type == "M":
+        #     data_df.index = pd.to_datetime(data_df.index, format="%Y%m")
     return data_df
 
 def run(stat_name, stat_ticker, fred_dict):
@@ -208,7 +208,10 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df = data_df.reset_index()
             st.dataframe(df_monthly)
             st.dataframe(data_df)
-            total_df = pd.merge(data_df, df_monthly, how='inner', left_on = "TIME", right_on="index")
+            try:
+                total_df = pd.merge(data_df, df_monthly, how='inner', left_on = "TIME", right_on="index")
+            except Exception as e:
+                st.write(e)
             total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,2)
             total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
             total_df['NBindex'] = round(total_df['TQ']/total_df['NGDP']*100,2)
