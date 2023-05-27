@@ -144,9 +144,18 @@ def run(stat_name, stat_ticker, fred_dict):
             cycle_type = "M" #default
         elif stat_ticker == '200Y003': #월별 시가총액은 따로 받아야 함
             item_symbols = {'명목GDP':'200Y003/1400','실질GDP':'200Y004/1400'} 
-            start_date = "200501"
-            end_date = kor_time.strftime('%Y%m')
+            start_date = "2005Q1"
             cycle_type = "Q" #default
+            end_date_year = kor_time.strftime('%Y')
+            end_date_month = kor_time.strftime('%m')
+            if end_date_month in ['01', '02', '03']:
+                end_date= end_date_year+ 'Q1'
+            elif end_date_month in ['04', '05', '06']:
+                end_date= end_date_year+ 'Q2'
+            elif end_date_month in ['07', '08', '09']:
+                end_date= end_date_year+ 'Q3'
+            elif end_date_month in ['10', '11', '12']:
+                end_date= end_date_year+ 'Q4'
             gdata_df = make_df(item_symbols, start_date, end_date, cycle_type)
             gdata_df = gdata_df.fillna(method='ffill').astype(float).round(decimals=1)
             gdata_ch = gdata_df.pct_change()*100
@@ -155,6 +164,8 @@ def run(stat_name, stat_ticker, fred_dict):
             gdata_df['NGDP'] = gdata_df['명목GDP'].rolling(window=4).sum().fillna(0)
             #시가 총액 받기
             item_symbols2 = {'KOSPI':'901Y014/1040000','KQ':'901Y014/2040000'} 
+            start_date = "200501"
+            end_date = kor_time.strftime('%Y%m')
             data_df = make_df(item_symbols2, start_date, end_date, cycle_type="M")
             data_df.index = data_df.index.astype(str)
             # Check the length of the string index
