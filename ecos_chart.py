@@ -810,10 +810,10 @@ def ecos_one_two_window(kor_exp, total_df):
     fig = go.Figure()
     fig.add_trace(go.Scatter(x= total_df.index, y= total_df['NBindex'],
                         mode='lines', marker_color= marker_colors1[1],
-                        name='버핏지수(명목GDP)', size_max=60))
+                        name='버핏지수(명목GDP)'))
     fig.add_trace(go.Scatter(x= total_df.index, y= total_df['RBindex'],
                         mode='lines', marker_color= marker_colors1[2],
-                        name='버핏지수(실질GDP)', size_max=60))
+                        name='버핏지수(실질GDP)'))
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
     fig.add_hline(y=100.0, line_width=2, line_dash='dot', line_color="red", annotation_text="100이상 과열", annotation_position="bottom right")
     fig.add_hline(y=round(total_df['NBindex'].mean(),1), line_width=1, line_dash='solid', line_color=marker_colors1[1], annotation_text="명목평균", annotation_position="bottom right")
