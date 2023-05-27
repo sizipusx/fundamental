@@ -237,12 +237,11 @@ def fred_monthly_chart(ticker, kor_exp, df):
             y_data_line= [df.columns[0]]
             y_data_color = [mom_df.columns[-1]]
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = mom_df.loc[:,y_data]*100, 
+                fig.add_trace(go.Bar(name = y_data+"(R)", x = x_data, y = mom_df.loc[:,y_data]*100, 
                                             text= mom_df[y_data], textposition = 'inside', marker_color= mom_df.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
-                fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= df.loc[:,y_data],
+                fig.add_trace(go.Scatter(mode='lines', name = y_data+'(L)', x =  x_data, y= df.loc[:,y_data],
                                             marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}') 
@@ -313,12 +312,12 @@ def fred_monthly_chart(ticker, kor_exp, df):
             y_data_line= [df.columns[0]]
             y_data_color = [yoy_df.columns[-1]]
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = yoy_df.loc[:,y_data]*100, 
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = yoy_df.loc[:,y_data]*100, 
                                             text= yoy_df[y_data], textposition = 'inside', marker_color= yoy_df.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= df.loc[:,y_data],
+                                            name = y_data+'(L)', x =  x_data, y= df.loc[:,y_data],
                                             marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}') 
@@ -398,17 +397,17 @@ def ecos_spread_chart(input_ticker, df1):
 
             for y_data, color in zip(y_data_bar, y_data_color) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
-                                            text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = False) 
+                                            text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data, x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
-                                            secondary_y = True)
+                                            secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}')
-            fig.update_yaxes(title_text=input_ticker, range=[-max(df1.loc[:,y_data_line[1]]), max(df1.loc[:,y_data_line[1]])* 1.5], secondary_y = True)
-            fig.update_yaxes(title_text=df1.columns[3], secondary_y = False)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(title_text=input_ticker, range=[-max(df1.loc[:,y_data_line[1]]), max(df1.loc[:,y_data_line[1]])* 1.5], secondary_y = False)
+            fig.update_yaxes(title_text=df1.columns[3], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True,  zerolinecolor='pink', ticksuffix="%", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
             fig.update_layout(
                                 showlegend=True,
