@@ -866,9 +866,9 @@ def ecos_one_two_window(kor_exp, total_df):
     st.plotly_chart(fig, use_container_width=True)
     #columns two: 명목GDP, 실질
     col1, col2, col3 = st.columns(3) 
-    col1.metric(label=total_df.columns[2], value = str(round(total_df.iloc[-1,2]/1000,1))+"조원")
-    col2.metric(label=total_df.columns[4], value = str(round(total_df.iloc[-1,4]/1000,1))+"조원")
-    col3.metric(label=total_df.columns[3], value = str(round(total_df.iloc[-1,3]/1000,1))+"조원")
+    col1.metric(label=total_df.columns[2], value = str(round(total_df.iloc[-1,2],1))+"조원")
+    col2.metric(label=total_df.columns[4], value = str(round(total_df.iloc[-1,4],1))+"조원")
+    col3.metric(label=total_df.columns[3], value = str(round(total_df.iloc[-1,3],1))+"조원")
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
