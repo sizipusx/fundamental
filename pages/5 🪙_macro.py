@@ -212,6 +212,7 @@ def run(stat_name, stat_ticker, fred_dict):
             total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
             total_df['NBindex'] = round(total_df['TQ']/total_df['NGDP']*100,2)
             total_df = total_df.fillna(0)
+            total_df = total_df.dropna()
             st.write(round(total_df['NBindex'].mean(),1))
             st.write(round(total_df['RBindex'].mean(),1))
         else:
