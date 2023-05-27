@@ -196,7 +196,7 @@ def run(stat_name, stat_ticker, fred_dict):
                 expanded_values2 = [row['NGDP']] * len(monthly_indexes)
                 # Add the expanded values to the new DataFrame
                 try:
-                    df_monthly = df_monthly.append(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
+                    df_monthly = df_monthly.concat(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
                 except Exception as e:
                     st.error(e)
             # Sort the DataFrame by index
@@ -218,8 +218,13 @@ def run(stat_name, stat_ticker, fred_dict):
         #Raw 데이터 보기           
         with st.expander("See Raw Data"):
             try:
-                st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                if stat_ticker == '200Y003':
+                    total_df = total_df.set_index(keys=total_df['TIME'])
+                    st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                else:
+                    st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                             .format(precision=2, na_rep='MISSING', thousands=","))
