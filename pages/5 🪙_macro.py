@@ -181,6 +181,7 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df = data_df.astype(int)/1000000
             data_df['TQ'] = data_df['KOSPI'].add(data_df['KQ'])
             st.dataframe(data_df)
+            st.dataframe(gdata_df)
             # Create a new DataFrame with monthly index
             df_monthly = pd.DataFrame(columns=['RGDP'])
             # Iterate over each row in the quarterly DataFrame
@@ -196,8 +197,9 @@ def run(stat_name, stat_ticker, fred_dict):
                     # Expand the quarterly value to monthly values
                     expanded_values = [row['RGDP']] * len(monthly_indexes)
                     expanded_values2 = [row['NGDP']] * len(monthly_indexes)
+                    q_df = pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes)
                     # Add the expanded values to the new DataFrame
-                    df_monthly = df_monthly.append(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
+                    df_monthly = pd.concat([df_monthly, q_df])
             except Exception as e:
                 st.write(e)
             # Sort the DataFrame by index
