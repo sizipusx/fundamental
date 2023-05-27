@@ -236,8 +236,10 @@ def run(stat_name, stat_ticker, fred_dict):
                     st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
-                st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                if stat_ticker == '200Y003':
+                    st.dataframe(total_df)
+                else:
+                    st.dataframe(data_df)
         #세부 항목 조정
         if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
