@@ -96,13 +96,13 @@ def make_df(item_symbols, start_date, end_date, cycle_type):
     data_df.columns = item_symbols.keys()
     #날짜 설정
     try:
-        tempdf = all_data.get(item_index_tickers[0])
+        tempdf = all_data.get(item_index_tickers[1])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
         if cycle_type == "M":
             data_df.index = pd.to_datetime(data_df.index, format="%Y%m").date
     except ValueError as e:
         st.write(e)
-        tempdf = all_data.get(item_index_tickers[1])
+        tempdf = all_data.get(item_index_tickers[0])
         data_df.set_index(keys=tempdf['TIME'], inplace=True)
         if cycle_type == "M":
             data_df.index = pd.to_datetime(data_df.index, format="%Y%m").date
