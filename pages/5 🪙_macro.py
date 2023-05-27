@@ -214,8 +214,6 @@ def run(stat_name, stat_ticker, fred_dict):
             total_df = total_df.fillna(0)
             total_df.replace([np.inf, -np.inf], np.nan, inplace=True)
             total_df.dropna(inplace=True)
-            st.write(round(total_df['NBindex'].mean(),1))
-            st.write(round(total_df['RBindex'].mean(),1))
         else:
             item_symbols = {'대출금리(신)':'121Y006/BECBLA03', '예금금리(신)':'121Y002/BEABAA2', '기준금리':'722Y001/0101000'}
             start_date = "200010"
