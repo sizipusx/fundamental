@@ -178,7 +178,7 @@ def run(stat_name, stat_ticker, fred_dict):
             if len(data_df.index[0]) == 6:
                 # Convert 'YYYYMM' format to 'YYYY-MM' format
                 data_df.index = pd.to_datetime(data_df.index, format='%Y%m').strftime('%Y-%m')
-            data_df = data_df.astype(int)/1000000
+            data_df = data_df.astype(int)/1000000000
             data_df['TQ'] = data_df['KOSPI'].add(data_df['KQ'])
             # Create a new DataFrame with monthly index
             df_monthly = pd.DataFrame(columns=['RGDP'])
