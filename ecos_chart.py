@@ -42,7 +42,6 @@ def ecos_monthly_chart(input_ticker, df1, df2):
     df3 = df3.round(decimals=1)
     df3.loc[:,'color'] = np.where(df3.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
     df2.loc[:,'color'] = np.where(df2.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
-    st.dataframe(df3)
     item_list = df1.columns.values.tolist()
     col1, col2, col3, col4 = st.columns(4)
     col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-2,0])
