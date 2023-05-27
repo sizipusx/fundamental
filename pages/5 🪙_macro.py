@@ -174,7 +174,6 @@ def run(stat_name, stat_ticker, fred_dict):
                 data_df.index = pd.to_datetime(data_df.index, format='%Y%m').strftime('%Y-%m')
             data_df = data_df.astype(int)/1000000
             data_df['TQ'] = data_df['KOSPI'].add(data_df['KQ'])
-            data_df = data_df.reset_index()
         else:
             item_symbols = {'대출금리(신)':'121Y006/BECBLA03', '예금금리(신)':'121Y002/BEABAA2', '기준금리':'722Y001/0101000'}
             start_date = "200010"
@@ -238,6 +237,7 @@ def run(stat_name, stat_ticker, fred_dict):
             # Sort the DataFrame by index
             df_monthly.sort_index(inplace=True)
             df_monthly = df_monthly.reset_index()
+            data_df = data_df.reset_index()
             total_df = pd.merge(data_df, df_monthly, how='inner', left_on="TIME", right_on="index")
             total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,2)
             total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
