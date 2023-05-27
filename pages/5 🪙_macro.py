@@ -248,8 +248,8 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df = data_df.astype(float).round(2)
             data_df.loc[:,"금리차(10-CD)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'CD91'],2) 
             data_df.loc[:,"금리차(10-1)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'국고채(1Y)'],2)
-            data_df.loc[:,'color1'] = np.where(data_df['금리차(10-CD)']<0, 'red', 'blue')
-            data_df.loc[:,'color2'] = np.where(data_df['금리차(10-1)']<0, 'red', 'blue')
+            data_df.loc[:,'color1'] = np.where(data_df['금리차(10-CD)']<0, '#FFB8B1', '#E2F0CB')
+            data_df.loc[:,'color2'] = np.where(data_df['금리차(10-1)']<0, '#FFB8B1', '#E2F0CB')
             ec.ecos_spread_chart(stat_name, data_df)
         elif stat_ticker == '104Y014':
             ec.ecos_monthly_chart("전체 여수신", data_df, data_ch)
