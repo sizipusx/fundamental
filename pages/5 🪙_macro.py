@@ -180,25 +180,26 @@ def run(stat_name, stat_ticker, fred_dict):
                 data_df.index = pd.to_datetime(data_df.index, format='%Y%m').strftime('%Y-%m')
             data_df = data_df.astype(int)/1000000
             data_df['TQ'] = data_df['KOSPI'].add(data_df['KQ'])
+            st.dataframe(data_df)
             # Create a new DataFrame with monthly index
             df_monthly = pd.DataFrame(columns=['RGDP'])
             # Iterate over each row in the quarterly DataFrame
-            for index, row in gdata_df.iterrows():
-                quarterly_index = index
-                year = int(quarterly_index[:4])
-                quarter = int(quarterly_index[-1])
-                # Generate monthly indexes for the quarter
-                start_month = 3 * quarter - 2
-                end_month = 3 * quarter
-                monthly_indexes = [f'{year}-{str(month).zfill(2)}' for month in range(start_month, end_month + 1)]
-                # Expand the quarterly value to monthly values
-                expanded_values = [row['RGDP']] * len(monthly_indexes)
-                expanded_values2 = [row['NGDP']] * len(monthly_indexes)
-                # Add the expanded values to the new DataFrame
-                try:
-                    df_monthly = df_monthly.concat(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
-                except Exception as e:
-                    st.write(e)
+            try:
+                for index, row in gdata_df.iterrows():
+                    quarterly_index = index
+                    year = int(quarterly_index[:4])
+                    quarter = int(quarterly_index[-1])
+                    # Generate monthly indexes for the quarter
+                    start_month = 3 * quarter - 2
+                    end_month = 3 * quarter
+                    monthly_indexes = [f'{year}-{str(month).zfill(2)}' for month in range(start_month, end_month + 1)]
+                    # Expand the quarterly value to monthly values
+                    expanded_values = [row['RGDP']] * len(monthly_indexes)
+                    expanded_values2 = [row['NGDP']] * len(monthly_indexes)
+                    # Add the expanded values to the new DataFrame
+                    df_monthly = df_monthly.append(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
+            except Exception as e:
+                st.write(e)
             # Sort the DataFrame by index
             df_monthly.sort_index(inplace=True)
             df_monthly = df_monthly.reset_index()
