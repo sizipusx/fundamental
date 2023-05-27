@@ -165,7 +165,7 @@ def run(stat_name, stat_ticker, fred_dict):
             gdata_df = make_df(item_symbols, start_date, end_date, cycle_type)
             gdata_df = gdata_df.fillna(method='ffill').astype(float).round(decimals=1)
             gdata_ch = gdata_df.pct_change()*100
-            gdata_ch = gdata_ch.fillna(0).round(decimals=2)
+            gdata_ch = gdata_ch.fillna(0).round(decimals=1)
             gdata_df['RGDP'] = gdata_df['실질GDP'].rolling(window=4).sum().fillna(0)
             gdata_df['NGDP'] = gdata_df['명목GDP'].rolling(window=4).sum().fillna(0)
             #시가 총액 받기
@@ -208,9 +208,9 @@ def run(stat_name, stat_ticker, fred_dict):
                 total_df = pd.merge(data_df, df_monthly, how='inner', left_on = "TIME", right_on="index")
             except Exception as e:
                 st.write(e)
-            total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,2)
-            total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
-            total_df['NBindex'] = round(total_df['TQ']/total_df['NGDP']*100,2)
+            total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,1)
+            total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,1)
+            total_df['NBindex'] = round(total_df['TQ']/total_df['NGDP']*100,1)
             total_df = total_df.fillna(0)
             total_df.replace([np.inf, -np.inf], np.nan, inplace=True)
             total_df.dropna(inplace=True)
@@ -242,7 +242,7 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df = data_df.astype(float)/1000
             data_df = data_df.round(decimals=1)
             data_ch = data_df.pct_change()*100
-            data_ch = data_ch.round(decimals=2)
+            data_ch = data_ch.round(decimals=1)
             ec.ecos_monthly_chart(stat_name, data_df, data_ch)
         elif stat_ticker == '721Y001': #장단기금리차
             data_df = data_df.astype(float).round(2)
@@ -258,12 +258,12 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df.loc[:,'스프레드'] = data_df['총수신(말잔)']+ data_df['총대출(말잔)']
             sub_df = sub_df = data_df.iloc[:,4:]
             sub_ch = sub_df.pct_change()*100
-            sub_ch = sub_ch.round(decimals=2)
+            sub_ch = sub_ch.round(decimals=1)
             ec.ecos_monthly_chart(stat_name, sub_df, sub_ch)
         elif stat_ticker == '121Y002':
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
-            data_ch = data_ch.round(decimals=2)
+            data_ch = data_ch.round(decimals=1)
             ec.ecos_monthly_chart("여수신금리", data_df, data_ch) 
             data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
             data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, '#FFB8B1', '#E2F0CB')
@@ -273,7 +273,7 @@ def run(stat_name, stat_ticker, fred_dict):
         else:
             data_df = data_df.astype(float)
             data_ch = data_df.pct_change()*100
-            data_ch = data_ch.round(decimals=2)
+            data_ch = data_ch.round(decimals=1)
             ec.ecos_monthly_chart(stat_name, data_df, data_ch)
 
 ############################################### 미국 macro  ########################################################        
