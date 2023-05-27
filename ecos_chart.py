@@ -816,8 +816,8 @@ def ecos_one_two_window(kor_exp, total_df):
                         name='버핏지수(실질GDP)'))
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
     fig.add_hline(y=100.0, line_width=2, line_dash='dot', line_color="red", annotation_text="100이상 과열", annotation_position="bottom right")
-    fig.add_hline(y=round(total_df['NBindex'].mean(),1), line_width=2, line_dash='dash', line_color=marker_colors1[1], annotation_text="명목평균", annotation_position="bottom right")
-    fig.add_hline(y=round(total_df['RBindex'].mean(),1), line_width=2, line_dash='dash', line_color=marker_colors1[2], annotation_text="실질평균", annotation_position="bottom right")
+    fig.add_hline(y=round(total_df['NBindex'].mean(),1), line_width=1, line_dash='solid', line_color=marker_colors1[1], annotation_text="명목평균", annotation_position="bottom right")
+    fig.add_hline(y=round(total_df['RBindex'].mean(),1), line_width=1, line_dash='solid', line_color=marker_colors1[2], annotation_text="실질평균", annotation_position="bottom right")
     fig.update_layout(
                         showlegend=True,
                         legend=dict(
