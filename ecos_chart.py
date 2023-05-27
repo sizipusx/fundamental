@@ -880,12 +880,12 @@ def ecos_one_two_window(kor_exp, total_df):
             y_data_bar = [total_df.columns[2], total_df.columns[4]]
             y_data_line= [total_df.columns[-1]]
             for y_data, color in zip(y_data_bar, marker_colors2) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = total_df.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data+'(L)', x = x_data, y = total_df.loc[:,y_data], 
                                             text= round(total_df[y_data],1), textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= total_df.loc[:,y_data],
+                                            name = y_data+'(R)', x =  x_data, y= total_df.loc[:,y_data],
                                             marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
@@ -950,12 +950,12 @@ def ecos_one_two_window(kor_exp, total_df):
             y_data_bar = [total_df.columns[2], total_df.columns[3]]
             y_data_line= [total_df.columns[-2]]
             for y_data, color in zip(y_data_bar, marker_colors2) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = total_df.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data+'(L)', x = x_data, y = total_df.loc[:,y_data], 
                                             text= total_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors1): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= total_df.loc[:,y_data],
+                                            name = y_data+'(R)', x =  x_data, y= total_df.loc[:,y_data],
                                             marker_color = color),
                                             secondary_y = True)
             #fig.update_traces(texttemplate='%{text:.3s}') 
