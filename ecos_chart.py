@@ -32,6 +32,7 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 
+st.set_page_config(layout="wide")
 utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
