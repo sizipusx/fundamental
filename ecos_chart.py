@@ -863,7 +863,7 @@ def ecos_one_two_window(kor_exp, total_df):
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
-    #columns two
+    # #columns two
     # col1, col2, col3 = st.columns(3) 
     # col1.metric(label=df.columns[0], value = df.iloc[-1,0])
     # col2.metric(label=mom_df.columns[0]+"_MOM", value =str(mom_df.iloc[-1,0])+"%")
