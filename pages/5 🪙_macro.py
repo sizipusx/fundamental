@@ -217,7 +217,7 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df.loc[:,"여수신금리차"] = round(data_df.loc[:,'대출금리(신)'] - data_df.loc[:,'예금금리(신)'],2)
             data_df.loc[:,'color'] = np.where(data_df['여수신금리차']<0, '#FFB8B1', '#E2F0CB')
             ec.ecos_spread_chart(stat_name, data_df)
-        elif stat_ticker == '121Y002':
+        elif stat_ticker == '200Y003':
             # Create a new DataFrame with monthly index
             df_monthly = pd.DataFrame(columns=['RGDP'])
             # Iterate over each row in the quarterly DataFrame
