@@ -393,7 +393,7 @@ def ecos_spread_chart(input_ticker, df1):
             y_data_line = [df1.columns[0], df1.columns[2]]
             y_data_color = [df1.columns[5]]
 
-            for y_data, color in zip(y_data_bar, y_data_color) :
+            for y_data, color in zip(y_data_bar, marker_colors2) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
                                             text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = False) 
             
@@ -461,7 +461,7 @@ def ecos_spread_chart(input_ticker, df1):
             y_data_bar = [df1.columns[4]]
             y_data_line = [df1.columns[1], df1.columns[2]]
             y_data_color = [df1.columns[6]]
-            for y_data, color in zip(y_data_bar, y_data_color) :
+            for y_data, color in zip(y_data_bar, marker_colors2) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
                                             text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
@@ -865,9 +865,9 @@ def ecos_one_two_window(kor_exp, total_df):
     st.plotly_chart(fig, use_container_width=True)
     #columns two: 명목GDP, 실질
     col1, col2, col3 = st.columns(3) 
-    col1.metric(label=total_df.columns[2], value = str(total_df.iloc[-1,2]/1000)+"조원")
-    col2.metric(label=total_df.columns[4], value = str(total_df.iloc[-1,4]/1000)+"조원")
-    col3.metric(label=total_df.columns[3], value = str(total_df.iloc[-1,3]/1000)+"조원")
+    col1.metric(label=total_df.columns[2], value = str(round(total_df.iloc[-1,2]/1000,1))+"조원")
+    col2.metric(label=total_df.columns[4], value = str(round(total_df.iloc[-1,4]/1000,1))+"조원")
+    col3.metric(label=total_df.columns[3], value = str(round(total_df.iloc[-1,3]/1000,1))+"조원")
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -880,7 +880,7 @@ def ecos_one_two_window(kor_exp, total_df):
             y_data_line= [total_df.columns[-1]]
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = total_df.loc[:,y_data], 
-                                            text= total_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
+                                            text= round(total_df[y_data],1), textposition = 'inside', marker_color= color), secondary_y = False) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
