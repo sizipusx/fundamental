@@ -204,11 +204,11 @@ def run(stat_name, stat_ticker, fred_dict):
                 st.write(e)
             # Sort the DataFrame by index
             df_monthly.sort_index(inplace=True)
-            # df_monthly = df_monthly.reset_index()
-            # data_df = data_df.reset_index()
+            df_monthly = df_monthly.reset_index()
+            data_df = data_df.reset_index()
             st.dataframe(df_monthly)
             st.dataframe(data_df)
-            total_df = pd.merge(data_df, df_monthly, how='inner', left_index = True, right_index=True)
+            total_df = pd.merge(data_df, df_monthly, how='inner', left_on = "index", right_on="index")
             total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,2)
             total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
             total_df['NBindex'] = round(total_df['TQ']/total_df['NGDP']*100,2)
@@ -225,7 +225,7 @@ def run(stat_name, stat_ticker, fred_dict):
         with st.expander("See Raw Data"):
             try:
                 if stat_ticker == '200Y003':
-                    # total_df = total_df.set_index(keys=total_df['TIME'])
+                    total_df = total_df.set_index(keys=total_df['TIME'])
                     st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
                                                 .format(precision=2, na_rep='MISSING', thousands=","))
                 else:
