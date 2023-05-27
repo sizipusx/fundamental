@@ -180,8 +180,6 @@ def run(stat_name, stat_ticker, fred_dict):
                 data_df.index = pd.to_datetime(data_df.index, format='%Y%m').strftime('%Y-%m')
             data_df = data_df.astype(int)/1000000
             data_df['TQ'] = data_df['KOSPI'].add(data_df['KQ'])
-            st.dataframe(gdata_df)
-            st.dataframe(data_df)
             # Create a new DataFrame with monthly index
             df_monthly = pd.DataFrame(columns=['RGDP'])
             # Iterate over each row in the quarterly DataFrame
@@ -200,11 +198,13 @@ def run(stat_name, stat_ticker, fred_dict):
                 try:
                     df_monthly = df_monthly.concat(pd.DataFrame({'RGDP': expanded_values, 'NGDP': expanded_values2}, index=monthly_indexes))
                 except Exception as e:
-                    st.error(e)
+                    st.write(e)
             # Sort the DataFrame by index
             df_monthly.sort_index(inplace=True)
             df_monthly = df_monthly.reset_index()
             data_df = data_df.reset_index()
+            st.dataframe(df_monthly)
+            st.dataframe(data_df)
             total_df = pd.merge(data_df, df_monthly, how='inner', left_on="TIME", right_on="index")
             total_df['GDPD'] = round(total_df['NGDP']/total_df['RGDP']*100,2)
             total_df['RBindex'] = round(total_df['TQ']/total_df['RGDP']*100,2)
