@@ -64,12 +64,12 @@ def ecos_monthly_chart(input_ticker, df1, df2):
                 y_data_line.append(item)
 
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df2.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data], 
                                             text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= df1.loc[:,y_data],
+                                            name = y_data+'(L)', x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}')
@@ -140,12 +140,12 @@ def ecos_monthly_chart(input_ticker, df1, df2):
                 y_data_line.append(item)
 
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df3.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data+'R', x = x_data, y = df3.loc[:,y_data], 
                                             text= df3[y_data], textposition = 'inside', marker_color= df3.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= df1.loc[:,y_data],
+                                            name = y_data+'(L)', x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             if input_ticker == '가계신용': 
@@ -396,12 +396,12 @@ def ecos_spread_chart(input_ticker, df1):
             y_data_color = [df1.columns[5]]
 
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
                                             text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= df1.loc[:,y_data],
+                                            name = y_data+"(L)", x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}')
@@ -464,12 +464,12 @@ def ecos_spread_chart(input_ticker, df1):
             y_data_line = [df1.columns[1], df1.columns[2]]
             y_data_color = [df1.columns[6]]
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data], 
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
                                             text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data, x =  x_data, y= df1.loc[:,y_data],
+                                            name = y_data+'(L)', x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
             fig.update_yaxes(title_text=input_ticker, range=[-max(df1.loc[:,y_data_line[0]]), max(df1.loc[:,y_data_line[0]])* 1.5], showgrid = True, zeroline=True, zerolinecolor='pink', ticksuffix="%", secondary_y = False)
@@ -553,12 +553,12 @@ def fred_spread_chart(df1, df2):
             y_data_color = [df1.columns[-1]]
 
             for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data, x = x_data, y = df1.loc[:,y_data]*100, 
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data]*100, 
                                             text= round(df1[y_data]*100,0), textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines+markers', 
-                                            name = y_data, x =  x_data, y= df1.loc[:,y_data],
+                                            name = y_data+'(L)', x =  x_data, y= df1.loc[:,y_data],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}')
