@@ -900,7 +900,7 @@ def ecos_one_two_window(kor_exp, total_df):
                                             orientation="h",
                                             yanchor="bottom",
                                             y=1.02,
-                                            xanchor="right",
+                                            xanchor="middle",
                                             x=1
                                         ),
                                 xaxis=go.layout.XAxis(
@@ -970,7 +970,7 @@ def ecos_one_two_window(kor_exp, total_df):
                                             orientation="h",
                                             yanchor="bottom",
                                             y=1.02,
-                                            xanchor="right",
+                                            xanchor="middle",
                                             x=1
                                         ),
                                 xaxis=go.layout.XAxis(
