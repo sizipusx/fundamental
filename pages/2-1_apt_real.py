@@ -98,6 +98,9 @@ if __name__ == "__main__":
 
     last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     st.markdown(f'최종업데이트: **{last_month}월**')
+    with st.expander("See recently Data Update"):
+
+        
      #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
@@ -230,13 +233,13 @@ if __name__ == "__main__":
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
-                    flag = '부동산원 월간'
+                    flag = '아파트 실거래가격 '
                     drawAPT_weekly.run_one_index_together(options, slice_om, slice_om_ch, flag)
 
                 with col2:
                     st.write("")
                 with col3:
-                    flag = '부동산원 월간'
+                    flag = '아파트 실거래가격 '
                     drawAPT_weekly.run_one_jindex_together(options, slice_oj, slice_oj_ch, flag)
                     
             html_br="""
