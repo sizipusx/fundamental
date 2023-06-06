@@ -1823,12 +1823,8 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     #4년치 데이터 만들기
     current_year = datetime.datetime.utcnow().year
     year1 = current_year - 1
-    year_list.append(year1)
     year2 = current_year - 2
-    year_list.append(year2)
     year3 = current_year - 3
-
-    year_list.append()
     #각 년도별 데이터프레임
     year_df_list = []
     this_y = m_ch.loc[str(current_year)]
