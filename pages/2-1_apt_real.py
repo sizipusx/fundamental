@@ -265,7 +265,7 @@ if __name__ == "__main__":
         if submit:
         ### Block KB 지수 #########################################################################################
             drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
-             with st.container():
+            with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1: #4년 그래프와 5년 평균 
                     try:
