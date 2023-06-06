@@ -1851,7 +1851,7 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
         go.Bar(x=x_list, y=years4_mean.loc[:,selected_dosi],  name=selected_dosi, marker_color= marker_colors1[0]),    
         secondary_y=False,
         )
-    for index, value in enumerate(year_df_list):
+    for index, year_df in enumerate(year_df_list):
         fig.add_trace(
             go.Scatter(x=x_list, y=year_df.loc[:,selected_dosi],  name=selected_dosi, marker_color= marker_colors[index]),    
             secondary_y=True,
