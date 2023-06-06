@@ -98,9 +98,26 @@ if __name__ == "__main__":
 
     last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     st.markdown(f'최종업데이트: **{last_month}월**')
-    with st.expander("See recently Data Update"):
+    with st.expander("See Raw Data"):
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                try:
+                    st.dataframe(mdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                except ValueError :
+                    st.dataframe(mdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+            with col2:
+                st.write("")
+            with col3: 
+                try:
+                    st.dataframe(jdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                except ValueError :
+                    st.dataframe(jdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","))
 
-        
      #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
