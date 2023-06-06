@@ -1835,7 +1835,7 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     year_df_list.append(df_2y)
     df_3y = m_ch.loc[str(year3)]
     year_df_list.append(df_3y)
-    years4_mean = rm_df.loc[str(year3):str(current_year)]
+    years4_mean = m_ch.loc[str(year3):str(current_year)]
 
     col1, col2, col3, col4, col5 = st.columns(5) 
     col1.metric(label=str(current_year)+"평균", value = str(round(this_y.loc[:,selected_dosi].mean(),1))+"%")
