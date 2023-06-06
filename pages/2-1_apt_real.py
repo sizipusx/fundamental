@@ -155,8 +155,7 @@ if __name__ == "__main__":
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('Basic','Index', 'Together', 'Period')
-                    )
+                    "Select Menu", ('Basic','Index', 'Together')
     if my_choice == 'Basic':
         period_ = mdf.index.strftime("%Y-%m").tolist()
         st.subheader("기간 지역 분석")
