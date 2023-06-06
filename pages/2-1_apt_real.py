@@ -270,7 +270,7 @@ if __name__ == "__main__":
                     flag = "아파트 실거래가격지수 "
                     try:
                         drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
-                    except as e:
+                    except Exception as e:
                         st.write(e)
                 with col2:
                     st.write("")
