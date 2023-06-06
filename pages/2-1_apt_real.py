@@ -264,6 +264,7 @@ if __name__ == "__main__":
 
         if submit:
         ### Block KB 지수 #########################################################################################
+            flag = "아파트 실거래가격지수 "
             drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
