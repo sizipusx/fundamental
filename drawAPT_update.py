@@ -798,46 +798,47 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
               annotation_text="2.4 대책", annotation_position="bottom left",
               fillcolor="green", opacity=0.25, line_width=0)
     fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
+                showlegend=True,
+                legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="left",
+                x=0
             ),
-            rangeslider=dict(
-                visible=True
-            ),
-            type="date"
-            )      
-        )
+                xaxis=go.layout.XAxis(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=6,
+                            label="6m",
+                            step="month",
+                            stepmode="backward"),
+                        dict(count=1,
+                            label="YTD",
+                            step="year",
+                            stepmode="todate"),
+                        dict(count=1,
+                            label="1y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=5,
+                            label="5y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=10,
+                            label="10y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(
+                    visible=False
+                ),
+                type="date",
+                range=[kor_time - relativedelta(years=5), kor_time]
+                )      
+            )
     st.plotly_chart(fig)
 
 def run_bubble(selected_city2, bubble_df2, m_power):
@@ -1635,46 +1636,47 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
     fig.add_vline(x="2019-1-1", line_dash="dash", line_color="gray")
     fig.update_layout(template="myID")
     fig.update_layout(
-            showlegend=True,
-            legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        ),
-            xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6,
-                        label="6m",
-                        step="month",
-                        stepmode="backward"),
-                    dict(count=1,
-                        label="YTD",
-                        step="year",
-                        stepmode="todate"),
-                    dict(count=1,
-                        label="1y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=5,
-                        label="5y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(count=10,
-                        label="10y",
-                        step="year",
-                        stepmode="backward"),
-                    dict(step="all")
-                ])
+                showlegend=True,
+                legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="left",
+                x=0
             ),
-            rangeslider=dict(
-                visible=True
-            ),
-            type="date"
-            )      
-        )
+                xaxis=go.layout.XAxis(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=6,
+                            label="6m",
+                            step="month",
+                            stepmode="backward"),
+                        dict(count=1,
+                            label="YTD",
+                            step="year",
+                            stepmode="todate"),
+                        dict(count=1,
+                            label="1y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=5,
+                            label="5y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=10,
+                            label="10y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(
+                    visible=False
+                ),
+                type="date",
+                range=[kor_time - relativedelta(years=5), kor_time]
+                )      
+            )
     st.plotly_chart(fig)
 
 def run_local_price(peong_df, peongj_df, selected_dosi):
