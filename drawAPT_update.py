@@ -766,86 +766,90 @@ def run_trade_index(selected_dosi, org_df, mdf):
     st.plotly_chart(fig)
 
 def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag):
-    if selected_dosi3 is not None:
-        selected_dosi2 = selected_dosi3
-    titles = dict(text= '<b> ['+selected_dosi2 +']'+flag +' 월간 매매-전세 지수</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    try:
+        if selected_dosi3 is not None:
+            selected_dosi2 = selected_dosi3
+        titles = dict(text= '<b> ['+selected_dosi2 +']'+flag +' 월간 매매-전세 지수</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[0]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
-    fig.update_layout(hovermode="x unified")
-    # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
-    fig.update_layout(template="myID")
-    fig.add_vline(x="2022-01", line_dash="dash", line_color="gray")
-    #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
-    #             annotation_position="bottom right")
-    fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
-              annotation_text="8.2 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
-              annotation_text="9.13 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
-              annotation_text="12.16/2.24 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
-              annotation_text="6.17/7.10 대책", annotation_position="top left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
-              annotation_text="8.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
-              annotation_text="2.4 대책", annotation_position="bottom left",
-              fillcolor="green", opacity=0.25, line_width=0)
-    fig.update_layout(
-                showlegend=True,
-                legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=-0.2,
-                xanchor="left",
-                x=0
-            ),
-                xaxis=go.layout.XAxis(
-                rangeselector=dict(
-                    buttons=list([
-                        dict(count=6,
-                            label="6m",
-                            step="month",
-                            stepmode="backward"),
-                        dict(count=1,
-                            label="YTD",
-                            step="year",
-                            stepmode="todate"),
-                        dict(count=1,
-                            label="1y",
-                            step="year",
-                            stepmode="backward"),
-                        dict(count=4,
-                            label="4y",
-                            step="year",
-                            stepmode="backward"),
-                        dict(count=10,
-                            label="10y",
-                            step="year",
-                            stepmode="backward"),
-                        dict(step="all")
-                    ])
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[0]), secondary_y = True)
+        fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
+        fig.update_layout(hovermode="x unified")
+        # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+        fig.update_layout(template="myID")
+        fig.add_vline(x="2022-01", line_dash="dash", line_color="gray")
+        #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
+        #             annotation_position="bottom right")
+        fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
+                annotation_text="8.2 대책", annotation_position="top left",
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2018-09-17", x1="2018-10-01", 
+                annotation_text="9.13 대책", annotation_position="top left",
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2019-12-16", x1="2020-02-24", 
+                annotation_text="12.16/2.24 대책", annotation_position="top left",
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2020-06-22", x1="2020-07-13", 
+                annotation_text="6.17/7.10 대책", annotation_position="top left",
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2020-08-10", x1="2020-08-17", 
+                annotation_text="8.4 대책", annotation_position="bottom left",
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2021-02-01", x1="2021-02-15", 
+                annotation_text="2.4 대책", annotation_position="bottom left",
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.update_layout(
+                    showlegend=True,
+                    legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=-0.2,
+                    xanchor="left",
+                    x=0
                 ),
-                rangeslider=dict(
-                    visible=False
-                ),
-                type="date",
-                range=[kor_time - relativedelta(years=4), kor_time]
-                )      
-            )
-    st.plotly_chart(fig)
+                    xaxis=go.layout.XAxis(
+                    rangeselector=dict(
+                        buttons=list([
+                            dict(count=6,
+                                label="6m",
+                                step="month",
+                                stepmode="backward"),
+                            dict(count=1,
+                                label="YTD",
+                                step="year",
+                                stepmode="todate"),
+                            dict(count=1,
+                                label="1y",
+                                step="year",
+                                stepmode="backward"),
+                            dict(count=4,
+                                label="4y",
+                                step="year",
+                                stepmode="backward"),
+                            dict(count=10,
+                                label="10y",
+                                step="year",
+                                stepmode="backward"),
+                            dict(step="all")
+                        ])
+                    ),
+                    rangeslider=dict(
+                        visible=False
+                    ),
+                    type="date",
+                    range=[kor_time - relativedelta(years=4), kor_time]
+                    )      
+                )
+        st.plotly_chart(fig)
+    except as e:
+        print(e)
+
 
 def run_bubble(selected_city2, bubble_df2, m_power):
     #bubble index chart
