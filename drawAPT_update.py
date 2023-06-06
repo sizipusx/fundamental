@@ -1848,16 +1848,16 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     x_list = ['1월', '2월','3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
     fig.add_trace(
-        go.Bar(x=x_list, y=round(years4_mean.loc[:,selected_dosi],1),  name="4년 평균", marker_color= marker_colors1[0]),    
+        go.Bar(x=x_list, y=round(years4_mean.loc[:,selected_dosi],1),  name="4년 평균(L)", marker_color= marker_colors1[0]),    
         secondary_y=False,
         )
     for index, year_df in enumerate(year_df_list):
         fig.add_trace(
-            go.Scatter(x=x_list, y=round(year_df.loc[:,selected_dosi],1),  name=str(year_df.index[0].year), marker_color= marker_colors[index]),    
+            go.Scatter(x=x_list, y=round(year_df.loc[:,selected_dosi],1),  name=str(year_df.index[0].year)+"(R)", marker_color= marker_colors[index]),    
             secondary_y=True,
             )
-    fig.update_yaxes(title_text="5년 평균", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
-    fig.update_yaxes(title_text="연도별 증감", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text="4년 평균", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+    fig.update_yaxes(title_text="연도별 증감", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")   
