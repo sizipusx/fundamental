@@ -186,10 +186,10 @@ if __name__ == "__main__":
             )
     
 
-    elif my_choice == 'Together': #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
-        #기간
+    else: #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
+        #지역과 기간 같이 보기
         period_ = mdf.index.strftime("%Y-%m").tolist()
-        st.subheader("기간 상승률 분석")
+        st.subheader("지역별 기간 상승률 분석")
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
             options = period_,
@@ -309,77 +309,7 @@ if __name__ == "__main__":
             # html_br="""
             # <br>
             # """               
-    else:
-        period_ = mdf.index.strftime("%Y-%m").tolist()
-        st.subheader("기간 상승률 분석")
-        start_date, end_date = st.select_slider(
-            'Select Date to Compare index change', 
-            options = period_,
-            value = (period_[-13], period_[-1]))
-        
-        #부동산원 / KB
-        slice_om = mdf.loc[start_date:end_date]
-        slice_oj = jdf.loc[start_date:end_date]
-        slice_m = mdf.loc[start_date:end_date]
-        slice_j = jdf.loc[start_date:end_date]
-        diff = slice_om.index[-1] - slice_om.index[0]
-        #information display
-        cols = st.columns(4)
-        cols[0].write(f"시작: {start_date}")
-        cols[1].write(f"끝: {end_date}")
-        cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
-        cols[3].write("")
-        #st.dataframe(slice_om)
-        change_odf = pd.DataFrame()
-        change_odf['매매증감'] = (slice_om.iloc[-1]/slice_om.iloc[0]-1).to_frame()*100
-        change_odf['전세증감'] = (slice_oj.iloc[-1]/slice_oj.iloc[0]-1).to_frame()*100
-        change_odf = change_odf.dropna().astype(float).round(decimals=2)
-        change_df = pd.DataFrame()
-        change_df['매매증감'] = (slice_m.iloc[-1]/slice_m.iloc[0]-1).to_frame()*100
-        change_df['전세증감'] = (slice_j.iloc[-1]/slice_j.iloc[0]-1).to_frame()*100
-        change_df = change_df.dropna().astype(float).round(decimals=2)
-        submit = st.button('Draw 기간 증감 chart')
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        if submit:
-            ### Draw Bubble chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = '아파트 실거래가격'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
-
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = '아파트 실거래가격'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
-                    
-            html_br="""
-            <br>
-            """
-             ### Draw Bubble chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    st.write("아파트 실거래가격 기간 증감") 
-                    change_df = change_df.reset_index()            
-                    st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))  
-                    #drawAPT_weekly.draw_change_table(change_df, flag)  
-                with col2:
-                    st.write("")
-                with col3:
-                    st.write("아파트 실거래가격 기간 증감")
-                    change_odf = change_odf.reset_index()
-                    st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
-                                          .format(precision=2, na_rep='MISSING', thousands=","))
-                    #drawAPT_weekly.draw_change_table(change_df, flag) 
-            html_br="""
-            <br>
-            """
+    
 html_br="""
 <br>
 """
