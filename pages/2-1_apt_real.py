@@ -26,7 +26,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h1 style="font-size:200%; color:#008080; font-family:Georgia">  🈷️ 월간 부동산 시계열 분석 <br>
+<h1 style="font-size:200%; color:#008080; font-family:Georgia">  🈷️ 월간 아파트 실거래가지수 분석 <br>
  <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -91,7 +91,7 @@ def load_index_data():
 
 
 if __name__ == "__main__":
-    data_load_state = st.text('Loading index Data...')
+    data_load_state = st.text('Loading Index Data...')
     index_list = load_index_data()
     mdf = index_list[0]
     jdf = index_list[1]
@@ -152,7 +152,6 @@ if __name__ == "__main__":
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
 
-    st.dataframe()
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
