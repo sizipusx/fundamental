@@ -264,16 +264,16 @@ if __name__ == "__main__":
 
         if submit:
         ### Block KB 지수 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = "아파트 실거래가격지수 "
-                drawAPT_update.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = "아파트 실거래가격지수 "
-                drawAPT_update.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    flag = "아파트 실거래가격지수 "
+                    drawAPT_update.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag)
+                with col2:
+                    st.write("")
+                with col3:
+                    flag = "아파트 실거래가격지수 "
+                    drawAPT_update.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
         html_br="""
         <br>
         """
