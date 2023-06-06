@@ -21,6 +21,7 @@ marker_colors = ['rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(160,103,173)', 'rgb(2
                          'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
                              'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
                                  'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
+marker_colors1 = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']                           
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none".
 pio.templates["myID"] = go.layout.Template(
     layout_annotations=[
@@ -845,7 +846,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                 range=[kor_time - relativedelta(years=4), kor_time]
                 )      
             )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 def run_bubble(selected_city2, bubble_df2, m_power):
@@ -1816,4 +1817,52 @@ def draw_ratio_Choroplethmapbox(r_df, geo_data, kb_last_m):
     fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
+    #4년치 데이터 만들기
+    current_year = datetime.datetime.utcnow().year
+    year1 = current_year - 1
+    year_list.append(year1)
+    year2 = current_year - 2
+    year_list.append(year2)
+    year3 = current_year - 3
+
+    year_list.append()
+    #각 년도별 데이터프레임
+    year_df_list = []
+    this_y = m_ch.loc[str(current_year)]
+    year_df_list.append(this_y)
+    df_1y = m_ch.loc[str(year1)]
+    year_df_list.append(df_1y)
+    df_2y = m_ch.loc[str(year2)]
+    year_df_list.append(df_2y)
+    df_3y = m_ch.loc[str(year3)]
+    year_df_list.append(df_3y)
+    years4_mean = rm_df.loc[str(year3):str(current_year)]
+
+    col1, col2, col3, col4, col5 = st.columns(5) 
+    col1.metric(label=str(current_year)+"평균", value = str(round(this_y.loc[:,selected_dosi].mean(),1))+"%")
+    col2.metric(label=str(year1)+"평균", value = str(round(df_1y.loc[:,selected_dosi].mean(),1))+"%")
+    col3.metric(label=str(year2)+"평균", value = str(round(df_2y.loc[:,selected_dosi].mean(),1))+"%")
+    col4.metric(label=str(year3)+"평균", value = str(round(df_3y.loc[:,selected_dosi].mean(),1))+"%")
+    col5.metric(label="4년 평균", value = str(round(years4_mean.loc[:,selected_dosi].mean(),1))+"%")
+
+    titles = dict(text= '<b> ['+selected_dosi +'] 아파트 연도별 실거래 매매가격변동률 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    x_list = ['1월', '2월','3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+    fig.add_trace(
+        go.Bar(x=x_list, y=year_df.loc[:,selected_dosi],  name=selected_dosi, marker_color= marker_colors1[0]),    
+        secondary_y=False,
+        )
+    for index, value in enumerate(year_df_list):
+        fig.add_trace(
+            go.Scatter(x=x_list, y=year_df.loc[:,selected_dosi],  name=selected_dosi, marker_color= marker_colors[index]),    
+            secondary_y=True,
+            )
+    fig.update_yaxes(title_text="5년 평균", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = False)
+    fig.update_yaxes(title_text="연도별 증감", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+    fig.update_layout(template="myID")
+    fig.update_layout(hovermode="x unified")   
     st.plotly_chart(fig)
