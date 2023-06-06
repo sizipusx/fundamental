@@ -39,6 +39,12 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 
+#오늘날짜까지
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
+
+
 def draw_pir(selected_city2, pir_df, income_df, price_df):
     titles = dict(text= '('+selected_city2 +') 분기 PIR 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
@@ -836,7 +842,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                     visible=False
                 ),
                 type="date",
-                range=[kor_time - relativedelta(years=5), kor_time]
+                range=[kor_time - relativedelta(years=2), kor_time]
                 )      
             )
     st.plotly_chart(fig)
@@ -1674,7 +1680,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
                     visible=False
                 ),
                 type="date",
-                range=[kor_time - relativedelta(years=5), kor_time]
+                range=[kor_time - relativedelta(years=2), kor_time]
                 )      
             )
     st.plotly_chart(fig)
