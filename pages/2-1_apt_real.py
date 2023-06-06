@@ -83,7 +83,7 @@ def load_index_data():
         #     )
         #df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
-        df = df.round(decimals=2)
+        df = df.round(decimals=1)
         index_list.append(df)
     #kb_conn.close()
 
@@ -144,13 +144,13 @@ if __name__ == "__main__":
     kb_last_df['2y'] = mdf_change.iloc[-24].T.to_frame()
     kb_last_df['3y'] = mdf_change.iloc[-36].T.to_frame()
 #    kb_last_df.dropna(inplace=True)
-    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
+    kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=1)
     #일주일 간 상승률 순위
     last_df = mdf_change.iloc[-1].T.to_frame()
     last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
     last_df.columns = ['매매증감', '전세증감']
     last_df.dropna(inplace=True)
-    last_df = last_df.round(decimals=2)
+    last_df = last_df.round(decimals=1)
 
     #버블 지수 만들어 보자
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
