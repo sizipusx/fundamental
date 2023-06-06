@@ -152,6 +152,35 @@ if __name__ == "__main__":
     last_df.dropna(inplace=True)
     last_df = last_df.round(decimals=2)
 
+    #버블 지수 만들어 보자
+    #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
+    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df = bubble_df*100
+    
+    #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
+    bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
+    # st.dataframe(mdf)
+
+    #전세 파워 만들기
+    cum_ch = (mdf_change/100 +1).cumprod()-1
+    jcum_ch = (jdf_change/100 +1).cumprod()-1
+    m_power = (jcum_ch - cum_ch)*100
+    m_power = m_power.astype(float).fillna(0).round(decimals=2)
+
+    #마지막 데이터만 
+    power_df = m_power.iloc[-1].T.to_frame()
+    power_df['버블지수'] = bubble_df2.iloc[-1].T.to_frame()
+    power_df.columns = ['전세파워', '버블지수']
+    # power_df.dropna(inplace=True)
+    power_df = power_df.astype(float).fillna(0).round(decimals=2)
+    power_df['jrank'] = power_df['전세파워'].rank(ascending=False, method='min').round(1)
+    power_df['brank'] = power_df['버블지수'].rank(ascending=True, method='min').round(decimals=1)
+    power_df['score'] = power_df['jrank'] + power_df['brank']
+    power_df['rank'] = power_df['score'].rank(ascending=True, method='min')
+    power_df = power_df.sort_values('rank', ascending=True)
+    
+
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
@@ -176,6 +205,53 @@ if __name__ == "__main__":
         cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
         cols[3].write("")
         submit = st.sidebar.button('Analize Local situation')
+        if submit:
+            ### 매매지수 하락 전세지수 상승 #########################################################################################            
+            #############
+            s_m = pd.DataFrame()
+            s_j = pd.DataFrame()
+            so_m = pd.DataFrame()
+            so_j = pd.DataFrame()
+            s_m[start_date] = slice_m.iloc[0].T
+            s_m[end_date] = slice_m.iloc[-1].T
+            s_j[start_date] = slice_j.iloc[0].T
+            s_j[end_date] = slice_j.iloc[-1].T
+            so_m[start_date] = slice_om.iloc[0].T
+            so_m[end_date] = slice_om.iloc[-1].T
+            so_j[start_date] = slice_oj.iloc[0].T
+            so_j[end_date] = slice_oj.iloc[-1].T
+            condition1 = s_m.iloc[:,0] > s_m.iloc[:,-1]
+            condition2 = s_j.iloc[:,0] <= s_j.iloc[:,-1]
+            condition3 = so_m.iloc[:,0] > so_m.iloc[:,-1]
+            condition4 = so_j.iloc[:,0] <= so_j.iloc[:,-1]
+            m_de = s_m.loc[condition1]
+            j_in = s_j.loc[condition2]
+            mo_de = so_m.loc[condition3]
+            jo_in = so_j.loc[condition4]
+            inter_df = pd.merge(m_de, j_in, how='inner', left_index=True, right_index=True, suffixes=('m', 'j'))
+            inter_odf = pd.merge(mo_de, jo_in, how='inner', left_index=True, right_index=True, suffixes=('m', 'j'))
+            inter_kb_list = inter_df.index.to_list()
+            
+            if len(inter_kb_list) == 0:
+                inter_kb_list.append("없음")
+                #st.write(inter_kb_list[0])
+            inter_one_list = inter_odf.index.to_list()
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    st.subheader("KB 매매지수 하락 전세지수 상승 지역")
+                    st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","), 600, 500)
+                with col2:
+                    st.write("")
+                with col3:
+                    st.subheader("부동산원 매매지수 하락 전세지수 상승 지역")
+                    st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
+                                                .format(precision=2, na_rep='MISSING', thousands=","),600,500)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == 'Index':
         
         column_list = mdf.columns.to_list()
@@ -184,7 +260,24 @@ if __name__ == "__main__":
                 '광역시-도', column_list
             )
     
+        submit = st.sidebar.button('Draw Price Index')
 
+        if submit:
+        ### Block KB 지수 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = "아파트 실거래가격지수 "
+                drawAPT_update.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change, flag)
+            with col2:
+                st.write("")
+            with col3:
+                flag = "아파트 실거래가격지수 "
+                drawAPT_update.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
     else: #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
         #지역과 기간 같이 보기
         period_ = mdf.index.strftime("%Y-%m").tolist()
