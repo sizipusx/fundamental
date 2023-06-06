@@ -827,8 +827,8 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                             label="1y",
                             step="year",
                             stepmode="backward"),
-                        dict(count=5,
-                            label="5y",
+                        dict(count=4,
+                            label="4y",
                             step="year",
                             stepmode="backward"),
                         dict(count=10,
@@ -842,7 +842,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                     visible=False
                 ),
                 type="date",
-                range=[kor_time - relativedelta(years=2), kor_time]
+                range=[kor_time - relativedelta(years=4), kor_time]
                 )      
             )
     st.plotly_chart(fig)
@@ -1665,8 +1665,8 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
                             label="1y",
                             step="year",
                             stepmode="backward"),
-                        dict(count=5,
-                            label="5y",
+                        dict(count=4,
+                            label="4y",
                             step="year",
                             stepmode="backward"),
                         dict(count=10,
@@ -1680,7 +1680,7 @@ def run_local_analysis(mdf, mdf_change, selected_dosi):
                     visible=False
                 ),
                 type="date",
-                range=[kor_time - relativedelta(years=2), kor_time]
+                range=[kor_time - relativedelta(years=4), kor_time]
                 )      
             )
     st.plotly_chart(fig)
