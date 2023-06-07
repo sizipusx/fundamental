@@ -137,8 +137,6 @@ if __name__ == "__main__":
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
     cum_jdf = cum_jdf.round(decimals=3)
-    st.dataframe(cum_mdf)
-    st.dataframe(cum_jdf)
     #일주일 간 상승률 순위
     kb_last_df  = pd.DataFrame()
     kb_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
@@ -281,16 +279,20 @@ if __name__ == "__main__":
                 with col2:
                     st.write("")
                 with col3:
-                    monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
-                    monthly_slice = monthly_slice.round(decimals=1)
-                    fig = px.bar(
-                               monthly_slice,
-                                x=monthly_slice.index.year,
-                                y=selected_dosi,
-                                color=selected_dosi,
-                                hover_name=selected_dosi
-                            )
-                    st.plotly_chart(fig, theme="ggplot2")#, use_container_width=True)
+                    try:
+                        monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
+                        monthly_slice = monthly_slice.round(decimals=1)
+                        fig = px.bar(
+                                monthly_slice,
+                                    x=monthly_slice.index.year,
+                                    y=selected_dosi,
+                                    color=selected_dosi,
+                                    hover_name=selected_dosi,
+                                    text=selected_dosi
+                                )
+                        st.plotly_chart(fig, theme="ggplot2", use_container_width=True)
+                    except Exception as e
+                        st.write(e)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
