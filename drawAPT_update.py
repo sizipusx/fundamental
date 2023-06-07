@@ -1854,7 +1854,7 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     col4.metric(label=str(year3)+"평균", value = str(round(df_3y.loc[:,selected_dosi].mean(),1))+"%")
     col5.metric(label="전 기간 평균", value = str(round(m_ch.loc[:,selected_dosi].mean(),1))+"%")
 
-    titles = dict(text= '<b> ['+selected_dosi +'] 아파트 연도별 실거래 매매가격변동률 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    titles = dict(text= '<b> ['+selected_dosi +'] 연도별 실거래 매매가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     x_list = ['1월', '2월','3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
     fig.add_trace(
