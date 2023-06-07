@@ -285,7 +285,7 @@ if __name__ == "__main__":
                         col1, col2 = st.columns(2) 
                         col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
                         col2.metric(label=str(datetime.datetime.utcnow().month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
-                        titles = dict(text= '['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+                        titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
                         fig = px.bar(
                                 monthly_slice,
                                     x=monthly_slice.index.year,
