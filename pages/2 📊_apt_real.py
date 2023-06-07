@@ -290,7 +290,7 @@ if __name__ == "__main__":
                                     hover_name=selected_dosi,
                                     text=selected_dosi
                                 )
-                        st.plotly_chart(fig, theme="ggplot2", use_container_width=True)
+                        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
                     except Exception as e:
                         st.write(e)
             with st.container():
