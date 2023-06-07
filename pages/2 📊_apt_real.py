@@ -291,8 +291,8 @@ if __name__ == "__main__":
                                     hover_name=selected_dosi,
                                     text=selected_dosi
                                 )
-                        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
-                        st.plotly_chart(fig, theme="streamlit")
+                        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2", xaxis_tickformat = '%Y')
+                        st.plotly_chart(fig)
                     except Exception as e:
                         st.write(e)
             with st.container():
