@@ -1858,7 +1858,7 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     x_list = ['1월', '2월','3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
     fig.add_trace(
-        go.Bar(x=x_list, y=monthly_means,  name="전 기간 평균(L)", marker_color= marker_colors1[0]),    
+        go.Bar(x=x_list, y=monthly_mean,  name="전 기간 평균(L)", marker_color= marker_colors1[0]),    
         secondary_y=False,
         )
     for index, year_df in enumerate(year_df_list):
