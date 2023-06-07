@@ -130,7 +130,10 @@ if __name__ == "__main__":
     
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
-    cum_mdf = (1+mdf_change/100).cumprod() -1
+    #전세지수 증감은 2014.2월부터 있기에 slice 해야함
+    mdf_change_s = mdf_change.loc["2014-02-01"]
+    mdf_s = mdf.loc["2014-01-01"]
+    cum_mdf = (1+mdf_change_s/100).cumprod() -1
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
     cum_jdf = cum_jdf.round(decimals=3)
@@ -154,16 +157,16 @@ if __name__ == "__main__":
 
     #버블 지수 만들어 보자
     #아기곰 방식:버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)
-    bubble_df = mdf_change.subtract(mdf_change['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
+    bubble_df = mdf_change.subtract(mdf_change_s['전국'], axis=0)- jdf_change.subtract(jdf_change['전국'], axis=0)
     bubble_df = bubble_df*100
     
     #곰곰이 방식: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)
-    bubble_df2 = mdf.div(mdf['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
+    bubble_df2 = mdf_s.div(mdf_s['전국'], axis=0) - jdf.div(jdf['전국'], axis=0)
     bubble_df2 = bubble_df2.astype(float).fillna(0).round(decimals=5)*100
     # st.dataframe(mdf)
 
     #전세 파워 만들기
-    cum_ch = (mdf_change/100 +1).cumprod()-1
+    cum_ch = (mdf_change_s/100 +1).cumprod()-1
     jcum_ch = (jdf_change/100 +1).cumprod()-1
     m_power = (jcum_ch - cum_ch)*100
     m_power = m_power.astype(float).fillna(0).round(decimals=2)
@@ -268,7 +271,7 @@ if __name__ == "__main__":
             drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
-                with col1: #4년 그래프와 5년 평균 
+                with col1: #4년 그래프와 평균 
                     try:
                         drawAPT_update.draw_4years_index(selected_dosi, mdf, jdf, mdf_change, jdf_change)
                     except Exception as e:
