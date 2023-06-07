@@ -1836,19 +1836,29 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     df_3y = m_ch.loc[str(year3)]
     year_df_list.append(df_3y)
     years4_mean = m_ch.loc[str(year3):str(current_year)]
+    years_mean = m_ch.mean()
+    #각 월별 데이터 프레임 만들기
+    monthly_dataframes = {}
+    monthly_mean = []
+    # 1월부터 12월까지의 모든 월을 반복합니다.
+    for month in range(1, 13):
+        # 각 월별 데이터를 추출하여 동일한 월을 갖는 데이터프레임을 생성합니다.
+        monthly_slice = m_ch.loc[m_ch.index.month == month]
+        monthly_dataframes[month] = monthly_slice
+        monthly_mean.append(round(monthly_dataframes[month].loc[:,selected_dosi].mean(),1))
 
     col1, col2, col3, col4, col5 = st.columns(5) 
     col1.metric(label=str(current_year)+"평균", value = str(round(this_y.loc[:,selected_dosi].mean(),1))+"%")
     col2.metric(label=str(year1)+"평균", value = str(round(df_1y.loc[:,selected_dosi].mean(),1))+"%")
     col3.metric(label=str(year2)+"평균", value = str(round(df_2y.loc[:,selected_dosi].mean(),1))+"%")
     col4.metric(label=str(year3)+"평균", value = str(round(df_3y.loc[:,selected_dosi].mean(),1))+"%")
-    col5.metric(label="4년 평균", value = str(round(years4_mean.loc[:,selected_dosi].mean(),1))+"%")
+    col5.metric(label="전 기간 평균", value = str(round(m_ch.loc[:,selected_dosi].mean(),1))+"%")
 
     titles = dict(text= '<b> ['+selected_dosi +'] 아파트 연도별 실거래 매매가격변동률 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     x_list = ['1월', '2월','3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
     fig.add_trace(
-        go.Bar(x=x_list, y=round(years4_mean.loc[:,selected_dosi],1),  name="4년 평균(L)", marker_color= marker_colors1[0]),    
+        go.Bar(x=x_list, y=monthly_means,  name="전 기간 평균(L)", marker_color= marker_colors1[0]),    
         secondary_y=False,
         )
     for index, year_df in enumerate(year_df_list):
