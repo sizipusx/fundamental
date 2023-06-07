@@ -279,8 +279,16 @@ if __name__ == "__main__":
                 with col2:
                     st.write("")
                 with col3:
-                    flag = "아파트 실거래가격지수 "
-                    drawAPT_update.draw_flower(selected_dosi, selected_dosi, cum_mdf, cum_jdf, flag)
+                    monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
+                    fig = px.bar(
+                               monthly_slice,
+                                x=monthly_slice.index.year,
+                                y=selected_dosi,
+                                size="pop",
+                                color=selected_dosi,
+                                hover_name=selected_dosi
+                            )
+                    st.plotly_chart(fig, theme="ggplot2", use_container_width=True)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
