@@ -120,19 +120,19 @@ if __name__ == "__main__":
 
      #월간 증감률
     mdf_change = mdf.pct_change()*100
-    mdf_change = mdf_change.iloc[1:]
+    #mdf_change = mdf_change.iloc[1:]
     
     mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     mdf_change = mdf_change.astype(float).fillna(0)
     # mdf = mdf.mask(np.isinf(mdf))
     jdf_change = jdf.pct_change()*100
-    jdf_change = jdf_change.iloc[1:]
+    #jdf_change = jdf_change.iloc[1:]
     
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
     #전세지수 증감은 2014.2월부터 있기에 slice 해야함
-    mdf_change_s = mdf_change.loc["2014-02-01"]
-    mdf_s = mdf.loc["2014-01-01"]
+    mdf_change_s = mdf_change.loc["2014-02-01":]
+    mdf_s = mdf.loc["2014-01-01":]
     cum_mdf = (1+mdf_change_s/100).cumprod() -1
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
