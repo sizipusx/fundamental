@@ -280,11 +280,11 @@ if __name__ == "__main__":
                     st.write("")
                 with col3:
                     monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
+                    monthly_slice = monthly_slice.round(decimals=1)
                     fig = px.bar(
                                monthly_slice,
                                 x=monthly_slice.index.year,
                                 y=selected_dosi,
-                                size="pop",
                                 color=selected_dosi,
                                 hover_name=selected_dosi
                             )
