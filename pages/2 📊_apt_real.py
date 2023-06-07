@@ -282,6 +282,7 @@ if __name__ == "__main__":
                     try:
                         monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
                         monthly_slice = monthly_slice.round(decimals=1)
+                        titles = dict(text= '('+selected_city2 +') 연도별' +str(monthly_slice.index.year) +'월 매매가격 변동', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
                         fig = px.bar(
                                 monthly_slice,
                                     x=monthly_slice.index.year,
@@ -290,7 +291,8 @@ if __name__ == "__main__":
                                     hover_name=selected_dosi,
                                     text=selected_dosi
                                 )
-                        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+                        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+                        st.plotly_chart(fig, theme="streamlit")
                     except Exception as e:
                         st.write(e)
             with st.container():
