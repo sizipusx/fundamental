@@ -283,7 +283,7 @@ if __name__ == "__main__":
                         monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
                         monthly_slice = monthly_slice.round(decimals=1)
                         col1, col2 = st.columns(2) 
-                        col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1s],1))+"%")
+                        col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
                         col2.metric(label=str(datetime.datetime.utcnow().month)+"평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
                         titles = dict(text= '('+selected_dosi +') 연도별' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
                         fig = px.bar(
