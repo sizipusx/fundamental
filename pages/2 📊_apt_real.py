@@ -291,7 +291,7 @@ if __name__ == "__main__":
                                     text=selected_dosi
                                 )
                         st.plotly_chart(fig, theme="ggplot2", use_container_width=True)
-                    except Exception as e
+                    except Exception as e:
                         st.write(e)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
