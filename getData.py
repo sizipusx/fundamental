@@ -9,7 +9,6 @@ import finterstellar as fs
 from pykrx import stock
 import requests
 import json
-from pandas.io.json import json_normalize
 import streamlit as st
 import makeData
 import requests
