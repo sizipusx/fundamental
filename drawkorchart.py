@@ -10,8 +10,8 @@ from datetime import datetime
 
 #챠트 기본 설정
 # colors 
-# marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569'] #군청색 시작
-marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)'] #군청색 시작
+marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569'] #군청색 시작
+#marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)'] #군청색 시작
 reds_start_colors = ['rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(160,103,173)', 'rgb(244,201,107)', 'rgb(153,204,0)'] #red로 시작
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
 pio.templates["myID"] = go.layout.Template(
