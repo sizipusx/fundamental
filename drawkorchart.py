@@ -118,11 +118,11 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             try:
                 y_data_line = ['부채비율계산에 참여한 계정 펼치기']
            
-                for y_data, color in zip(y_data_bar, reds_start_colors) :
+                for y_data, color in zip(y_data_bar, marker_colors) :
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
                                                 text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
                 
-                for y_data, color in zip(y_data_line, marker_colors): 
+                for y_data, color in zip(y_data_line, reds_start_colors): 
                     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                                 name = y_data, x =  x_data, y= ratio_an.loc[:,y_data],
                                                 text= ratio_an[y_data], textposition = 'top center', marker_color = color),
@@ -133,7 +133,7 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = status_an.loc[:,y_data], 
                                                 text= status_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
                 
-                for y_data, color in zip(y_data_line, marker_colors): 
+                for y_data, color in zip(y_data_line, reds_start_colors): 
                     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                                 name = y_data, x =  x_data, y= ratio_an.loc[:,y_data],
                                                 text= ratio_an[y_data], textposition = 'top center', marker_color = color),
@@ -159,11 +159,11 @@ def balance_chart(company_name, status_an, status_qu, ratio_an, ratio_qu):
             y_data_bar = ['자본', '부채']
             y_data_line = ['자산']
 
-            for y_data, color in zip(y_data_bar, reds_start_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = status_qu.index, y = status_qu.loc[:,y_data], 
                                     text= status_qu[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, reds_start_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  status_qu.index, y= status_qu.loc[:,y_data],
                                             text= status_qu[y_data], textposition = 'top center', marker_color = color),
@@ -187,11 +187,11 @@ def dividend_chart(company_name, income_df):
     y_data_bar4 = ['DPS(원)']
     y_data_line4 = ['배당수익률']
 
-    for y_data, color in zip(y_data_bar4, reds_start_colors) :
+    for y_data, color in zip(y_data_bar4, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = income_df.index, y = income_df[y_data], 
                             text = income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
     
-    for y_data, color in zip(y_data_line4, marker_colors): 
+    for y_data, color in zip(y_data_line4, reds_start_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data, x =  income_df.index, y= income_df.loc[:,y_data],
                                     text= income_df[y_data], textposition = 'top center', marker_color = color),
@@ -218,11 +218,11 @@ def pbr_chart(company_name, income_df, income_df_q):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['PBR']
             y_data_bar = ['ROE']
-            for y_data, color in zip(y_data_bar, reds_start_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df.loc[:,y_data], 
                                             text= income_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, reds_start_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  x_data, y= income_df.loc[:,y_data],
                                             text= income_df[y_data], textposition = 'top center', marker_color = color),
@@ -248,11 +248,11 @@ def pbr_chart(company_name, income_df, income_df_q):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['PBR']
             y_data_bar = ['ROE']
-            for y_data, color in zip(y_data_bar, reds_start_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = income_df_q.loc[:,y_data], 
                                     text= income_df_q[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, reds_start_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  income_df_q.index, y= income_df_q.loc[:,y_data],
                                             text= income_df_q[y_data], textposition = 'top center', marker_color = color),
@@ -280,11 +280,11 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             try:
                 y_data_line = ['FCFF']
                 y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
-                for y_data, color in zip(y_data_bar, reds_start_colors) :
+                for y_data, color in zip(y_data_bar, marker_colors) :
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
                                                 text= cf_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
                 
-                for y_data, color in zip(y_data_line, marker_colors): 
+                for y_data, color in zip(y_data_line, reds_start_colors): 
                     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                                 name = y_data, x =  x_data, y= in_df.loc[:,y_data],
                                                 text= in_df[y_data], textposition = 'top center', marker_color = color),
@@ -298,7 +298,7 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
                     fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_an.loc[:,y_data], 
                                                 text= cf_an[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
                 
-                for y_data, color in zip(y_data_line, marker_colors): 
+                for y_data, color in zip(y_data_line, reds_start_colors): 
                     fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                                 name = y_data, x =  x_data, y= in_df.loc[:,y_data],
                                                 text= in_df[y_data], textposition = 'top center', marker_color = color),
@@ -323,11 +323,11 @@ def cash_flow(company_name, cf_an, cf_qu, in_df):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_line = ['현금및현금성자산의증가']
             y_data_bar = ['영업활동으로인한현금흐름', '투자활동으로인한현금흐름', '재무활동으로인한현금흐름', '현금및현금성자산의증가']
-            for y_data, color in zip(y_data_bar, reds_start_colors) :
+            for y_data, color in zip(y_data_bar, marker_colors) :
                 fig.add_trace(go.Bar(name = y_data, x = x_data, y = cf_qu.loc[:,y_data], 
                                     text= cf_qu[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
             
-            for y_data, color in zip(y_data_line, marker_colors): 
+            for y_data, color in zip(y_data_line, reds_start_colors): 
                 fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                             name = y_data, x =  cf_qu.index, y= cf_qu.loc[:,y_data],
                                             text= cf_qu[y_data], textposition = 'top center', marker_color = color),
@@ -348,11 +348,11 @@ def valuation_change(com_name, fr_df):
     y_data_line = ['ROE','ROE10']
     y_data_bar = ['expect_py', 'expect_ay']
     real_name = ['현재ROE기준_기대수익률', '10Y평균ROE기준_기대수익률']
-    for y_data, color, r_n in zip(y_data_bar, reds_start_colors, real_name) :
+    for y_data, color, r_n in zip(y_data_bar, marker_colors, real_name) :
         fig.add_trace(go.Bar(name = r_n, x = fr_df.index, y = fr_df.loc[:,y_data], 
                             text= fr_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
     
-    for y_data, color in zip(y_data_line, marker_colors): 
+    for y_data, color in zip(y_data_line, reds_start_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
                                     text= round(fr_df[y_data]*100,2), textposition = 'top center', marker_color = color),
@@ -375,11 +375,11 @@ def pykrx_chart(com_name, fr_df):
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     y_data_line = ['Close']
     y_data_bar = ['PBR']
-    for y_data, color in zip(y_data_bar, reds_start_colors) :
+    for y_data, color in zip(y_data_bar, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x = fr_df.index, y = round(fr_df.loc[:,y_data],2), 
                             text= round(fr_df[y_data],2), textposition = 'inside', marker_color= color), secondary_y = False) 
     
-    for y_data, color in zip(y_data_line, marker_colors): 
+    for y_data, color in zip(y_data_line, reds_start_colors): 
         fig.add_trace(go.Scatter(mode='lines+markers+text', 
                                     name = y_data, x =  fr_df.index, y= round(fr_df.loc[:,y_data]*100,2),
                                     text= round(fr_df[y_data],2), textposition = 'top center', marker_color = marker_colors[1]),
