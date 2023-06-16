@@ -670,6 +670,9 @@ if __name__ == "__main__":
     not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
     not_sell_apt = not_sell_list[0]
     un_df = not_sell_list[1]
+    st.dataframe(not_sell_apt)
+    st.dataframe(un_df)
+
     #in_df = oindex_list[4]
     
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
@@ -732,7 +735,6 @@ if __name__ == "__main__":
     #마지막 달
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     one_last_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
-    st.dataframe(not_sell_apt)
     af_last_month = pd.to_datetime(str(not_sell_apt.index.values[-1])).strftime('%Y.%m')
     un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
     in_last_month = pd.to_datetime(str(invest_total.index.values[-1])).strftime('%Y.%m')
