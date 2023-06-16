@@ -174,7 +174,7 @@ def get_not_sell_apt():
     #투자자 거주지별 매매동향
     ### db에서 읽기
     in_df = pd.read_sql("SELECT * FROM 'investor'", buy_conn, index_col='index')
-    in_df = in_df.apply(lambda x: x.replace('-','0'))
+    in_df = in_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
     in_df = in_df.astype(int)
    
 
