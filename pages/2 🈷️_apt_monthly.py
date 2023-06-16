@@ -732,6 +732,7 @@ if __name__ == "__main__":
     #마지막 달
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     one_last_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
+    st.dataframe(not_sell_apt)
     af_last_month = pd.to_datetime(str(not_sell_apt.index.values[-1])).strftime('%Y.%m')
     un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
     in_last_month = pd.to_datetime(str(invest_total.index.values[-1])).strftime('%Y.%m')
