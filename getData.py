@@ -682,4 +682,4 @@ def load_pykrx_data(ticker, now_date):
   fr_df['expect_ay'] = round(((fr_df['a10bps']/fr_df['Close'])**(1/10)-1)*100,2)
   return fr_df
   
-
+1
