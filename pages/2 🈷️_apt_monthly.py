@@ -695,8 +695,8 @@ if __name__ == "__main__":
     # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
     # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
     # in_df.index = pd.to_datetime(in_df.index)
-    in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
-    in_df = in_df.astype(int)
+    #in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    #in_df = in_df.astype(int)
 
     #2022. 11. 10 수정 멀티 인덱스로 변경
     new_s1 = []
