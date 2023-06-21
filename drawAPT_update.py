@@ -45,11 +45,13 @@ utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
 
-def basic_chart(index_df, index_ch, title_kor, selected_dosi):
+def basic_chart(selected_dosi, index_df, index_ch, flag):
     x_data = index_ch.index
     index_ch.loc[:,'color'] = np.where(index_ch[selected_dosi]<0, '#FFB8B1', '#E2F0CB')
-    title = "[<b>"+selected_dosi+"</b>]"+title_kor
-    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    if flag == "mae":
+        titles = dict(text= '<b> ['+selected_dosi +'] 실거래 매매가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    else:
+        titles = dict(text= '<b> ['+selected_dosi +'] 실거래 전세가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     fig.add_trace(go.Bar(name = "증감(R)", x = x_data, y =index_ch[selected_dosi].round(decimals=1), 
                         text = index_ch[selected_dosi].round(decimals=1), textposition = 'outside', 

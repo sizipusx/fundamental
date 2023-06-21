@@ -271,7 +271,7 @@ if __name__ == "__main__":
             drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
             ##매매/전세 tab 으로 구분하자.
             tab1, tab2 = st.tabs(["⏰ 매매지수", "🗺️ 전세지수"])
-            with tab1:
+            with tab1: #매매지수
 
                 with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
@@ -307,7 +307,7 @@ if __name__ == "__main__":
                     with col1:
                         flag = "아파트 실거래가격지수 "
                         try:
-                            drawAPT_update.basic_chart(mdf, mdf_change, "아파트 실거래 매매가격지수", selected_dosi)
+                            drawAPT_update.basic_chart(selected_dosi, mdf, mdf_change, "mae")
                         except Exception as e:
                             st.write(e)
                     with col2:
@@ -331,7 +331,7 @@ if __name__ == "__main__":
                         st.write("")
                     with col3:
                         try:
-                            monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
+                            monthly_slice = jdf_change.loc[jdf_change.index.month == jdf_change.index[-1].month]
                             monthly_slice = monthly_slice.round(decimals=1)
                             col1, col2 = st.columns(2) 
                             col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
@@ -354,7 +354,7 @@ if __name__ == "__main__":
                     with col1:
                         flag = "아파트 실거래가격지수 "
                         try:
-                            drawAPT_update.basic_chart(mdf, mdf_change, "아파트 실거래 매매가격지수", selected_dosi)
+                            drawAPT_update.basic_chart(selected_dosi, jdf, jdf_change, "jeon")
                         except Exception as e:
                             st.write(e)
                     with col2:
