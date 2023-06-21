@@ -45,6 +45,29 @@ utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
 
+def basic_chart(index_df, index_ch, title_kor, selected_dosi):
+    x_data = index_ch.index
+    index_ch.loc[:,'color'] = np.where(index_ch[selected_dosi]<0, '#FFB8B1', '#E2F0CB')
+    title = "[<b>"+selected_dosi+"</b>]"+title_kor
+    titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "증감(R)", x = x_data, y =index_ch[selected_dosi], 
+                        text = index_ch[selected_dosi], textposition = 'outside', 
+                        marker_color= index_ch['color']), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "지수(L)", x =  index_df.index, y=index_df[selected_dosi],  
+                                    text= index_df[selected_dosi], textposition = 'top center', marker_color = marker_colors[0]),
+                                    secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=index_ch[selected_dosi].mean(), line_width=2, line_dash="solid", line_color="blue",  annotation_text="평균상승률: "+str(round(sadf_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="지수", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="만원", secondary_y = False)
+    fig.update_yaxes(title_text="증감", showticklabels= True, showgrid = False, zeroline=True, secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)    
+
+
 
 def draw_pir(selected_city2, pir_df, income_df, price_df):
     titles = dict(text= '('+selected_city2 +') 분기 PIR 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
