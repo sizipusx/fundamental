@@ -207,7 +207,7 @@ if __name__ == "__main__":
         cols[1].write(f"끝: {end_date}")
         cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
         cols[3].write("")
-        submit = st.sidebar.button('Analize Local situation')
+        submit = st.sidebar.button('Analize APT Real Price Index')
         if submit:
             ### 매매지수 하락 전세지수 상승 #########################################################################################            
             #############
@@ -303,7 +303,7 @@ if __name__ == "__main__":
                 with col1:
                     flag = "아파트 실거래가격지수 "
                     try:
-                        drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
+                        drawAPT_update.basic_chart(mdf, mdf_change, "아파트 실거래 매매가격지수", selected_dosi)
                     except Exception as e:
                         st.write(e)
                 with col2:
@@ -322,7 +322,7 @@ if __name__ == "__main__":
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
             options = period_,
-            value = (period_[-13], period_[-1]))
+            value = (period_[0], period_[-1]))
         
         #부동산원 / KB
         slice_om = mdf.loc[start_date:end_date]
