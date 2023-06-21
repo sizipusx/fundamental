@@ -65,7 +65,51 @@ def basic_chart(index_df, index_ch, title_kor, selected_dosi):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
-    st.plotly_chart(fig)    
+    fig.add_vline(x="2017-11", line_dash="dash", line_color="gray")
+    fig.update_layout(
+                showlegend=True,
+                legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="left",
+                x=0
+            ),
+                xaxis=go.layout.XAxis(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=6,
+                            label="6m",
+                            step="month",
+                            stepmode="backward"),
+                        dict(count=1,
+                            label="YTD",
+                            step="year",
+                            stepmode="todate"),
+                        dict(count=1,
+                            label="1y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=4,
+                            label="4y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=10,
+                            label="10y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(
+                    visible=False
+                ),
+                type="date",
+                range=[kor_time - relativedelta(years=4), kor_time]
+                )      
+            )
+    st.plotly_chart(fig, use_container_width=True)
+  
 
 
 
