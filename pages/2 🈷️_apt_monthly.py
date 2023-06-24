@@ -156,27 +156,27 @@ def get_not_sell_apt():
     #DB에서 읽어오자
     try:
         buy_conn = create_connection(one_db_path)
+    
+        not_sold_list = []
+        query_list = ["select * from not_sold", "select * from after_not_sold"]
+        for query in query_list:
+            df = pd.read_sql(query, buy_conn)#, parse_dates={'date', "%Y-%m"})
+            # query = conn.execute(query)
+            # cols = [column[0] for column in query.description]
+            # df= pd.DataFrame.from_records(
+            #             data = query.fetchall(), 
+            #             columns = cols
+            #     )
+            df.index = pd.to_datetime(df.index, format = '%Y-%m')
+            not_sold_list.append(df)
+        
+        #투자자 거주지별 매매동향
+        ### db에서 읽기
+        in_df = pd.read_sql("SELECT * FROM 'investor'", buy_conn, index_col='index')
+        in_df = in_df.astype(str).apply(lambda x:x.replace(',','')).apply(lambda x:x.replace('','0')).replace('#DIV/0!','0').astype(int)
+        in_df = in_df.astype(int)
     except Exception as e:
         print(e)
-    not_sold_list = []
-    query_list = ["select * from not_sold", "select * from after_not_sold"]
-    for query in query_list:
-        df = pd.read_sql(query, buy_conn, index_col='date', parse_dates={'date', "%Y-%m"})
-        # query = conn.execute(query)
-        # cols = [column[0] for column in query.description]
-        # df= pd.DataFrame.from_records(
-        #             data = query.fetchall(), 
-        #             columns = cols
-        #     )
-        #df.index = pd.to_datetime(df.index, format = '%Y-%m')
-        not_sold_list.append(df)
-    
-    #투자자 거주지별 매매동향
-    ### db에서 읽기
-    in_df = pd.read_sql("SELECT * FROM 'investor'", buy_conn, index_col='index')
-    in_df = in_df.apply(lambda x: x.replace('-','0'))
-    in_df = in_df.astype(int)
-   
 
     #buy_conn.close()
 
@@ -667,9 +667,14 @@ if __name__ == "__main__":
     omdf = oindex_list[0]
     ojdf = oindex_list[1]
 
-    not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
-    not_sell_apt = not_sell_list[0]
-    un_df = not_sell_list[1]
+    try: 
+        not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
+        not_sell_apt = not_sell_list[0]
+        un_df = not_sell_list[1]
+        st.dataframe(not_sell_apt)
+        st.dataframe(un_dfsss)
+    except Exception as e:
+        print(e)
     #in_df = oindex_list[4]
     
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
@@ -695,8 +700,8 @@ if __name__ == "__main__":
     # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
     # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
     # in_df.index = pd.to_datetime(in_df.index)
-    in_df = in_df.apply(lambda x: x.replace('-','0'))
-    in_df = in_df.astype(int)
+    #in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    #in_df = in_df.astype(int)
 
     #2022. 11. 10 수정 멀티 인덱스로 변경
     new_s1 = []

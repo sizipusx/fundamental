@@ -45,6 +45,75 @@ utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
 
+def basic_chart(selected_dosi, index_df, index_ch, flag):
+    x_data = index_ch.index
+    index_ch.loc[:,'color'] = np.where(index_ch[selected_dosi]<0, '#FFB8B1', '#E2F0CB')
+    if flag == "mae":
+        titles = dict(text= '<b> ['+selected_dosi +'] 실거래 매매가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    else:
+        titles = dict(text= '<b> ['+selected_dosi +'] 실거래 전세가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = "증감(R)", x = x_data, y =index_ch[selected_dosi].round(decimals=1), 
+                        text = index_ch[selected_dosi].round(decimals=1), textposition = 'outside', 
+                        marker_color= index_ch['color']), secondary_y = True) 
+    fig.add_trace(go.Scatter(mode='lines', 
+                                    name = "지수(L)", x =  index_df.index, y=index_df[selected_dosi].round(decimals=1),  
+                                    text= index_df[selected_dosi].round(decimals=1), textposition = 'top center', marker_color = marker_colors1[0]),
+                                    secondary_y = False)
+    fig.update_traces(texttemplate='%{text:.3s}') 
+    fig.add_hline(y=index_ch[selected_dosi].mean(), line_width=2, line_dash="dot", line_color="blue",  annotation_text="평균상승률: "+str(round(index_ch[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
+    fig.update_yaxes(title_text="지수", showticklabels= True, showgrid = True, zeroline=True,  secondary_y = False)
+    fig.update_yaxes(title_text="증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
+    fig.add_vline(x="2017-11", line_dash="dash", line_color="gray")
+    fig.update_layout(
+                showlegend=True,
+                legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="left",
+                x=0
+            ),
+                xaxis=go.layout.XAxis(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=6,
+                            label="6m",
+                            step="month",
+                            stepmode="backward"),
+                        dict(count=1,
+                            label="YTD",
+                            step="year",
+                            stepmode="todate"),
+                        dict(count=1,
+                            label="1y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=4,
+                            label="4y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=10,
+                            label="10y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(
+                    visible=False
+                ),
+                type="date",
+                range=[kor_time - relativedelta(years=4), kor_time]
+                )      
+            )
+    st.plotly_chart(fig, use_container_width=True)
+  
+
+
 
 def draw_pir(selected_city2, pir_df, income_df, price_df):
     titles = dict(text= '('+selected_city2 +') 분기 PIR 지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
@@ -1819,7 +1888,7 @@ def draw_ratio_Choroplethmapbox(r_df, geo_data, kb_last_m):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
+def draw_4years_index(selected_dosi, m_ch, flag):
     #4년치 데이터 만들기
     current_year = datetime.datetime.utcnow().year
     year1 = current_year - 1
@@ -1854,7 +1923,10 @@ def draw_4years_index(selected_dosi, mdf, jdf, m_ch, j_ch):
     col4.metric(label=str(year3)+"평균", value = str(round(df_3y.loc[:,selected_dosi].mean(),1))+"%")
     col5.metric(label="전 기간 평균", value = str(round(m_ch.loc[:,selected_dosi].mean(),1))+"%")
 
-    titles = dict(text= '<b> ['+selected_dosi +'] 연도별 실거래 매매가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    if flag == "mae":
+        titles = dict(text= '<b> ['+selected_dosi +'] 연도별 실거래 매매가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    else:
+        titles = dict(text= '<b> ['+selected_dosi +'] 연도별 실거래 전세가격 변동 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     x_list = ['1월', '2월','3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
     fig.add_trace(

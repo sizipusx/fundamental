@@ -207,7 +207,7 @@ if __name__ == "__main__":
         cols[1].write(f"끝: {end_date}")
         cols[2].write(f"전체 기간: {round(diff.days/365,1)} 년")
         cols[3].write("")
-        submit = st.sidebar.button('Analize Local situation')
+        submit = st.sidebar.button('Analize APT Real Price Index')
         if submit:
             ### 매매지수 하락 전세지수 상승 #########################################################################################            
             #############
@@ -269,52 +269,103 @@ if __name__ == "__main__":
         ### Block KB 지수 #########################################################################################
             flag = "아파트 실거래가격지수 "
             drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1: #4년 그래프와 평균 
-                    try:
-                        drawAPT_update.draw_4years_index(selected_dosi, mdf, jdf, mdf_change, jdf_change)
-                    except Exception as e:
-                        st.write(e)
-                with col2:
-                    st.write("")
-                with col3:
-                    try:
-                        monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
-                        monthly_slice = monthly_slice.round(decimals=1)
-                        col1, col2 = st.columns(2) 
-                        col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
-                        col2.metric(label=str(datetime.datetime.utcnow().month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
-                        titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
-                        fig = px.bar(
-                                monthly_slice,
-                                    x=monthly_slice.index.year,
-                                    y=selected_dosi,
-                                    color=selected_dosi,
-                                    hover_name=selected_dosi,
-                                    text=selected_dosi
-                                )
-                        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2", xaxis_tickformat = '%Y')
-                        st.plotly_chart(fig)
-                    except Exception as e:
-                        st.write(e)
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = "아파트 실거래가격지수 "
-                    try:
-                        drawAPT_update.run_price_index(selected_dosi, selected_dosi, mdf, jdf, mdf_change, jdf_change, flag)
-                    except Exception as e:
-                        st.write(e)
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = "아파트 실거래가격지수 "
-                    drawAPT_update.draw_flower(selected_dosi, selected_dosi, cum_mdf, cum_jdf, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
+            ##매매/전세 tab 으로 구분하자.
+            tab1, tab2 = st.tabs(["⏰ 매매지수", "🗺️ 전세지수"])
+            with tab1: #매매지수
+
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1: #4년 그래프와 평균 
+                        try:
+                            drawAPT_update.draw_4years_index(selected_dosi, mdf_change, "mae")
+                        except Exception as e:
+                            st.write(e)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        try:
+                            monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
+                            monthly_slice = monthly_slice.round(decimals=1)
+                            col1, col2 = st.columns(2) 
+                            col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
+                            col2.metric(label=str(datetime.datetime.utcnow().month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
+                            titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+                            fig = px.bar(
+                                    monthly_slice,
+                                        x=monthly_slice.index.year,
+                                        y=selected_dosi,
+                                        color=selected_dosi,
+                                        hover_name=selected_dosi,
+                                        text=selected_dosi
+                                    )
+                            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2", xaxis_tickformat = '%Y')
+                            st.plotly_chart(fig)
+                        except Exception as e:
+                            st.write(e)
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        flag = "아파트 실거래가격지수 "
+                        try:
+                            drawAPT_update.basic_chart(selected_dosi, mdf, mdf_change, "mae")
+                        except Exception as e:
+                            st.write(e)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = "아파트 실거래가격지수 "
+                        drawAPT_update.draw_flower(selected_dosi, selected_dosi, cum_mdf, cum_jdf, flag)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+            with tab2: #전세지수
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1: #4년 그래프와 평균 
+                        try:
+                            drawAPT_update.draw_4years_index(selected_dosi, jdf_change, "jeon")
+                        except Exception as e:
+                            st.write(e)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        try:
+                            monthly_slice = jdf_change.loc[jdf_change.index.month == jdf_change.index[-1].month]
+                            monthly_slice = monthly_slice.round(decimals=1)
+                            col1, col2 = st.columns(2) 
+                            col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
+                            col2.metric(label=str(datetime.datetime.utcnow().month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
+                            titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+                            fig = px.bar(
+                                    monthly_slice,
+                                        x=monthly_slice.index.year,
+                                        y=selected_dosi,
+                                        color=selected_dosi,
+                                        hover_name=selected_dosi,
+                                        text=selected_dosi
+                                    )
+                            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2", xaxis_tickformat = '%Y')
+                            st.plotly_chart(fig)
+                        except Exception as e:
+                            st.write(e)
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        flag = "아파트 실거래가격지수 "
+                        try:
+                            drawAPT_update.basic_chart(selected_dosi, jdf, jdf_change, "jeon")
+                        except Exception as e:
+                            st.write(e)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = "아파트 실거래가격지수 "
+                        drawAPT_update.draw_flower(selected_dosi, selected_dosi, cum_mdf, cum_jdf, flag)
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
     else: #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
         #지역과 기간 같이 보기
         period_ = mdf.index.strftime("%Y-%m").tolist()
@@ -322,7 +373,7 @@ if __name__ == "__main__":
         start_date, end_date = st.select_slider(
             'Select Date to Compare index change', 
             options = period_,
-            value = (period_[-13], period_[-1]))
+            value = (period_[0], period_[-1]))
         
         #부동산원 / KB
         slice_om = mdf.loc[start_date:end_date]
