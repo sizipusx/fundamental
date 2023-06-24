@@ -501,6 +501,7 @@ def draw_basic():
                 st.write("")
             with col3:
                 city_list = ['강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도']
+                st.dataframe(s_df)
                 drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
         html_br="""
         <br>
