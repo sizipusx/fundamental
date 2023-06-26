@@ -284,7 +284,7 @@ if __name__ == "__main__":
     #stat_df.iloc[:,0] = stat_df.iloc[:,0].astype(str)
     stat_df = stat_df.fillna(0).astype(int)
     last_date = pd.to_datetime(str(stat_df.index.values[-1])).strftime('%Y.%m.%d')
-    # st.write(s_df.columns)
+    st.write(s_df.tail())
     data_load_state.text("Done!")
     st.subheader(f"시세 조사 날짜: {last_date}" )
     tab1, tab2 = st.tabs(["🗺️ 지도", "🔣 통계"])
