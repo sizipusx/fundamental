@@ -210,30 +210,32 @@ def load_data():
     return sum_df, total_df, stat_df
 
 def show_total(s_df):
-    px.set_mapbox_access_token(token)
-    fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],\
-                    color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
-    fig.update_layout(
-        title='전국 재건축-재개발 분양권 아파트 시세',
-        autosize=True,
-        hovermode='closest',
-        showlegend=True,
-        legend=dict(orientation="h"),
-        mapbox=dict(
-            #accesstoken=mapbox_access_token,
-            bearing=0,
-            center=dict(
-                lat=37.5,
-                lon=127.0
+    try:
+        px.set_mapbox_access_token(token)
+        fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],\
+                        color_continuous_scale=px.colors.cyclical.IceFire, height=1000, size_max=30, zoom=10)
+        fig.update_layout(
+            title='전국 재건축-재개발 분양권 아파트 시세',
+            autosize=True,
+            hovermode='closest',
+            showlegend=True,
+            legend=dict(orientation="h"),
+            mapbox=dict(
+                #accesstoken=mapbox_access_token,
+                bearing=0,
+                center=dict(
+                    lat=37.5,
+                    lon=127.0
+                ),
+                pitch=0,
+                zoom=7,
+                style='light', #'streets', #'light'
             ),
-            pitch=0,
-            zoom=7,
-            style='light', #'streets', #'light'
-        ),
-    )
-    fig.update_layout(template="myID")
-    st.plotly_chart(fig, use_container_width=True)
-
+        )
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig, use_container_width=True)
+    except Exception as e:
+        st.write(e)
 
     #draw with folium
     # m = folium.Map(
