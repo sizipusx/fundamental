@@ -675,33 +675,33 @@ if __name__ == "__main__":
         st.dataframe(un_dfsss)
     except Exception as e:
         print(e)
-    #in_df = oindex_list[4]
+    in_df = oindex_list[4]
     
-    #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
-    #매입자 거주지별 거래현황
-    # in_df = one_dict.parse("apt_buy", header=0) 
-    # bheader = pd.read_excel(header_path, sheet_name='buyer')
-    # in_df['지 역'] = bheader['local'].str.strip()
-    # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
-    # in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    # in_values = one_doc.worksheet('investor')
-    # #데이터 프레임으로 읽기
-    # basic_values = in_values.get_all_values()
+    un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
+    매입자 거주지별 거래현황
+    in_df = one_dict.parse("apt_buy", header=0) 
+    bheader = pd.read_excel(header_path, sheet_name='buyer')
+    in_df['지 역'] = bheader['local'].str.strip()
+    in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
+    in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    in_values = one_doc.worksheet('investor')
+    #데이터 프레임으로 읽기
+    basic_values = in_values.get_all_values()
 
-    # basic_header, basic_rows = basic_values[0], basic_values[1:]
-    # in_df1= pd.DataFrame(basic_rows, columns=basic_header)
-    # in_df1 = in_df1.set_index(['local','매입자거주지'])
-    # in_df = in_df1.T
-    #=============== 여기까지 변경
-    # in_df = in_df.set_index("지역명")
-    # in_df = in_df.T
-    # in_df.columns = [in_df.columns, in_df.iloc[0]]
-    # in_df = in_df.iloc[1:]
-    # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
-    # in_df.index = pd.to_datetime(in_df.index)
-    #in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
-    #in_df = in_df.astype(int)
+    basic_header, basic_rows = basic_values[0], basic_values[1:]
+    in_df1= pd.DataFrame(basic_rows, columns=basic_header)
+    in_df1 = in_df1.set_index(['local','매입자거주지'])
+    in_df = in_df1.T
+    =============== 여기까지 변경
+    in_df = in_df.set_index("지역명")
+    in_df = in_df.T
+    in_df.columns = [in_df.columns, in_df.iloc[0]]
+    in_df = in_df.iloc[1:]
+    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
+    in_df.index = pd.to_datetime(in_df.index)
+    in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    in_df = in_df.astype(int)
 
     #2022. 11. 10 수정 멀티 인덱스로 변경
     new_s1 = []
