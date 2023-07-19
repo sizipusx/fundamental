@@ -680,16 +680,15 @@ if __name__ == "__main__":
     # except Exception as e:
     #     print(e)
     in_df = oindex_list[2]
-    
+    st.dataframe(in_df)
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
     bheader = pd.read_excel(header_path, sheet_name='buyer')
-    st.dataframe(bheader)
     h1 = bheader['local'].str.strip().T
     h2 = bheader['구분'].str.strip().T
     in_df.columns = [h1, h2]
-    st.dataframe(in_df)
+    
     # in_df['지 역'] = bheader['local'].str.strip().T
     # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
     # in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
