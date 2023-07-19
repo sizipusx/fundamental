@@ -685,6 +685,7 @@ if __name__ == "__main__":
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
     bheader = pd.read_excel(header_path, sheet_name='buyer')
+    st.dataframe(bheader)
     h1 = bheader['local'].str.strip().T
     h2 = bheader['구분'].str.strip().T
     in_df.columns = [h1, h2]
