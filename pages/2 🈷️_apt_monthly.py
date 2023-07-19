@@ -717,6 +717,8 @@ if __name__ == "__main__":
         new_s1.append(remove_giho(city_name.split(',')[0]).strip())
         new_s2.append(remove_giho(city_name.split(',')[1]).strip())
     in_df.columns = [new_s1,new_s2]
+
+    in_df = in_df.set_index("index")
     
     total_df = in_df.xs('합계', axis=1, level=1)
     out_city = in_df.xs('관할시도외기타', axis=1, level=1)
