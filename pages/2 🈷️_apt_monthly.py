@@ -328,7 +328,7 @@ def load_one_data():
         index_list.append(df)
 
     in_query = "SELECT * FROM 'investor'"
-    in_df = pd.read_sql(in_query, one_conn, index_col='date')
+    in_df = pd.read_sql(in_query, one_conn)
     index_list.append(in_df)
     #one_conn.close()
     # omdf = index_list[0]
