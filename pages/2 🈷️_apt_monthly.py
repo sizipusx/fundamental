@@ -321,7 +321,7 @@ def load_one_data():
     ######DB에서 읽어오기##################
     one_conn = create_connection(one_db_path)
     index_list = []
-    query_list = ["select * from one_mae", "select * from one_jeon"]#, "select * from not_sold", "select * from after_not_sold", "SELECT * FROM 'investor'"]
+    query_list = ["select * from one_mae", "select * from one_jeon", "SELECT * FROM 'investor'"]#, "select * from not_sold", "select * from after_not_sold", ]
     for query in query_list:
         df = pd.read_sql(query, one_conn, index_col='date', parse_dates={'date', "%Y-%m"})
         #df.index = pd.to_datetime(df.index, format = '%Y-%m')
@@ -667,17 +667,17 @@ if __name__ == "__main__":
     omdf = oindex_list[0]
     ojdf = oindex_list[1]
 
-    try: 
-        not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
-        not_sell_apt = not_sell_list[0]
-        un_df = not_sell_list[1]
-        st.dataframe(not_sell_apt)
-        st.dataframe(un_dfsss)
-    except Exception as e:
-        print(e)
-    in_df = oindex_list[4]
+    # try: 
+    #     not_sell_list, in_df = get_not_sell_apt() #준공후 미분양
+    #     not_sell_apt = not_sell_list[0]
+    #     un_df = not_sell_list[1]
+    #     st.dataframe(not_sell_apt)
+    #     st.dataframe(un_df)
+    # except Exception as e:
+    #     print(e)
+    in_df = oindex_list[2]
     
-    un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
+    #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     in_df = one_dict.parse("apt_buy", header=0) 
     bheader = pd.read_excel(header_path, sheet_name='buyer')
