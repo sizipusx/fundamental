@@ -684,10 +684,10 @@ if __name__ == "__main__":
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
-    bheader = pd.read_excel(header_path, sheet_name='buyer')
-    h1 = bheader['local'].str.strip().T
-    h2 = bheader['구분'].str.strip().T
-    in_df.columns = [h1, h2]
+    # bheader = pd.read_excel(header_path, sheet_name='buyer')
+    # h1 = bheader['local'].str.strip().T
+    # h2 = bheader['구분'].str.strip().T
+    # in_df.columns = [h1, h2]
     
     # in_df['지 역'] = bheader['local'].str.strip().T
     # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
