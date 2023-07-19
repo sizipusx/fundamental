@@ -321,11 +321,15 @@ def load_one_data():
     ######DB에서 읽어오기##################
     one_conn = create_connection(one_db_path)
     index_list = []
-    query_list = ["select * from one_mae", "select * from one_jeon", "SELECT * FROM 'investor'"]#, "select * from not_sold", "select * from after_not_sold", ]
+    query_list = ["select * from one_mae", "select * from one_jeon"]#, "select * from not_sold", "select * from after_not_sold", ]
     for query in query_list:
         df = pd.read_sql(query, one_conn, index_col='date', parse_dates={'date', "%Y-%m"})
         #df.index = pd.to_datetime(df.index, format = '%Y-%m')
         index_list.append(df)
+
+    in_query = "SELECT * FROM 'investor'"
+    in_df = pd.read_sql(in_query, one_conn, index_col='date')
+    index_list.append(in_df)
     #one_conn.close()
     # omdf = index_list[0]
     # ojdf = index_list[1]
@@ -679,29 +683,33 @@ if __name__ == "__main__":
     
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
-    in_df = one_dict.parse("apt_buy", header=0) 
+    # in_df = one_dict.parse("apt_buy", header=0) 
     bheader = pd.read_excel(header_path, sheet_name='buyer')
-    in_df['지 역'] = bheader['local'].str.strip()
-    in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
-    in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
-    in_values = one_doc.worksheet('investor')
-    #데이터 프레임으로 읽기
-    basic_values = in_values.get_all_values()
+    h1 = bheader['local'].str.strip().T
+    h2 = bheader['구분'].str.strip().T
+    in_df.columns = [h1, h2]
+    st.dataframe(in_df)
+    # in_df['지 역'] = bheader['local'].str.strip().T
+    # in_df = in_df.rename({'지 역':'지역명'}, axis='columns')
+    # in_df.drop(['Unnamed: 1', 'Unnamed: 2'], axis=1, inplace=True)
+    # in_values = one_doc.worksheet('investor')
+    # #데이터 프레임으로 읽기
+    # basic_values = in_values.get_all_values()
 
-    basic_header, basic_rows = basic_values[0], basic_values[1:]
-    in_df1= pd.DataFrame(basic_rows, columns=basic_header)
-    in_df1 = in_df1.set_index(['local','매입자거주지'])
-    in_df = in_df1.T
+    # basic_header, basic_rows = basic_values[0], basic_values[1:]
+    # in_df1= pd.DataFrame(basic_rows, columns=basic_header)
+    # in_df1 = in_df1.set_index(['local','매입자거주지'])
+    # in_df = in_df1.T
     #=============== 여기까지 변경
-    in_df = in_df.set_index("지역명")
-    in_df = in_df.T
-    in_df.columns = [in_df.columns, in_df.iloc[0]]
-    in_df = in_df.iloc[1:]
-    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
-    in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
-    in_df.index = pd.to_datetime(in_df.index)
-    in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
-    in_df = in_df.astype(int)
+    # in_df = in_df.set_index("지역명")
+    # in_df = in_df.T
+    # in_df.columns = [in_df.columns, in_df.iloc[0]]
+    # in_df = in_df.iloc[1:]
+    # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', '-01'))
+    # in_df.index = in_df.index.map(lambda x: x.replace('년','-').replace(' ','').replace('월', ''))
+    # in_df.index = pd.to_datetime(in_df.index)
+    # in_df = in_df.apply(lambda x:x.replace('#DIV/0!','0')).apply(lambda x:x.replace('','0')).astype(float)
+    # in_df = in_df.astype(int)
 
     #2022. 11. 10 수정 멀티 인덱스로 변경
     new_s1 = []
@@ -737,18 +745,18 @@ if __name__ == "__main__":
     #마지막 달
     kb_last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     one_last_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
-    af_last_month = pd.to_datetime(str(not_sell_apt.index.values[-1])).strftime('%Y.%m')
-    un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
+    # af_last_month = pd.to_datetime(str(not_sell_apt.index.values[-1])).strftime('%Y.%m')
+    # un_last_month = pd.to_datetime(str(un_df.index.values[-1])).strftime('%Y.%m')
     in_last_month = pd.to_datetime(str(invest_total.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
         cols = st.columns(3)
         cols[0].markdown(f'KB 최종업데이트: **{kb_last_month}월**')
         cols[1].markdown(f'부동산원 최종업데이트: **{one_last_month}월**')
         cols[2].markdown(f'투자자 최종업데이트: **{in_last_month}월**')
-        cols = st.columns(3)
-        cols[0].markdown(f'미분양 최종업데이트: **{un_last_month}월**')
-        cols[1].markdown(f'준공후 미분양 최종업데이트: **{af_last_month}월**')
-        cols[2].markdown('                      ')
+        # cols = st.columns(3)
+        # # cols[0].markdown(f'미분양 최종업데이트: **{un_last_month}월**')
+        # # cols[1].markdown(f'준공후 미분양 최종업데이트: **{af_last_month}월**')
+        # cols[2].markdown('                      ')
     #월간 증감률
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
