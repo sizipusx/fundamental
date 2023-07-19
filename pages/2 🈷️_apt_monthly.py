@@ -1026,7 +1026,7 @@ if __name__ == "__main__":
             condition_iv_de = s_iv.iloc[:,0] > s_iv.iloc[:,-1]
             iv_de = s_iv.loc[condition_iv_de]
             iv_final = iv_in[iv_in.iloc[:,1] != 0].reset_index()
-            st.dataframe(iv_final)
+            st.dataframe(iv_in)
             iv_in_list = iv_final.index.to_list()
             iv_de_list = iv_de.index.to_list()
             with st.container():
