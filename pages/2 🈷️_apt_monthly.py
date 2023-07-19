@@ -931,85 +931,85 @@ if __name__ == "__main__":
             ###
             ### 미분양 증가 하락 지역 #########################################################################################
             
-            un_df.replace([np.inf, -np.inf], np.nan, inplace=True)
-            un_df = un_df.astype(float).fillna(0)
-            un_df = un_df.astype(int)
-            #필요 날짜만 slice
-            last_date = un_df.index[-1].strftime("%Y-%m")
-            slice_un = un_df.loc[start_date:last_date]
-            s_un = pd.DataFrame()
-            un_de = pd.DataFrame()
-            un_in = pd.DataFrame()
-            s_un[start_date] = slice_un.iloc[0].T
-            s_un[last_date] = slice_un.iloc[-1].T
-            condition_un = s_un.iloc[:,0] <= s_un.iloc[:,-1]
-            un_in = s_un.loc[condition_un]
-            condition_un_de = s_un.iloc[:,0] > s_un.iloc[:,-1]
-            un_de = s_un.loc[condition_un_de]
-            un_in_final = un_in[un_in.iloc[:,1] != 0]
-            un_in_list = un_in_final.index.to_list()
-            un_de_list = un_de.index.to_list()
-            #table styler 
-            s = un_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='0', thousands=",")
-            cell_hover = {  # for row hover use <tr> instead of <td>
-                'selector': 'td:hover',
-                'props': [('background-color', '#ffffb3')]
-            }
-            index_names = {
-                'selector': '.index_name',
-                'props': 'font-style: italic; color: darkgrey; font-weight:normal;'
-            }
-            headers = {
-                'selector': 'th:not(.index_name)',
-                'props': 'background-color: #000066; color: white;'
-            }
-            s.set_table_styles([cell_hover, index_names, headers])
-            with st.container():
-                col1, col2, col3 = st.columns([50,1,50])
-                with col1:
-                    st.subheader("미분양 증가 지역")
-                    st.dataframe(s,350,500)
-                with col2:
-                    st.write("")
-                with col3:
-                    st.subheader("미분양 감소 지역")
-                    st.dataframe(un_de.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='0', thousands=","), 350, 500)
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
+            # un_df.replace([np.inf, -np.inf], np.nan, inplace=True)
+            # un_df = un_df.astype(float).fillna(0)
+            # un_df = un_df.astype(int)
+            # #필요 날짜만 slice
+            # last_date = un_df.index[-1].strftime("%Y-%m")
+            # slice_un = un_df.loc[start_date:last_date]
+            # s_un = pd.DataFrame()
+            # un_de = pd.DataFrame()
+            # un_in = pd.DataFrame()
+            # s_un[start_date] = slice_un.iloc[0].T
+            # s_un[last_date] = slice_un.iloc[-1].T
+            # condition_un = s_un.iloc[:,0] <= s_un.iloc[:,-1]
+            # un_in = s_un.loc[condition_un]
+            # condition_un_de = s_un.iloc[:,0] > s_un.iloc[:,-1]
+            # un_de = s_un.loc[condition_un_de]
+            # un_in_final = un_in[un_in.iloc[:,1] != 0]
+            # un_in_list = un_in_final.index.to_list()
+            # un_de_list = un_de.index.to_list()
+            # #table styler 
+            # s = un_in_final.style.background_gradient(cmap, axis=0)\
+            #                                     .format(na_rep='0', thousands=",")
+            # cell_hover = {  # for row hover use <tr> instead of <td>
+            #     'selector': 'td:hover',
+            #     'props': [('background-color', '#ffffb3')]
+            # }
+            # index_names = {
+            #     'selector': '.index_name',
+            #     'props': 'font-style: italic; color: darkgrey; font-weight:normal;'
+            # }
+            # headers = {
+            #     'selector': 'th:not(.index_name)',
+            #     'props': 'background-color: #000066; color: white;'
+            # }
+            # s.set_table_styles([cell_hover, index_names, headers])
+            # with st.container():
+            #     col1, col2, col3 = st.columns([50,1,50])
+            #     with col1:
+            #         st.subheader("미분양 증가 지역")
+            #         st.dataframe(s,350,500)
+            #     with col2:
+            #         st.write("")
+            #     with col3:
+            #         st.subheader("미분양 감소 지역")
+            #         st.dataframe(un_de.style.background_gradient(cmap, axis=0)\
+            #                                     .format(na_rep='0', thousands=","), 350, 500)
+            # html_br="""
+            # <br>
+            # """
+            # st.markdown(html_br, unsafe_allow_html=True)
             ### 완공 후 미분양 증가 하락 지역 #########################################################################################
             #not_total = not_sell_apt.xs('소계', axis=1, level=1) 
-            not_total = not_sell_apt.copy()
-            #필요 날짜만 slice
-            last_date_af = not_total.index[-1].strftime("%Y-%m")
-            slice_af = not_total.loc[start_date:last_date_af]
-            s_af = pd.DataFrame()
-            af_de = pd.DataFrame()
-            af_in = pd.DataFrame()
-            s_af[start_date] = slice_af.iloc[0].T
-            s_af[last_date_af] = slice_af.iloc[-1].T
-            condition_af = s_af.iloc[:,0] <= s_af.iloc[:,-1]
-            af_in = s_af.loc[condition_af]
-            condition_af_de = s_af.iloc[:,0] > s_af.iloc[:,-1]
-            af_de = s_af.loc[condition_af_de]
-            af_in_final = af_in[af_in.iloc[:,1] != 0]
-            af_in_list = af_in_final.index.to_list()
-            af_de_list = af_de.index.to_list()
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    st.subheader("완공 후 미분양 증가 지역")
-                    st.dataframe(af_in_final.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='0', thousands=","),350,500)
-                with col2:
-                    st.write("")
-                with col3:
-                    st.subheader("완공 후 미분양 감소 지역")
-                    st.dataframe(af_de.style.background_gradient(cmap, axis=0)\
-                                                .format(na_rep='0', thousands=","),350,500)
+            # not_total = not_sell_apt.copy()
+            # #필요 날짜만 slice
+            # last_date_af = not_total.index[-1].strftime("%Y-%m")
+            # slice_af = not_total.loc[start_date:last_date_af]
+            # s_af = pd.DataFrame()
+            # af_de = pd.DataFrame()
+            # af_in = pd.DataFrame()
+            # s_af[start_date] = slice_af.iloc[0].T
+            # s_af[last_date_af] = slice_af.iloc[-1].T
+            # condition_af = s_af.iloc[:,0] <= s_af.iloc[:,-1]
+            # af_in = s_af.loc[condition_af]
+            # condition_af_de = s_af.iloc[:,0] > s_af.iloc[:,-1]
+            # af_de = s_af.loc[condition_af_de]
+            # af_in_final = af_in[af_in.iloc[:,1] != 0]
+            # af_in_list = af_in_final.index.to_list()
+            # af_de_list = af_de.index.to_list()
+            # with st.container():
+            #     col1, col2, col3 = st.columns([30,2,30])
+            #     with col1:
+            #         st.subheader("완공 후 미분양 증가 지역")
+            #         st.dataframe(af_in_final.style.background_gradient(cmap, axis=0)\
+            #                                     .format(na_rep='0', thousands=","),350,500)
+            #     with col2:
+            #         st.write("")
+            #     with col3:
+            #         st.subheader("완공 후 미분양 감소 지역")
+            #         st.dataframe(af_de.style.background_gradient(cmap, axis=0)\
+            #                                     .format(na_rep='0', thousands=","),350,500)
             html_br="""
             <br>
             """
@@ -1271,8 +1271,8 @@ if __name__ == "__main__":
             """
             st.markdown(html_br, unsafe_allow_html=True)
             ######## 하략 지역 데이터프레임 ####################################################################################
-            down_index_name = ['KB지수', 'one지수', '미분양증가', '준공후미분양증가', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
-            de_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(un_in_list), ', '.join(af_in_list), ', '.join(iv_in_list), \
+            down_index_name = ['KB지수', 'one지수', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
+            de_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(iv_in_list), \
                  ', '.join(iv_de_list), ', '.join(pr_de_list), ', '.join(jpr_in_list), ', '.join(jr_in_list)])
             down_df = pd.DataFrame(de_citys, down_index_name)
             with st.container():
@@ -1306,8 +1306,8 @@ if __name__ == "__main__":
             <br>
             """
              ######## 상승 지역 데이터프레임 ####################################################################################
-            up_index_name = ['KB지수', 'one지수', '미분양감소', '준공후미분양감소', '투자자증가', '투자자감소', '평균매매가격증가', '평균전세가격감소', '전세가율감소']
-            in_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(un_de_list), ', '.join(af_de_list), ', '.join(iv_in_list), \
+            up_index_name = ['KB지수', 'one지수', '투자자증가', '투자자감소', '평균매매가격증가', '평균전세가격감소', '전세가율감소']
+            in_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list),  ', '.join(iv_in_list), \
                  ', '.join(iv_de_list), ', '.join(pr_in_list), ', '.join(jpr_de_list), ', '.join(jr_de_list)])
             in_df = pd.DataFrame(in_citys, up_index_name)
             with st.container():
