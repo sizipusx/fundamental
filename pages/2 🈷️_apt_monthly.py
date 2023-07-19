@@ -1176,7 +1176,7 @@ if __name__ == "__main__":
             m_df = m_df.round(decimals=1)
             a_df = a_df.round(decimals=1)
             #평균 가격으로 필요 날짜만 slice
-            smdf.index = pd.to_datetime(smdf.index, format='%Y-%m-%d')
+            smdf.index = pd.to_datetime(smdf.index, format='%Y-%m')
             last_date = smdf.index[-1].strftime("%Y-%m")
             slice_pr = smdf.loc[start_date:last_date]
             s_pr = pd.DataFrame()
