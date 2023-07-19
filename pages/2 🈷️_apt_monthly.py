@@ -678,7 +678,7 @@ if __name__ == "__main__":
     in_df = oindex_list[4]
     
     un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
-    매입자 거주지별 거래현황
+    #매입자 거주지별 거래현황
     in_df = one_dict.parse("apt_buy", header=0) 
     bheader = pd.read_excel(header_path, sheet_name='buyer')
     in_df['지 역'] = bheader['local'].str.strip()
@@ -692,7 +692,7 @@ if __name__ == "__main__":
     in_df1= pd.DataFrame(basic_rows, columns=basic_header)
     in_df1 = in_df1.set_index(['local','매입자거주지'])
     in_df = in_df1.T
-    =============== 여기까지 변경
+    #=============== 여기까지 변경
     in_df = in_df.set_index("지역명")
     in_df = in_df.T
     in_df.columns = [in_df.columns, in_df.iloc[0]]
