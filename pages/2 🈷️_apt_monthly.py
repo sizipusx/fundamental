@@ -680,7 +680,6 @@ if __name__ == "__main__":
     # except Exception as e:
     #     print(e)
     in_df = oindex_list[2]
-    st.dataframe(in_df)
     #un_df = one_dict.parse("not_sell", header=0,index_col=0, parse_dates=True) #미분양
     #매입자 거주지별 거래현황
     # in_df = one_dict.parse("apt_buy", header=0) 
