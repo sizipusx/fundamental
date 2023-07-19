@@ -717,8 +717,6 @@ if __name__ == "__main__":
         new_s1.append(remove_giho(city_name.split(',')[0]).strip())
         new_s2.append(remove_giho(city_name.split(',')[1]).strip())
     in_df.columns = [new_s1,new_s2]
-    st.dataframe(in_df)
-    in_df = in_df.set_index("index")
     
     total_df = in_df.xs('합계', axis=1, level=1)
     out_city = in_df.xs('관할시도외기타', axis=1, level=1)
@@ -1028,6 +1026,7 @@ if __name__ == "__main__":
             condition_iv_de = s_iv.iloc[:,0] > s_iv.iloc[:,-1]
             iv_de = s_iv.loc[condition_iv_de]
             iv_final = iv_in[iv_in.iloc[:,1] != 0].reset_index()
+            st.dataframe(iv_final)
             iv_in_list = iv_final.index.to_list()
             iv_de_list = iv_de.index.to_list()
             with st.container():
