@@ -327,12 +327,12 @@ if __name__ == "__main__":
             default_flag = '그외'
         
         response  = aggrid_interactive_table(df=filter_df)
-        st.dataframe(filter_df)
-        # 숫자형으로 변환할 열만 선택
-        numeric_columns = filter_df.select_dtypes(include=[float, int]).columns
+        # st.dataframe(filter_df)
+        # # 숫자형으로 변환할 열만 선택
+        # numeric_columns = filter_df.select_dtypes(include=[float, int]).columns
 
-        # 선택한 열을 숫자형으로 변환
-        filter_df.loc[:, numeric_columns] = filter_df.loc[:, numeric_columns].apply(pd.to_numeric, errors='coerce')
+        # # 선택한 열을 숫자형으로 변환
+        # filter_df.loc[:, numeric_columns] = filter_df.loc[:, numeric_columns].apply(pd.to_numeric, errors='coerce')
 
 
         if response:
