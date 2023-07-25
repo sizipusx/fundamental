@@ -326,6 +326,7 @@ if __name__ == "__main__":
             filter_df = city_total[['시도명', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
             default_flag = '그외'
         
+        st.dataframe(filter_df)
         # 숫자형으로 변환할 열만 선택
         numeric_columns = filter_df.select_dtypes(include=[float, int]).columns
 
@@ -337,7 +338,6 @@ if __name__ == "__main__":
         if response:
             st.write("선택한 아파트:")
             selected_df = response["selected_rows"]
-            st.dataframe(selected_df)
             if selected_df:
                 px.set_mapbox_access_token(token)
                 fig = px.scatter_mapbox(selected_df, lat="위도", lon="경도", color="매물종류", size='공급면적', hover_name="단지명", hover_data=["특이사항", "한글거래가액", "시도명"],
