@@ -325,6 +325,12 @@ if __name__ == "__main__":
             show_local(city_name, city_apt, city_total)
             filter_df = city_total[['시도명', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
             default_flag = '그외'
+        
+        # 숫자형으로 변환할 열만 선택
+        numeric_columns = filter_df.select_dtypes(include=[float, int]).columns
+
+        # 선택한 열을 숫자형으로 변환
+        filter_df.loc[:, numeric_columns] = filter_df.loc[:, numeric_columns].apply(pd.to_numeric, errors='coerce')
         response  = aggrid_interactive_table(df=filter_df)
 
 
