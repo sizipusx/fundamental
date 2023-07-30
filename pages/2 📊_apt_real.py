@@ -180,13 +180,11 @@ if __name__ == "__main__":
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
         common_col = list(set(mdf.columns.tolist()) & set(omdf.columns.tolist()) & set(kbmdf.columns.tolist()))
-        submit = st.sidebar.button('지수 같이 보기')
-
         city_series = pd.Series(common_col)
         selected_dosi = st.sidebar.selectbox(
                 '광역시-도', common_col
             )
-
+        submit = st.sidebar.button('지수 같이 보기')
         if submit:
             tab1, tab2 = st.tabs(["⏰ 매매지수", "🗺️ 전세지수"])
             with tab1: #매매지수
