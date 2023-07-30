@@ -74,10 +74,10 @@ def load_index_data(flag):
       conn = create_connection("files/one_monthly.db")
     elif flag == 'one':
       query_list = ["select * from one_mae", "select * from one_jeon"]#, "SELECT * FROM jratio"]
-      conn = create_connection("/content/one_monthly.db")
+      conn = create_connection("/files/one_monthly.db")
     else:
       query_list = ["select * from mae", "select * from jeon"]
-      conn = create_connection("/content/kb_monthly.db")
+      conn = create_connection("/files/kb_monthly.db")
     for query in query_list:
         df = pd.read_sql(query, conn, index_col='date', parse_dates={'date', "%Y-%m"})
         # query = conn.execute(query)
