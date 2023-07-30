@@ -841,10 +841,10 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
     titles = dict(text= '<b> ['+selected_dosi2 +']'+flag +' 월간 매매-전세 지수</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[0]), secondary_y = True)
-    fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='전세지수', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
+    fig.add_trace(go.Bar(name = '매매지수 증감(R)', x = mdf.index, y = mdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Bar(name = '전세지수 증감(R)', x = jdf.index, y = jdf_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수(L)', x =  mdf.index, y= mdf[selected_dosi2], marker_color = marker_colors[0]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='전세지수(L)', x =  jdf.index, y= jdf[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
     fig.update_layout(hovermode="x unified")
     # fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
@@ -1957,27 +1957,27 @@ def draw_index_together(local_name, rmdf, omdf, mdf, rmdf_ch, omdf_ch, mdf_ch, f
     #         secondary_y=True
     #         )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=rmdf_ch.loc[:,local_name],  name="실거래가", marker_color= marker_colors[0]),
+            go.Bar(x=mdf.index, y=rmdf_ch.loc[:,local_name],  name="실거래 변화(R)", marker_color= marker_colors[0]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=omdf_ch.loc[:,local_name],  name="부동산원", marker_color= marker_colors[1]),
+            go.Bar(x=mdf.index, y=omdf_ch.loc[:,local_name],  name="부동산원 변화(R)", marker_color= marker_colors[1]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=mdf_ch.loc[:,local_name],  name="KB", marker_color= marker_colors[2]),
+            go.Bar(x=mdf.index, y=mdf_ch.loc[:,local_name],  name="KB 변화(R)", marker_color= marker_colors[2]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Scatter(x=mdf.index, y=rmdf.loc[:,local_name],  name="실거래가", marker_color= marker_colors[0]),
+            go.Scatter(x=mdf.index, y=rmdf.loc[:,local_name],  name="실거래 지수(L)", marker_color= marker_colors[0]),
             secondary_y=False
             )
     fig.add_trace(
-            go.Scatter(x=mdf.index, y=omdf.loc[:,local_name],  name="부동산원", marker_color= marker_colors[1]),
+            go.Scatter(x=mdf.index, y=omdf.loc[:,local_name],  name="부동산원 지수(L)", marker_color= marker_colors[1]),
             secondary_y=False
             )
     fig.add_trace(
-            go.Scatter(x=mdf.index, y=mdf.loc[:,local_name],  name="KB", marker_color= marker_colors[2]),
+            go.Scatter(x=mdf.index, y=mdf.loc[:,local_name],  name="KB 지수 (L)", marker_color= marker_colors[2]),
             secondary_y=False
             )
     fig.update_yaxes(title_text=flag, showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
