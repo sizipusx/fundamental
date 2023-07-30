@@ -1945,3 +1945,86 @@ def draw_4years_index(selected_dosi, m_ch, flag):
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")   
     st.plotly_chart(fig)
+
+def draw_index_together(local_name, rmdf, omdf, mdf, rmdf_ch, omdf_ch, mdf_ch, flag):
+    title = "<b>" + local_name+ "  "+ flag+" 변화 같이 보기</b>"
+    titles = dict(text= title, x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]])
+
+    # fig.add_trace(
+    #         go.Bar(x=rmdf.index, y=rmdf.loc[:,value],  name=value, marker_color= marker_colors[index]),
+    #         secondary_y=True
+    #         )
+    fig.add_trace(
+            go.Bar(x=mdf.index, y=rmdf_ch.loc[:,local_name],  name="실거래가", marker_color= marker_colors[0]),
+            secondary_y=True
+            )
+    fig.add_trace(
+            go.Bar(x=mdf.index, y=omdf_ch.loc[:,local_name],  name="부동산원", marker_color= marker_colors[1]),
+            secondary_y=True
+            )
+    fig.add_trace(
+            go.Bar(x=mdf.index, y=mdf_ch.loc[:,local_name],  name="KB", marker_color= marker_colors[2]),
+            secondary_y=True
+            )
+    fig.add_trace(
+            go.Scatter(x=mdf.index, y=rmdf.loc[:,local_name],  name="실거래가", marker_color= marker_colors[0]),
+            secondary_y=False
+            )
+    fig.add_trace(
+            go.Scatter(x=mdf.index, y=omdf.loc[:,local_name],  name="부동산원", marker_color= marker_colors[1]),
+            secondary_y=False
+            )
+    fig.add_trace(
+            go.Scatter(x=mdf.index, y=mdf.loc[:,local_name],  name="KB", marker_color= marker_colors[2]),
+            secondary_y=False
+            )
+    fig.update_yaxes(title_text=flag, showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
+    fig.update_yaxes(title_text=flag+ " 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
+    fig.update_layout(template="myID")
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(
+                showlegend=True,
+                legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="left",
+                x=0
+            ),
+                xaxis=go.layout.XAxis(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=6,
+                            label="6m",
+                            step="month",
+                            stepmode="backward"),
+                        dict(count=1,
+                            label="YTD",
+                            step="year",
+                            stepmode="todate"),
+                        dict(count=1,
+                            label="1y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=5,
+                            label="5y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(count=10,
+                            label="10y",
+                            step="year",
+                            stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(
+                    visible=False
+                ),
+                type="date",
+                range=[kor_time - relativedelta(years=5), kor_time]
+                )      
+            )
+    st.plotly_chart(fig)
