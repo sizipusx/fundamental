@@ -168,8 +168,8 @@ if __name__ == "__main__":
         omdf = omdf.loc['2006-01-01':]
         kbmdf = kbmdf.loc['2006-01-01':]
         mdf_ch = mdf_change.loc['2006-01-01':]
-        omdf_ch = omdf.loc['2006-01-01':]
-        kbmdf_ch = kbmdf.loc['2006-01-01':]
+        omdf_ch = omdf_ch.loc['2006-01-01':]
+        kbmdf_ch = kbmdf_ch.loc['2006-01-01':]
 
         jdf = jdf.loc['2006-01-01':]
         ojdf = ojdf.loc['2006-01-01':]
