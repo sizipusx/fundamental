@@ -110,10 +110,12 @@ if __name__ == "__main__":
     last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
     onelast_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
     kblast_month = pd.to_datetime(str(kbmdf.index.values[-1])).strftime('%Y.%m')
-    st.markdown(f'실거래가 최종업데이트: **{last_month}월**')
-    st.markdown(f'부동산원 최종업데이트: **{onelast_month}월**')
-    st.markdown(f'KB 최종업데이트: **{kblast_month}월**')
-    with st.expander("See Raw Data"):
+    with st.expander("See recently Data Update"):
+        cols = st.columns(3)
+        cols[0].markdown(f'실거래가 최종업데이트: **{last_month}월**')
+        cols[1].markdown(f'부동산원 최종업데이트: **{onelast_month}월**')
+        cols[2].markdown(f'KB 최종업데이트: **{kblast_month}월**')
+    with st.expander("See 실거래가 Raw Data"):
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
