@@ -97,9 +97,6 @@ def load_index_data(flag):
 
 if __name__ == "__main__":
     data_load_state = st.text('Loading Index Data...')
-    index_list = load_index_data()
-    mdf = index_list[0]
-    jdf = index_list[1]
     real_index_list = load_index_data("real")
     one_index_list = load_index_data("one")
     kb_index_list = load_index_data("kb")
