@@ -2027,4 +2027,4 @@ def draw_index_together(local_name, rmdf, omdf, mdf, rmdf_ch, omdf_ch, mdf_ch, f
                 range=[kor_time - relativedelta(years=5), kor_time]
                 )      
             )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
