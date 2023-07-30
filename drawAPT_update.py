@@ -1957,15 +1957,15 @@ def draw_index_together(local_name, rmdf, omdf, mdf, rmdf_ch, omdf_ch, mdf_ch, f
     #         secondary_y=True
     #         )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=rmdf_ch.loc[:,local_name],  name="실거래 변화(R)", marker_color= marker_colors[0]),
+            go.Bar(x=mdf.index, y=rmdf_ch.loc[:,local_name],  name="실거래 증감(R)", marker_color= marker_colors[0]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=omdf_ch.loc[:,local_name],  name="부동산원 변화(R)", marker_color= marker_colors[1]),
+            go.Bar(x=mdf.index, y=omdf_ch.loc[:,local_name],  name="부동산원 증감(R)", marker_color= marker_colors[1]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=mdf_ch.loc[:,local_name],  name="KB 변화(R)", marker_color= marker_colors[2]),
+            go.Bar(x=mdf.index, y=mdf_ch.loc[:,local_name],  name="KB 변화=증감(R)", marker_color= marker_colors[2]),
             secondary_y=True
             )
     fig.add_trace(
