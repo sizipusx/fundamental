@@ -88,7 +88,7 @@ def load_index_data(flag):
         #     )
         #df.index = pd.to_datetime(df.index, format = '%Y-%m-%d')
         df = df.apply(lambda x:x.replace('#DIV/0!','0').replace('#N/A','0')).apply(lambda x:x.replace('','0')).astype(float)
-        df = df.round(decimals=2)
+        df = df.round(decimals=3)
         index_list.append(df)
     #kb_conn.close()
 
