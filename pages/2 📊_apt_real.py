@@ -169,8 +169,8 @@ if __name__ == "__main__":
     cum_jdf = cum_jdf.round(decimals=3)
     #마지막 데이터로 데이터프레임 만들기
     real_last_df  = pd.DataFrame()
-    real_last_df['매매증감'] = mdf_change_yoy.iloc[-1].T.to_frame()
-    real_last_df['전세증감'] = jdf_change_yoy.iloc[-1].T.to_frame()
+    real_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
+    real_last_df['전세증감'] = jdf_change.iloc[-1].T.to_frame()
     real_last_df_yoy  = pd.DataFrame()
     real_last_df_yoy['매매증감'] = mdf_change_yoy.iloc[-1].T.to_frame()
     real_last_df_yoy['전세증감'] = jdf_change_yoy.iloc[-1].T.to_frame()
@@ -183,13 +183,13 @@ if __name__ == "__main__":
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = '실거래가'
+                flag = '실거래가 MOM '
                 drawAPT_weekly.draw_index_change_with_bubble(real_last_df, flag, last_month)
 
             with col2:
                 st.write("")
             with col3:
-                flag = '실거래가'
+                flag = '실거래가 YOY '
                 drawAPT_weekly.draw_index_change_with_bubble(real_last_df_yoy, flag, last_month)
                 
         html_br="""
