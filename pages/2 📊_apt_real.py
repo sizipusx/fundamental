@@ -164,9 +164,6 @@ if __name__ == "__main__":
     jdf_change_yoy = jdf_change_yoy.iloc[11:].round(decimals=2)
     ojdf_ch = ojdf_ch.iloc[1:].round(decimals=2)
     kbjdf_ch = kbjdf_ch.iloc[1:].round(decimals=2)
-    st.dataframe(jdf)
-    st.dataframe(jdf_change)
-    st.dataframe(jdf_change_yoy)
 
     cum_mdf = (1+mdf_change/100).cumprod() -1
     cum_mdf = cum_mdf.round(decimals=3)
