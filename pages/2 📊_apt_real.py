@@ -139,31 +139,34 @@ if __name__ == "__main__":
      #변화율로 봅시다
     mdf_change = mdf.pct_change()*100
     mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    mdf_change = mdf_change.astype(float).fillna(0)
+    mdf_change = mdf_change.astype(float).fillna(0).round(decimals=2)
     mdf_change_yoy = mdf.pct_change(12)*100
     mdf_change_yoy.replace([np.inf, -np.inf], np.nan, inplace=True)
-    mdf_change_yoy = mdf_change_yoy.astype(float).fillna(0)
+    mdf_change_yoy = mdf_change_yoy.astype(float).fillna(0).round(decimals=2)
     omdf_ch = omdf.pct_change()*100
     kbmdf_ch = kbmdf.pct_change()*100
 
     #전세
     jdf_change = jdf.pct_change()*100
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change = jdf_change.astype(float).fillna(0).round(decimals=2)
+    jdf_change = jdf_change.astype(float).fillna(0)
     jdf_change_yoy = jdf.pct_change(12)*100
     jdf_change_yoy.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change_yoy = jdf_change_yoy.astype(float).fillna(0).round(decimals=2)
-    st.dataframe(jdf_change)
-    st.dataframe(jdf_change_yoy)
+    jdf_change_yoy = jdf_change_yoy.astype(float).fillna(0)
     ojdf_ch = ojdf.pct_change()*100
     kbjdf_ch = kbjdf.pct_change()*100
     
     mdf_change = mdf_change.iloc[1:].round(decimals=1)
+    mdf_change_yoy = mdf_change_yoy.iloc[11:].round(decimals=1)
     omdf_ch = omdf_ch.iloc[1:].round(decimals=1)
     kbmdf_ch = kbmdf_ch.iloc[1:].round(decimals=1)
     jdf_change = jdf_change.iloc[1:].round(decimals=1)
+    jdf_change_yoy = jdf_change_yoy.iloc[11:].round(decimals=1)
     ojdf_ch = ojdf_ch.iloc[1:].round(decimals=1)
     kbjdf_ch = kbjdf_ch.iloc[1:].round(decimals=1)
+    st.dataframe(jdf)
+    st.dataframe(jdf_change)
+    st.dataframe(jdf_change_yoy)
 
     cum_mdf = (1+mdf_change/100).cumprod() -1
     cum_mdf = cum_mdf.round(decimals=3)
