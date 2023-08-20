@@ -156,14 +156,14 @@ if __name__ == "__main__":
     ojdf_ch = ojdf.pct_change()*100
     kbjdf_ch = kbjdf.pct_change()*100
     
-    mdf_change = mdf_change.iloc[1:].round(decimals=1)
-    mdf_change_yoy = mdf_change_yoy.iloc[11:].round(decimals=1)
-    omdf_ch = omdf_ch.iloc[1:].round(decimals=1)
-    kbmdf_ch = kbmdf_ch.iloc[1:].round(decimals=1)
-    jdf_change = jdf_change.iloc[1:].round(decimals=1)
-    jdf_change_yoy = jdf_change_yoy.iloc[11:].round(decimals=1)
-    ojdf_ch = ojdf_ch.iloc[1:].round(decimals=1)
-    kbjdf_ch = kbjdf_ch.iloc[1:].round(decimals=1)
+    mdf_change = mdf_change.iloc[1:].round(decimals=2)
+    mdf_change_yoy = mdf_change_yoy.iloc[11:].round(decimals=2)
+    omdf_ch = omdf_ch.iloc[1:].round(decimals=2)
+    kbmdf_ch = kbmdf_ch.iloc[1:].round(decimals=2)
+    jdf_change = jdf_change.iloc[1:].round(decimals=2)
+    jdf_change_yoy = jdf_change_yoy.iloc[11:].round(decimals=2)
+    ojdf_ch = ojdf_ch.iloc[1:].round(decimals=2)
+    kbjdf_ch = kbjdf_ch.iloc[1:].round(decimals=2)
     st.dataframe(jdf)
     st.dataframe(jdf_change)
     st.dataframe(jdf_change_yoy)
