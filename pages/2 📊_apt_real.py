@@ -115,37 +115,44 @@ if __name__ == "__main__":
         cols[0].markdown(f'실거래가 최종업데이트: **{last_month}월**')
         cols[1].markdown(f'부동산원 최종업데이트: **{onelast_month}월**')
         cols[2].markdown(f'KB 최종업데이트: **{kblast_month}월**')
-    with st.expander("See 실거래가 Raw Data"):
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                try:
-                    st.dataframe(mdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-                except ValueError :
-                    st.dataframe(mdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-            with col2:
-                st.write("")
-            with col3: 
-                try:
-                    st.dataframe(jdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-                except ValueError :
-                    st.dataframe(jdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+    # with st.expander("See 실거래가 Raw Data"):
+    #     with st.container():
+    #         col1, col2, col3 = st.columns([30,2,30])
+    #         with col1:
+    #             try:
+    #                 st.dataframe(mdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+    #                                             .format(precision=2, na_rep='MISSING', thousands=","))
+    #             except ValueError :
+    #                 st.dataframe(mdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+    #                                             .format(precision=2, na_rep='MISSING', thousands=","))
+    #         with col2:
+    #             st.write("")
+    #         with col3: 
+    #             try:
+    #                 st.dataframe(jdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+    #                                             .format(precision=2, na_rep='MISSING', thousands=","))
+    #             except ValueError :
+    #                 st.dataframe(jdf.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+    #                                             .format(precision=2, na_rep='MISSING', thousands=","))
 
      #월간 증감률
      #변화율로 봅시다
     mdf_change = mdf.pct_change()*100
     mdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     mdf_change = mdf_change.astype(float).fillna(0)
+    mdf_change_yoy = mdf.pct_change(12)*100
+    mdf_change_yoy.replace([np.inf, -np.inf], np.nan, inplace=True)
+    mdf_change_yoy = mdf_change_yoy.astype(float).fillna(0)
     omdf_ch = omdf.pct_change()*100
     kbmdf_ch = kbmdf.pct_change()*100
+
     #전세
     jdf_change = jdf.pct_change()*100
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
     jdf_change = jdf_change.astype(float).fillna(0)
+    jdf_change_yoy = jdf.pct_change(12)*100
+    jdf_change_yoy.replace([np.inf, -np.inf], np.nan, inplace=True)
+    jdf_change_yoy = jdf_change_yoy.astype(float).fillna(0)
     ojdf_ch = ojdf.pct_change()*100
     kbjdf_ch = kbjdf.pct_change()*100
     
@@ -160,12 +167,36 @@ if __name__ == "__main__":
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
     cum_jdf = cum_jdf.round(decimals=3)
-    
+    #마지막 데이터로 데이터프레임 만들기
+    real_last_df  = pd.DataFrame()
+    real_last_df['매매증감'] = mdf_change_yoy.iloc[-1].T.to_frame()
+    real_last_df['전세증감'] = jdf_change_yoy.iloc[-1].T.to_frame()
+    real_last_df_yoy  = pd.DataFrame()
+    real_last_df_yoy['매매증감'] = mdf_change_yoy.iloc[-1].T.to_frame()
+    real_last_df_yoy['전세증감'] = jdf_change_yoy.iloc[-1].T.to_frame()
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('Basic','Index', 'Together'))
-    if my_choice == 'Basic':
+                    "Select Menu", ('월간 동향', '지수 같이보기','Index', '지역 같이보기'))
+    if my_choice == '월간 동향':
+        ### Draw Bubble chart ##############
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = '실거래가'
+                drawAPT_weekly.draw_index_change_with_bubble(real_last_df, flag, last_month)
+
+            with col2:
+                st.write("")
+            with col3:
+                flag = '실거래가'
+                drawAPT_weekly.draw_index_change_with_bubble(real_last_df_yoy, flag, last_month)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)    
+    elif my_choice == '지수 같이보기':
         mdf = mdf.loc['2006-01-01':]
         omdf = omdf.loc['2006-01-01':]
         kbmdf = kbmdf.loc['2006-01-01':]
