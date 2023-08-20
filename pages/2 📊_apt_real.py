@@ -149,10 +149,12 @@ if __name__ == "__main__":
     #전세
     jdf_change = jdf.pct_change()*100
     jdf_change.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change = jdf_change.astype(float).fillna(0)
+    jdf_change = jdf_change.astype(float).fillna(0).round(decimals=2)
     jdf_change_yoy = jdf.pct_change(12)*100
     jdf_change_yoy.replace([np.inf, -np.inf], np.nan, inplace=True)
-    jdf_change_yoy = jdf_change_yoy.astype(float).fillna(0)
+    jdf_change_yoy = jdf_change_yoy.astype(float).fillna(0).round(decimals=2)
+    st.dataframe(jdf_change)
+    st.dataframe(jdf_change_yoy)
     ojdf_ch = ojdf.pct_change()*100
     kbjdf_ch = kbjdf.pct_change()*100
     
