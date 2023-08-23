@@ -207,8 +207,8 @@ if __name__ == "__main__":
             with col2:
                 st.write("")
             with col3:
-                flag = ['실거래가','MOM 전세증감']
-                drawAPT_weekly.draw_index_change_with_bar(real_last_df_yoy, flag, last_month)        
+                flag = ['실거래가',' MOM 전세증감']
+                drawAPT_weekly.draw_index_change_with_bar(real_last_df, flag, last_month)        
             html_br="""
             <br>
             """
@@ -217,13 +217,13 @@ if __name__ == "__main__":
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ['실거래가','YOY 매매증감']
-                drawAPT_weekly.draw_index_change_with_bar(kb_last_df, flag, kb_last_week)
+                flag = ['실거래가',' YOY 매매증감']
+                drawAPT_weekly.draw_index_change_with_bar(real_last_df_yoy, flag, last_month)
             with col2:
                 st.write("")
             with col3:
-                flag = ['실거래가','YOY 전세증감']
-                drawAPT_weekly.draw_index_change_with_bar(last_odf, flag, one_last_week)        
+                flag = ['실거래가',' YOY 전세증감']
+                drawAPT_weekly.draw_index_change_with_bar(real_last_df_yoy, flag, last_month)        
         html_br="""
         <br>
         """
