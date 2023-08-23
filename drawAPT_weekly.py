@@ -195,7 +195,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
 def draw_index_change_with_bar(last_df, flag, last_week):
     last_df = last_df.sort_values(by=flag[1], ascending=False)
     #상위 20과 하위 20만 slice
-    if flag[0].startwith("실거래가"):
+    if flag[0].startswith("실거래가"):
         kb_last_slice = last_df
     else:    
         kb_last_slice = last_df.iloc[[-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,\
