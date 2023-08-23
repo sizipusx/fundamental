@@ -108,6 +108,7 @@ if __name__ == "__main__":
     kbjdf = kb_index_list[1]
 
     last_month = pd.to_datetime(str(mdf.index.values[-1])).strftime('%Y.%m')
+    last_month_jeon = pd.to_datetime(str(jdf.index.values[-1])).strftime('%Y.%m')
     onelast_month = pd.to_datetime(str(omdf.index.values[-1])).strftime('%Y.%m')
     kblast_month = pd.to_datetime(str(kbmdf.index.values[-1])).strftime('%Y.%m')
     with st.expander("See recently Data Update"):
@@ -208,7 +209,7 @@ if __name__ == "__main__":
                 st.write("")
             with col3:
                 flag = ['실거래가 MOM','전세증감']
-                drawAPT_weekly.draw_index_change_with_bar(real_last_df, flag, last_month)        
+                drawAPT_weekly.draw_index_change_with_bar(real_last_df, flag, last_month_jeon)        
             html_br="""
             <br>
             """
@@ -223,7 +224,7 @@ if __name__ == "__main__":
                 st.write("")
             with col3:
                 flag = ['실거래가 YOY ','전세증감']
-                drawAPT_weekly.draw_index_change_with_bar(real_last_df_yoy, flag, last_month)        
+                drawAPT_weekly.draw_index_change_with_bar(real_last_df_yoy, flag, last_month_jeon)        
         html_br="""
         <br>
         """
