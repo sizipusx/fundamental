@@ -102,7 +102,7 @@ def price_chart(input_ticker, company_name, price_df):
             range=[utcnow - relativedelta(years=5), utcnow]
             )      
         )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 def earning_chart(input_ticker, earning_df, price_df):
