@@ -113,7 +113,8 @@ def load_data():
     df_a["Market"] = "AMEX"
 
     #세 데이터 모두 합치자
-    ticker_list = df_n.append(df_q).append(df_a)
+    #ticker_list = df_n.append(df_q).append(df_a)
+    ticker_list = pd.concat([df_n, df_q, df_a])
 
     return ticker_list, sp500
 
