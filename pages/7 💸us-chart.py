@@ -744,6 +744,7 @@ if __name__ == "__main__":
     fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
     fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
     fdr_df['ma240'] = fdr_df['Adj Close'].rolling(window=240).mean()
+    st.dataframe(ov_df)
     st.dataframe(fdr_df)
     overview_df.loc['Close'] = round(fdr_df.iloc[-1,4],2)
     st.table(overview_df)
