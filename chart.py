@@ -5,13 +5,17 @@ from plotly.subplots import make_subplots
 import plotly.io as pio
 import FinanceDataReader as fdr
 import streamlit as st
-from datetime import datetime
+import datetime
+from dateutil.relativedelta import relativedelta
 
 #챠트 기본 설정
 # colors 
 # marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
 template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+utcnow= datetime.datetime.utcnow()
+time_gap= datetime.timedelta(hours=9)
+kor_time= utcnow+ time_gap
 pio.templates["myID"] = go.layout.Template(
     layout_annotations=[
         dict(
@@ -92,9 +96,10 @@ def price_chart(input_ticker, company_name, price_df):
                 ])
             ),
             rangeslider=dict(
-                visible=True
+                visible=False
             ),
-            type="date"
+            type="date",
+            range=[utcnow - relativedelta(years=5), utcnow]
             )      
         )
     st.plotly_chart(fig)
