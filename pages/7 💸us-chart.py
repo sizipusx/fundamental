@@ -739,12 +739,12 @@ if __name__ == "__main__":
     split_OV=OV[0]
     ov_df = pd.json_normalize(split_OV)
     overview_df = ov_df.T
-    st.dataframe(overview_df)
     overview_df.columns = ['기본 정보']
     fdr_df = pdr.DataReader(input_ticker,start='1996-01-02')
     fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
     fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
     fdr_df['ma240'] = fdr_df['Adj Close'].rolling(window=240).mean()
+    st.dataframe(fdr_df)
     overview_df.loc['Close'] = round(fdr_df.iloc[-1,4],2)
     st.table(overview_df)
     # st.write(overview_df.iloc[-1,4])
