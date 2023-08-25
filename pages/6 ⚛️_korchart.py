@@ -68,7 +68,7 @@ pio.templates["myID"] = go.layout.Template(
 )
 
 
-@st.cache
+@st.cache_resource(ttl=datetime.timedelta(days=1))
 def load_data():
     # 코스피, 코스닥, 코넥스 종목 리스트 가져오기
     tickers = stock.get_market_ticker_list()
