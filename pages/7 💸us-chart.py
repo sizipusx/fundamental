@@ -744,28 +744,12 @@ if __name__ == "__main__":
     fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
     fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
     fdr_df['ma240'] = fdr_df['Adj Close'].rolling(window=240).mean()
-    st.dataframe(ov_df)
-    st.dataframe(fdr_df)
+    # st.dataframe(ov_df)
+    # st.dataframe(fdr_df)
     overview_df.loc['Close'] = round(fdr_df.iloc[-1,4],2)
     st.table(overview_df)
-    # st.write(overview_df.iloc[-1,4])
-    with st.container():
-        col1, col2, col3 = st.columns([30,2,30])
-        with col1:
-            chart.price_chart(input_ticker, overview_df.iloc[2,0], fdr_df)
-        with col2:
-            st.write("")
-        with col3:
-            st.subheader("Close price")
-            fig = go.Figure(go.Indicator(
-                mode = "number+gauge+delta",
-                gauge = {'shape': "bullet"},
-                value = round(fdr_df.iloc[-1,4],2),
-                delta = {'reference': 65.77}, #overview_df.iloc[-8,0]
-                domain = {'x': [0, 1], 'y': [0, 1]},
-                title = {'text': "<b>Close</b>"}))
-            fig.update_layout(height = 250)
-            st.plotly_chart(fig)
+    chart.price_chart(input_ticker, overview_df.iloc[2,0], fdr_df)
+
     html_br="""
     <br>
     """
