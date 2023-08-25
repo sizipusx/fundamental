@@ -740,7 +740,7 @@ if __name__ == "__main__":
     ov_df = pd.json_normalize(split_OV)
     overview_df = ov_df.T
     overview_df.columns = ['기본 정보']
-    fdr_df = pdr.DataReader(input_ticker,start='1996-01-02')
+    fdr_df = fdr.DataReader(input_ticker,start='1996-01-02')
     fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
     fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
     fdr_df['ma240'] = fdr_df['Adj Close'].rolling(window=240).mean()
