@@ -83,12 +83,12 @@ marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,
 template = 'ggplot2' 
 
 ## 특정 위치의 배경색 바꾸기
-@st.cache_resource(ttl=datetime.timedelta(years=1))
+@st.cache_resource(ttl=datetime.timedelta(weeks=52))
 def draw_color_cell(x,color):
     color = f'background-color:{color}'
     return color
 # PER 값 변경    
-@st.cache_resource(ttl=datetime.timedelta(years=1))
+@st.cache_resource(ttl=datetime.timedelta(weeks=52))
 def change_per_value(x):
     if x >= 100 :
         x = 100
@@ -98,7 +98,7 @@ def change_per_value(x):
         pass
     return x
 
-@st.cache_resource(ttl=datetime.timedelta(months=1))
+@st.cache_resource(ttl=datetime.timedelta(weeks=52))
 def load_data():
     # 나스닥거래소 상장종목 전체
     df_q= fdr.StockListing('NASDAQ')
