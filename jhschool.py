@@ -17,7 +17,7 @@ from st_aggrid.shared import GridUpdateMode
 
 import requests
 import json
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 from urllib.request import urlopen
 
 import plotly.express as px
@@ -78,16 +78,16 @@ json_file_name = './files/school-360306-3aef8e9267cc.json'
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
 
-spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1zzovpuXG1Yzp2KR2XWSZX53_CA5cGPkY50ETkycYOeM/edit?usp=sharing'
+spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cZ_AfKpOepqPYPwN8_2GT8JtWTO318z5p1l-G-70VV0/edit?usp=sharing'
 
 doc = gc.open_by_url(spreadsheet_url)
 
-read_sheet = doc.worksheet('read')
+read_sheet = doc.worksheet('3학년(제한)')
 m_values = read_sheet.get_all_values()
 m_header, m_rows = m_values[0], m_values[1:]
 df = pd.DataFrame(m_rows, columns=m_header)
-df['학번'] = df['학번'].astype(str)
-df['성명'] = df['성명'].astype(str)
+df['학번(절업년도)'] = df['학번(절업년도)'].astype(str)
+df['이름'] = df['이름'].astype(str)
 
 def aggrid_interactive_table(df: pd.DataFrame):
     """Creates an st-aggrid interactive table based on a dataframe.
