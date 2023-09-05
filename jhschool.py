@@ -192,7 +192,7 @@ def run(g_status, gubun):
   #   st.checkbox("아니요, 이상이 있습니다.", on_change=insert_info, key="yes_pro")
   
 
-  st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(윤대영T)께 말씀 드립니다.")
+  st.subheader("이상이 있는 경우 담임선생님께 말씀 드리거나 담당선생님(김수현T 031-630-5672)께 말씀 드립니다.")
 
 
 
