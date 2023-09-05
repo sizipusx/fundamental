@@ -86,7 +86,7 @@ read_sheet = doc.worksheet('2023')
 m_values = read_sheet.get_all_values()
 m_header, m_rows = m_values[0], m_values[1:]
 df = pd.DataFrame(m_rows, columns=m_header)
-df['학번(절업년도)'] = df['학번(절업년도)'].astype(str)
+df['학번(졸업년도)'] = df['학번(졸업년도)'].astype(str)
 df['이름'] = df['이름'].astype(str)
 
 def aggrid_interactive_table(df: pd.DataFrame):
