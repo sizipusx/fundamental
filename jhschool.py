@@ -78,11 +78,11 @@ json_file_name = './files/school-360306-3aef8e9267cc.json'
 credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
 
-spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cZ_AfKpOepqPYPwN8_2GT8JtWTO318z5p1l-G-70VV0/edit?usp=sharing'
+spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1zzovpuXG1Yzp2KR2XWSZX53_CA5cGPkY50ETkycYOeM/edit?usp=sharing'
 
 doc = gc.open_by_url(spreadsheet_url)
 
-read_sheet = doc.worksheet('3학년(제한)')
+read_sheet = doc.worksheet('2023')
 m_values = read_sheet.get_all_values()
 m_header, m_rows = m_values[0], m_values[1:]
 df = pd.DataFrame(m_rows, columns=m_header)
