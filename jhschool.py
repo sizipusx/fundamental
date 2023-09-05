@@ -88,6 +88,7 @@ m_header, m_rows = m_values[0], m_values[1:7]
 df = pd.DataFrame(m_rows, columns=m_header)
 df['학번(졸업년도)'] = df['학번(졸업년도)'].astype(str)
 df['이름'] = df['이름'].astype(str)
+st.dataframe(df)
 
 def aggrid_interactive_table(df: pd.DataFrame):
     """Creates an st-aggrid interactive table based on a dataframe.
@@ -127,7 +128,7 @@ def run(g_status, gubun):
     slice_df = df[df['학번(졸업년도)'] == gubun ]
   else:
     slice_df = df[df['이름'] == gubun ]
-  
+  st.write(gubun)
   #add aggrid table
   #response  = aggrid_interactive_table(df=slice_df)
   slice_df = slice_df.iloc[:,1:8]
