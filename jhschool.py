@@ -124,9 +124,9 @@ def aggrid_interactive_table(df: pd.DataFrame):
 
 def run(g_status, gubun):
   if g_status == '재학':
-    slice_df = df[df['학번'] == gubun ]
+    slice_df = df[df['학번(졸업년도)'] == gubun ]
   else:
-    slice_df = df[df['성명'] == gubun ]
+    slice_df = df[df['이름'] == gubun ]
   
   #add aggrid table
   #response  = aggrid_interactive_table(df=slice_df)
