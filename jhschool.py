@@ -130,7 +130,7 @@ def run(g_status, gubun):
   
   #add aggrid table
   #response  = aggrid_interactive_table(df=slice_df)
-  slice_df = slice_df.iloc[:,2:9]
+  slice_df = slice_df.iloc[:,1:8]
   st.table(slice_df)
   # st.dataframe(slice_df)
 
