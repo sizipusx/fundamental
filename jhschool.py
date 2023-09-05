@@ -84,7 +84,7 @@ doc = gc.open_by_url(spreadsheet_url)
 
 read_sheet = doc.worksheet('2023')
 m_values = read_sheet.get_all_values()
-m_header, m_rows = m_values[0], m_values[1:]
+m_header, m_rows = m_values[0], m_values[1:7]
 df = pd.DataFrame(m_rows, columns=m_header)
 df['학번(졸업년도)'] = df['학번(졸업년도)'].astype(str)
 df['이름'] = df['이름'].astype(str)
