@@ -49,7 +49,7 @@ html_header="""
 <meta name="author" content="indiesoul">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 정현고 2023학년도 수시 전형 학교장 추천 지원 확인 <br>
+<h2 style="font-size:200%; color:#008080; font-family:Georgia"> 정현고 2024학년도 수시 전형 학교장 추천 지원 확인 <br>
 <hr style= "  display: block;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -226,7 +226,7 @@ if __name__ == "__main__":
     gubun = st.sidebar.text_input("이름")
     if len(gubun) == 0:
       st.error("이름을 입력하세요!")
-
+  gubun = gubun.strip()
   submit = st.sidebar.button('지원 확인')
 
   if submit:
