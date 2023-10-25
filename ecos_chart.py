@@ -36,49 +36,44 @@ utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
 
-def ecos_monthly_chart(input_ticker, df1, df2):
-    df3 = df1.pct_change(periods=12)*100
-    df3 = df3.fillna(0)
-    df3 = df3.round(decimals=1)
-    df3.loc[:,'color'] = np.where(df3.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
-    df2.loc[:,'color'] = np.where(df2.iloc[:,0]<0, '#FFB8B1', '#E2F0CB')
+
+def ecos_debt_chart(input_ticker, df1, df2):
     item_list = df1.columns.values.tolist()
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-2,0])
-    col2.metric(label=item_list[0]+"YOY", value =df3.iloc[-1,0], delta=df2.iloc[-2,0])
+    col2.metric(label=item_list[0]+"MOM", value =df2.iloc[-1,0], delta=df2.iloc[-2,0])
     col3.metric(label=item_list[1], value =df1.iloc[-1,1], delta=df1.iloc[-2,1])
-    col4.metric(label=item_list[1]+"YOY", value =df3.iloc[-1,1], delta=df2.iloc[-2,1])
+    col4.metric(label=item_list[1]+"MOM", value =df2.iloc[-1,1], delta=df2.iloc[-2,1])
+    col5.metric(label=item_list[1], value =df1.iloc[-1,2], delta=df1.iloc[-2,2])
+    col6.metric(label=item_list[1]+"MOM", value =df2.iloc[-1,2], delta=df2.iloc[-2,2])
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
             #st.subheader(input_ticker)
-            x_data = df2.index
+            x_data = df1.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
-            y_data_color = [df2.columns[-1]]
+            df1["합산"] = df1.sum(axis=1)
+            df2["합산"] = df2.sum(axis=1)
             for item in item_list:
                 y_data_bar.append(item)
                 y_data_line.append(item)
 
-            for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+            for y_data, color in zip(y_data_bar, marker_colors1) :
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
+                                            text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data+'(L)', x =  x_data, y= df1.loc[:,y_data],
+                                            name = y_data+'(L)', x =  x_data, y= df1.iloc[:,-1],
                                             text= df1[y_data], textposition = 'top center', marker_color = color),
                                             secondary_y = False)
-            #fig.update_traces(texttemplate='%{text:.3s}')
-            if input_ticker == '가계신용': 
-                fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
-            else:
-                fig.update_yaxes(title_text=input_ticker, range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
-            #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='전월대비증감', range=[-max(df2.loc[:,y_data_line[0]]), max(df2.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_layout(barmode='stack')
+            fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
+            fig.update_yaxes(title_text='전월대비증감', range=[-max(df1.iloc[:,-1]), max(df1.iloc[:,-1])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = True)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(
                 showlegend=True,
@@ -128,32 +123,31 @@ def ecos_monthly_chart(input_ticker, df1, df2):
         with col2:
                 st.write("")
         with col3: 
-            x_data = df3.index
+            x_data = df2.index
             titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
-            y_data_color = [df3.columns[-1]]
             for item in item_list:
                 y_data_bar.append(item)
                 y_data_line.append(item)
 
-            for y_data, color in zip(y_data_bar, y_data_color) :
-                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df3.loc[:,y_data], 
-                                            text= df3[y_data], textposition = 'inside', marker_color= df3.loc[:,color]), secondary_y = True) 
+            for y_data, color in zip(y_data_bar, marker_colors1) :
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data], 
+                                            text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
-                                            name = y_data+'(L)', x =  x_data, y= df1.loc[:,y_data],
-                                            text= df1[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
+                                            name = y_data+'(L)', x =  x_data, y= df2.iloc[:,-1],
+                                            text= df2[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
             #fig.update_traces(texttemplate='%{text:.3s}') 
             if input_ticker == '가계신용': 
                 fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
             else:
-                fig.update_yaxes(title_text=input_ticker, range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
+                fig.update_yaxes(title_text=input_ticker, range=[0, max(df2.loc[:,y_data_bar[0]])*1.2], secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
-            fig.update_yaxes(title_text='전년대비증감', range=[-max(df3.loc[:,y_data_line[0]]), max(df3.loc[:,y_data_line[0]])* 1.2], secondary_y = True)
-            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
+            fig.update_yaxes(title_text='전월대비증감', range=[-max(df2.iloc[:,-1]), max(df2.iloc[:,-1])* 1.2], secondary_y = True)
+            fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = True)
             # fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="조원", secondary_y = False)
             fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m')
             fig.update_layout(

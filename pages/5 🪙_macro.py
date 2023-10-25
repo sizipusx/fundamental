@@ -136,12 +136,14 @@ def run(stat_name, stat_ticker, fred_dict):
             cycle_type = "M" #default
             data_df = make_df(item_symbols, start_date, end_date, cycle_type)
         elif stat_ticker == '151Y005':
-            #가계 신용: 가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
-            item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+            #가계 신용: 예금취급기관:  가계 저축과 가계대출(주택담보대출+기타대출) + 판매신용
+            # item_symbols = {'주택담보대출':'151Y005/11100A0','기타대출':'151Y005/11100B0'}
+            item_symbols = {'주담대':'151Y005/11100A0', '기타':'151Y005/11100B0', '공사기금':'151Y005/1120090'}
             start_date = "200010"
             end_date = kor_time.strftime('%Y%m')
             cycle_type = "M" #default
             data_df = make_df(item_symbols, start_date, end_date, cycle_type)
+            data_df = data_df.astype(float).round(1)
         elif stat_ticker == '722Y001':
             item_symbols = {'한국은행기준금리':'722Y001/0101000'}
             start_date = "200010"
@@ -243,7 +245,9 @@ def run(stat_name, stat_ticker, fred_dict):
             data_df = data_df.round(decimals=1)
             data_ch = data_df.pct_change()*100
             data_ch = data_ch.round(decimals=1)
-            ec.ecos_monthly_chart(stat_name, data_df, data_ch)
+            #금액 증감으로 본기
+            data_s =data_df- data_df.shift(1)
+            ec.ecos_debt_chart(stat_name, data_df, data_s)
         elif stat_ticker == '721Y001': #장단기금리차
             data_df = data_df.astype(float).round(2)
             data_df.loc[:,"금리차(10-CD)"] = round(data_df.loc[:,'국고채(10Y)'] - data_df.loc[:,'CD91'],2) 
