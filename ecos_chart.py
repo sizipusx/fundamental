@@ -143,7 +143,7 @@ def ecos_debt_chart(input_ticker, df1, df2):
                                             name = y_data+'(L)', x =  x_data, y= df2.iloc[:,-1],
                                             text= df2[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
 
-            fig.update_layout(barmode='stack')
+            fig.update_layout(barmode='relative')
             fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
             #fig.update_yaxes(title_text='Profit', range=[0, max(income_df.loc[:,y_data_bar[0]])*2], secondary_y = False)
             fig.update_yaxes(title_text='전월대비증감', range=[-max(df2.iloc[:,-1]), max(df2.iloc[:,-1])* 1.2], secondary_y = True)
