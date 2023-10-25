@@ -58,8 +58,8 @@ def ecos_debt_chart(input_ticker, df1, df2):
             y_data_bar = []
             y_data_line = []
             for item in item_list:
-                y_data_bar.append(item)
-                y_data_line.append(item)
+                y_data_bar.append(item[:2])
+            y_data_line.append(item[2])
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
