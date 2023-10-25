@@ -55,7 +55,7 @@ def ecos_debt_chart(input_ticker, df1, df2):
         with col1:
             #st.subheader(input_ticker)
             x_data = df1.index
-            titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+            titles = dict(text= input_ticker+" 총액", x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
@@ -126,7 +126,7 @@ def ecos_debt_chart(input_ticker, df1, df2):
                 st.write("")
         with col3: 
             x_data = df2.index
-            titles = dict(text= input_ticker, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+            titles = dict(text= input_ticker+" 전월대비 증감액", x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
