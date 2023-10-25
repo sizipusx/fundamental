@@ -38,6 +38,8 @@ kor_time= utcnow+ time_gap
 
 
 def ecos_debt_chart(input_ticker, df1, df2):
+    df1["합산"] = df1.sum(axis=1)
+    df2["합산"] = df2.sum(axis=1)
     item_list = df1.columns.values.tolist()
     col1, col2, col3, col4, col5, col6 = st.columns(6)
     col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-2,0])
@@ -55,8 +57,6 @@ def ecos_debt_chart(input_ticker, df1, df2):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
-            df1["합산"] = df1.sum(axis=1)
-            df2["합산"] = df2.sum(axis=1)
             for item in item_list:
                 y_data_bar.append(item)
                 y_data_line.append(item)
