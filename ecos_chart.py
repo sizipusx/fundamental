@@ -63,7 +63,7 @@ def ecos_debt_chart(input_ticker, df1, df2):
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
-                                            text= df1[y_data], textposition = 'inside', marker_color= df1.loc[:,color]), secondary_y = True) 
+                                            text= df1[y_data], textposition = 'inside', marker_color= color, secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
@@ -134,7 +134,7 @@ def ecos_debt_chart(input_ticker, df1, df2):
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= df2.loc[:,color]), secondary_y = True) 
+                                            text= df2[y_data], textposition = 'inside', marker_color= color, secondary_y = True) 
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
