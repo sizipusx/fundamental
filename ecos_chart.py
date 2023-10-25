@@ -130,13 +130,13 @@ def ecos_debt_chart(input_ticker, df1, df2):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
-            for item in item_list:
+            for item in item_list[:3]:
                 y_data_bar.append(item)
-                y_data_line.append(item)
+            y_data_line.append(item_list[3])
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
-                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data], 
-                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = True)
+                fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data], marker_color= color), secondary_y = True)
+                                            # text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = True)
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
