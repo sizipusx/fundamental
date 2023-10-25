@@ -65,12 +65,12 @@ def ecos_debt_chart(input_ticker, df1, df2):
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
-                                            text= df1.loc[:,y_data], textposition = 'inside', marker_color= color), secondary_y = True)
+                                            text= round(df1.loc[:,y_data],1), textposition = 'inside', marker_color= color), secondary_y = True)
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data+'(L)', x =  x_data, y= df1.iloc[:,-1],
-                                            text= df1.loc[:,y_data], textposition = 'top center', marker_color = color), secondary_y = False)
+                                            text= round(df1.loc[:,y_data],1), textposition = 'top center', marker_color = color), secondary_y = False)
             fig.update_layout(barmode='stack')
             fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
             fig.update_yaxes(title_text='전월대비증감', range=[-max(df1.iloc[:,-1]), max(df1.iloc[:,-1])* 1.2], secondary_y = True)
@@ -135,12 +135,12 @@ def ecos_debt_chart(input_ticker, df1, df2):
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df2.loc[:,y_data],
-                                            text= df2[y_data], textposition = 'inside', marker_color= color), secondary_y = True)
+                                            text= round(df2[y_data],1), textposition = 'inside', marker_color= color), secondary_y = True)
             
             for y_data, color in zip(y_data_line, marker_colors2): 
                 fig.add_trace(go.Scatter(mode='lines', 
                                             name = y_data+'(L)', x =  x_data, y= df2.iloc[:,-1],
-                                            text= df2[y_data], textposition = 'top center', marker_color = color), secondary_y = False)
+                                            text= round(df2[y_data],1), textposition = 'top center', marker_color = color), secondary_y = False)
 
             fig.update_layout(barmode='relative')
             fig.update_yaxes(title_text='대출금액(조원)', range=[0, max(df1.loc[:,y_data_bar[0]])*1.2], zeroline=True, ticksuffix="조원", secondary_y = False)
