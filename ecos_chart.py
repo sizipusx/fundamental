@@ -60,6 +60,7 @@ def ecos_debt_chart(input_ticker, df1, df2):
             y_data_bar = []
             y_data_line = []
             for item in item_list[:3]:
+                st.write(item)
                 y_data_bar.append(item)
             y_data_line.append(item_list[3])
 
