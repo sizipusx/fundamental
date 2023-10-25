@@ -43,11 +43,11 @@ def ecos_debt_chart(input_ticker, df1, df2):
     item_list = df1.columns.values.tolist()
     col1, col2, col3, col4, col5, col6 = st.columns(6)
     col1.metric(label=item_list[0], value = df1.iloc[-1,0], delta=df1.iloc[-2,0])
-    col2.metric(label=item_list[0]+"MOM", value =round(df2.iloc[-1,0],1), delta=df2.iloc[-2,0])
+    col2.metric(label=item_list[0]+"MOM", value =round(df2.iloc[-1,0],1), delta=round(df2.iloc[-2,0],1))
     col3.metric(label=item_list[1], value =df1.iloc[-1,1], delta=df1.iloc[-2,1])
-    col4.metric(label=item_list[1]+"MOM", value =round(df2.iloc[-1,1],1), delta=df2.iloc[-2,1])
+    col4.metric(label=item_list[1]+"MOM", value =round(df2.iloc[-1,1],1), delta=round(df2.iloc[-2,1],1))
     col5.metric(label=item_list[1], value =df1.iloc[-1,2], delta=df1.iloc[-2,2])
-    col6.metric(label=item_list[1]+"MOM", value =round(df2.iloc[-1,2],1), delta=df2.iloc[-2,2])
+    col6.metric(label=item_list[1]+"MOM", value =round(df2.iloc[-1,2],1), delta=round(df2.iloc[-2,2],1))
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
@@ -57,9 +57,9 @@ def ecos_debt_chart(input_ticker, df1, df2):
             fig = make_subplots(specs=[[{'secondary_y': True}]]) 
             y_data_bar = []
             y_data_line = []
-            for item in item_list:
-                y_data_bar.append(item[:2])
-            y_data_line.append(item[2])
+            for item in item_list[:2]:
+                y_data_bar.append(item)
+            y_data_line.append(item_list[2])
 
             for y_data, color in zip(y_data_bar, marker_colors1) :
                 fig.add_trace(go.Bar(name = y_data+'(R)', x = x_data, y = df1.loc[:,y_data], 
