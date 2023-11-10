@@ -5,9 +5,6 @@ import numpy as np
 import pandas as pd
 import requests
 import json
-from pandas_datareader import data as pdr
-import yfinance as yfin
-yfin.pdr_override()
 
 import FinanceDataReader as fdr
 import plotly.express as px
