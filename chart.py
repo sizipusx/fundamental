@@ -230,7 +230,7 @@ def dividend_chart_right(ticker, com_name, div_df):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
-def div_band(ticker, df) :
+def div_band(ticker, df, y_avg) :
 
     titles = dict(text='<b>'+ticker+' Dividend Band</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
 

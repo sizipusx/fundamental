@@ -537,13 +537,6 @@ def run(ticker, overview_df, fdr_df):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        
-        #조회시 1분 기다려야 함
-        st.warning('Please Wait One minute Before Searching Next Company!!!')
-        my_bar = st.progress(0)
-        for percent_complete in range(100):
-            time.sleep(0.6)
-            my_bar.progress(percent_complete + 1)
     with tab3:
         st.subheader("Band Chart")
         ####### Dividend Band ##############
@@ -578,7 +571,7 @@ def run(ticker, overview_df, fdr_df):
         df = df.astype(float).round(decimals=2)
         y_avg = df['DY'].mean()
 
-        chart.div_band(ticker, df)
+        chart.div_band(ticker, df, y_avg)
 
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -624,6 +617,13 @@ def run(ticker, overview_df, fdr_df):
                     chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
         except IndexError :
             st.write("pbr band error occurred")
+
+        #조회시 1분 기다려야 함
+        st.warning('Please Wait One minute Before Searching Next Company!!!')
+        my_bar = st.progress(0)
+        for percent_complete in range(100):
+            time.sleep(0.6)
+            my_bar.progress(percent_complete + 1)
         
 
 
