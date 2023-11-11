@@ -551,7 +551,7 @@ def run(ticker, overview_df, fdr_df):
         # 데이터 만들기
         from yahoo_historical import Fetcher
         import datetime
-        import time
+
 
         # create unix timestamp representing January 1st, 2007
         timestamp = time.mktime(datetime.datetime(1990, 1, 1).timetuple())
