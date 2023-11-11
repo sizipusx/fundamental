@@ -230,6 +230,71 @@ def dividend_chart_right(ticker, com_name, div_df):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
+def div_band(ticker, df) :
+
+    titles = dict(text='<b>'+ticker+' Dividend Band</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]])
+    left_x = ['DY']
+    rigth_x = ['Adj Close','High','Low','Mid']
+    line_name = ['종가', ' 고평가', '저평가', '중간값']
+
+    fig.add_trace(go.Scatter(name = line_name[0], x=df.index, y=df.loc[:,"Adj Close"], marker_color= marker_colors[0]), secondary_y=False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name = line_name[1], x=df.index, y=df.loc[:,"High"], marker_color= marker_colors[1], fill='tozeroy'), secondary_y=False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name = line_name[2], x=df.index, y=df.loc[:,"Low"], marker_color= marker_colors[2], fill='tozeroy'), secondary_y=False)
+    fig.add_trace(go.Scatter(line = dict(dash='dot'), name = line_name[3], x=df.index, y=df.loc[:,"Mid"], marker_color= marker_colors[3], fill='tonexty'), secondary_y=False)
+
+    fig.add_trace(go.Scatter(x=df.index, y=df.loc[:,'DY'],  name='DY', marker_color= marker_colors[4]), secondary_y=True)
+    fig.update_yaxes(title_text="DIv Yeild", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
+    fig.update_yaxes(title_text="Price", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
+    fig.add_hline(y=round(y_avg,2), line_width=2, line_dash='dash', line_color="red", annotation_text="배당률 평균: "+str(round(y_avg,2)), annotation_position="bottom right", secondary_y=True)
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+    fig.update_layout(
+                        showlegend=True,
+                        legend=dict(
+                                    orientation="h",
+                                    yanchor="bottom",
+                                    y=-0.2,
+                                    xanchor="left",
+                                    x=0
+                                ),
+                        xaxis=go.layout.XAxis(
+                        rangeselector=dict(
+                            buttons=list([
+                                dict(count=6,
+                                    label="6m",
+                                    step="month",
+                                    stepmode="backward"),
+                                dict(count=1,
+                                    label="YTD",
+                                    step="year",
+                                    stepmode="todate"),
+                                dict(count=1,
+                                    label="1y",
+                                    step="year",
+                                    stepmode="backward"),
+                                dict(count=5,
+                                    label="5y",
+                                    step="year",
+                                    stepmode="backward"),
+                                dict(count=10,
+                                    label="10y",
+                                    step="year",
+                                    stepmode="backward"),
+                                dict(step="all")
+                            ])
+                        ),
+                        rangeslider=dict(
+                            visible=False
+                        ),
+                        type="date",
+                        range=[kor_time - relativedelta(years=5), kor_time]
+                        )
+                    )
+    fig.update_layout(template="myID")
+    fig.update_layout(hovermode="x unified")
+    st.plotly_chart(fig, use_container_width=True)
+
 def visualize_PER_band(ticker, com_name, fun_df):
     # st.write(option)
     fun_df.dropna(inplace=True)

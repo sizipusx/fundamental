@@ -122,7 +122,7 @@ def run(ticker, overview_df, fdr_df):
     # end_date = '%s-%s-%s' % ( yes.year, yes.month, yes.day)
     # st.dataframe(fdr_df)
     #valuation 
-    tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Valuation Chart"])
+    tab1, tab2, tab3 = st.tabs(["🗃 Valuation", "📈 Chart", "⏰ Band Chart"])
     with tab1:
         st.subheader("Valuation")
         expect_yield = 0.15
@@ -329,14 +329,7 @@ def run(ticker, overview_df, fdr_df):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                chart.dividend_chart(input_ticker, com_name, div_df)
-            with col2:
-                st.write("")
-            with col3:
-                chart.dividend_chart_right(input_ticker, com_name, div_df)
+        
         # #EPS 증감률
         # eps_10 = band_df.iloc[-41:, -1]
         # eps_10_growth = (eps_10.iloc[-1]/eps_10.iloc[0])**1/10 -1
@@ -544,6 +537,58 @@ def run(ticker, overview_df, fdr_df):
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        
+        #조회시 1분 기다려야 함
+        st.warning('Please Wait One minute Before Searching Next Company!!!')
+        my_bar = st.progress(0)
+        for percent_complete in range(100):
+            time.sleep(0.6)
+            my_bar.progress(percent_complete + 1)
+    with tab3:
+        st.subheader("Band Chart")
+        ####### Dividend Band ##############
+        # 여기에 한짜리 고평가/ 저평가 그래프를 넣기
+        # 데이터 만들기
+        from yahoo_historical import Fetcher
+        import datetime
+        import time
+
+        # create unix timestamp representing January 1st, 2007
+        timestamp = time.mktime(datetime.datetime(1990, 1, 1).timetuple())
+        ticker = "UPS"
+        data = Fetcher(ticker, timestamp)
+        c_data = data.get_historical()
+        div = data.get_dividends()
+        merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Date', 'Dividends']], on='Date', how='inner')
+        merged_df['ttmDiv'] = merged_df['Dividends'].rolling(window=4).sum()
+        merged_df = merged_df.iloc[3:]
+        last_row_df = pd.DataFrame(merged_df.iloc[-1]).transpose()
+        last_row_df.iloc[0,0] = c_data.iloc[-1,0]
+        last_row_df.iloc[0,1] = c_data.iloc[-1,-2]
+        df = pd.concat([merged_df, last_row_df])
+        df.loc[:,'DY'] = df['ttmDiv']/df['Adj Close']*100
+        dy_max = df['DY'].max()
+        dy_min = df['DY'].min()
+        dy_mid = (dy_max+dy_min)/2
+        df.loc[:,'High'] = df['ttmDiv']/dy_min*100
+        df.loc[:,'Low'] = df['ttmDiv']/dy_max*100
+        df.loc[:,'Mid'] = df['ttmDiv']/dy_mid*100
+        df['Date'] = pd.to_datetime(df['Date']) 
+        df.set_index('Date', inplace=True)
+        df = df.astype(float).round(decimals=2)
+        y_avg = df['DY'].mean()
+
+        chart.div_band(ticker, df)
+
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                chart.dividend_chart(input_ticker, com_name, div_df)
+            with col2:
+                st.write("")
+            with col3:
+                chart.dividend_chart_right(input_ticker, com_name, div_df)
+        ########### PER/PBR################
         try:
             #band chart
             #PBR 밴드 위해
@@ -579,14 +624,8 @@ def run(ticker, overview_df, fdr_df):
                     chart.visualize_PBR_band(input_ticker, com_name, pbr_df)
         except IndexError :
             st.write("pbr band error occurred")
-        #조회시 1분 기다려야 함
-        st.warning('Please Wait One minute Before Searching Next Company!!!')
-        my_bar = st.progress(0)
-        for percent_complete in range(100):
-            time.sleep(0.6)
-            my_bar.progress(percent_complete + 1)
-    with tab3:
-        st.subheader("데이터 추가 예정")
+        
+
 
 
 
