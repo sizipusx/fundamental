@@ -548,7 +548,6 @@ def run(ticker, overview_df, fdr_df):
 
         # create unix timestamp representing January 1st, 2007
         timestamp = time.mktime(datetime.datetime(1990, 1, 1).timetuple())
-        ticker = "UPS"
         data = Fetcher(ticker, timestamp)
         c_data = data.get_historical()
         div = data.get_dividends()
