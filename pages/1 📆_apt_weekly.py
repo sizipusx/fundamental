@@ -472,6 +472,9 @@ def draw_basic():
         """
         st.markdown(html_br, unsafe_allow_html=True)
     with tab2:
+        option = st.selectbox(
+            '이전 통계 보기',
+            ('지난주', '2주전', '3주전', '한달전', '일년전'))
         ### Draw 히스토그램 ############################### a매매
         drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매가격')
         with st.container():
