@@ -1114,11 +1114,11 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
 
     # 통계 차트 
     # KB 부동산원 같이 보기
-def histogram_together(period, last_df, last_odf, flag):
+def histogram_together(last_df, last_odf, flag):
     title = dict(text='<b>주간 KB/부동산원</b> 아파트 '+flag+' 상승률 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
     fig.add_trace(go.Histogram(
-        x=last_df[period],
+        x=last_df["1w"],
     # histnorm='percent',
         name='KB', # name used in legend and hover labels
         xbins=dict( # bins used for histogram
@@ -1131,7 +1131,7 @@ def histogram_together(period, last_df, last_odf, flag):
         opacity=0.75
     ))
     fig.add_trace(go.Histogram(
-        x=last_odf[period],
+        x=last_odf["1w"],
         #histnorm='percent',
         name='부동산원',
         xbins=dict(
