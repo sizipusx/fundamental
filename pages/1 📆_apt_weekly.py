@@ -474,7 +474,7 @@ def draw_basic():
     with tab2:
         option = st.selectbox(
             '이전 통계 보기',
-            ('1w', '2w', '3w', '1m', '1w'))
+            ('1w', '2w', '3w', '1m', '1y'))
         option_value = option
         ### Draw 히스토그램 ############################### a매매
         drawAPT_weekly.histogram_together(option_value, kb_last_df, last_odf, flag='매매가격')
