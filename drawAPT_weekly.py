@@ -1155,9 +1155,9 @@ def histogram_together(last_df, last_odf, flag):
     fig.update_layout(barmode='overlay', template="myID")
     st.plotly_chart(fig, use_container_width=True)
 
-def histogram_chart(last_df, flag, flag2):
+def histogram_chart(last_odf, flag, flag2):
     title = dict(text='<b>'+flag+'</b> 주간부동산 '+ flag2+' 빈도수', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
-    fig = px.histogram(last_odf, x=flag2, hover_data=last_df.columns, marginal="box", text_auto=True)
+    fig = px.histogram(last_odf, x=flag2, hover_data=last_odf.columns, marginal="box", text_auto=True)
     fig.update_layout(
         xaxis_title_text='증감율(0.01% 범위)', # xaxis label
         yaxis_title_text='지역수', # yaxis label

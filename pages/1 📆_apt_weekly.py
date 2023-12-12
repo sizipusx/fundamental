@@ -482,7 +482,7 @@ def draw_basic():
             with col2:
                 st.write("")
             with col3:
-                drawAPT_weekly.histogram_chart(kb_last_df, flag='부동산원', flag2='매매증감')
+                drawAPT_weekly.histogram_chart(last_odf, flag='부동산원', flag2='매매증감')
                 
         html_br="""
         <br>
@@ -498,7 +498,7 @@ def draw_basic():
             with col2:
                 st.write("")
             with col3:
-                drawAPT_weekly.histogram_chart(kb_last_df, flag='부동산원', flag2='전세증감')
+                drawAPT_weekly.histogram_chart(last_odf, flag='부동산원', flag2='전세증감')
                 
         html_br="""
         <br>
