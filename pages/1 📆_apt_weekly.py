@@ -475,8 +475,9 @@ def draw_basic():
         option = st.selectbox(
             '이전 통계 보기',
             ('1w', '2w', '3w', '1m', '1w'))
+        option_value = option
         ### Draw 히스토그램 ############################### a매매
-        drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매가격', option)
+        drawAPT_weekly.histogram_together(option_value, kb_last_df, last_odf, flag='매매가격')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -492,7 +493,7 @@ def draw_basic():
         """
         st.markdown(html_br, unsafe_allow_html=True)
          ### Draw 히스토그램 ############################### 전세
-        drawAPT_weekly.histogram_together(kb_last_jdf, last_ojdf, flag='전세가격', option)
+        drawAPT_weekly.histogram_together(option_value, kb_last_jdf, last_ojdf, flag='전세가격')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
