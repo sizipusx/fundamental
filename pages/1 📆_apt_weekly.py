@@ -378,7 +378,7 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
 
 
 def draw_basic():
-    tab1, tab2, tab3, tab4 = st.tabs(["⏰ 한주보기", "📈 심리지수", "🗺️ 지도", "🔣 Raw Data"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["⏰ 한주보기", "🌈통계보기","📈 심리지수", "🗺️ 지도", "🔣 Raw Data"])
     with tab1:
         ### Draw Bubble chart ##############
         with st.container():
@@ -397,7 +397,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        ### Draw 매매증감 bar chart #########################################################################################
+        ### Draw 통계 chart #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -471,9 +471,57 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-    
-    
     with tab2:
+        ### Draw 히스토그램 ############################### a매매
+        drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매가격')
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                drawAPT_weekly.histogram_chart(kb_last_df, flag='KB', flag2='매매증감')
+                #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+            with col2:
+                st.write("")
+            with col3:
+                drawAPT_weekly.histogram_chart(kb_last_df, flag='부동산원', flag2='매매증감')
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+         ### Draw 히스토그램 ############################### 전세
+        drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='전세가격')
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                drawAPT_weekly.histogram_chart(kb_last_df, flag='KB', flag2='전세증감')
+                #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+            with col2:
+                st.write("")
+            with col3:
+                drawAPT_weekly.histogram_chart(kb_last_df, flag='부동산원', flag2='전세증감')
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        ######매수우위지수 각 지역별 보기
+        ### Draw 매수우위지수와 전세수급지수 #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                city_list = ['서울특별시', '인천광역시', '경기도', '세종특별자치시', '부산광역시', '대구광역시', '광주광역시', '대전광역시', '울산광역시']
+                drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                city_list = ['강원특별자치도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도']
+                drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+    
+    with tab3:
         ### Draw 매수우위지수와 전세수급지수 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -506,7 +554,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-    with tab3:
+    with tab4:
         ### Block 0#########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -538,7 +586,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-    with tab4:
+    with tab5:
         ### draw 매매지수 Table ######################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])

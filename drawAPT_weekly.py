@@ -1110,3 +1110,59 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
     fig.add_hline(y=50.0, line_width=2, line_dash='dash', line_color="white", secondary_y=False)
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
+
+
+    # 통계 차트 
+    # KB 부동산원 같이 보기
+def histogram_together(last_df, last_odf, flag):
+    title = dict(text='<b>주간 KB/부동산원</b> 아파트'+flag+' 상승률 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(
+        x=last_df['매매증감'],
+    # histnorm='percent',
+        name='KB', # name used in legend and hover labels
+        xbins=dict( # bins used for histogram
+            # start=-4.0,
+            # end=3.0,
+            size=0.01
+        ),
+        texttemplate="%{y}",
+        marker_color='rgb(205,32,40)',
+        opacity=0.75
+    ))
+    fig.add_trace(go.Histogram(
+        x=last_odf['매매증감'],
+        #histnorm='percent',
+        name='부동산원',
+        xbins=dict(
+            # start=-3.0,
+            # end=4,
+            size=0.01
+        ),
+        texttemplate="%{y}",
+        marker_color='rgb(22,108,150)',
+        opacity=0.5
+    ))
+
+    fig.update_layout(
+        title = title, titlefont_size=15, legend=dict(orientation="h"),
+        #title_text='주간 KB/부동산원 아파트 매매가격 상승률 빈도수 비교', # title of plot
+        xaxis_title_text='증감률', # xaxis label
+        yaxis_title_text='지역수', # yaxis label
+        bargap=0.2, # gap between bars of adjacent location coordinates
+        bargroupgap=0.1 # gap between bars of the same location coordinates
+    )
+    fig.update_layout(barmode='overlay', template="myID")
+    st.plotly_chart(fig, use_container_width=True)
+
+def histogram_chart(last_df, flag, flag2):
+    title = dict(text='<b>'+flag+'</b> 주간부동산 '+ flag2+' 빈도수', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+    fig = px.histogram(last_odf, x=flag2, hover_data=last_df.columns, marginal="box", text_auto=True)
+    fig.update_layout(
+        xaxis_title_text='증감율(0.01% 범위)', # xaxis label
+        yaxis_title_text='지역수', # yaxis label
+        bargap=0.1, # gap between bars of adjacent location coordinates
+        bargroupgap=0.1 # gap between bars of the same location coordinates
+    )
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    st.plotly_chart(fig)
