@@ -1115,10 +1115,14 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
     # 통계 차트 
     # KB 부동산원 같이 보기
 def histogram_together(last_df, last_odf, flag):
-    title = dict(text='<b>주간 KB/부동산원</b> 아파트'+flag+' 상승률 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    title = dict(text='<b>주간 KB/부동산원</b> 아파트 '+flag+' 상승률 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    if flag == "전세가격":
+        mae_jeon_flag = "매매증감"
+    else:
+        mae_jeon_flag = "전세증감"
     fig = go.Figure()
     fig.add_trace(go.Histogram(
-        x=last_df['매매증감'],
+        x=last_df[mae_jeon_flag],
     # histnorm='percent',
         name='KB', # name used in legend and hover labels
         xbins=dict( # bins used for histogram
@@ -1131,7 +1135,7 @@ def histogram_together(last_df, last_odf, flag):
         opacity=0.75
     ))
     fig.add_trace(go.Histogram(
-        x=last_odf['매매증감'],
+        x=last_odf[mae_jeon_flag],
         #histnorm='percent',
         name='부동산원',
         xbins=dict(
@@ -1161,6 +1165,7 @@ def histogram_chart(last_odf, flag, flag2):
     fig.update_layout(
         xaxis_title_text='증감율(0.01% 범위)', # xaxis label
         yaxis_title_text='지역수', # yaxis label
+        color_discrete_sequence=['indianred'],
         bargap=0.1, # gap between bars of adjacent location coordinates
         bargroupgap=0.1 # gap between bars of the same location coordinates
     )
