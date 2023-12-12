@@ -508,22 +508,6 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        ######매수우위지수 각 지역별 보기
-        ### Draw 매수우위지수와 전세수급지수 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                city_list = ['서울특별시', '인천광역시', '경기도', '세종특별자치시', '부산광역시', '대구광역시', '광주광역시', '대전광역시', '울산광역시']
-                drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)
-            with col2:
-                st.write("")
-            with col3:
-                city_list = ['강원특별자치도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도']
-                drawAPT_weekly.draw_senti_together(s_df, city_list, kb_last_week)            
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
     
     with tab3:
         ### Draw 매수우위지수와 전세수급지수 #########################################################################################
