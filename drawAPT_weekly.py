@@ -1116,7 +1116,7 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
     # KB 부동산원 같이 보기
 def histogram_together(last_df, last_odf, flag):
     title = dict(text='<b>주간 KB/부동산원</b> 아파트 '+flag+' 상승률 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
-    if flag == "전세가격":
+    if flag == "매매가격":
         mae_jeon_flag = "매매증감"
     else:
         mae_jeon_flag = "전세증감"
