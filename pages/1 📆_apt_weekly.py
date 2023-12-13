@@ -478,6 +478,7 @@ def draw_basic():
         #option_value = option
         ### Draw 히스토그램 ############################### a매매
         drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매가격')
+        drawAPT_weekly.displot(kb_last_df, last_odf, flag='매매가격')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -494,6 +495,7 @@ def draw_basic():
         st.markdown(html_br, unsafe_allow_html=True)
          ### Draw 히스토그램 ############################### 전세
         drawAPT_weekly.histogram_together(kb_last_jdf, last_ojdf, flag='전세가격')
+        drawAPT_weekly.displot(kb_last_jdf, last_ojdf, flag='전세가격')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:

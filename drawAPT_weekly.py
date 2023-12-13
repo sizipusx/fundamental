@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from pandas.core.dtypes.missing import notnull
 import plotly.express as px
+import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
@@ -1115,7 +1116,7 @@ def draw_senti_desu(select_city, mg_df, ms_df, jsp_df, jg_df, mdf, jdf):
     # 통계 차트 
     # KB 부동산원 같이 보기
 def histogram_together(last_df, last_odf, flag):
-    title = dict(text='<b>주간 KB/부동산원</b> 아파트 '+flag+' 상승률 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
+    title = dict(text='<b>KB/부동산원</b> 주간 아파트 '+flag+' 증감 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
     fig.add_trace(go.Histogram(
         x=last_df["1w"],
@@ -1156,7 +1157,7 @@ def histogram_together(last_df, last_odf, flag):
     st.plotly_chart(fig, use_container_width=True)
 
 def histogram_chart(last_odf, flag, flag2):
-    title = dict(text='<b>'+flag+'</b> 주간부동산 '+ flag2+' 빈도수', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+    title = dict(text='<b>'+flag+'</b> 주간 아파트 '+ flag2+' 빈도수', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     fig = px.histogram(last_odf, x=flag2, hover_data=last_odf.columns, marginal="box", text_auto=True, color_discrete_sequence=['indianred'])
     fig.update_layout(
         xaxis_title_text='증감율(0.01% 범위)', # xaxis label
@@ -1166,3 +1167,19 @@ def histogram_chart(last_odf, flag, flag2):
     )
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="myID")
     st.plotly_chart(fig)
+
+
+def displot(last_df, last_odf, flag): #KDE
+    group_labels = ['KB', 'ONE']
+    rug_text_one = last_df.index
+    rug_text_two = last_odf.index
+    rug_text = [rug_text_one, rug_text_two]
+    colors = ['rgb(205,32,40)', 'rgb(22,108,150)']
+    title = dict(text='KB/부동산원<b> 주간 아파트'+ flag+'</b> 증감 분포 비교', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+    # Create distplot with curve_type set to 'normal'
+    fig = ff.create_distplot([last_df['1w'], last_odf['1w']], group_labels, bin_size=.01,
+                            curve_type='kde', # override default 'kde'
+                            rug_text=rug_text,
+                            colors=colors)
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="myID")
+    st.plotly_chart(fig, use_container_width=True)
