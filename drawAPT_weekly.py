@@ -222,7 +222,7 @@ def draw_index_change_with_bar(last_df, flag, last_week):
 
 def draw_index_change_with_bubble(last_df, flag, last_week):
     #매매/전세 증감률 Bubble Chart
-    title = dict(text='<b>'+last_week+ '기준 '+flag+'지수 증감</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+    title = dict(text='<b>'+last_week+ '월 기준 '+flag+' 증감</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     fig = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']*10), 
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale='Bluered')
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
