@@ -1160,7 +1160,7 @@ def histogram_chart(last_odf, flag, flag2):
     title = dict(text='<b>'+flag+'</b> 주간 아파트 '+ flag2+' 빈도수', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     fig = px.histogram(last_odf, x=flag2, hover_data=last_odf.columns, marginal="box", text_auto=True, color_discrete_sequence=['indianred'])
     fig.update_layout(
-        xaxis_title_text='증감율(0.01% 범위)', # xaxis label
+        xaxis_title_text='증감율', # xaxis label
         yaxis_title_text='지역수', # yaxis label
         bargap=0.1, # gap between bars of adjacent location coordinates
         bargroupgap=0.1 # gap between bars of the same location coordinates
