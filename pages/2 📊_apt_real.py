@@ -231,54 +231,23 @@ if __name__ == "__main__":
         """
         st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == '지수 같이보기':
-        # mdf = mdf.loc['2006-01-01':]
-        # st.dataframe(mdf)
-        # omdf = omdf.loc['2006-01-01':-2]
-        # st.dataframe(omdf)
-        # kbmdf = kbmdf.loc['2006-01-01':-2]
-        # st.dataframe(kbmdf)
-        # mdf_ch = mdf_change.loc['2006-01-01':]
-        # mdf_ch = mdf_change
-        # st.dataframe(mdf_ch)
-        # omdf_ch = omdf_ch.loc['2006-01-01':]
-        # kbmdf_ch = kbmdf_ch.loc['2006-01-01':]
-
-        # jdf = jdf.loc['2006-01-01':]
-        # ojdf = ojdf.loc['2006-01-01':]
-        # kbjdf = kbjdf.loc['2006-01-01':]
-        # jdf_ch = jdf_change.loc['2006-01-01':]
-        # jdf_ch = jdf_change
-        # ojdf_ch = ojdf_ch.loc['2006-01-01':]
-        # kbjdf_ch = kbjdf_ch.loc['2006-01-01':]
-        # 세 개의 데이터프레임을 가져온다.
-        # 각 데이터프레임의 날짜 인덱스를 가져온다.
         # 모든 데이터프레임의 시작 날짜 중 가장 늦은 날짜를 찾습니다.
         start_date = max(mdf.index.min(), omdf.index.min(), kbmdf.index.min())
-        st.write(start_date)
 
         # 모든 데이터프레임의 종료 날짜 중 가장 이른 날짜를 찾습니다.
         end_date = min(mdf.index.max(), omdf.index.max(), kbmdf.index.max())
-        st.write(end_date)
-
+        
         # 시작 날짜보다 한 달 후 날짜를 구합니다.
         start_date_plus_one_month = start_date + relativedelta(months=1)
-        st.write(start_date_plus_one_month)
+        #st.write(start_date_plus_one_month)
 
         # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
         mdf = mdf.loc[start_date_plus_one_month:end_date]
-        st.dataframe(mdf)
         omdf = omdf.loc[start_date_plus_one_month:end_date]
-        st.dataframe(omdf)
         kbmdf = kbmdf.loc[start_date_plus_one_month:end_date]
-        st.dataframe(kbmdf)
         mdf_ch = mdf_change.loc[start_date_plus_one_month:end_date]
-        st.dataframe(mdf_ch)
         omdf_ch = omdf_ch.loc[start_date_plus_one_month:end_date]
-        st.dataframe(omdf_ch)
         kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
-        st.dataframe(kbmdf_ch)
-
-
 
         # 세 데이터프레임의 인덱스를 리스트로 변환합니다
         index1 = mdf.index.tolist()
@@ -300,11 +269,11 @@ if __name__ == "__main__":
 
         jstart_date = max(jdf.index.min(), ojdf.index.min(), kbjdf.index.min())
         jstart_date_plus_one_month = jstart_date + relativedelta(months=1)
-        st.write(jstart_date)
+        #st.write(jstart_date)
 
         # 모든 데이터프레임의 종료 날짜 중 가장 이른 날짜를 찾습니다.
         jend_date = min(jdf.index.max(), ojdf.index.max(), kbjdf.index.max())
-        st.write(jend_date)
+        #st.write(jend_date)
         jdf = jdf.loc[jstart_date_plus_one_month:jend_date]
         ojdf = ojdf.loc[jstart_date_plus_one_month:jend_date]
         kbjdf = kbjdf.loc[jstart_date_plus_one_month:jend_date]
