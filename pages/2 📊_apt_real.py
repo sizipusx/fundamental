@@ -270,7 +270,10 @@ if __name__ == "__main__":
         omdf_ch = omdf_ch.loc[start_date:end_date]
         kbmdf_ch = kbmdf_ch.loc[start_date:end_date]
 
-        st.dataframe(mdf)
+        st.dataframe(mdf_ch)
+        st.dataframe(omdf_ch)
+        st.dataframe(kbmdf_ch)
+        
 
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
