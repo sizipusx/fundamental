@@ -1957,23 +1957,23 @@ def draw_index_together(local_name, rmdf, omdf, mdf, rmdf_ch, omdf_ch, mdf_ch, f
     #         secondary_y=True
     #         )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=rmdf_ch.loc[:,local_name],  name="실거래 증감(R)", marker_color= marker_colors[0]),
+            go.Bar(x=rmdf_ch.index, y=rmdf_ch.loc[:,local_name],  name="실거래 증감(R)", marker_color= marker_colors[0]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=omdf_ch.loc[:,local_name],  name="부동산원 증감(R)", marker_color= marker_colors[1]),
+            go.Bar(x=omdf_ch.index, y=omdf_ch.loc[:,local_name],  name="부동산원 증감(R)", marker_color= marker_colors[1]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Bar(x=mdf.index, y=mdf_ch.loc[:,local_name],  name="KB 변화 증감(R)", marker_color= marker_colors[2]),
+            go.Bar(x=mdf_ch.index, y=mdf_ch.loc[:,local_name],  name="KB 변화 증감(R)", marker_color= marker_colors[2]),
             secondary_y=True
             )
     fig.add_trace(
-            go.Scatter(x=mdf.index, y=rmdf.loc[:,local_name],  name="실거래 지수(L)", marker_color= marker_colors[0]),
+            go.Scatter(x=rmdf.index, y=rmdf.loc[:,local_name],  name="실거래 지수(L)", marker_color= marker_colors[0]),
             secondary_y=False
             )
     fig.add_trace(
-            go.Scatter(x=mdf.index, y=omdf.loc[:,local_name],  name="부동산원 지수(L)", marker_color= marker_colors[1]),
+            go.Scatter(x=omdf.index, y=omdf.loc[:,local_name],  name="부동산원 지수(L)", marker_color= marker_colors[1]),
             secondary_y=False
             )
     fig.add_trace(
