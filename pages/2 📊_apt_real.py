@@ -272,8 +272,11 @@ if __name__ == "__main__":
         kbmdf = kbmdf.loc[start_date_plus_one_month:end_date]
         st.dataframe(kbmdf)
         mdf_ch = mdf_change.loc[start_date_plus_one_month:end_date]
+        st.dataframe(mdf_ch)
         omdf_ch = omdf_ch.loc[start_date_plus_one_month:end_date]
+        st.dataframe(omdf_ch)
         kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
+        st.dataframe(kbmdf_ch)
 
         jstart_date = max(jdf.index.min(), ojdf.index.min(), kbjdf.index.min())
         jstart_date_plus_one_month = jstart_date + relativedelta(months=1)
