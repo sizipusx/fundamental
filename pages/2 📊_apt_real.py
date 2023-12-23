@@ -278,6 +278,26 @@ if __name__ == "__main__":
         kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
         st.dataframe(kbmdf_ch)
 
+
+
+        # 세 데이터프레임의 인덱스를 리스트로 변환합니다
+        index1 = mdf.index.tolist()
+        index2 = omdf.index.tolist()
+        index3 = kbmdf.index.tolist()
+
+        # 세 리스트가 같은지 확인합니다
+        if index1 == index2 == index3:
+            st.write("세 데이터프레임의 인덱스는 모두 같습니다.")
+        else:
+            st.write("세 데이터프레임의 인덱스는 모두 같지 않습니다.")
+            diff12 = set(index1) - set(index2)
+            diff13 = set(index1) - set(index3)
+            diff23 = set(index2) - set(index3)
+            st.write("df1과 df2의 인덱스 차집합: ", diff12)
+            st.write("df1과 df3의 인덱스 차집합: ", diff13)
+            st.write("df2과 df3의 인덱스 차집합: ", diff23)
+
+
         jstart_date = max(jdf.index.min(), ojdf.index.min(), kbjdf.index.min())
         jstart_date_plus_one_month = jstart_date + relativedelta(months=1)
         st.write(jstart_date)
