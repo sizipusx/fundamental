@@ -251,21 +251,16 @@ if __name__ == "__main__":
         # kbjdf_ch = kbjdf_ch.loc['2006-01-01':]
         # 세 개의 데이터프레임을 가져온다.
         # 각 데이터프레임의 날짜 인덱스를 가져온다.
-        index1 = mdf.index
-        index2 = omdf.index
-        index3 = kbmdf.index
+        # 모든 데이터프레임의 시작 날짜 중 가장 늦은 날짜를 찾습니다.
+        start_date = max(mdf.index.min(), omdf.index.min(), kbmdf.index.min())
 
-        # 가장 작은 날짜를 기준으로 날짜 인덱스를 통일한다.
-        min_date = min(index1.min(), index2.min(), index3.min())
+        # 모든 데이터프레임의 종료 날짜 중 가장 이른 날짜를 찾습니다.
+        end_date = min(mdf.index.max(), omdf.index.max(), kbmdf.index.max())
 
-        # 날짜 인덱스를 2006년 1월부터 시작하도록 조정한다.
-        index1 = index1 - min_date + pd.to_datetime("2006-01-01")
-        index2 = index2 - min_date + pd.to_datetime("2006-01-01")
-        index3 = index3 - min_date + pd.to_datetime("2006-01-01")
-
-        mdf.index = index1
-        omdf.index = index2
-        kbmdf.index = index3
+        # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
+        mdf = mdf.reindex(pd.date_range(start_date, end_date))
+        omdf = omdf.reindex(pd.date_range(start_date, end_date))
+        kbmdf = kbmdf.reindex(pd.date_range(start_date, end_date))
 
         st.dataframe(mdf)
 
