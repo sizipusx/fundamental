@@ -273,18 +273,19 @@ if __name__ == "__main__":
         kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
 
         jstart_date = max(jdf.index.min(), ojdf.index.min(), kbjdf.index.min())
+        jstart_date_plus_one_month = jstart_date + relativedelta(months=1)
         st.write(jstart_date)
 
         # 모든 데이터프레임의 종료 날짜 중 가장 이른 날짜를 찾습니다.
         jend_date = min(jdf.index.max(), ojdf.index.max(), kbjdf.index.max())
-        jdf = jdf.loc[start_date_plus_one_month:jend_date]
-        ojdf = ojdf.loc[start_date_plus_one_month:jend_date]
-        kbjdf = kbjdf.loc[start_date_plus_one_month:jend_date]
-        jdf_ch = jdf_change.loc[start_date_plus_one_month:jend_date]
-        ojdf_ch = ojdf_ch.loc[start_date_plus_one_month:jend_date]
-        kbjdf_ch = kbjdf_ch.loc[start_date_plus_one_month:jend_date]
-        st.dataframe(kbjdf)
-        st.dataframe(kbjdf_ch)
+        st.write(jend_date)
+        jdf = jdf.loc[jstart_date_plus_one_month:jend_date]
+        ojdf = ojdf.loc[jstart_date_plus_one_month:jend_date]
+        kbjdf = kbjdf.loc[jstart_date_plus_one_month:jend_date]
+        jdf_ch = jdf_change.loc[jstart_date_plus_one_month:jend_date]
+        ojdf_ch = ojdf_ch.loc[jstart_date_plus_one_month:jend_date]
+        kbjdf_ch = kbjdf_ch.loc[jstart_date_plus_one_month:jend_date]
+
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
         common_col = list(set(mdf.columns.tolist()) & set(omdf.columns.tolist()) & set(kbmdf.columns.tolist()))
