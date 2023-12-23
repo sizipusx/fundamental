@@ -271,8 +271,8 @@ if __name__ == "__main__":
         mdf_ch = mdf_change.loc[start_date_plus_one_month:end_date]
         omdf_ch = omdf_ch.loc[start_date_plus_one_month:end_date]
         kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
-        st.dataframe(mdf)
-        st.dataframe(mdf_ch)
+        st.dataframe(kbmdf)
+        st.dataframe(kbmdf_ch)
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
         common_col = list(set(mdf.columns.tolist()) & set(omdf.columns.tolist()) & set(kbmdf.columns.tolist()))
