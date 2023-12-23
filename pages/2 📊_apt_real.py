@@ -237,7 +237,7 @@ if __name__ == "__main__":
         # kbmdf = kbmdf.loc['2006-01-01':-2]
         # st.dataframe(kbmdf)
         # mdf_ch = mdf_change.loc['2006-01-01':]
-        mdf_ch = mdf_change
+        # mdf_ch = mdf_change
         # st.dataframe(mdf_ch)
         # omdf_ch = omdf_ch.loc['2006-01-01':]
         # kbmdf_ch = kbmdf_ch.loc['2006-01-01':]
@@ -246,9 +246,29 @@ if __name__ == "__main__":
         # ojdf = ojdf.loc['2006-01-01':]
         # kbjdf = kbjdf.loc['2006-01-01':]
         # jdf_ch = jdf_change.loc['2006-01-01':]
-        jdf_ch = jdf_change
+        # jdf_ch = jdf_change
         # ojdf_ch = ojdf_ch.loc['2006-01-01':]
         # kbjdf_ch = kbjdf_ch.loc['2006-01-01':]
+        # 세 개의 데이터프레임을 가져온다.
+        # 각 데이터프레임의 날짜 인덱스를 가져온다.
+        index1 = mdf.index
+        index2 = omdf.index
+        index3 = kbmdf.index
+
+        # 가장 작은 날짜를 기준으로 날짜 인덱스를 통일한다.
+        min_date = min(index1.min(), index2.min(), index3.min())
+
+        # 날짜 인덱스를 2006년 1월부터 시작하도록 조정한다.
+        index1 = index1 - min_date + pd.to_datetime("2006-01-01")
+        index2 = index2 - min_date + pd.to_datetime("2006-01-01")
+        index3 = index3 - min_date + pd.to_datetime("2006-01-01")
+
+        mdf.index = index1
+        omdf.index = index2
+        kbmdf.index = index3
+
+        st.dataframe(mdf)
+
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
         common_col = list(set(mdf.columns.tolist()) & set(omdf.columns.tolist()) & set(kbmdf.columns.tolist()))
