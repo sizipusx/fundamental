@@ -253,9 +253,11 @@ if __name__ == "__main__":
         # 각 데이터프레임의 날짜 인덱스를 가져온다.
         # 모든 데이터프레임의 시작 날짜 중 가장 늦은 날짜를 찾습니다.
         start_date = max(mdf.index.min(), omdf.index.min(), kbmdf.index.min())
+        st.write(start_date)
 
         # 모든 데이터프레임의 종료 날짜 중 가장 이른 날짜를 찾습니다.
         end_date = min(mdf.index.max(), omdf.index.max(), kbmdf.index.max())
+        st.write(end_date)
 
         # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
         mdf = mdf.reindex(pd.date_range(start_date, end_date))
