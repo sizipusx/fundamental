@@ -266,8 +266,11 @@ if __name__ == "__main__":
 
         # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
         mdf = mdf.loc[start_date_plus_one_month:end_date]
+        st.dataframe(mdf)
         omdf = omdf.loc[start_date_plus_one_month:end_date]
+        st.dataframe(omdf)
         kbmdf = kbmdf.loc[start_date_plus_one_month:end_date]
+        st.dataframe(kbmdf)
         mdf_ch = mdf_change.loc[start_date_plus_one_month:end_date]
         omdf_ch = omdf_ch.loc[start_date_plus_one_month:end_date]
         kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
