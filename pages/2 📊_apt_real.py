@@ -262,6 +262,7 @@ if __name__ == "__main__":
 
         # 시작 날짜보다 한 달 후 날짜를 구합니다.
         start_date_plus_one_month = start_date + relativedelta(months=1)
+        st.write(start_date_plus_one_month)
 
         # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
         # mdf = mdf.reindex(pd.date_range(start_date, end_date))
