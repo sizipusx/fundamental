@@ -231,9 +231,11 @@ if __name__ == "__main__":
         st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == '지수 같이보기':
         mdf = mdf.loc['2006-01-01':]
+        st.dataframe(mdf)
         omdf = omdf.loc['2006-01-01':]
         kbmdf = kbmdf.loc['2006-01-01':]
         mdf_ch = mdf_change.loc['2006-01-01':]
+        st.dataframe(mdf_ch)
         omdf_ch = omdf_ch.loc['2006-01-01':]
         kbmdf_ch = kbmdf_ch.loc['2006-01-01':]
 
