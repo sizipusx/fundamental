@@ -7,6 +7,7 @@ import json
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from dateutil.relativedelta import relativedelta
 import streamlit as st
 import drawAPT_weekly 
 import drawAPT_update
@@ -259,22 +260,19 @@ if __name__ == "__main__":
         end_date = min(mdf.index.max(), omdf.index.max(), kbmdf.index.max())
         st.write(end_date)
 
+        # 시작 날짜보다 한 달 후 날짜를 구합니다.
+        start_date_plus_one_month = start_date + relativedelta(months=1)
+
         # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
         # mdf = mdf.reindex(pd.date_range(start_date, end_date))
         # omdf = omdf.reindex(pd.date_range(start_date, end_date))
         # kbmdf = kbmdf.reindex(pd.date_range(start_date, end_date))
-        mdf = mdf.loc[start_date:end_date]
-        omdf = omdf.loc[start_date:end_date]
-        kbmdf = kbmdf.loc[start_date:end_date]
-        mdf_ch = mdf_change.loc[start_date:end_date]
-        omdf_ch = omdf_ch.loc[start_date:end_date]
-        kbmdf_ch = kbmdf_ch.loc[start_date:end_date]
-
-        st.dataframe(mdf_ch)
-        st.dataframe(omdf_ch)
-        st.dataframe(kbmdf_ch)
-        
-
+        mdf = mdf.loc[start_date_plus_one_month:end_date]
+        omdf = omdf.loc[start_date_plus_one_month:end_date]
+        kbmdf = kbmdf.loc[start_date_plus_one_month:end_date]
+        mdf_ch = mdf_change.loc[start_date_plus_one_month:end_date]
+        omdf_ch = omdf_ch.loc[start_date_plus_one_month:end_date]
+        kbmdf_ch = kbmdf_ch.loc[start_date_plus_one_month:end_date]
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
         common_col = list(set(mdf.columns.tolist()) & set(omdf.columns.tolist()) & set(kbmdf.columns.tolist()))
