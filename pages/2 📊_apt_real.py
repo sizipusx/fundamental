@@ -260,9 +260,11 @@ if __name__ == "__main__":
         st.write(end_date)
 
         # reindex를 사용하여 각 데이터프레임의 인덱스를 동일한 범위로 맞춥니다.
-        mdf = mdf.reindex(pd.date_range(start_date, end_date))
-        omdf = omdf.reindex(pd.date_range(start_date, end_date))
+        # mdf = mdf.reindex(pd.date_range(start_date, end_date))
+        # omdf = omdf.reindex(pd.date_range(start_date, end_date))
         # kbmdf = kbmdf.reindex(pd.date_range(start_date, end_date))
+        mdf = mdf.loc[start_date:end_date]
+        omdf = omdf.loc[start_date:end_date]
         kbmdf = kbmdf.loc[start_date:end_date]
 
         st.dataframe(mdf)
