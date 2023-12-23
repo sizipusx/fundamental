@@ -233,7 +233,9 @@ if __name__ == "__main__":
         mdf = mdf.loc['2006-01-01':]
         st.dataframe(mdf)
         omdf = omdf.loc['2006-01-01':]
+        st.dataframe(omdf)
         kbmdf = kbmdf.loc['2006-01-01':]
+        st.dataframe(kbmdf)
         mdf_ch = mdf_change.loc['2006-01-01':]
         st.dataframe(mdf_ch)
         omdf_ch = omdf_ch.loc['2006-01-01':]
