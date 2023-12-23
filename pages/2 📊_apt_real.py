@@ -230,23 +230,23 @@ if __name__ == "__main__":
         """
         st.markdown(html_br, unsafe_allow_html=True)
     elif my_choice == '지수 같이보기':
-        mdf = mdf.loc['2006-01-01':]
-        st.dataframe(mdf)
-        omdf = omdf.loc['2006-01-01':]
-        st.dataframe(omdf)
-        kbmdf = kbmdf.loc['2006-01-01':]
-        st.dataframe(kbmdf)
-        mdf_ch = mdf_change.loc['2006-01-01':]
-        st.dataframe(mdf_ch)
-        omdf_ch = omdf_ch.loc['2006-01-01':]
-        kbmdf_ch = kbmdf_ch.loc['2006-01-01':]
+        # mdf = mdf.loc['2006-01-01':]
+        # st.dataframe(mdf)
+        # omdf = omdf.loc['2006-01-01':-2]
+        # st.dataframe(omdf)
+        # kbmdf = kbmdf.loc['2006-01-01':-2]
+        # st.dataframe(kbmdf)
+        # mdf_ch = mdf_change.loc['2006-01-01':]
+        # st.dataframe(mdf_ch)
+        # omdf_ch = omdf_ch.loc['2006-01-01':]
+        # kbmdf_ch = kbmdf_ch.loc['2006-01-01':]
 
-        jdf = jdf.loc['2006-01-01':]
-        ojdf = ojdf.loc['2006-01-01':]
-        kbjdf = kbjdf.loc['2006-01-01':]
-        jdf_ch = jdf_change.loc['2006-01-01':]
-        ojdf_ch = ojdf_ch.loc['2006-01-01':]
-        kbjdf_ch = kbjdf_ch.loc['2006-01-01':]
+        # jdf = jdf.loc['2006-01-01':]
+        # ojdf = ojdf.loc['2006-01-01':]
+        # kbjdf = kbjdf.loc['2006-01-01':]
+        # jdf_ch = jdf_change.loc['2006-01-01':]
+        # ojdf_ch = ojdf_ch.loc['2006-01-01':]
+        # kbjdf_ch = kbjdf_ch.loc['2006-01-01':]
 
         # 데이터프레임의 컬럼명 추출 후, 같은 이름을 가진 컬럼만 병합
         common_col = list(set(mdf.columns.tolist()) & set(omdf.columns.tolist()) & set(kbmdf.columns.tolist()))
