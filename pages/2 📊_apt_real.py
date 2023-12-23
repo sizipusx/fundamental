@@ -266,6 +266,9 @@ if __name__ == "__main__":
         mdf = mdf.loc[start_date:end_date]
         omdf = omdf.loc[start_date:end_date]
         kbmdf = kbmdf.loc[start_date:end_date]
+        mdf_ch = mdf_change.loc[start_date:end_date]
+        omdf_ch = omdf_ch.loc[start_date:end_date]
+        kbmdf_ch = kbmdf_ch.loc[start_date:end_date]
 
         st.dataframe(mdf)
 
