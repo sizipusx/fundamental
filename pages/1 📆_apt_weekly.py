@@ -1222,13 +1222,13 @@ if __name__ == "__main__":
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
                     flag = 'KB 주간'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag)
+                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag, round(diff.days/365,1) + "년")
 
                 with col2:
                     st.write("")
                 with col3:
                     flag = '부동산원 주간'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag)
+                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, round(diff.days/365,1) + "년")
                     
             html_br="""
             <br>
