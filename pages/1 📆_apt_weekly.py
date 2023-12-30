@@ -477,8 +477,8 @@ def draw_basic():
         #     ('1w', '2w', '3w', '1m', '1y'))
         #option_value = option
         ### Draw 히스토그램 ############################### a매매
-        drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매가격')
-        drawAPT_weekly.displot(kb_last_df, last_odf, flag='매매가격')
+        drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매증감')
+        drawAPT_weekly.displot(kb_last_df, last_odf, flag='매매증감')
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
