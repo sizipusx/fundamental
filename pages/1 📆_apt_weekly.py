@@ -1197,102 +1197,140 @@ if __name__ == "__main__":
         """
         st.markdown(html_br, unsafe_allow_html=True)
         if submit:
-            ### 기간동안 전세지수는 증가하고 매매지수는 감소한 지역############################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    #flag = "KB"  
-                    st.write("KB 매매 감소-전세 증가") 
-                    response  = aggrid_interactive_table(df=inter_df)
-                    # st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
-                    #                 .format(precision=2, na_rep='MISSING', thousands=","))  
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = "부동산원"
-                    st.write("부동산원 매매 감소-전세 증가")
-                    response  = aggrid_interactive_table(df=inter_odf)
-                    # st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
-                    #                       .format(precision=2, na_rep='MISSING', thousands=","))
-            html_br="""
-            <br>
-            """
-            ### Draw Bubble chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = 'KB 주간'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_df, flag, str(round(diff.days/365,1)) + "년")
+            tab1, tab2 = st.tabs(["⏰ 지역보기", "🌈통계보기"])
+            with tab1:
+                ### Draw Bubble chart #########################################################################################
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        flag = 'KB 주간'
+                        drawAPT_weekly.draw_index_change_with_bubble(change_df, flag, str(round(diff.days/365,1)) + "년")
 
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = '부동산원 주간'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag, str(round(diff.days/365,1)) + "년")
-                    
-            html_br="""
-            <br>
-            """
-             ### Draw Bubble chart #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    #flag = "KB"  
-                    st.write("KB 기간 증감") 
-                    #change_df = change_df.reset_index()
-                    response  = aggrid_interactive_table(df=change_df)            
-                    # st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
-                    #                 .format(precision=2, na_rep='MISSING', thousands=","))  
-                    #drawAPT_weekly.draw_change_table(change_df, flag)  
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = "부동산원"
-                    st.write("부동산원 기간 증감")
-                    #change_odf = change_odf.reset_index()
-                    response  = aggrid_interactive_table(df=change_odf)
-                    # st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
-                    #                       .format(precision=2, na_rep='MISSING', thousands=","))
-                    #drawAPT_weekly.draw_change_table(change_df, flag) 
-            html_br="""
-            <br>
-            """
-            ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = 'KB'
-                    citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
-                    drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = '부동산원 주간'
+                        drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag, str(round(diff.days/365,1)) + "년")
+                        
+                html_br="""
+                <br>
+                """
+                ### Draw Bubble chart #########################################################################################
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        #flag = "KB"  
+                        st.write("KB 기간 증감") 
+                        #change_df = change_df.reset_index()
+                        response  = aggrid_interactive_table(df=change_df)            
+                        # st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
+                        #                 .format(precision=2, na_rep='MISSING', thousands=","))  
+                        #drawAPT_weekly.draw_change_table(change_df, flag)  
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = "부동산원"
+                        st.write("부동산원 기간 증감")
+                        #change_odf = change_odf.reset_index()
+                        response  = aggrid_interactive_table(df=change_odf)
+                        # st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
+                        #                       .format(precision=2, na_rep='MISSING', thousands=","))
+                        #drawAPT_weekly.draw_change_table(change_df, flag) 
+                html_br="""
+                <br>
+                """
+                ### Draw 광역시도 전체 기간 누적 차트 #########################################################################################
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        flag = 'KB'
+                        citys = ['전국', '서울', '경기', '인천', '대전', '광주', '대구', '부산', '울산', '세종']
+                        drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
 
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = '부동산원'
-                    drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
-                    
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
-            ### Draw 도 전체 기간 누적 차트 #########################################################################################
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    flag = 'KB'
-                    citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-                    drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = '부동산원'
+                        drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
+                        
+                html_br="""
+                <br>
+                """
+                st.markdown(html_br, unsafe_allow_html=True)
+                ### Draw 도 전체 기간 누적 차트 #########################################################################################
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        flag = 'KB'
+                        citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+                        drawAPT_weekly.draw_flower_together(citys, S_cum_m, S_cum_j, flag)
 
-                with col2:
-                    st.write("")
-                with col3:
-                    flag = '부동산원'
-                    citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
-                    drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
-                    
-            html_br="""
-            <br>
-            """
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = '부동산원'
+                        citys = ['전국', '충북', '충남', '전북', '전남', '경북', '경남', '제주도']
+                        drawAPT_weekly.draw_flower_together(citys, S_cum_om, S_cum_oj, flag)
+                        
+                html_br="""
+                <br>
+                """
+                ### 기간동안 전세지수는 증가하고 매매지수는 감소한 지역############################################################
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        #flag = "KB"  
+                        st.write("KB 매매 감소-전세 증가") 
+                        response  = aggrid_interactive_table(df=inter_df)
+                        # st.dataframe(inter_df.style.background_gradient(cmap, axis=0)\
+                        #                 .format(precision=2, na_rep='MISSING', thousands=","))  
+                    with col2:
+                        st.write("")
+                    with col3:
+                        flag = "부동산원"
+                        st.write("부동산원 매매 감소-전세 증가")
+                        response  = aggrid_interactive_table(df=inter_odf)
+                        # st.dataframe(inter_odf.style.background_gradient(cmap, axis=0)\
+                        #                       .format(precision=2, na_rep='MISSING', thousands=","))
+                html_br="""
+                <br>
+                """
+            #############
+            with tab2:
+            ### Draw 히스토그램 ############################### a매매
+                drawAPT_weekly.histogram_together(change_df, change_odf, flag='매매가격')
+                drawAPT_weekly.displot(change_df, change_odf, flag='매매가격')
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        drawAPT_weekly.histogram_chart(change_df, flag='KB', flag2='매매증감')
+                        #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        drawAPT_weekly.histogram_chart(change_odf, flag='부동산원', flag2='매매증감')
+                        
+                html_br="""
+                <br>
+                """
+                st.markdown(html_br, unsafe_allow_html=True)
+                ### Draw 히스토그램 ############################### 전세
+                drawAPT_weekly.histogram_together(change_df, change_odf, flag='전세가격')
+                drawAPT_weekly.displot(change_df, change_odf, flag='전세가격')
+                with st.container():
+                    col1, col2, col3 = st.columns([30,2,30])
+                    with col1:
+                        drawAPT_weekly.histogram_chart(change_df, flag='KB', flag2='전세증감')
+                        #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+                    with col2:
+                        st.write("")
+                    with col3:
+                        drawAPT_weekly.histogram_chart(change_odf, flag='부동산원', flag2='전세증감')
+                        
+                html_br="""
+                <br>
+                """
+                st.markdown(html_br, unsafe_allow_html=True)
             html_line="""
 
             <br>

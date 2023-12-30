@@ -1119,7 +1119,7 @@ def histogram_together(last_df, last_odf, flag):
     title = dict(text='<b>KB/부동산원</b> 주간 아파트 '+flag+' 증감 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
     fig.add_trace(go.Histogram(
-        x=last_df["1w"],
+        x=last_df["매매증감"],
     # histnorm='percent',
         name='KB', # name used in legend and hover labels
         xbins=dict( # bins used for histogram
@@ -1132,7 +1132,7 @@ def histogram_together(last_df, last_odf, flag):
         opacity=0.75
     ))
     fig.add_trace(go.Histogram(
-        x=last_odf["1w"],
+        x=last_odf["매매증감"],
         #histnorm='percent',
         name='부동산원',
         xbins=dict(
