@@ -1220,7 +1220,7 @@ if __name__ == "__main__":
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
                         #flag = "KB"  
-                        st.write("KB 기간 증감") 
+                        st.write("KB(152개 지역) 기간 증감") 
                         #change_df = change_df.reset_index()
                         response  = aggrid_interactive_table(df=change_df)            
                         # st.dataframe(change_df.style.background_gradient(cmap, axis=0)\
@@ -1230,7 +1230,7 @@ if __name__ == "__main__":
                         st.write("")
                     with col3:
                         flag = "부동산원"
-                        st.write("부동산원 기간 증감")
+                        st.write("부동산원(176개 지역) 기간 증감")
                         #change_odf = change_odf.reset_index()
                         response  = aggrid_interactive_table(df=change_odf)
                         # st.dataframe(change_odf.style.background_gradient(cmap, axis=0)\
