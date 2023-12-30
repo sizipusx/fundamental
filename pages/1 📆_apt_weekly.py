@@ -1228,7 +1228,7 @@ if __name__ == "__main__":
                     st.write("")
                 with col3:
                     flag = '부동산원 주간'
-                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, str(round(diff.days/365,1)) + "년")
+                    drawAPT_weekly.draw_index_change_with_bubble(change_odf, flag, str(round(diff.days/365,1)) + "년")
                     
             html_br="""
             <br>
