@@ -1119,7 +1119,7 @@ def histogram_together(last_df, last_odf, flag):
     title = dict(text='<b>KB/부동산원</b> 주간 아파트 '+flag+' 증감 빈도수 비교', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     fig = go.Figure()
     fig.add_trace(go.Histogram(
-        x=last_df["매매증감"],
+        x=last_df[flag],
     # histnorm='percent',
         name='KB', # name used in legend and hover labels
         xbins=dict( # bins used for histogram
@@ -1132,7 +1132,7 @@ def histogram_together(last_df, last_odf, flag):
         opacity=0.75
     ))
     fig.add_trace(go.Histogram(
-        x=last_odf["매매증감"],
+        x=last_odf[flag],
         #histnorm='percent',
         name='부동산원',
         xbins=dict(
@@ -1177,7 +1177,7 @@ def displot(last_df, last_odf, flag): #KDE
     colors = ['rgb(205,32,40)', 'rgb(22,108,150)']
     title = dict(text='KB/부동산원<b> 주간 아파트'+ flag+'</b> 증감 분포 비교', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     # Create distplot with curve_type set to 'normal'
-    fig = ff.create_distplot([last_df['1w'], last_odf['1w']], group_labels, bin_size=.01,
+    fig = ff.create_distplot([last_df[flag], last_odf[flag]], group_labels, bin_size=.01,
                             curve_type='kde', # override default 'kde'
                             rug_text=rug_text,
                             colors=colors)

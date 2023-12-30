@@ -1298,8 +1298,8 @@ if __name__ == "__main__":
             #############
             with tab2:
             ### Draw 히스토그램 ############################### a매매
-                drawAPT_weekly.histogram_together(change_df, change_odf, flag='매매가격')
-                drawAPT_weekly.displot(change_df, change_odf, flag='매매가격')
+                drawAPT_weekly.histogram_together(change_df, change_odf, flag='매매증감')
+                drawAPT_weekly.displot(change_df, change_odf, flag='매매증감')
                 with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
@@ -1315,8 +1315,8 @@ if __name__ == "__main__":
                 """
                 st.markdown(html_br, unsafe_allow_html=True)
                 ### Draw 히스토그램 ############################### 전세
-                drawAPT_weekly.histogram_together(change_df, change_odf, flag='전세가격')
-                drawAPT_weekly.displot(change_df, change_odf, flag='전세가격')
+                drawAPT_weekly.histogram_together(change_df, change_odf, flag='전세증감')
+                drawAPT_weekly.displot(change_df, change_odf, flag='전세증감')
                 with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
