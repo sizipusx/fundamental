@@ -897,7 +897,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m-%d')  
     # Adding labels
     annotations = []
-    for label in maesu_index.columns:
+    for label in city_lists.columns:
         # labeling the right_side of the plot
         annotations.append(dict(xref='paper', x=0.95, y=maesu_index[label][-1],
                                     xanchor='left', yanchor='middle',
