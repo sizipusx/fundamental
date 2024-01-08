@@ -901,9 +901,9 @@ def draw_senti_together(maesu_index, city_lists, last_week):
         # labeling the right_side of the plot
         annotations.append(dict(xref='paper', x=0.95, y=maesu_index[label][-1],
                                     xanchor='left', yanchor='middle',
-                                    text= '{}'.format(maesu_index[label][-1])+label,
+                                    text= label + ' {}'.format(maesu_index[label][-1]),
                                     font=dict(family='Arial',
-                                                size=16),
+                                                size=12),
                                     showarrow=False))
     fig.update_layout(annotations=annotations)
     fig.update_layout(
