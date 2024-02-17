@@ -98,28 +98,28 @@ def load_index_data(flag):
 @st.cache_data(ttl=datetime.timedelta(days=1))
 def get_common_dates_data(df1, df2):
   """
-  두 데이터프레임의 공통 날짜에 해당하는 데이터만 가져옵니다.
+  두 데이터프레임의 공통된 날짜에 해당하는 데이터만 가져옵니다.
 
   Args:
     df1: 첫 번째 데이터프레임
     df2: 두 번째 데이터프레임
 
   Returns:
-    공통 날짜에 해당하는 데이터만 포함하는 새로운 데이터프레임
+    두 데이터프레임의 공통된 날짜에 해당하는 데이터
   """
 
-  # 두 데이터프레임의 인덱스를 날짜형식으로 변환합니다.
-  df1.index = pd.to_datetime(df1.index)
-  df2.index = pd.to_datetime(df2.index)
+  # 날짜 인덱스 추출
+  df1_dates = df1.index.to_numpy()
+  df2_dates = df2.index.to_numpy()
 
-  # 공통 날짜를 구합니다.
-  common_dates = df1.index.intersection(df2.index)
+  # 공통된 날짜 찾기
+  common_dates = set(df1_dates) & set(df2_dates)
 
-  # 공통 날짜에 해당하는 데이터만 선택합니다.
-  df_common = df1[common_dates]
-  df_common = df_common.join(df2[common_dates])
+  # 공통된 날짜에 해당하는 데이터만 선택
+  df1_common = df1[df1.index.isin(common_dates)]
+  df2_common = df2[df2.index.isin(common_dates)]
 
-  return df_common
+  return df1_common, df2_common
 
 
 if __name__ == "__main__":
@@ -199,10 +199,7 @@ if __name__ == "__main__":
     cum_jdf = cum_jdf.round(decimals=3)
     #매매와 전세의 데이터 시작점이 다르다. 매매 2006년 이후 전세 2016이후
     # 공통 날짜를 구합니다.
-    common_dates = cum_mdf.index.intersection(cum_jdf.index)
-
-    # 공통 날짜에 해당하는 데이터만 선택합니다.
-    cum_mdf_common = cum_mdf[common_dates]
+    cum_mdf_common, cum_jdf_common = get_common_dates_data(cum_mdf, cum_jdf)
 
     #마지막 데이터로 데이터프레임 만들기
     real_last_df  = pd.DataFrame()
@@ -392,7 +389,7 @@ if __name__ == "__main__":
                         st.write("")
                     with col3:
                         flag = "아파트 실거래가격지수 "
-                        drawAPT_update.draw_flower(selected_dosi, selected_dosi, cum_mdf_common, cum_jdf, flag)
+                        drawAPT_update.draw_flower(selected_dosi, selected_dosi, cum_mdf_common, cum_jdf_common, flag)
             html_br="""
             <br>
             """
