@@ -777,6 +777,7 @@ if __name__ == "__main__":
     overview_df.columns = ['기본 정보']
     st.header(input_ticker)
     fdr_df = fdr.DataReader(input_ticker,start='1996-01-02')
+    st.dataframe(fdr_df)
     #st.dataframe(fdr_df)
     fdr_df['ma5'] = fdr_df['Adj Close'].rolling(window=5).mean()
     fdr_df['ma20'] = fdr_df['Adj Close'].rolling(window=20).mean()
