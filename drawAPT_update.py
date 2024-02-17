@@ -1890,7 +1890,8 @@ def draw_ratio_Choroplethmapbox(r_df, geo_data, kb_last_m):
 
 def draw_4years_index(selected_dosi, m_ch, flag):
     #4년치 데이터 만들기
-    current_year = datetime.datetime.utcnow().year
+    current_year = pd.to_datetime(m_ch.index.values[-1]).year
+    # current_year = datetime.datetime.utcnow().year
     year1 = current_year - 1
     year2 = current_year - 2
     year3 = current_year - 3
