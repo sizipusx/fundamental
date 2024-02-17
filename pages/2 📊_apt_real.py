@@ -171,6 +171,8 @@ if __name__ == "__main__":
     cum_mdf = cum_mdf.round(decimals=3)
     cum_jdf = (1+jdf_change/100).cumprod() -1
     cum_jdf = cum_jdf.round(decimals=3)
+    st.dataframe(cum_mdf)
+    st.dataframe(cum_jdf)
     #마지막 데이터로 데이터프레임 만들기
     real_last_df  = pd.DataFrame()
     real_last_df['매매증감'] = mdf_change.iloc[-1].T.to_frame()
