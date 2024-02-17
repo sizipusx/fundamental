@@ -331,9 +331,10 @@ if __name__ == "__main__":
                             monthly_slice = mdf_change.loc[mdf_change.index.month == mdf_change.index[-1].month]
                             monthly_slice = monthly_slice.round(decimals=1)
                             col1, col2 = st.columns(2) 
-                            col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
-                            col2.metric(label=str(datetime.datetime.utcnow().month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
-                            titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+                            current_month = pd.to_datetime(mdf_change.index.values[-1]).month
+                            col1.metric(label=str(current_month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
+                            col2.metric(label=str(current_month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
+                            titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(current_month) +'월 매매가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
                             fig = px.bar(
                                     monthly_slice,
                                         x=monthly_slice.index.year,
@@ -377,10 +378,11 @@ if __name__ == "__main__":
                         try:
                             monthly_slice = jdf_change.loc[jdf_change.index.month == jdf_change.index[-1].month]
                             monthly_slice = monthly_slice.round(decimals=1)
+                            current_month2 = pd.to_datetime(jdf_change.index.values[-1]).month
                             col1, col2 = st.columns(2) 
-                            col1.metric(label=str(datetime.datetime.utcnow().month)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
-                            col2.metric(label=str(datetime.datetime.utcnow().month)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
-                            titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(datetime.datetime.utcnow().month) +'월 매매가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+                            col1.metric(label=str(current_month2)+"월", value = str(round(monthly_slice.loc[:,selected_dosi][-1],1))+"%")
+                            col2.metric(label=str(current_month2)+"월 평균", value = str(round(monthly_slice.loc[:,selected_dosi].mean(),1))+"%")
+                            titles = dict(text= '<b>['+selected_dosi +'] 연도별 ' +str(current_month2) +'월 전세가격 변동</b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
                             fig = px.bar(
                                     monthly_slice,
                                         x=monthly_slice.index.year,
