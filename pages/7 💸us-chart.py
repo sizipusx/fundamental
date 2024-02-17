@@ -234,10 +234,13 @@ def run(ticker, overview_df, fdr_df):
         col3.metric(label="TrailingPE", value =round(overview_df.loc['TrailingPE'].astype(float),2))
         col4.metric(label="ForwardPE", value =round(overview_df.loc['ForwardPE'].astype(float),2))
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
-        col2.metric(label="DividendYield", value =round(overview_df.loc['DividendYield'].astype(float)*100,2))
-        col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
-        col4.metric(label="ExDividendDate", value =str(overview_df.iloc[-1,0]))
+        try:
+            col1.metric(label="DPS", value = round(overview_df.loc['DividendPerShare'].astype(float),2))
+            col2.metric(label="DividendYield", value =round(overview_df.loc['DividendYield'].astype(float)*100,2))
+            col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
+            col4.metric(label="ExDividendDate", value =str(overview_df.iloc[-1,0]))
+        except ValueError:
+            st.write("배당금을 지급하지 않습니다!") 
 
     with tab2:
         #Income 데이터 가져오기
