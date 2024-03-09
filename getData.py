@@ -60,22 +60,26 @@ def convert_to_number(string):
 
   return number
 
-def convert_column_number(df, column_name):
+def convert_column_number(df):
   """
-  데이터프레임 컬럼 전체에서 '%'를 제거하고 숫자로 변환합니다.
+  데이터프레임의 모든 컬럼에 있는 특수 문자를 제거하고 데이터를 숫자로 바꿉니다.
 
   Args:
     df: 데이터프레임
-    column_name: 변환할 컬럼 이름
 
   Returns:
     데이터프레임
   """
-  # '%'를 공백으로 바꿉니다.
-  df[column_name] = df[column_name].str.replace('%', '')
+  # 모든 컬럼에 대해 반복합니다.
+  for column_name in df.columns:
+    # 숫자가 아닌 문자를 공백으로 바꿉니다.
+    df[column_name] = df[column_name].replace('[^\d.]', '', regex=True)
 
-  # 컬럼을 숫자로 변환합니다.
-  df[column_name] = pd.to_numeric(df[column_name])
+    # 컬럼을 숫자로 변환합니다.
+    df[column_name] = pd.to_numeric(df[column_name], errors='coerce')
+
+  return df
+
 
   return df
 
@@ -357,8 +361,10 @@ def get_finterstellar(ticker):
   #dividend 
   div_df = pd.DataFrame()
   div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
-  div_df['payoutR'] = convert_column_number(rt, "Payout Ratio") #abs(df['Dividends'])/df['Net Income']
-  div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
+  rt = convert_column_number(rt) #abs(df['Dividends'])/df['Net Income']
+  div_df['payoutR'] = rt["Payout Ratio"]
+  #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
+  div_df['DividendYield'] = rt["Dividend Yield"]
   #재무비율
   ratio_df = pd.DataFrame()
   ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
@@ -371,8 +377,7 @@ def get_finterstellar(ticker):
   v_df['BPS'] = bt["Book Value Per Share"].astype(float)#df['Shareholders Equity'] / df['Shares']
   v_df['PER'] = rt["PE Ratio"].astype(float)#df['Price'] / df['EPS']
   v_df['PBR'] = rt["PB Ratio"].astype(float)#df['Price'] / v_df['BPS']
-  v_df['ROE'] = convert_column_number(rt.iloc[0, 19])#df['Net Income'] / df['Avg Equity']
-  rt = convert_column_number(rt, "Return on Equity (ROE)")
+  v_df['ROE'] = rt["Return on Equity (ROE)"]#df['Net Income'] / df['Avg Equity']
   v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(12).mean()#v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(20).mean()
   v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(32).mean()
