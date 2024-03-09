@@ -351,7 +351,7 @@ def get_finterstellar(ticker):
   df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
   df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
   df['Net Income'] = it["Net Income"].astype(int)#round(float(it.iloc[0,13]))
-  df['Avg Equity'] = ( bt["Shareholders' Equity"] + bt["Shareholders' Equity"].shift(4) ) /2
+  df['Avg Equity'] = round(( bt["Shareholders' Equity"].astype(int) + bt["Shareholders' Equity"].astype(int).shift(4) )/2,2)
   #df = df.iloc[4:]
   #dividend 
   div_df = pd.DataFrame()
