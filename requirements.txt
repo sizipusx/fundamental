@@ -17,7 +17,6 @@ pandas-datareader==0.10.0
 yfinance>=0.2.9
 finance-datareader>=0.9.70
 PublicDataReader==1.0.18
-beautifulsoup4==4.11.1
 OpenDartReader==0.1.1
 pandasdmx==1.10.0
 cloudscraper==1.2.69
