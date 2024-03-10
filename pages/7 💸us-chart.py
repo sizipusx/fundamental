@@ -5,7 +5,12 @@ import numpy as np
 import pandas as pd
 import requests
 import json
-
+from pandas_datareader import data as pdr
+#yahoo orign
+import yfinance as yfin
+yfin.pdr_override()
+#yahoo overide
+from yahoo_historical import Fetcher
 import FinanceDataReader as fdr
 import plotly.express as px
 import plotly.graph_objects as go
@@ -545,10 +550,6 @@ def run(ticker, overview_df, fdr_df):
         ####### Dividend Band ##############
         # 여기에 한짜리 고평가/ 저평가 그래프를 넣기
         # 데이터 만들기
-        from yahoo_historical import Fetcher
-        import datetime
-
-
         # create unix timestamp representing January 1st, 2007
         timestamp = time.mktime(datetime.datetime(1990, 1, 1).timetuple())
         data = Fetcher(ticker, timestamp)
@@ -772,11 +773,13 @@ if __name__ == "__main__":
         )
     
     input_ticker = input_ticker.upper()
-    #Summary 데이터 가져오기    
-    OV = fd.get_company_overview(input_ticker) #5번
-    split_OV=OV[0]
-    ov_df = pd.json_normalize(split_OV)
-    overview_df = ov_df.T
+    #Summary 데이터 가져오기    알파벤티지에서 야후 파이낸스로 변경: 24.3.10
+    #OV = fd.get_company_overview(input_ticker) #5번
+    # split_OV=OV[0]
+    # ov_df = pd.json_normalize(split_OV)
+    # overview_df = ov_df.T
+    ticker = yfin.Ticker(input_ticker)
+    overview_df = pd.DataFrame.from_dict(ticker.info, orient='index')
     overview_df.columns = ['기본 정보']
     st.header(input_ticker)
     fdr_df = fdr.DataReader(input_ticker,start='1996-01-02')
