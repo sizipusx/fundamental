@@ -8,7 +8,6 @@ import json
 from pandas_datareader import data as pdr
 #yahoo orign
 import yfinance as yfin
-yfin.pdr_override()
 #yahoo overide
 from yahoo_historical import Fetcher
 import FinanceDataReader as fdr
@@ -778,6 +777,7 @@ if __name__ == "__main__":
     # split_OV=OV[0]
     # ov_df = pd.json_normalize(split_OV)
     # overview_df = ov_df.T
+    yfin.pdr_override()
     ticker = yfin.Ticker(input_ticker)
     overview_df = pd.DataFrame.from_dict(ticker.info, orient='index')
     overview_df.columns = ['기본 정보']
