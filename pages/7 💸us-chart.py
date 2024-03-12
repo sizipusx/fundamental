@@ -187,7 +187,7 @@ def run(ticker, overview_df, fdr_df):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,4]*100,2),
+                value = round(y_df.iloc[-1,4],2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 ROE ("+str(roe_min)+") 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -196,7 +196,7 @@ def run(ticker, overview_df, fdr_df):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,7]*100,2),
+                value = round(y_df.iloc[-1,7],2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균 ROE ("+str(roe_mean)+") 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -204,7 +204,7 @@ def run(ticker, overview_df, fdr_df):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,5]*100,2),
+                value = round(y_df.iloc[-1,5],2),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE("+str(current_roe)+")기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -217,15 +217,15 @@ def run(ticker, overview_df, fdr_df):
         expect_yield = 15.0
         st.subheader("채권형 주식 Valuation")
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,4]*100,2))
-        col2.metric(label="3년 평균", value =round(v_df.iloc[-1,5]*100,2))
-        col3.metric(label="5년 평균", value =round(v_df.iloc[-1,6]*100,2))
-        col4.metric(label="8년 평균", value =round(v_df.iloc[-1,7]*100,2))
+        col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,4],2))
+        col2.metric(label="3년 평균", value =round(v_df.iloc[-1,5],2))
+        col3.metric(label="5년 평균", value =round(v_df.iloc[-1,6],2))
+        col4.metric(label="8년 평균", value =round(v_df.iloc[-1,7],2))
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,5]*100,2), delta=round((round(y_df.iloc[-1,5]*100,2)-expect_yield),2))
-        col2.metric(label="최소 ROE 기준 기대수익률", value =round(y_df.iloc[-1,4]*100,2), delta=round((round(y_df.iloc[-1,4]*100,2)-expect_yield),2))
-        col3.metric(label="최대 ROE 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,2), delta=round((round(y_df.iloc[-1,6]*100,2)-expect_yield),2))
-        col4.metric(label="평균 ROE 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,2), delta=round((round(y_df.iloc[-1,7]*100,2)-expect_yield),2))
+        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,5],2), delta=round((round(y_df.iloc[-1,5],2)-expect_yield),2))
+        col2.metric(label="최소 ROE 기준 기대수익률", value =round(y_df.iloc[-1,4],2), delta=round((round(y_df.iloc[-1,4],2)-expect_yield),2))
+        col3.metric(label="최대 ROE 기준 기대수익률", value =round(y_df.iloc[-1,6],2), delta=round((round(y_df.iloc[-1,6],2)-expect_yield),2))
+        col4.metric(label="평균 ROE 기준 기대수익률", value =round(y_df.iloc[-1,7],2), delta=round((round(y_df.iloc[-1,7],2)-expect_yield),2))
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 ROE 기준 매수가격", value = current_proper_price, delta=round((current_proper_price-close_price),2))
         col2.metric(label="최소 ROE 기준 매수가격", value =min_proper_price, delta=round((min_proper_price-close_price),2))
