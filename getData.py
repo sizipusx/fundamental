@@ -319,7 +319,7 @@ def get_stockanalysis_com(ticker):
   return df_list
 
 
-def get_finterstellar(ticker):
+def get_finterstellar(ticker, close_p):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
   # df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
   df_lists = get_stockanalysis_com(ticker)
@@ -393,10 +393,10 @@ def get_finterstellar(ticker):
   y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE'])**10
   y_df['mBPS'] = v_df['BPS']*(1+roe_max)**10
   y_df['meanBPS'] = v_df['BPS']*(1+roe_mean)**10
-  y_df['yield_min'] = (y_df['fBPS']/df['Price'])**(1/10)-1
-  y_df['yield_c'] = (y_df['cBPS']/df['Price'])**(1/10)-1
-  y_df['yield_max'] = (y_df['mBPS']/df['Price'])**(1/10)-1
-  y_df['yield_mean'] = (y_df['meanBPS']/df['Price'])**(1/10)-1
+  y_df['yield_min'] = (y_df['fBPS']/close_p)**(1/10)-1
+  y_df['yield_c'] = (y_df['cBPS']/close_p)**(1/10)-1
+  y_df['yield_max'] = (y_df['mBPS']/close_p)**(1/10)-1
+  y_df['yield_mean'] = (y_df['meanBPS']/close_p)**(1/10)-1
 
   return df, ratio_df, v_df, y_df, div_df
 
