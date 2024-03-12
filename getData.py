@@ -81,9 +81,6 @@ def convert_column_number(df):
   return df
 
 
-  return df
-
-
 def get_annual_fundamental_data(ticker) :
     income_df, meta_data = fd.get_income_statement_annual(symbol=ticker)
     balance_df, meta_data = fd.get_balance_sheet_annual(symbol=ticker)
@@ -377,7 +374,7 @@ def get_finterstellar(ticker, close_p):
   v_df['BPS'] = bt["Book Value Per Share"].astype(float)#df['Shareholders Equity'] / df['Shares']
   v_df['PER'] = rt["PE Ratio"].astype(float)#df['Price'] / df['EPS']
   v_df['PBR'] = rt["PB Ratio"].astype(float)#df['Price'] / v_df['BPS']
-  v_df['ROE'] = rt["Return on Equity (ROE)"]#df['Net Income'] / df['Avg Equity']
+  v_df['ROE'] = rt["Return on Equity (ROE)"].astype(float)#df['Net Income'] / df['Avg Equity']
   v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(12).mean()#v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(20).mean()
   v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(32).mean()
