@@ -287,10 +287,10 @@ def get_overview(ticker):
 
 def get_stockanalysis_com(ticker):
   headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'}
-   
+
   url_list = []
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing")
-  url_list.append( f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=quarterly")
+  url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=quarterly")
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/cash-flow-statement/?p=trailing")
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/ratios/?p=trailing")
   # url = f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing"
@@ -312,8 +312,10 @@ def get_stockanalysis_com(ticker):
 
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
     df_list.append(df)
-  
+
+
   return df_list
+
 
 
 def get_finterstellar(ticker, close_p):
