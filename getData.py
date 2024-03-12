@@ -348,6 +348,9 @@ def get_finterstellar(ticker, close_p):
   rt = rt.iloc[::-1]
   rt = rt.iloc[1:]
 
+  st.dataframe(it)
+  st.dataframe(bt)
+  st.dataframe(rt)
   df = pd.DataFrame()
   df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
   df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
