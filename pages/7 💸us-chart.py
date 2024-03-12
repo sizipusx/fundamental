@@ -132,9 +132,9 @@ def run(ticker, overview_df, fdr_df):
         close_price = overview_df.loc['Close']
         expect_yield = 0.15
         f_df, r_df, v_df, y_df, div_df = getData.get_finterstellar(ticker, close_price)
-        roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
-        roe_min = round(min(v_df.iloc[-1,4:]*100),2)
-        current_roe = round(v_df.iloc[-1,4]*100,2)
+        roe_mean = round(v_df.iloc[-1,4:].mean(),2)
+        roe_min = round(min(v_df.iloc[-1,4:]),2)
+        current_roe = round(v_df.iloc[-1,4],2)
         min_f_bps = min(y_df.iloc[-1,:4])
         max_f_bps = max(y_df.iloc[-1,:4])
         mean_f_bps = y_df.iloc[-1,3]
