@@ -321,6 +321,7 @@ def get_finterstellar(ticker, close_p):
   # df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
   df_lists = get_stockanalysis_com(ticker)
   income_df = df_lists[0]
+  st.dataframe(income_df)
   it = income_df.T
   it.columns = it.iloc[0]
   it = it.iloc[1:]
@@ -328,6 +329,7 @@ def get_finterstellar(ticker, close_p):
   it = it.iloc[1:]
 
   balance_df = df_lists[1]
+  st.dataframe(balance_df)
   bt = balance_df.T
   bt.columns = bt.iloc[0]
   bt = bt.iloc[1:]
