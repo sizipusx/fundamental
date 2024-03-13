@@ -368,8 +368,8 @@ def get_finterstellar(ticker, close_p):
   try:
     div_df = pd.DataFrame()
     div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
-    rt = convert_df_number(rt, "Dividend Yield") #abs(df['Dividends'])/df['Net Income']
-    rt = convert_df_number(rt, "Payout Ratio")
+    rt = convert_to_number(rt, "Dividend Yield") #abs(df['Dividends'])/df['Net Income']
+    rt = convert_to_number(rt, "Payout Ratio")
     div_df['payoutR'] = rt["Payout Ratio"]
     #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
     div_df['DividendYield'] = rt["Dividend Yield"]
