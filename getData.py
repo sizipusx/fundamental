@@ -392,6 +392,7 @@ def get_finterstellar(ticker, close_p):
   v_df['BPS'] = bt["Book Value Per Share"].astype(float)#df['Shareholders Equity'] / df['Shares']
   v_df['PER'] = rt["PE Ratio"].astype(float)#df['Price'] / df['EPS']
   v_df['PBR'] = rt["PB Ratio"].astype(float)#df['Price'] / v_df['BPS']
+  v_df = convert_to_number(v_df, "Return on Equity (ROE)")
   v_df['ROE'] = rt["Return on Equity (ROE)"].astype(float)#df['Net Income'] / df['Avg Equity']
   v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(3).mean()#v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(5).mean()
