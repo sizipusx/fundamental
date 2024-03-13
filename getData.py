@@ -42,25 +42,27 @@ def get_close_data(ticker, from_date, to_date):
     close_price = fdr.DataReader(ticker, from_date, to_date)
 
     return close_price
-def convert_to_number(string):
+
+def convert_to_number(df, column_name):
   """
-  문자열에서 '%'를 삭제하고 숫자로 바꿔줍니다.
+  데이터프레임 컬럼 전체에서 '%'를 제거하고 숫자로 변환합니다.
 
   Args:
-    string: 문자열
+    df: 데이터프레임
+    column_name: 변환할 컬럼 이름
 
   Returns:
-    숫자
+    데이터프레임
   """
   # '%'를 공백으로 바꿉니다.
-  new_string = string.replace('%', '')
+  df[column_name] = df[column_name].str.replace('%', '')
 
-  # 문자열을 숫자로 변환합니다.
-  number = float(new_string)
+  # 컬럼을 숫자로 변환합니다.
+  df[column_name] = pd.to_numeric(df[column_name])
 
-  return number
+  return df
 
-def convert_column_number(df):
+def convert_df_number(df):
   """
   데이터프레임의 모든 컬럼에 있는 특수 문자를 제거하고 데이터를 숫자로 바꿉니다.
 
@@ -360,13 +362,14 @@ def get_finterstellar(ticker, close_p):
   df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
   df['Net Income'] = it["Net Income"].astype(int)#round(float(it.iloc[0,13]))
   bt["Shareholders' Equity"] = bt["Shareholders' Equity"].astype(int)
-  df['Avg Equity'] = round(( bt["Shareholders' Equity"] + bt["Shareholders' Equity"].shift(4) )/2,2)
+  df['Avg Equity'] = round(( bt["Shareholders' Equity"] + bt["Shareholders' Equity"].shift(2) )/2,2)
   #df = df.iloc[4:]
   #dividend 
   try:
     div_df = pd.DataFrame()
     div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
-    rt = convert_column_number(rt) #abs(df['Dividends'])/df['Net Income']
+    rt = convert_df_number(rt, "Dividend Yield") #abs(df['Dividends'])/df['Net Income']
+    rt = convert_df_number(rt, "Payout Ratio")
     div_df['payoutR'] = rt["Payout Ratio"]
     #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
     div_df['DividendYield'] = rt["Dividend Yield"]
