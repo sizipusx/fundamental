@@ -363,12 +363,20 @@ def get_finterstellar(ticker, close_p):
   df['Avg Equity'] = round(( bt["Shareholders' Equity"] + bt["Shareholders' Equity"].shift(4) )/2,2)
   #df = df.iloc[4:]
   #dividend 
-  div_df = pd.DataFrame()
-  div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
-  rt = convert_column_number(rt) #abs(df['Dividends'])/df['Net Income']
-  div_df['payoutR'] = rt["Payout Ratio"]
-  #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
-  div_df['DividendYield'] = rt["Dividend Yield"]
+  try:
+    div_df = pd.DataFrame()
+    div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
+    rt = convert_column_number(rt) #abs(df['Dividends'])/df['Net Income']
+    div_df['payoutR'] = rt["Payout Ratio"]
+    #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
+    div_df['DividendYield'] = rt["Dividend Yield"]
+  except KeyError:
+    div_df = pd.DataFrame()
+    div_df['DPS'] = 0.0#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
+    div_df['payoutR'] = 0.0
+    #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
+    div_df['DividendYield'] = 0.0
+     
   #재무비율
   ratio_df = pd.DataFrame()
   ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
