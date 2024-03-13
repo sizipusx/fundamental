@@ -354,9 +354,7 @@ def get_finterstellar(ticker, close_p):
   rt = rt.iloc[::-1]
   rt = rt.iloc[1:]
 
-  st.dataframe(it)
-  st.dataframe(bt)
-  st.dataframe(rt)
+
   df = pd.DataFrame()
   df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
   df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
@@ -398,6 +396,7 @@ def get_finterstellar(ticker, close_p):
   v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(5).mean()
   v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(8).mean()
   #v_df['meanROE'] = v_df.iloc[:,4:].mean()
+  st.dataframe(v_df)
   #ROE 값만
   roe_min = min(v_df.iloc[-1,4:].to_list())
   roe_max = max(v_df.iloc[-1,4:].to_list())
@@ -413,6 +412,8 @@ def get_finterstellar(ticker, close_p):
   y_df['yield_c'] = (y_df['cBPS']/close_p)**(1/10)-1
   y_df['yield_max'] = (y_df['mBPS']/close_p)**(1/10)-1
   y_df['yield_mean'] = (y_df['meanBPS']/close_p)**(1/10)-1
+  st.dataframe(y_df)
+
 
   return df, ratio_df, v_df, y_df, div_df
 
