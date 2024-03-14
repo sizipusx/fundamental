@@ -175,7 +175,7 @@ def run(ticker, overview_df, fdr_df):
                                     .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 st.subheader("financial statements")
-                st.dataframe(f_df.to_frame().T)
+                st.dataframe(f_df)
                 st.subheader("Valuations")
                 st.dataframe(v_df)
                 st.subheader("Expecting Yield")
