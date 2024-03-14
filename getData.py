@@ -419,12 +419,10 @@ def get_finterstellar(ticker, close_p):
   y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE'])**10
   y_df['mBPS'] = v_df['BPS']*(1+roe_max)**10
   y_df['meanBPS'] = v_df['BPS']*(1+roe_mean)**10
-  y_df['yield_min'] = (y_df['fBPS']/close_p)**(1/10)-1
-  y_df['yield_c'] = (y_df['cBPS']/close_p)**(1/10)-1
-  y_df['yield_max'] = (y_df['mBPS']/close_p)**(1/10)-1
-  y_df['yield_mean'] = (y_df['meanBPS']/close_p)**(1/10)-1
-  st.dataframe(y_df)
-
+  y_df['yield_min'] = (y_df['fBPS']/df['Price'])**(1/10)-1
+  y_df['yield_c'] = (y_df['cBPS']/df['Price'])**(1/10)-1
+  y_df['yield_max'] = (y_df['mBPS']/df['Price'])**(1/10)-1
+  y_df['yield_mean'] = (y_df['meanBPS']/df['Price'])**(1/10)-1
 
   return df, ratio_df, v_df, y_df, div_df
 
