@@ -404,10 +404,10 @@ def get_finterstellar(ticker, close_p):
   roe_mean = v_df.iloc[-1,4:].mean()
  #기대수익률 테이블
   y_df = pd.DataFrame()
-  y_df['fBPS'] = v_df['BPS']*(1+roe_min)**10
-  y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE'])**10
-  y_df['mBPS'] = v_df['BPS']*(1+roe_max)**10
-  y_df['meanBPS'] = v_df['BPS']*(1+roe_mean)**10
+  y_df['fBPS'] = v_df['BPS']*(1+roe_min/100)**10
+  y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE']/100)**10
+  y_df['mBPS'] = v_df['BPS']*(1+roe_max/100)**10
+  y_df['meanBPS'] = v_df['BPS']*(1+roe_mean/100)**10
   y_df['yield_min'] = (y_df['fBPS']/close_p)**(1/10)-1
   y_df['yield_c'] = (y_df['cBPS']/close_p)**(1/10)-1
   y_df['yield_max'] = (y_df['mBPS']/close_p)**(1/10)-1
