@@ -318,33 +318,33 @@ def get_stockanalysis_com(ticker):
 def get_finterstellar(ticker, close_p):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
   
-  df_lists = get_stockanalysis_com(ticker)
-  income_df = df_lists[0]
-  balance_df = df_lists[1]
-  cash_df = df_lists[2]
-  ratio_df = df_lists[3]
-  st.dataframe(income_df)
+  # df_lists = get_stockanalysis_com(ticker)
+  # income_df = df_lists[0]
+  # balance_df = df_lists[1]
+  # cash_df = df_lists[2]
+  # ratio_df = df_lists[3]
+  # st.dataframe(income_df)
 
-  it = income_df.T
-  it.columns = it.iloc[0]
-  it = it.iloc[1:]
-  it = it.iloc[::-1]
-  it = it.iloc[1:]
+  # it = income_df.T
+  # it.columns = it.iloc[0]
+  # it = it.iloc[1:]
+  # it = it.iloc[::-1]
+  # it = it.iloc[1:]
 
-  bt = balance_df.T
-  bt.columns = bt.iloc[0]
-  bt = bt.iloc[1:]
-  bt = bt.iloc[::-1]
-  bt = bt.iloc[1:]
+  # bt = balance_df.T
+  # bt.columns = bt.iloc[0]
+  # bt = bt.iloc[1:]
+  # bt = bt.iloc[::-1]
+  # bt = bt.iloc[1:]
 
-  rt = ratio_df.T
-  rt.columns = rt.iloc[0]
-  rt = rt.iloc[1:]
-  rt = rt.iloc[::-1]
-  rt = rt.iloc[1:]
+  # rt = ratio_df.T
+  # rt.columns = rt.iloc[0]
+  # rt = rt.iloc[1:]
+  # rt = rt.iloc[::-1]
+  # rt = rt.iloc[1:]
 
-# df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
-  df = pd.DataFrame()
+  df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
+ 
   df['Market Cap'] = df['Price'] * df['Shares'] 
   df['BPS'] = df['Shareholders Equity'] / df['Shares']
   df['Net Income']
@@ -352,6 +352,7 @@ def get_finterstellar(ticker, close_p):
   df = df.iloc[4:]
 
   # stockanalysis.com 
+   # df = pd.DataFrame()
   # df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
   # df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
   # df['Net Income'] = it["Net Income"].astype(int)#round(float(it.iloc[0,13]))
