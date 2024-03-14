@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-import math
-import time
 from datetime import datetime
 from alpha_vantage.fundamentaldata import FundamentalData 
 import FinanceDataReader as fdr
@@ -9,11 +7,9 @@ import finterstellar as fs
 from pykrx import stock
 import requests
 from bs4 import BeautifulSoup
-import json
 import streamlit as st
 import makeData
-import requests
-import bs4
+
 
 finterstellar_key='17014783291051101001'
 key='CBALDIGECB3UFF5R'
@@ -292,7 +288,7 @@ def get_stockanalysis_com(ticker):
 
   url_list = []
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing")
-  url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=quarterly")
+  url_list.append( f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=quarterly")
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/cash-flow-statement/?p=trailing")
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/ratios/?p=trailing")
   # url = f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing"
@@ -314,7 +310,6 @@ def get_stockanalysis_com(ticker):
 
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
     df_list.append(df)
-
 
   return df_list
 
