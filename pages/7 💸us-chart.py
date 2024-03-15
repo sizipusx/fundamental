@@ -250,7 +250,7 @@ def run(ticker, overview_df, fdr_df):
             col1.metric(label="DPS", value = round(overview_df.loc['dividendRate'].astype(float),2))
             col2.metric(label="DividendYield", value =round(overview_df.loc['dividendYield'].astype(float)*100,2))
             col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
-            col4.metric(label="PayoutRatio", value =str(overview_df.loc["payoutRatio"]*100))
+            col4.metric(label="PayoutRatio", value =str(overview_df.loc["payoutRatio"].astype(float)*100))
         except ValueError:
             st.write("배당금을 지급하지 않습니다!") 
 
