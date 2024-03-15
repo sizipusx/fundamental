@@ -188,7 +188,7 @@ def run(ticker, overview_df, fdr_df):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,4],2),
+                value = round(y_df.iloc[-1,4]*100,1),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>최소 ROE ("+str(roe_min)+"%) 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -197,7 +197,7 @@ def run(ticker, overview_df, fdr_df):
                 # #PERR, PBRR
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,7],2),
+                value = round(y_df.iloc[-1,7]*100,1),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>평균 ROE ("+str(roe_mean)+"%) 기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
@@ -205,7 +205,7 @@ def run(ticker, overview_df, fdr_df):
             with col3:
                 fig = go.Figure(go.Indicator(
                 mode = "number+delta",
-                value = round(y_df.iloc[-1,5],2),
+                value = round(y_df.iloc[-1,5]*100,1),
                 title = {"text": "10년 기대수익률<br><span style='font-size:0.8em;color:gray'>현재ROE("+str(current_roe)+"%)기준</span>"},
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 delta = {'reference': 15.0}))
