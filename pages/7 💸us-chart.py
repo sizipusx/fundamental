@@ -259,6 +259,7 @@ def run(ticker, overview_df, fdr_df):
             st.write("배당금을 지급하지 않습니다!") 
         except KeyError:
             st.write("배당금을 지급하지 않습니다!") 
+            pass
 
     with tab2:
         #Income 데이터 가져오기
