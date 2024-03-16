@@ -12,7 +12,7 @@ html5lib>=1.1
 peewee>=3.16.2
 alpha-vantage==2.3.1
 finterstellar==0.2.14
-yahoo-historical>=1.0.0
+yahoo-historical==1.0.0
 pandas-datareader==0.10.0
 yfinance>=0.2.9
 finance-datareader>=0.9.70
