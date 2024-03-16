@@ -775,10 +775,10 @@ if __name__ == "__main__":
     #                 "MO", "T", "O", "OMC", "SBUX", \
     #                 "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
     import random
-    
+
     if input_ticker == "":
         input_ticker = st.sidebar.selectbox(
-            'Ticker', random.chice(ticker_list)
+            'Ticker', random.choice(ticker_list)
         )
     
     input_ticker = input_ticker.upper()
@@ -791,6 +791,7 @@ if __name__ == "__main__":
     ticker = yfin.Ticker(input_ticker)
     overview_df = pd.DataFrame.from_dict(ticker.info, orient='index')
     overview_df.columns = ['기본 정보']
+    overview_df = overview_df.drop("companyOfficers")
     st.header(input_ticker)
     # fdr_df = fdr.DataReader(input_ticker,start='1996-01-02')
     fdr_df = pdr.get_data_yahoo(input_ticker,start='2000-01-02')
