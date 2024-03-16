@@ -257,6 +257,8 @@ def run(ticker, overview_df, fdr_df):
             col4.metric(label="PayoutRatio", value =str(round(overview_df.loc["payoutRatio"].astype(float)*100,1))+"%")
         except ValueError:
             st.write("배당금을 지급하지 않습니다!") 
+        except KeyError:
+            st.write("배당금을 지급하지 않습니다!") 
 
     with tab2:
         #Income 데이터 가져오기
