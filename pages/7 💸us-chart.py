@@ -305,29 +305,22 @@ def run(ticker, overview_df, fdr_df):
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   
         st.subheader(com_name + " Fundamental Chart")
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-               
-                ##주가 EPS
-                # price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Adj Close'].to_frame()
-                price_df = fs.get_price(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])
-                price_df.columns = ['Close']
-                price_df.index = pd.to_datetime(price_df.index, format='%Y-%m-%d')
-                # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
-                earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
-                band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
-                band_df['ttmEPS'] = band_df['reportedEPS'].rolling(4).sum()
-                earning_df['ttmEPS'] = earning_df['reportedEPS'].rolling(4).sum()
-                earning_df['EPS Change'] = round(earning_df['ttmEPS'].pct_change(5)*100,2)
-                earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
-                earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
-                band_df.set_index('reportedDate', inplace=True)
-                chart.earning_chart(input_ticker, earning_df, price_df)
-            with col2:
-                st.write("")
-            with col3:
-                chart.price_chart(ticker, com_name, fdr_df)
+        ##주가 EPS
+        # price_df = fdr.DataReader(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])['Adj Close'].to_frame()
+        price_df = fs.get_price(input_ticker, earning_df.iloc[0,0], earning_df.iloc[-1,0])
+        price_df.columns = ['Close']
+        price_df.index = pd.to_datetime(price_df.index, format='%Y-%m-%d')
+        # income_df = pd.merge(income_df, price_df, how="inner", left_index=True, right_index=True)
+        earning_df['reportedDate'] = pd.to_datetime(earning_df['reportedDate'], format='%Y-%m-%d')
+        band_df = pd.merge_ordered(earning_df, price_df, how="left", left_on='reportedDate', right_on=price_df.index, fill_method='ffill')
+        band_df['ttmEPS'] = band_df['reportedEPS'].rolling(4).sum()
+        earning_df['ttmEPS'] = earning_df['reportedEPS'].rolling(4).sum()
+        earning_df['EPS Change'] = round(earning_df['ttmEPS'].pct_change(5)*100,2)
+        earning_df['EPS_5y'] = round(earning_df['ttmEPS'].pct_change(21)*100,2)
+        earning_df['EPS_10y'] = round(earning_df['ttmEPS'].pct_change(41)*100,2)
+        band_df.set_index('reportedDate', inplace=True)
+        chart.earning_chart(input_ticker, earning_df, price_df)
+            
         html_br="""
         <br>
         """

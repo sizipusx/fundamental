@@ -166,10 +166,11 @@ def earning_chart(input_ticker, earning_df, price_df):
             rangeslider=dict(
                 visible=True
             ),
-            type="date"
+            type="date",
+            range=[kor_time - relativedelta(years=5), kor_time]
             )      
         )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
     # fig2 = go.Figure()
     # title = '('  + input_ticker + ') reportedEPS Statistics'
