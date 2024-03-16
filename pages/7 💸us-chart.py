@@ -262,13 +262,14 @@ def run(ticker, overview_df, fdr_df):
             pass
 
     with tab2:
-        #데이터 가져오기
-        #Income 데이터 가져오기
+        #Alaph Vantage에서 가져오기
         earning_df, income_df, balance_df, cashflow_df = make_data(ticker, f_df)
+        #Finterstella 에서 가져오기
         f_data_list = getData.get_stockanalysis_com(ticker)
-        income_df = f_data_list[0]
-        balance_df = f_data_list[1]
-        cashflow_df = f_data_list[2] 
+        #stockanlyisis 에서 가져오기
+        in_df = f_data_list[0]
+        ba_df = f_data_list[1]
+        cash_df = f_data_list[2] 
         ratio_df = f_data_list[3]
         with st.expander("See Raw Data"):
             try:
@@ -297,6 +298,36 @@ def run(ticker, overview_df, fdr_df):
                 with col3:
                     st.subheader("Cash Flow")
                     st.dataframe(cashflow_df) 
+                with col4:
+                    st.subheader("Ratio")
+                    st.dataframe(ratio_df)    
+        with st.expander("See Raw Data2"):
+            try:
+                col1, col2, col3, col4 = st.columns([30,30,30,30])
+                with col1:
+                    st.dataframe(in_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                with col2:
+                    st.dataframe(ba_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+                with col3:
+                    st.dataframe(cash_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+                with col4:
+                    st.dataframe(ratio_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.subheader("financial statements")
+                col1, col2, col3, col4 = st.columns([30,30,30, 30])
+                with col1:
+                    st.subheader("Income")
+                    st.dataframe(in_df)
+                with col2:
+                    st.subheader("Balance Sheet")
+                    st.dataframe(ba_df)
+                with col3:
+                    st.subheader("Cash Flow")
+                    st.dataframe(cash_df) 
                 with col4:
                     st.subheader("Ratio")
                     st.dataframe(ratio_df)    
@@ -387,7 +418,7 @@ def run(ticker, overview_df, fdr_df):
                 title = com_name + '('  + input_ticker + ') Margin & Growth Rate' 
                 titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-                y_data_line2 = ['Gross Margin', 'Operating Margin', 'Profit Margin']
+                y_data_line2 = ['GPM', 'OPM', 'NPM']
                 y_data_bar2 = ['TR Change', 'OI Change', 'NI Change']
 
                 for y_data, color in zip(y_data_line2, marker_colors): 
