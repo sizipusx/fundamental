@@ -511,7 +511,7 @@ def run(ticker, overview_df, fdr_df):
                 title = com_name + '('  + input_ticker + ') <b>Cash Flow Statement</b>'
                 titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-                y_data_bar5 = ['Operating Cash Flow', 'Financing Cash flow', 'Investing Cash flow']
+                y_data_bar5 = ['Operating Cash Flow', 'Financing Cash Flow', 'Investing Cash Flow']
                 y_data_line5 = ['FCF']
 
                 for y_data, color in zip(y_data_bar5, marker_colors) :
