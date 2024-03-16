@@ -283,24 +283,19 @@ def get_overview(ticker):
     
     return description_df, ratio_df, return_df, profit_df, dividend_df, volume_df, price_df, valuation_df
 
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+import json
+
 def get_stockanalysis_com(ticker):
   headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'}
 
   url_list = []
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing")
-  url_list.append( f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=quarterly")
+  url_list.append( f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=trailing")
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/cash-flow-statement/?p=trailing")
   url_list.append(f"https://stockanalysis.com/stocks/{ticker}/financials/ratios/?p=trailing")
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/?p=quarterly"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/?p=trailing"
-  # # balance-sheet 는 세 개 모두 같다.
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=quarterly"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/balance-sheet/?p=trailing"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/cash-flow-statement/"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/cash-flow-statement/?p=quarterly"
-  # url = f"https://stockanalysis.com/stocks/{ticker}/financials/cash-flow-statement/?p=trailing"
   df_list = []
   for url in url_list:
     response = requests.get(url, headers=headers)
@@ -311,11 +306,12 @@ def get_stockanalysis_com(ticker):
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
     df_list.append(df)
 
+
   return df_list
 
 
 
-def get_finterstellar(ticker, close_p):
+def get_valuation(ticker, close_p):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
   
   # df_lists = get_stockanalysis_com(ticker)
@@ -343,14 +339,6 @@ def get_finterstellar(ticker, close_p):
   # rt = rt.iloc[::-1]
   # rt = rt.iloc[1:]
 
-  df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
- 
-  df['Market Cap'] = df['Price'] * df['Shares'] 
-  df['BPS'] = df['Shareholders Equity'] / df['Shares']
-  df['Net Income']
-  df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
-  df = df.iloc[4:]
-
   # stockanalysis.com 
    # df = pd.DataFrame()
   # df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
@@ -361,7 +349,7 @@ def get_finterstellar(ticker, close_p):
 
   #dividend 
   # try:
-  div_df = pd.DataFrame()
+  
   #   div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
   #   rt = convert_to_number(rt, "Dividend Yield") #abs(df['Dividends'])/df['Net Income']
   #   rt = convert_to_number(rt, "Payout Ratio")
@@ -374,15 +362,40 @@ def get_finterstellar(ticker, close_p):
   #   div_df['payoutR'] = 0.0
   #   #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
   #   div_df['DividendYield'] = 0.0
+  
+  #재무비율
+  
+  # ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
+  # ratio_df['Operating Margin'] = round(it["Operating Income"].astype(int)/it["Revenue"].astype(int),4)#df['Operating Income'] / df['Revenue']
+  # ratio_df['Profit Margin'] = round(it["Net Income"].astype(int)/it["Revenue"].astype(int),4)#df['Net Income'] / df['Revenue']
+  # ratio_df['Liability/Equity'] = round(bt.iloc["Total Liabilities"].astype(int)/bt["Shareholders' Equity"].astype(int),4)#df['Total Liabilities'] / df['Shareholders Equity']
+  
+  
+  # v_df['EPS'] = it["EPS (Diluted)"].astype(float)#df['EPS']
+  # v_df['BPS'] = bt["Book Value Per Share"].astype(float)#df['Shareholders Equity'] / df['Shares']
+  # v_df['PER'] = rt["PE Ratio"].astype(float)#df['Price'] / df['EPS']
+  # v_df['PBR'] = rt["PB Ratio"].astype(float)#df['Price'] / v_df['BPS']
+  # rt = convert_to_number(rt, "Return on Equity (ROE)")
+  # v_df['ROE'] = rt["Return on Equity (ROE)"].astype(float)#df['Net Income'] / df['Avg Equity']
+  # v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(3).mean()#v_df['ROE'].rolling(12).mean()
+  # v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(5).mean()
+  # v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(8).mean()
+  #v_df['meanROE'] = v_df.iloc[:,4:].mean()
+
+  #finterstellar에서 데이터 가져오기
+  df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
+  df['Market Cap'] = df['Price'] * df['Shares'] 
+  df['BPS'] = df['Shareholders Equity'] / df['Shares']
+  df['Net Income']
+  df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
+  df = df.iloc[4:]
+  #dividend 
+  div_df = pd.DataFrame()
   div_df['DPS'] = abs(df['Dividend'])/df['Shares']
   div_df['payoutR'] = abs(df['Dividend'])/df['Net Income']
   div_df['DividendYield'] = div_df['DPS']/df['Price']
   #재무비율
   ratio_df = pd.DataFrame()
-  # ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
-  # ratio_df['Operating Margin'] = round(it["Operating Income"].astype(int)/it["Revenue"].astype(int),4)#df['Operating Income'] / df['Revenue']
-  # ratio_df['Profit Margin'] = round(it["Net Income"].astype(int)/it["Revenue"].astype(int),4)#df['Net Income'] / df['Revenue']
-  # ratio_df['Liability/Equity'] = round(bt.iloc["Total Liabilities"].astype(int)/bt["Shareholders' Equity"].astype(int),4)#df['Total Liabilities'] / df['Shareholders Equity']
   ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
   ratio_df['Operating Margin'] = df['Operating Income'] / df['Revenue']
   ratio_df['Profit Margin'] = df['Net Income'] / df['Revenue']
@@ -397,17 +410,8 @@ def get_finterstellar(ticker, close_p):
   v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
   v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
   v_df['ROE8'] = v_df['ROE'].rolling(32).mean()
-  # v_df['EPS'] = it["EPS (Diluted)"].astype(float)#df['EPS']
-  # v_df['BPS'] = bt["Book Value Per Share"].astype(float)#df['Shareholders Equity'] / df['Shares']
-  # v_df['PER'] = rt["PE Ratio"].astype(float)#df['Price'] / df['EPS']
-  # v_df['PBR'] = rt["PB Ratio"].astype(float)#df['Price'] / v_df['BPS']
-  # rt = convert_to_number(rt, "Return on Equity (ROE)")
-  # v_df['ROE'] = rt["Return on Equity (ROE)"].astype(float)#df['Net Income'] / df['Avg Equity']
-  # v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(3).mean()#v_df['ROE'].rolling(12).mean()
-  # v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(5).mean()
-  # v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(8).mean()
-  #v_df['meanROE'] = v_df.iloc[:,4:].mean()
-  st.dataframe(v_df)
+
+  
   #ROE 값만
   roe_min = min(v_df.iloc[-1,4:].to_list())
   roe_max = max(v_df.iloc[-1,4:].to_list())
