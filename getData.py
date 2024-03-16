@@ -301,20 +301,10 @@ def get_stockanalysis_com(ticker):
   return df_list
 
 def process_dataframe(df):
-  """
-  데이터프레임의 특정 컬럼을 변환하는 함수
-
-  Args:
-    df: 변환할 데이터프레임
-
-  Returns:
-    변환된 데이터프레임
-  """
-
   # 날짜 형식 변환
   for col in ["Ex-Dividend Date", "Record Date", "Pay Date"]:
     df[col] = pd.to_datetime(df[col], format="%b %d, %Y")
-    df[col] = df[col].dt.strftime("%Y-%m-%d")
+    df[col] = pd.to_datetime(df[col], format="%Y-%m-%d")
 
   # 통화 형식 변환
   df["Cash Amount"] = df["Cash Amount"].str.replace("$", "")
