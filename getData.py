@@ -294,7 +294,7 @@ def clean_df(df):
 
   return df
 
-def get_valuation(ticker, close_p):
+def get_valuation(ticker):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
   # df_lists = get_stockanalysis_com(ticker)
   # income_df = df_lists[0]
