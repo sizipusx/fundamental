@@ -324,8 +324,9 @@ def get_valuation(ticker, close_p):
   rt = rt.iloc[1:]  
   rt = clean_df(rt)
 
-  st.dataframe(income_df)
-  st.dataframe(ratio_df)
+  st.dataframe(it)
+  st.dataframe(bt)
+  st.dataframe(rt)
 
   df = pd.DataFrame()
   df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
