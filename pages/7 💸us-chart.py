@@ -580,9 +580,10 @@ def run(ticker, overview_df, fdr_df):
         #yahoo-historical 이 에러가 나서 stockanlaysis.com 소스로 변경 24.3.16.
         # c_data = data.get_historical()
         # div = data.get_dividends()
-        c_data = fdr_df
+        c_data = fdr_df.reset_index()
         div = getData.get_diviend_Bystockanalysis_com(ticker)
-        merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Date', 'Dividends']], on='Date', how='inner')
+        div['Date'] = div['Record Date']
+        merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Pay Date', 'Cash Amount']], on='Date', how='inner')
         merged_df['ttmDiv'] = merged_df['Dividends'].rolling(window=4).sum()
         merged_df = merged_df.iloc[3:]
         last_row_df = pd.DataFrame(merged_df.iloc[-1]).transpose()
