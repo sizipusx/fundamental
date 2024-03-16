@@ -39,46 +39,6 @@ def get_close_data(ticker, from_date, to_date):
 
     return close_price
 
-def convert_to_number(df, column_name):
-  """
-  데이터프레임 컬럼 전체에서 '%'를 제거하고 숫자로 변환합니다.
-
-  Args:
-    df: 데이터프레임
-    column_name: 변환할 컬럼 이름
-
-  Returns:
-    데이터프레임
-  """
-  # '%'를 공백으로 바꿉니다.
-  df[column_name] = df[column_name].str.replace('%', '')
-
-  # 컬럼을 숫자로 변환합니다.
-  df[column_name] = pd.to_numeric(df[column_name])
-
-  return df
-
-def convert_df_number(df):
-  """
-  데이터프레임의 모든 컬럼에 있는 특수 문자를 제거하고 데이터를 숫자로 바꿉니다.
-
-  Args:
-    df: 데이터프레임
-
-  Returns:
-    데이터프레임
-  """
-  # 모든 컬럼에 대해 반복합니다.
-  for column_name in df.columns:
-    # 숫자가 아닌 문자를 공백으로 바꿉니다.
-    df[column_name] = df[column_name].replace('[^\d.]', '', regex=True)
-
-    # 컬럼을 숫자로 변환합니다.
-    df[column_name] = pd.to_numeric(df[column_name], errors='coerce')
-
-  return df
-
-
 def get_annual_fundamental_data(ticker) :
     income_df, meta_data = fd.get_income_statement_annual(symbol=ticker)
     balance_df, meta_data = fd.get_balance_sheet_annual(symbol=ticker)
@@ -308,7 +268,31 @@ def get_stockanalysis_com(ticker):
 
   return df_list
 
+import re
 
+def clean_df(df):
+  """
+  데이터프레임의 모든 컬럼에 있는 특수문자를 제거하고, 데이터를 숫자로 바꾸고, NaN값이나 '-'을 0으로 바꿔줍니다.
+
+  Args:
+    df: 데이터프레임
+
+  Returns:
+    변환된 데이터프레임
+  """
+
+  for col in df.columns:
+    # 특수문자 제거
+    df[col] = df[col].str.replace("[^0-9.-]", "")
+
+    # NaN 및 '-' 처리
+    df[col] = df[col].fillna(0)
+    df[col] = df[col].replace("-", 0)
+
+    # 숫자 변환
+    df[col] = pd.to_numeric(df[col], errors="coerce")
+
+  return df
 
 def get_valuation(ticker, close_p):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
@@ -318,50 +302,66 @@ def get_valuation(ticker, close_p):
   balance_df = df_lists[1]
   cash_df = df_lists[2]
   ratio_df = df_lists[3]
-  st.dataframe(income_df)
 
-  # stockanalysis.com 
-   # df = pd.DataFrame()
-  # df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
-  # df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
-  # df['Net Income'] = it["Net Income"].astype(int)#round(float(it.iloc[0,13]))
-  # bt["Shareholders' Equity"] = bt["Shareholders' Equity"].astype(int)
-  # df['Avg Equity'] = round(( bt["Shareholders' Equity"] + bt["Shareholders' Equity"].shift(2) )/2,2)
+  it = income_df.T
+  it.columns = it.iloc[0]
+  it = it.iloc[1:]
+  it = it.iloc[::-1]
+  it = it.iloc[1:]
+  it = clean_df(it)
+
+  bt = balance_df.T
+  bt.columns = bt.iloc[0]
+  bt = bt.iloc[1:]
+  bt = bt.iloc[::-1]
+  bt = bt.iloc[1:]
+  bt = clean_df(bt)
+
+  rt = ratio_df.T
+  rt.columns = rt.iloc[0]
+  rt = rt.iloc[1:]
+  rt = rt.iloc[::-1]
+  rt = rt.iloc[1:]  
+  rt = clean_df(rt)
+
+  st.dataframe(income_df)
+  st.dataframe(ratio_df)
+
+  df = pd.DataFrame()
+  df['Market Cap'] = rt["Market Capitalization"].astype(int)#round(float(rt.iloc[0,0]),2)
+  df['BPS'] = bt["Book Value Per Share"].astype(float) #round(float(bt.iloc[0,-1]),2)
+  df['Net Income'] = it["Net Income"].astype(int)#round(float(it.iloc[0,13]))
+  bt["Shareholders' Equity"] = bt["Shareholders' Equity"].astype(int)
+  df['Avg Equity'] = round(( bt["Shareholders' Equity"] + bt["Shareholders' Equity"].shift(2) )/2,2)
 
   #dividend 
-  # try:
-  
-  #   div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
-  #   rt = convert_to_number(rt, "Dividend Yield") #abs(df['Dividends'])/df['Net Income']
-  #   rt = convert_to_number(rt, "Payout Ratio")
-  #   div_df['payoutR'] = rt["Payout Ratio"]
-  #   #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
-  #   div_df['DividendYield'] = rt["Dividend Yield"]
-  # except KeyError:
-  #   div_df = pd.DataFrame()
-  #   div_df['DPS'] = 0.0#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
-  #   div_df['payoutR'] = 0.0
-  #   #div_df['DividendYield'] = convert_column_number(rt, "Dividend Yield")#div_df['DPS']/df['Price']
-  #   div_df['DividendYield'] = 0.0
+  try:
+    div_df = pd.DataFrame()
+    div_df['DPS'] = it["Dividend Per Share"].astype(float)#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
+    div_df['payoutR'] = rt["Payout Ratio"]
+    div_df['DividendYield'] = rt["Dividend Yield"]
+  except KeyError:
+    div_df['DPS'] = 0.0#round(float(it.iloc[0,23]),2)#abs(df['Dividends'])/df['Shares']
+    div_df['payoutR'] = 0.0
+    div_df['DividendYield'] = 0.0
   
   #재무비율
   
-  # ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
-  # ratio_df['Operating Margin'] = round(it["Operating Income"].astype(int)/it["Revenue"].astype(int),4)#df['Operating Income'] / df['Revenue']
-  # ratio_df['Profit Margin'] = round(it["Net Income"].astype(int)/it["Revenue"].astype(int),4)#df['Net Income'] / df['Revenue']
-  # ratio_df['Liability/Equity'] = round(bt.iloc["Total Liabilities"].astype(int)/bt["Shareholders' Equity"].astype(int),4)#df['Total Liabilities'] / df['Shareholders Equity']
+  ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
+  ratio_df['Operating Margin'] = round(it["Operating Income"].astype(int)/it["Revenue"].astype(int),4)#df['Operating Income'] / df['Revenue']
+  ratio_df['Profit Margin'] = round(it["Net Income"].astype(int)/it["Revenue"].astype(int),4)#df['Net Income'] / df['Revenue']
+  ratio_df['Liability/Equity'] = round(bt.iloc["Total Liabilities"].astype(int)/bt["Shareholders' Equity"].astype(int),4)#df['Total Liabilities'] / df['Shareholders Equity']
   
-  
-  # v_df['EPS'] = it["EPS (Diluted)"].astype(float)#df['EPS']
-  # v_df['BPS'] = bt["Book Value Per Share"].astype(float)#df['Shareholders Equity'] / df['Shares']
-  # v_df['PER'] = rt["PE Ratio"].astype(float)#df['Price'] / df['EPS']
-  # v_df['PBR'] = rt["PB Ratio"].astype(float)#df['Price'] / v_df['BPS']
-  # rt = convert_to_number(rt, "Return on Equity (ROE)")
-  # v_df['ROE'] = rt["Return on Equity (ROE)"].astype(float)#df['Net Income'] / df['Avg Equity']
-  # v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(3).mean()#v_df['ROE'].rolling(12).mean()
-  # v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(5).mean()
-  # v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(8).mean()
-  #v_df['meanROE'] = v_df.iloc[:,4:].mean()
+  v_df = pd.DataFrame()
+  v_df['EPS'] = it["EPS (Diluted)"]
+  v_df['BPS'] = bt["Book Value Per Share"]
+  v_df['PER'] = rt["PE Ratio"]
+  v_df['PBR'] = rt["PB Ratio"]
+  v_df['ROE'] = rt["Return on Equity (ROE)"]
+  v_df['ROE3'] = rt['Return on Equity (ROE)'].rolling(3).mean()#v_df['ROE'].rolling(12).mean()
+  v_df['ROE5'] = rt['Return on Equity (ROE)'].rolling(5).mean()
+  v_df['ROE8'] = rt['Return on Equity (ROE)'].rolling(8).mean()
+  v_df['meanROE'] = v_df.iloc[:,4:].mean()
 
   #finterstellar에서 데이터 가져오기
   # df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
