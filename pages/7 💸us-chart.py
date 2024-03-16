@@ -725,7 +725,7 @@ def make_data(ticker, f_df):
     # cashflow.set_index('fiscalDateEnding', inplace=True)
     # cashflow.index =  pd.to_datetime(cashflow.index, format='%Y-%m-%d')
     # cashflow = cashflow.iloc[::-1]
-    sub = ['Net Income', 'Operating Cash Flow', 'Financing cash flow',  'Capital Expenditure', 'Investing cash flow']
+    sub = ['Net Income', 'Operating Cash Flow', 'Financing Cash flow',  'Capital Expenditure', 'Investing Cash flow']
     cashflow_df = f_df[sub].replace('None','0').astype(float).round(0)
     cashflow_df["FCF"] = cashflow_df['Operating Cash Flow'] - cashflow_df['Capital Expenditure']
 
