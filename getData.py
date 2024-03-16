@@ -354,7 +354,7 @@ def get_valuation(ticker, close_p):
   ratio_df['Gross Margin'] = round(it["Gross Profit"].astype(int)/it["Revenue"].astype(int),4)#df['Gross Profit'] / df['Revenue']
   ratio_df['Operating Margin'] = round(it["Operating Income"].astype(int)/it["Revenue"].astype(int),4)#df['Operating Income'] / df['Revenue']
   ratio_df['Profit Margin'] = round(it["Net Income"].astype(int)/it["Revenue"].astype(int),4)#df['Net Income'] / df['Revenue']
-  ratio_df['Liability/Equity'] = round(bt.iloc["Total Liabilities"].astype(int)/bt["Shareholders' Equity"].astype(int),4)#df['Total Liabilities'] / df['Shareholders Equity']
+  ratio_df['Liability/Equity'] = round(bt["Total Liabilities"].astype(int)/bt["Shareholders' Equity"].astype(int),4)#df['Total Liabilities'] / df['Shareholders Equity']
   
   v_df = pd.DataFrame()
   v_df['EPS'] = it["EPS (Diluted)"]
