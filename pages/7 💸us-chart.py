@@ -769,9 +769,9 @@ if __name__ == "__main__":
         ticker_slice = tickers[tickers['Market'] == 'AMEX']
         ticker_list = ticker_slice['Symbol'].to_list()
     input_ticker = st.sidebar.text_input("ticker").upper()
-    import random
-
-    input_ticker = random.choice(ticker_list)
+    
+    #import random
+    #input_ticker = random.choice(ticker_list)
     
     # ticker_list = [ "SENEA", "IMKTA", "KBAL", "CMC", \
     #                 "APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \

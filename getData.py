@@ -283,7 +283,7 @@ def clean_df(df):
 
   for col in df.columns:
     # 특수문자 제거
-    df[col] = df[col].str.replace("[^0-9.-]", "")
+    df[col] = df[col].replace(r'[^\d\-]', '', regex=True)
 
     # NaN 및 '-' 처리
     df[col] = df[col].fillna(0)
