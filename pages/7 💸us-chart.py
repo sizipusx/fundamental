@@ -246,9 +246,14 @@ def run(ticker, overview_df, fdr_df):
         st.subheader("Fundamental")
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 주가", value = close_price)
-        col2.metric(label="PBR", value =round(overview_df.loc['priceToBook'].astype(float),2))
-        col3.metric(label="TrailingPE", value =round(overview_df.loc['trailingPE'].astype(float),2))
-        col4.metric(label="ForwardPE", value =round(overview_df.loc['forwardPE'].astype(float),2))
+        try:
+            col2.metric(label="PBR", value =round(overview_df.loc['priceToBook'].astype(float),2))
+            col3.metric(label="TrailingPE", value =round(overview_df.loc['trailingPE'].astype(float),2))
+            col4.metric(label="ForwardPE", value =round(overview_df.loc['forwardPE'].astype(float),2))
+        except KeyError:
+            col2.metric(label="PBR", value =round(overview_df.loc['priceToBook'].astype(float),2))
+            col3.metric(label="TrailingPE", value =0)
+            col4.metric(label="ForwardPE", value =0)
         col1, col2, col3, col4 = st.columns(4)
         try:
             col1.metric(label="DPS", value = round(overview_df.loc['dividendRate'].astype(float),2))
