@@ -248,6 +248,32 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+import re
+
+def clean_df(df):
+  """
+  데이터프레임의 모든 컬럼에 있는 특수문자를 제거하고, 데이터를 숫자로 바꾸고, NaN값이나 '-'을 0으로 바꿔줍니다.
+
+  Args:
+    df: 데이터프레임
+
+  Returns:
+    변환된 데이터프레임
+  """
+
+  for col in df.columns:
+    # 특수문자 제거
+    df[col] = df[col].replace(r'[^\d\-\.]', '', regex=True)
+
+    # NaN 및 '-' 처리
+    df[col] = df[col].fillna(0)
+    df[col] = df[col].replace("-", 0)
+
+    # 숫자 변환
+    df[col] = pd.to_numeric(df[col], errors="coerce")
+
+  return df
+
 def get_stockanalysis_com(ticker):
   headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'}
 
@@ -267,32 +293,6 @@ def get_stockanalysis_com(ticker):
     df_list.append(df)
 
   return df_list
-
-import re
-
-def clean_df(df):
-  """
-  데이터프레임의 모든 컬럼에 있는 특수문자를 제거하고, 데이터를 숫자로 바꾸고, NaN값이나 '-'을 0으로 바꿔줍니다.
-
-  Args:
-    df: 데이터프레임
-
-  Returns:
-    변환된 데이터프레임
-  """
-
-  for col in df.columns:
-    # 특수문자 제거
-    df[col] = df[col].replace(r'[^\d\-]', '', regex=True)
-
-    # NaN 및 '-' 처리
-    df[col] = df[col].fillna(0)
-    df[col] = df[col].replace("-", 0)
-
-    # 숫자 변환
-    df[col] = pd.to_numeric(df[col], errors="coerce")
-
-  return df
 
 def get_valuation(ticker):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기

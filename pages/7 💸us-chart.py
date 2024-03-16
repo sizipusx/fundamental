@@ -262,64 +262,44 @@ def run(ticker, overview_df, fdr_df):
             pass
 
     with tab2:
-        #Income 데이터 가져오기
-        earning_df, income_df, balance_df, cashflow_df = make_data(ticker, f_df)
-        #Summary 데이터 가져오기    
-        # OV = fd.get_company_overview(ticker)
-        # split_OV=OV[0]
-        # df = pd.json_normalize(split_OV)
-        # df = df.T
-        # #Rim 즉석 계산
-        # df.loc['Earnings Yield'] = round(1/df.loc['TrailingPE'].astype(float)*100,2)
-        # df.loc['RIM'] = round(df.loc['BookValue'].astype(float)*(df.loc['ReturnOnEquityTTM'].astype(float)/0.08),2)
-        # close_price = fdr.DataReader(input_ticker, today)
-        # df.loc['Price'] = close_price.iloc[0,4]
-        # earningY = df.loc['Earnings Yield'][0]
-        # if earningY < 15.0 :
-        #     df.loc['Target Price'] = round(df.loc['DilutedEPSTTM'].astype(float)/0.15,2)
-        # df.loc['Margin Of Safety'] = (df.loc['RIM']/df.loc['Price'] -1)*100
-        # last_value = df.iloc[-1,0]
-        # last_value= str(round(last_value,2)) + '%'
-        # df.iloc[-1,0] = last_value
-        # df.style.applymap(draw_color_cell,color='#ff9090',subset=pd.IndexSlice[-1,0])
-        # df.columns = ['Description']
-        # df.update(df.select_dtypes(include=np.number).applymap('{:,}'.format))
-        # st.table(df)
-        # st.write('Description:', df.loc['Description',0])
-        #gauge chart
-        # fig = go.Figure(go.Indicator(
-        #     mode = "gauge+number+delta",
-        #     value = round(float(df.iloc[-3,0]),2),
-        #     delta = {'reference': round(float(df.iloc[-4,0]),2), 'relative': True},
-        #     title = {'text': "RIM-Price"},
-        #     domain = {'x': [0, 1], 'y': [0, 0.5]}
-        # ))
-        # fig.add_trace(go.Indicator(
-        #     mode = "number+delta",
-        #     value = round(float(df.iloc[-5,0]),2),
-        #     title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Demand Yield(15%)</span>"},
-        #     domain = {'x': [0, 1], 'y': [0.6, 1]},
-        #     delta = {'reference': 15.0}))
-        # st.plotly_chart(fig)
-
-        # fig = go.Figure()
-        # fig.add_trace(go.Indicator(
-        #     mode = "number+delta",
-        #     value = 200,
-        #     title = {"text": "RIM<br><span style='font-size:0.8em;color:gray'>Current Price</span>"},
-        #     domain = {'x': [0, 1], 'y': [0, 0.5]},
-        #     delta = {'reference': 400, 'relative': True, 'position' : "top"}))
-
-        # fig.add_trace(go.Indicator(
-        #     mode = "number+delta",
-        #     value = 350,
-        #     title = {"text": "Earnings Yield<br><span style='font-size:0.8em;color:gray'>Subtitle</span><br><span style='font-size:0.8em;color:gray'>Subsubtitle</span>"},
-        #     delta = {'reference': 400, 'relative': True},
-        #     domain = {'x': [0, 1], 'y': [0.5, 1]}))
+        #데이터 가져오기
+        f_data_list = getData.get_stockanalysis_com(ticker)
+        income_df = f_data_list[0]
+        balance_df = f_data_list[0]
+        cashflow_df = f_data_list[0] 
+        ratio_df = f_data_list[0]
         with st.expander("See Raw Data"):
-                #if  st.checkbox('See Earning Data'):
-            st.subheader('Earning Raw Data') 
-            st.dataframe(earning_df.style.highlight_max(axis=0))     
+            try:
+                col1, col2, col3, col4 = st.columns([30,30,30,30])
+                with col1:
+                    st.dataframe(income_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                            .format(precision=2, na_rep='MISSING', thousands=","))
+                with col2:
+                    st.dataframe(balance_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+                with col3:
+                    st.dataframe(cashflow_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+                with col4:
+                    st.dataframe(ratio_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    .format(precision=2, na_rep='MISSING', thousands=","))
+            except ValueError :
+                st.subheader("financial statements")
+                st.dataframe(f_df)
+                col1, col2, col3 = st.columns([30,30,30])
+                with col1:
+                    st.subheader("Income")
+                    st.dataframe(income_df)
+                with col2:
+                    st.subheader("Balance Sheet")
+                    st.dataframe(balance_df)
+                with col3:
+                    st.subheader("Cash Flow")
+                    st.dataframe(cashflow_df) 
+                with col4:
+                    st.subheader("Ratio")
+                    st.dataframe(ratio_df)    
+                    
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   
