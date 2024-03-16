@@ -324,8 +324,11 @@ def get_valuation(ticker, close_p):
   rt = rt.iloc[1:]  
   rt = clean_df(rt)
 
+  st.dataframe(income_df)
   st.dataframe(it)
+  st.dataframe(balance_df)
   st.dataframe(bt)
+  st.dataframe(ratio_df)
   st.dataframe(rt)
 
   df = pd.DataFrame()
