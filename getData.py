@@ -314,30 +314,12 @@ def get_stockanalysis_com(ticker):
 def get_valuation(ticker, close_p):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
   
-  # df_lists = get_stockanalysis_com(ticker)
-  # income_df = df_lists[0]
-  # balance_df = df_lists[1]
-  # cash_df = df_lists[2]
-  # ratio_df = df_lists[3]
-  # st.dataframe(income_df)
-
-  # it = income_df.T
-  # it.columns = it.iloc[0]
-  # it = it.iloc[1:]
-  # it = it.iloc[::-1]
-  # it = it.iloc[1:]
-
-  # bt = balance_df.T
-  # bt.columns = bt.iloc[0]
-  # bt = bt.iloc[1:]
-  # bt = bt.iloc[::-1]
-  # bt = bt.iloc[1:]
-
-  # rt = ratio_df.T
-  # rt.columns = rt.iloc[0]
-  # rt = rt.iloc[1:]
-  # rt = rt.iloc[::-1]
-  # rt = rt.iloc[1:]
+  df_lists = get_stockanalysis_com(ticker)
+  income_df = df_lists[0]
+  balance_df = df_lists[1]
+  cash_df = df_lists[2]
+  ratio_df = df_lists[3]
+  st.dataframe(income_df)
 
   # stockanalysis.com 
    # df = pd.DataFrame()
@@ -383,33 +365,33 @@ def get_valuation(ticker, close_p):
   #v_df['meanROE'] = v_df.iloc[:,4:].mean()
 
   #finterstellar에서 데이터 가져오기
-  df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
-  df['Market Cap'] = df['Price'] * df['Shares'] 
-  df['BPS'] = df['Shareholders Equity'] / df['Shares']
-  df['Net Income']
-  df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
-  df = df.iloc[4:]
-  #dividend 
-  div_df = pd.DataFrame()
-  div_df['DPS'] = abs(df['Dividend'])/df['Shares']
-  div_df['payoutR'] = abs(df['Dividend'])/df['Net Income']
-  div_df['DividendYield'] = div_df['DPS']/df['Price']
-  #재무비율
-  ratio_df = pd.DataFrame()
-  ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
-  ratio_df['Operating Margin'] = df['Operating Income'] / df['Revenue']
-  ratio_df['Profit Margin'] = df['Net Income'] / df['Revenue']
-  ratio_df['Liability/Equity'] = df['Total Liabilities'] / df['Shareholders Equity']
-  #valuation
-  v_df = pd.DataFrame()
-  v_df['EPS'] = df['EPS']
-  v_df['BPS'] = df['Shareholders Equity'] / df['Shares']
-  v_df['PER'] = df['Price'] / df['EPS']
-  v_df['PBR'] = df['Price'] / v_df['BPS']
-  v_df['ROE'] = df['Net Income'] / df['Avg Equity']
-  v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
-  v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
-  v_df['ROE8'] = v_df['ROE'].rolling(32).mean()
+  # df = fs.fn_single(otp=finterstellar_key, symbol=ticker, window='T') #T: Trailling
+  # df['Market Cap'] = df['Price'] * df['Shares'] 
+  # df['BPS'] = df['Shareholders Equity'] / df['Shares']
+  # df['Net Income']
+  # df['Avg Equity'] = ( df['Shareholders Equity'] + df['Shareholders Equity'].shift(4) ) /2
+  # df = df.iloc[4:]
+  # #dividend 
+  # div_df = pd.DataFrame()
+  # div_df['DPS'] = abs(df['Dividend'])/df['Shares']
+  # div_df['payoutR'] = abs(df['Dividend'])/df['Net Income']
+  # div_df['DividendYield'] = div_df['DPS']/df['Price']
+  # #재무비율
+  # ratio_df = pd.DataFrame()
+  # ratio_df['Gross Margin'] = df['Gross Profit'] / df['Revenue']
+  # ratio_df['Operating Margin'] = df['Operating Income'] / df['Revenue']
+  # ratio_df['Profit Margin'] = df['Net Income'] / df['Revenue']
+  # ratio_df['Liability/Equity'] = df['Total Liabilities'] / df['Shareholders Equity']
+  # #valuation
+  # v_df = pd.DataFrame()
+  # v_df['EPS'] = df['EPS']
+  # v_df['BPS'] = df['Shareholders Equity'] / df['Shares']
+  # v_df['PER'] = df['Price'] / df['EPS']
+  # v_df['PBR'] = df['Price'] / v_df['BPS']
+  # v_df['ROE'] = df['Net Income'] / df['Avg Equity']
+  # v_df['ROE3'] = v_df['ROE'].rolling(12).mean()
+  # v_df['ROE5'] = v_df['ROE'].rolling(20).mean()
+  # v_df['ROE8'] = v_df['ROE'].rolling(32).mean()
 
   
   #ROE 값만
