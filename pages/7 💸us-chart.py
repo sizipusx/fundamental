@@ -584,7 +584,7 @@ def run(ticker, overview_df, fdr_df):
         div = getData.get_diviend_Bystockanalysis_com(ticker)
         div['Date'] = div['Record Date']
         merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Date', 'Cash Amount']], on='Date', how='inner')
-        merged_df['ttmDiv'] = merged_df['Dividends'].rolling(window=4).sum()
+        merged_df['ttmDiv'] = merged_df['Cash Amount'].rolling(window=4).sum()
         merged_df = merged_df.iloc[3:]
         last_row_df = pd.DataFrame(merged_df.iloc[-1]).transpose()
         last_row_df.iloc[0,0] = c_data.iloc[-1,0]
