@@ -285,8 +285,7 @@ def run(ticker, overview_df, fdr_df):
                                     .format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 st.subheader("financial statements")
-                st.dataframe(f_df)
-                col1, col2, col3 = st.columns([30,30,30])
+                col1, col2, col3, col4 = st.columns([30,30,30, 30])
                 with col1:
                     st.subheader("Income")
                     st.dataframe(income_df)
@@ -299,7 +298,7 @@ def run(ticker, overview_df, fdr_df):
                 with col4:
                     st.subheader("Ratio")
                     st.dataframe(ratio_df)    
-                    
+
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
         com_name = com_name_df.iloc[0,1]   

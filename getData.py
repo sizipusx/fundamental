@@ -290,6 +290,12 @@ def get_stockanalysis_com(ticker):
     element_tables = soup.select("table[class='w-full border-separate border-spacing-0 whitespace-nowrap']") #income
 
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
+    df = df.T
+    df.columns = df.iloc[0]
+    df = df.iloc[1:]
+    df = df.iloc[::-1]
+    df = df.iloc[1:]
+    df = clean_df(df)
     df_list.append(df)
 
   return df_list
