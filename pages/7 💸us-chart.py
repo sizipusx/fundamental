@@ -265,9 +265,9 @@ def run(ticker, overview_df, fdr_df):
         #데이터 가져오기
         f_data_list = getData.get_stockanalysis_com(ticker)
         income_df = f_data_list[0]
-        balance_df = f_data_list[0]
-        cashflow_df = f_data_list[0] 
-        ratio_df = f_data_list[0]
+        balance_df = f_data_list[1]
+        cashflow_df = f_data_list[2] 
+        ratio_df = f_data_list[3]
         with st.expander("See Raw Data"):
             try:
                 col1, col2, col3, col4 = st.columns([30,30,30,30])
