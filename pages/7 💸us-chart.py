@@ -387,7 +387,7 @@ def run(ticker, overview_df, fdr_df):
                 title = com_name + '('  + input_ticker + ') Margin & Growth Rate' 
                 titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
                 fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-                y_data_line2 = ['GPM', 'OPM', 'NPM']
+                y_data_line2 = ['Gross Margin', 'Operating Margin', 'Profit Margin']
                 y_data_bar2 = ['TR Change', 'OI Change', 'NI Change']
 
                 for y_data, color in zip(y_data_line2, marker_colors): 
