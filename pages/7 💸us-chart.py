@@ -263,6 +263,8 @@ def run(ticker, overview_df, fdr_df):
 
     with tab2:
         #데이터 가져오기
+        #Income 데이터 가져오기
+        earning_df, income_df, balance_df, cashflow_df = make_data(ticker, f_df)
         f_data_list = getData.get_stockanalysis_com(ticker)
         income_df = f_data_list[0]
         balance_df = f_data_list[1]
