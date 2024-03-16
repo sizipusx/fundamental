@@ -580,38 +580,42 @@ def run(ticker, overview_df, fdr_df):
         #yahoo-historical 이 에러가 나서 stockanlaysis.com 소스로 변경 24.3.16.
         # c_data = data.get_historical()
         # div = data.get_dividends()
-        c_data = fdr_df.reset_index()
-        div = getData.get_diviend_Bystockanalysis_com(ticker)
-        div['Date'] = div['Record Date']
-        merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Date', 'Cash Amount']], on='Date', how='inner')
-        merged_df['ttmDiv'] = merged_df['Cash Amount'].rolling(window=4).sum()
-        merged_df = merged_df.iloc[3:]
-        last_row_df = pd.DataFrame(merged_df.iloc[-1]).transpose()
-        last_row_df.iloc[0,0] = c_data.iloc[-1,0]
-        last_row_df.iloc[0,1] = c_data.iloc[-1,-2]
-        df = pd.concat([merged_df, last_row_df])
-        df.loc[:,'DY'] = df['ttmDiv']/df['Adj Close']*100
-        dy_max = df['DY'].max()
-        dy_min = df['DY'].min()
-        dy_mid = (dy_max+dy_min)/2
-        df.loc[:,'High'] = df['ttmDiv']/dy_min*100
-        df.loc[:,'Low'] = df['ttmDiv']/dy_max*100
-        df.loc[:,'Mid'] = df['ttmDiv']/dy_mid*100
-        df['Date'] = pd.to_datetime(df['Date']) 
-        df.set_index('Date', inplace=True)
-        df = df.astype(float).round(decimals=2)
-        y_avg = df['DY'].mean()
+        try:
+            c_data = fdr_df.reset_index()
+            div = getData.get_diviend_Bystockanalysis_com(ticker)
+            div['Date'] = div['Record Date']
+            merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Date', 'Cash Amount']], on='Date', how='inner')
+            merged_df['ttmDiv'] = merged_df['Cash Amount'].rolling(window=4).sum()
+            merged_df = merged_df.iloc[3:]
+            last_row_df = pd.DataFrame(merged_df.iloc[-1]).transpose()
+            last_row_df.iloc[0,0] = c_data.iloc[-1,0]
+            last_row_df.iloc[0,1] = c_data.iloc[-1,-2]
+            df = pd.concat([merged_df, last_row_df])
+            df.loc[:,'DY'] = df['ttmDiv']/df['Adj Close']*100
+            dy_max = df['DY'].max()
+            dy_min = df['DY'].min()
+            dy_mid = (dy_max+dy_min)/2
+            df.loc[:,'High'] = df['ttmDiv']/dy_min*100
+            df.loc[:,'Low'] = df['ttmDiv']/dy_max*100
+            df.loc[:,'Mid'] = df['ttmDiv']/dy_mid*100
+            df['Date'] = pd.to_datetime(df['Date']) 
+            df.set_index('Date', inplace=True)
+            df = df.astype(float).round(decimals=2)
+            y_avg = df['DY'].mean()
 
-        chart.div_band(ticker, df, y_avg)
+            chart.div_band(ticker, df, y_avg)
 
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                chart.dividend_chart(input_ticker, com_name, div_df)
-            with col2:
-                st.write("")
-            with col3:
-                chart.dividend_chart_right(input_ticker, com_name, div_df)
+            with st.container():
+                col1, col2, col3 = st.columns([30,2,30])
+                with col1:
+                    chart.dividend_chart(input_ticker, com_name, div_df)
+                with col2:
+                    st.write("")
+                with col3:
+                    chart.dividend_chart_right(input_ticker, com_name, div_df)
+        except ValueError:
+            st.write("배당금을 지급하지 않아 배당 차트가 없습니다.")
+            pass
         ########### PER/PBR################
         try:
             #band chart
