@@ -306,7 +306,6 @@ def get_stockanalysis_com(ticker):
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
     df_list.append(df)
 
-
   return df_list
 
 

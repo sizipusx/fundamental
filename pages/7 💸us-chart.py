@@ -774,9 +774,11 @@ if __name__ == "__main__":
     #                 "APT","AMCX","BIIB", "BIG", "CI", "CPRX", "CHRS", "CSCO","CVS","DHT", "EURN", "HRB", "PRDO", \
     #                 "MO", "T", "O", "OMC", "SBUX", \
     #                 "MSFT", "MMM", "INVA", "SIGA", "WLKP", "VYGR", "KOF", "WSTG", "LFVN", "SUPN"]
+    import random
+    
     if input_ticker == "":
         input_ticker = st.sidebar.selectbox(
-            'Ticker',ticker_list
+            'Ticker', random.chice(ticker_list)
         )
     
     input_ticker = input_ticker.upper()
