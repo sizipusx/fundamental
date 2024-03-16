@@ -576,9 +576,12 @@ def run(ticker, overview_df, fdr_df):
         # 데이터 만들기
         # create unix timestamp representing January 1st, 2007
         timestamp = time.mktime(datetime.datetime(1990, 1, 1).timetuple())
-        data = Fetcher(ticker, timestamp)
-        c_data = data.get_historical()
-        div = data.get_dividends()
+        #data = Fetcher(ticker, timestamp)
+        #yahoo-historical 이 에러가 나서 stockanlaysis.com 소스로 변경 24.3.16.
+        # c_data = data.get_historical()
+        # div = data.get_dividends()
+        c_data = fdr_df
+        div = getData.get_diviend_Bystockanalysis_com(ticker)
         merged_df = pd.merge(c_data[['Date', 'Adj Close']], div[['Date', 'Dividends']], on='Date', how='inner')
         merged_df['ttmDiv'] = merged_df['Dividends'].rolling(window=4).sum()
         merged_df = merged_df.iloc[3:]

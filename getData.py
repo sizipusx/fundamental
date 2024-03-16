@@ -300,6 +300,40 @@ def get_stockanalysis_com(ticker):
 
   return df_list
 
+def process_dataframe(df):
+  """
+  데이터프레임의 특정 컬럼을 변환하는 함수
+
+  Args:
+    df: 변환할 데이터프레임
+
+  Returns:
+    변환된 데이터프레임
+  """
+
+  # 날짜 형식 변환
+  for col in ["Ex-Dividend Date", "Record Date", "Pay Date"]:
+    df[col] = pd.to_datetime(df[col], format="%b %d, %Y")
+    df[col] = df[col].dt.strftime("%Y-%m-%d")
+
+  # 통화 형식 변환
+  df["Cash Amount"] = df["Cash Amount"].str.replace("$", "")
+  df["Cash Amount"] = pd.to_numeric(df["Cash Amount"])
+
+  return df
+
+def get_diviend_Bystockanalysis_com(ticker):
+  url = f"https://stockanalysis.com/stocks/{ticker}/dividend"
+  headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0'}
+  response = requests.get(url, headers=headers)
+  soup = BeautifulSoup(response.content, 'html.parser')
+  element_tables = soup.select("table[class='svelte-1jtwn20']") #income
+  div_df = pd.read_html(str(element_tables))[0]
+  div_df = process_dataframe(div_df)
+  df_new = div_df.iloc[::-1]
+
+  return df_new
+
 def get_valuation(ticker):
   # 2024-3-9 수정: finterstellar 오류 -> stockanalysis.com 에서 가져오기
   # df_lists = get_stockanalysis_com(ticker)
