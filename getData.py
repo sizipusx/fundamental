@@ -412,6 +412,7 @@ def get_valuation(ticker):
   roe_mean = v_df.iloc[-1,5:].mean()
  #기대수익률 테이블
   y_df = pd.DataFrame()
+  y_df['Time'] = df['term']
   y_df['fBPS'] = v_df['BPS']*(1+roe_min)**10
   y_df['cBPS'] = v_df['BPS']*(1+v_df['ROE'])**10
   y_df['mBPS'] = v_df['BPS']*(1+roe_max)**10

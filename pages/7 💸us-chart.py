@@ -161,7 +161,6 @@ def run(ticker, overview_df, fdr_df):
         # st.write(f"close_price: {close_price}")
         with st.expander("See Raw Data"):
             try:
-                st.dataframe(f_df)
                 col1, col2, col3 = st.columns([30,30,30])
                 with col1:
                     st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
@@ -175,10 +174,16 @@ def run(ticker, overview_df, fdr_df):
             except ValueError :
                 st.subheader("financial statements")
                 st.dataframe(f_df)
-                st.subheader("Valuations")
-                st.dataframe(v_df)
-                st.subheader("Expecting Yield")
-                st.dataframe(y_df)
+                col1, col2, col3 = st.columns([30,30,30])
+                with col1:
+                    st.subheader("Valuations")
+                    st.dataframe(v_df)
+                with col2:
+                    st.subheader("Expecting Yield")
+                    st.dataframe(y_df)
+                with col3:
+                    st.subheader("Dividends")
+                    st.dataframe(div_df)
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,30,30])
@@ -216,15 +221,15 @@ def run(ticker, overview_df, fdr_df):
         expect_yield = 15.0
         st.subheader("채권형 주식 Valuation")
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,4]*100,1))
-        col2.metric(label="3년 평균", value =round(v_df.iloc[-1,5]*100,1))
-        col3.metric(label="5년 평균", value =round(v_df.iloc[-1,6]*100,1))
-        col4.metric(label="8년 평균", value =round(v_df.iloc[-1,7]*100,1))
+        col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,5]*100,1))
+        col2.metric(label="3년 평균", value =round(v_df.iloc[-1,6]*100,1))
+        col3.metric(label="5년 평균", value =round(v_df.iloc[-1,7]*100,1))
+        col4.metric(label="8년 평균", value =round(v_df.iloc[-1,8]*100,1))
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,5]*100,1), delta=round((round(y_df.iloc[-1,5],1)-expect_yield),1))
-        col2.metric(label="최소 ROE 기준 기대수익률", value =round(y_df.iloc[-1,4]*100,1), delta=round((round(y_df.iloc[-1,4],1)-expect_yield),1))
-        col3.metric(label="최대 ROE 기준 기대수익률", value =round(y_df.iloc[-1,6]*100,1), delta=round((round(y_df.iloc[-1,6],1)-expect_yield),1))
-        col4.metric(label="평균 ROE 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,1), delta=round((round(y_df.iloc[-1,7],1)-expect_yield),1))
+        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,6]*100,1), delta=round((round(y_df.iloc[-1,6],1)-expect_yield),1))
+        col2.metric(label="최소 ROE 기준 기대수익률", value =round(y_df.iloc[-1,5]*100,1), delta=round((round(y_df.iloc[-1,5],1)-expect_yield),1))
+        col3.metric(label="최대 ROE 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,1), delta=round((round(y_df.iloc[-1,7],1)-expect_yield),1))
+        col4.metric(label="평균 ROE 기준 기대수익률", value =round(y_df.iloc[-1,8]*100,1), delta=round((round(y_df.iloc[-1,8],1)-expect_yield),1))
         try:
             col1, col2, col3, col4 = st.columns(4)
             col1.metric(label="현재 ROE 기준 매수가격", value = current_proper_price, delta=round((current_proper_price-close_price),2))
@@ -237,6 +242,7 @@ def run(ticker, overview_df, fdr_df):
             col2.metric(label="최소 ROE 기준 매수가격", value =min_proper_price)
             col3.metric(label="최대 ROE 기준 매수가격", value =max_proper_price)
             col4.metric(label="평균 ROE 기준 매수가격", value =mean_proper_price)
+
         st.subheader("Fundamental")
         col1, col2, col3, col4 = st.columns(4)
         col1.metric(label="현재 주가", value = close_price)
