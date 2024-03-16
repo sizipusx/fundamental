@@ -377,8 +377,8 @@ def get_valuation(ticker):
   div_df = pd.DataFrame()
   div_df['Time'] = df['term']
   if df.iloc[-1,28] != 0:
-    div_df['DPS'] = df['Dividend']/df['Shares']
-    div_df['payoutR'] = df['Dividend']/df['Net Income']
+    div_df['DPS'] = df['Dividend']
+    div_df['payoutR'] = df['Dividend']/df['EPS']
     div_df['DividendYield'] = div_df['DPS']/df['Price']
   else:
     div_df['DPS'] = 0
