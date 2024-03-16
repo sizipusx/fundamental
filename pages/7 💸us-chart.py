@@ -131,20 +131,19 @@ def run(ticker, overview_df, fdr_df):
         st.subheader("Valuation")
         close_price = overview_df.loc['Close']
         expect_yield = 0.15
-        f_df, r_df, v_df, y_df, div_df = getData.get_valuation(ticker, close_price)
-        roe_mean = round(v_df.iloc[-1,4:].mean()*100,2)
-        roe_min = round(min(v_df.iloc[-1,4:])*100,2)
-        current_roe = round(v_df.iloc[-1,4]*100,2)
-        min_f_bps = min(y_df.iloc[-1,:4])
-        max_f_bps = max(y_df.iloc[-1,:4])
-        mean_f_bps = y_df.iloc[-1,3]
-        current_f_bps = y_df.iloc[-1,1]
+        f_df, r_df, v_df, y_df, div_df = getData.get_valuation(ticker)# stock, close_price)
+        roe_mean = round(v_df.iloc[-1,5:].mean()*100,2)
+        roe_min = round(min(v_df.iloc[-1,5:])*100,2)
+        current_roe = round(v_df.iloc[-1,5]*100,2)
+        min_f_bps = min(y_df.iloc[-1,1:5])
+        max_f_bps = max(y_df.iloc[-1,1:5])
+        mean_f_bps = y_df.iloc[-1,4]
+        current_f_bps = y_df.iloc[-1,2]
         try:
             min_proper_price = int(min_f_bps/(1+expect_yield)**10)
             max_proper_price = int(max_f_bps/(1+expect_yield)**10)
             mean_proper_price = int(mean_f_bps/(1+expect_yield)**10)
             current_proper_price = int(current_f_bps/(1+expect_yield)**10)
-            st.write(current_proper_price)
         except ValueError:
             min_proper_price = 0
             max_proper_price = 0
@@ -162,8 +161,7 @@ def run(ticker, overview_df, fdr_df):
         # st.write(f"close_price: {close_price}")
         with st.expander("See Raw Data"):
             try:
-                st.dataframe(f_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                st.dataframe(f_df)
                 col1, col2, col3 = st.columns([30,30,30])
                 with col1:
                     st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
