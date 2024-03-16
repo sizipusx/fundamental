@@ -221,15 +221,15 @@ def run(ticker, overview_df, fdr_df):
         expect_yield = 15.0
         st.subheader("채권형 주식 Valuation")
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE", value =round(v_df.iloc[-1,5]*100,1))
-        col2.metric(label="3년 평균", value =round(v_df.iloc[-1,6]*100,1))
-        col3.metric(label="5년 평균", value =round(v_df.iloc[-1,7]*100,1))
-        col4.metric(label="8년 평균", value =round(v_df.iloc[-1,8]*100,1))
+        col1.metric(label="현재 ROE", value =str(round(v_df.iloc[-1,5]*100,1))+"%")
+        col2.metric(label="3년 평균", value =str(round(v_df.iloc[-1,6]*100,1)+"%")
+        col3.metric(label="5년 평균", value =str(round(v_df.iloc[-1,7]*100,1)+"%")
+        col4.metric(label="8년 평균", value =str(round(v_df.iloc[-1,8]*100,1)+"%")
         col1, col2, col3, col4 = st.columns(4)
-        col1.metric(label="현재 ROE 기준 기대수익률", value = round(y_df.iloc[-1,6]*100,1), delta=round((round(y_df.iloc[-1,6],1)-expect_yield),1))
-        col2.metric(label="최소 ROE 기준 기대수익률", value =round(y_df.iloc[-1,5]*100,1), delta=round((round(y_df.iloc[-1,5],1)-expect_yield),1))
-        col3.metric(label="최대 ROE 기준 기대수익률", value =round(y_df.iloc[-1,7]*100,1), delta=round((round(y_df.iloc[-1,7],1)-expect_yield),1))
-        col4.metric(label="평균 ROE 기준 기대수익률", value =round(y_df.iloc[-1,8]*100,1), delta=round((round(y_df.iloc[-1,8],1)-expect_yield),1))
+        col1.metric(label="현재 ROE 기준 기대수익률", value =str(round(y_df.iloc[-1,6]*100,1))+"%", delta=round((round(y_df.iloc[-1,6],1)-expect_yield),1))
+        col2.metric(label="최소 ROE 기준 기대수익률", value =str(round(y_df.iloc[-1,5]*100,1))+"%", delta=round((round(y_df.iloc[-1,5],1)-expect_yield),1))
+        col3.metric(label="최대 ROE 기준 기대수익률", value =str(round(y_df.iloc[-1,7]*100,1))+"%", delta=round((round(y_df.iloc[-1,7],1)-expect_yield),1))
+        col4.metric(label="평균 ROE 기준 기대수익률", value =str(round(y_df.iloc[-1,8]*100,1))+"%", delta=round((round(y_df.iloc[-1,8],1)-expect_yield),1))
         try:
             col1, col2, col3, col4 = st.columns(4)
             col1.metric(label="현재 ROE 기준 매수가격", value = current_proper_price, delta=round((current_proper_price-close_price),2))
@@ -252,9 +252,9 @@ def run(ticker, overview_df, fdr_df):
         col1, col2, col3, col4 = st.columns(4)
         try:
             col1.metric(label="DPS", value = round(overview_df.loc['dividendRate'].astype(float),2))
-            col2.metric(label="DividendYield", value =round(overview_df.loc['dividendYield'].astype(float)*100,2))
+            col2.metric(label="DividendYield", value =str(round(overview_df.loc['dividendYield'].astype(float)*100,2))+"%")
             col3.metric(label="DPR", value =str(round(div_df.iloc[-1,1]*100,2))+"%")
-            col4.metric(label="PayoutRatio", value =overview_df.loc["payoutRatio"].astype(float)*100)
+            col4.metric(label="PayoutRatio", value =str(round(overview_df.loc["payoutRatio"].astype(float)*100,1))+"%")
         except ValueError:
             st.write("배당금을 지급하지 않습니다!") 
 
