@@ -1197,9 +1197,7 @@ def displot(last_df, last_odf, flag): #KDE
 
 
 def change_number_chart(updown_count, flag, flag2):
-    title ='KB 아파트 매매가격 변동 지역분포 추이'
     title = dict(text='<b>'+flag+'</b> 주간 아파트 '+ flag2+' 변동 지역 분포 추이', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
-
     titles = dict(text= title, x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
     x_data = updown_count.index # EPS발표 날짜로
     fig = make_subplots(specs=[[{'secondary_y': True}]])
