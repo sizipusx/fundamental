@@ -945,7 +945,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
                         visible=False
                     ),
                     type="date",
-                    range=[kor_time - relativedelta(years=5), kor_time]
+                    range=[kor_time - relativedelta(years=1), kor_time]
                     )      
                 )
     fig.update_layout(template="myID")
