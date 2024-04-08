@@ -182,6 +182,38 @@ def aggrid_interactive_table(df: pd.DataFrame):
     return response
 
 @st.cache_data(ttl=datetime.timedelta(days=1))
+def count_plus_zero_minus_by_date(df):
+  """
+  날짜 인덱스와 한국 시지역 컬럼 데이터프레임에서 각 행값에서 플러스값 개수, 0 개수, 마이너스 값을 갖는 값의 개수를 계산하는 함수
+
+  Args:
+    df: 날짜 인덱스와 한국 시지역 컬럼 데이터프레임
+
+  Returns:
+    각 행값에서 플러스, 0, 마이너스 값 개수를 담은 데이터프레임
+  """
+
+  result_df = pd.DataFrame()
+
+  for date in df.index:
+    # 각 날짜별 플러스, 0, 마이너스 값 카운트
+    plus_count = df.loc[date, :][df.loc[date, :] > 0].shape[0]
+    zero_count = df.loc[date, :][df.loc[date, :] == 0].shape[0]
+    minus_count = df.loc[date, :][df.loc[date, :] < 0].shape[0]
+
+     # 결과 데이터프레임에 추가
+    result_df = pd.concat([result_df, pd.DataFrame({
+        "date": date,
+        "상승": plus_count,
+        "변동없음": zero_count,
+        "하락": minus_count,
+    }, index=[0])], ignore_index=True)
+    # df = df.set_index("date")
+
+  return result_df
+
+
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def load_senti_data():
     #2022.9.25 db에서 읽어오기
     senti_conn = create_connection(weekly_db_path)
@@ -476,6 +508,42 @@ def draw_basic():
         #     '이전 통계 보기',
         #     ('1w', '2w', '3w', '1m', '1y'))
         #option_value = option
+        kbm_count = count_plus_zero_minus_by_date(mdf_change)
+        kbm_count = kbm_count.set_index("date")
+        kbj_count = count_plus_zero_minus_by_date(jdf_change)
+        kbj_count = kbj_count.set_index("date")
+        om_count = count_plus_zero_minus_by_date(omdf_change)
+        om_count = om_count.set_index("date")
+        oj_count = count_plus_zero_minus_by_date(ojdf_change)
+        oj_count = oj_count.set_index("date")
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                drawAPT_weekly.change_number_chart(kbm_count, flag='KB', flag2='매매가격')
+                #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+            with col2:
+                st.write("")
+            with col3:
+                drawAPT_weekly.change_number_chart(kbj_count, flag='KB', flag2='전세가격')
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                drawAPT_weekly.change_number_chart(om_count, flag='부동산원', flag2='매매가격')
+                #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
+            with col2:
+                st.write("")
+            with col3:
+                drawAPT_weekly.change_number_chart(oj_count, flag='부동사원', flag2='전세가격')
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
         ### Draw 히스토그램 ############################### a매매
         drawAPT_weekly.histogram_together(kb_last_df, last_odf, flag='매매증감')
         drawAPT_weekly.displot(kb_last_df, last_odf, flag='매매증감')
