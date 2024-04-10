@@ -961,7 +961,25 @@ if __name__ == "__main__":
         cols = st.columns(2)
         cols[0].write(f"KB last update date: {kb_last_week}")
         cols[1].write(f"부동산원 last update date: {one_last_week}")
+    # 폰트 리스트
+    import numpy as np
+    import os
+    import matplotlib.font_manager as fm  # 폰트 관련 용도 as fm
 
+    def unique(lst):
+        x = np.array(lst)
+        return np.unique(x)
+
+    font_dirs = [os.getcwd() + '/NanumBarunGothic']
+    font_files = fm.findSystemFonts(fontpaths=font_dirs)
+
+    for font_file in font_files:
+        fm.fontManager.addfont(font_file)
+    fm._load_fontmanager(try_read_cache=False)
+
+    fontNames = [f.name for f in fm.fontManager.ttflist]
+    fontname = st.selectbox("폰트 선택", unique(fontNames))
+    
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
 
