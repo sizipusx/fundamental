@@ -972,7 +972,7 @@ if __name__ == "__main__":
         x = np.array(lst)
         return np.unique(x)
 
-    font_dirs = [os.getcwd() + '/NanumBarunGothic']
+    font_dirs = [os.getcwd() + 'Nanum_Gothic/NanumGothic-Bold.ttf']
     font_files = fm.findSystemFonts(fontpaths=font_dirs)
 
     for font_file in font_files:
