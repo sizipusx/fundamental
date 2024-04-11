@@ -614,8 +614,6 @@ def draw_basic():
         st.markdown(html_br, unsafe_allow_html=True)
     with tab4:
         ### Block 0#########################################################################################
-        mapbox_style = st.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
-                                                  "stamen-terrain", "stamen-toner", "stamen-watercolor"])
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
@@ -981,6 +979,9 @@ if __name__ == "__main__":
 
     fontNames = [f.name for f in fm.fontManager.ttflist]
     fontname = st.selectbox("폰트 선택", unique(fontNames))
+    #지도 스타일 선택
+    mapbox_style = st.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
+                                                  "stamen-terrain", "stamen-toner", "stamen-watercolor"])
     
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
