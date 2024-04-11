@@ -1252,3 +1252,5 @@ def change_number_chart(updown_count, flag, flag2):
                 range=[utcnow - relativedelta(years=1), utcnow]
                 )
             )
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
