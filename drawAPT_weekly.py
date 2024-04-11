@@ -182,14 +182,14 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
                     '전세증감:' + df['전세증감']
     title = dict(text='<b>'+last_week+ '기준 '+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.85, xanchor = 'center', yanchor = 'top') 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
-                            colorscale="Bluered",  mapbox_style=mapbox_style, zmin=-0.8, zmax=0.8, marker_line_width=2))
+                            colorscale="Bluered", zmin=-0.8, zmax=0.8, marker_line_width=2))
                             #colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=2))
     fig.update_traces(  autocolorscale=True,
                         text=df['text'], # hover text
                         marker_line_color='black', # line markers between states
                         colorbar_title=flag[1])
     # fig.update_traces(hovertext=df['index'])
-    fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
+    fig.update_layout(mapbox_style=mapbox_style, mapbox_accesstoken=token,
                     mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
     fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
