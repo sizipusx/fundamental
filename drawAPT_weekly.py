@@ -170,9 +170,7 @@ def draw_power_table(power_df):
     # fig.update_layout(template="myID")
     # st.plotly_chart(fig)
 
-def draw_Choroplethmapbox(df, geo_data, flag, last_week):
-    mapbox_style = st.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
-                                                  "stamen-terrain", "stamen-toner", "stamen-watercolor"])
+def draw_Choroplethmapbox(df, geo_data, flag, last_week, mapbox_style):
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     for col in df.columns:
