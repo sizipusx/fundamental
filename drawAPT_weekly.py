@@ -171,6 +171,8 @@ def draw_power_table(power_df):
     # st.plotly_chart(fig)
 
 def draw_Choroplethmapbox(df, geo_data, flag, last_week):
+    mapbox_style = st.sidebar.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
+                                                  "stamen-terrain", "stamen-toner", "stamen-watercolor"])
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     for col in df.columns:
@@ -180,7 +182,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
                     '전세증감:' + df['전세증감']
     title = dict(text='<b>'+last_week+ '기준 '+flag[0]+' 주간'+ flag[1]+'</b>',  x=0.5, y = 0.85, xanchor = 'center', yanchor = 'top') 
     fig = go.Figure(go.Choroplethmapbox(geojson=geo_data, locations=df['code'], z=df[flag[1]].astype(float),
-                            colorscale="Bluered", zmin=-0.8, zmax=0.8, marker_line_width=2))
+                            colorscale="Bluered",  mapbox_style=mapbox_style, zmin=-0.8, zmax=0.8, marker_line_width=2))
                             #colorscale="Bluered", zmin=df[flag[1]].astype(float).min(), zmax=df[flag[1]].astype(float).max(), marker_line_width=2))
     fig.update_traces(  autocolorscale=True,
                         text=df['text'], # hover text
@@ -1252,5 +1254,4 @@ def change_number_chart(updown_count, flag, flag2):
                 range=[utcnow - relativedelta(years=1), utcnow]
                 )
             )
-    fig.update_layout(template="myID")
     st.plotly_chart(fig)
