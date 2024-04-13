@@ -170,7 +170,7 @@ def draw_power_table(power_df):
     # fig.update_layout(template="myID")
     # st.plotly_chart(fig)
 
-def draw_Choroplethmapbox(df, geo_data, flag, last_week, mapbox_style):
+def draw_Choroplethmapbox(df, geo_data, flag, last_week):
     #choroplethmapbax
     token = 'pk.eyJ1Ijoic2l6aXB1c3gyIiwiYSI6ImNrbzExaHVvejA2YjMyb2xid3gzNmxxYmoifQ.oDEe7h9GxzzUUc3CdSXcoA'
     for col in df.columns:
@@ -187,7 +187,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week, mapbox_style):
                         marker_line_color='black', # line markers between states
                         colorbar_title=flag[1])
     # fig.update_traces(hovertext=df['index'])
-    fig.update_layout(mapbox_style=mapbox_style, mapbox_accesstoken=token,
+    fig.update_layout(mapbox_style="white-bg", mapbox_accesstoken=token,
                     mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
     fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})

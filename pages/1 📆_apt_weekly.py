@@ -618,12 +618,12 @@ def draw_basic():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 flag = ['KB','매매증감']
-                drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week, mapbox_style)
+                drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
             with col2:
                 st.write("")
             with col3:
                 flag = ['부동산원','매매증감']
-                drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week, mapbox_style)
+                drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
         html_br="""
         <br>
         """
@@ -981,9 +981,6 @@ if __name__ == "__main__":
 
     fontNames = [f.name for f in fm.fontManager.ttflist]
     fontname = st.selectbox("폰트 선택", unique(fontNames))
-    #지도 스타일 선택
-    mapbox_style = st.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
-                                                  "stamen-terrain", "stamen-toner", "stamen-watercolor"])
     
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)

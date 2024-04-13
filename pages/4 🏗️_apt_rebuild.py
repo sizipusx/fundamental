@@ -209,7 +209,7 @@ def load_data():
 
     return sum_df, total_df, stat_df
 
-def show_total(s_df):
+def show_total(s_df, mapbox_style ):
     try:
         px.set_mapbox_access_token(token)
         fig = px.scatter_mapbox(s_df, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", \
@@ -230,7 +230,7 @@ def show_total(s_df):
                 ),
                 pitch=0,
                 zoom=7,
-                style='light', #'streets', #'light'
+                style= mapbox_style #'light', #'streets', #'light'
             ),
         )
         fig.update_layout(template="myID")
@@ -256,7 +256,7 @@ def show_total(s_df):
     # st_data = st_folium(m)
     
 
-def show_local(select_city, city_apt, city_total):
+def show_local(select_city, city_apt, city_total, mapbox_style ):
     px.set_mapbox_access_token(token)
     fig = px.scatter_mapbox(city_apt, lat="위도", lon="경도", color="매물종류", size="거래가(만)", hover_name="단지명", hover_data=["물건수", "공급면적(평)", "시도명"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=30, zoom=10, height=800)
@@ -264,7 +264,7 @@ def show_local(select_city, city_apt, city_total):
         title='[' + select_city+' ] 재건축-재개발 / 아파트 분양권 네이버 시세',
         legend=dict(orientation="h"),
     )
-    fig.update_layout(mapbox_style="satellite-streets")
+    fig.update_layout(mapbox_style=mapbox_style )
     fig.update_layout(template="myID")
     st.plotly_chart(fig, use_container_width=True)
     st.write("총 ( "+ str(len(city_total))+ " ) 개의 매매 물건이 있습니다.")  
@@ -288,10 +288,14 @@ if __name__ == "__main__":
     #st.write(s_df.tail())
     data_load_state.text("Done!")
     st.subheader(f"시세 조사 날짜: {last_date}" )
+    #지도 스타일 선택
+    mapbox_style = st.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
+                                                  "stamen-terrain", "stamen-toner", "stamen-watercolor"])
+    
     tab1, tab2 = st.tabs(["🗺️ 지도", "🔣 통계"])
     with tab1:
         try:
-            show_total(s_df)
+            show_total(s_df, mapbox_style)
         except Exception as e:
             st.write(e)
         city_list = s_df['시도명'].drop_duplicates().to_list()
@@ -322,7 +326,7 @@ if __name__ == "__main__":
             default_flag = '전국'
         else:
             apt_len = len(city_apt)
-            show_local(city_name, city_apt, city_total)
+            show_local(city_name, city_apt, city_total, mapbox_style)
             filter_df = city_total[['시도명', '지역명', '단지명', '동', '매물방식', '매물종류', '공급면적', '전용면적', '층', '특이사항', '한글거래가액', '확인매물', '매물방향', '위도', '경도']]
             default_flag = '그외'
         
