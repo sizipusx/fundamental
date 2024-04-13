@@ -289,7 +289,7 @@ if __name__ == "__main__":
     data_load_state.text("Done!")
     st.subheader(f"시세 조사 날짜: {last_date}" )
     #지도 스타일 선택
-    mapbox_style = st.selectbox('지도스타일', ["white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
+    mapbox_style = st.selectbox('지도스타일', ["basic", "streets", "outdoors", "light", "dark", "satellite", "satellite-streets", "white-bg", "open-street-map", "carto-positron", "carto-darkmatter",
                                                   "stamen-terrain", "stamen-toner", "stamen-watercolor"])
     
     tab1, tab2 = st.tabs(["🗺️ 지도", "🔣 통계"])
