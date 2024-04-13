@@ -187,7 +187,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
                         marker_line_color='black', # line markers between states
                         colorbar_title=flag[1])
     # fig.update_traces(hovertext=df['index'])
-    fig.update_layout(mapbox_style="white-bg", mapbox_accesstoken=token,
+    fig.update_layout(mapbox_style="basic", mapbox_accesstoken=token,
                     mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
     fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
