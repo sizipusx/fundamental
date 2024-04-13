@@ -634,12 +634,12 @@ def draw_basic():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 flag = ['KB','전세증감']
-                drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week, mapbox_style)
+                drawAPT_weekly.draw_Choroplethmapbox(kb_df, kb_geo_data, flag, kb_last_week)
             with col2:
                 st.write("")
             with col3:
                 flag = ['부동산원','전세증감']
-                drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week, mapbox_style)
+                drawAPT_weekly.draw_Choroplethmapbox(odf, one_geo_data, flag, one_last_week)
         html_br="""
         <br>
         """
