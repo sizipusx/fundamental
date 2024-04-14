@@ -1200,7 +1200,7 @@ def change_number_chart(updown_count, flag, flag2):
     titles = dict(text='<b>'+flag+'</b> 주간 아파트 '+ flag2+' 변동 지역 분포 추이', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     x_data = updown_count.index # EPS발표 날짜로
     fig = make_subplots(specs=[[{'secondary_y': True}]])
-    y_data_bar = ['상승', '변동없음','하락']
+    y_data_bar = ['변동없음', '상승','하락']
 
     for y_data, color in zip(y_data_bar, marker_colors) :
         fig.add_trace(go.Bar(name = y_data, x =x_data, y = updown_count[y_data], marker_color= color,
