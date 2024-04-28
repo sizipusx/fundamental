@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "investing-dashboard-421609",
+  "private_key_id": "ee67daa09cb9518f53ebc6bca21bb6637bb2650c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC5/UvnZ35hVw6D\nV+5IqFLlqBsWPQrrLQjht0FOz1/bXj59XJyrWhlyZjxffpLtnxY+3vbOQKZIXEP5\nxjbUTrG2+YVVIdbPX4dxDhYkZBOOfLoveAn4gUTp/Z2Rj6kAJoiGWPDLP9svJcFf\nkmdBP76mIaO4vOeo7gl7UEhBSPZQBSy5abrL8zqC1IGQjTtPGfCpCf6wLJRFKyOC\nxEUgzY+/ivSuJLznM53wdunbiJJK3oeWcNCMCufblHGfvCuZjKwfGPDS+uFrwR1F\nqdfLVeHzL7Xera94rJSJVUBkekCP7dCYRiKxhV6Yw0AXSEdsrjmN4g16HfFe3L0T\n8jxjzba3AgMBAAECggEAAXomBq33Pn2rA1cI8PHJSsKliG0ur4R5jBVhAue5uqvK\nckNwiRnbluGB/D4sm4+GZTRvIF86EtwMvCibWd9QIQRlTzJIGviGwlqayWo0D48l\nCWh6J8ubCQK3JCdQb8xejDabnvmgW4UAvqoSgN2pPXeJ7dcuPdS6JY0TLdWPAz6r\nxIFYbsJUYr3nNABt7PIekhScvNSbEqgcvUU6wGgI7px+IpSqt8Te3dZouvvQOPhQ\nKI50uty5lgYMdZXVhs/7m2+FqlpHZz8OVVPJNc4y7/W5CkZSW+lbCFY/j//ja8gv\nRes3UzFkzpSksOfi//PvbmLPM0IKJ6FEug9xhMFPqQKBgQD/R9a/XAt47Dfh6vK4\nTVfj5TTZN/ygIbrWhH/LB/R/gI9SzVcZEoeLm776IFfp3otb3cdCUXH9uZDnO9ix\nwy9pvG2deZz5TxWDHDCYzsg4Ps+A7vK27/ct5yH2eCc8d/GTka6hn9cb1nSYioP6\n7Iyt3QrQ8RK+E632MEcQdjLnzwKBgQC6g3h0IZMW4vM2r93ty+FF9yOu9yhgtHBa\nFaUclOUxX3skbJTunwTH9iaQ3B8YqwQrDDfNBvoT0QpvRfz/DXH0tzODnEihxGfv\njYDZ3picGdxlIzHt2Ee/zpLBEjhAA4Wt2dcTrjj1TsAifAGUJDCaiKNONVBYlvaI\nQ70VsqsUmQKBgFPEPfpi+LzAPoIad3T0pC966cGRdosRJl738Xss7BTemakhCkCG\n7QVpoNwwushaJz6I4ranRRFtz9egsrV6B9fZZdqzqkfApJ12JZgu2lJigfKb9fcD\nfQeJ/YID4VQdQ58ZwcT1Tz+qOm5HnZE8B9mRW9g+EtleWcocA2Wqc3/PAoGAF9IG\npj5LfNbLXSak32P0h20C36utOnyRBNBS4A2cH+wj3AkKFFe20pr7XfDe/9WHmL/c\nuJC1i6ZdAM0dfK2I6kojiCGDnTVqWMvnsuuc7gLXhQszqz6+Gx8U2xeqm3JXtlZm\nA5typtHB9CWGRhdBJdthj/F7K3VMUybjlUvWUbECgYArgGOhfV22N5x/EB6Lj2vf\npz3S+zVwVipjbnPUhT6F34VhPCiBNMBKML5nEM8Q21m7GEx59fBilrjnfGKAuVLk\nc9U2OEBUb5x7d2TbtE0kQl8LYdcj+lLz2f7xhj9QfJ4j4Cowm6/+v+N8QRw1HenW\nuCrH4isUQUH3jYz7Gz/U0A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "investing-dashboard@investing-dashboard-421609.iam.gserviceaccount.com",
+  "client_id": "106245858321731633321",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/investing-dashboard%40investing-dashboard-421609.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
