@@ -970,18 +970,18 @@ if __name__ == "__main__":
         x = np.array(lst)
         return np.unique(x)
 
-    font_dirs = [os.getcwd() + '/Nanum_Gothic/NanumGothic-Bold.ttf']
-    # font_dirs = "Nanum_Gothic/NanumGothic-Bold.ttf"
-    # st.write(os.getcwd())
-    #font_dirs = "https://github.com/sizipusx/fundamental/blob/88d572cbf21800d0240f2fe2320036557ef0a140/Nanum_Gothic/NanumGothic-Bold.ttf"
-    font_files = fm.findSystemFonts(fontpaths=font_dirs)
+    # font_dirs = [os.getcwd() + '/Nanum_Gothic/NanumGothic-Bold.ttf']
+    # # font_dirs = "Nanum_Gothic/NanumGothic-Bold.ttf"
+    # # st.write(os.getcwd())
+    # #font_dirs = "https://github.com/sizipusx/fundamental/blob/88d572cbf21800d0240f2fe2320036557ef0a140/Nanum_Gothic/NanumGothic-Bold.ttf"
+    # font_files = fm.findSystemFonts(fontpaths=font_dirs)
 
-    for font_file in font_files:
-        fm.fontManager.addfont(font_file)
-    fm._load_fontmanager(try_read_cache=False)
+    # for font_file in font_files:
+    #     fm.fontManager.addfont(font_file)
+    # fm._load_fontmanager(try_read_cache=False)
 
-    fontNames = [f.name for f in fm.fontManager.ttflist]
-    fontname = st.selectbox("폰트 선택", unique(fontNames))
+    # fontNames = [f.name for f in fm.fontManager.ttflist]
+    # fontname = st.selectbox("폰트 선택", unique(fontNames))
     
     org = kb_df['지역']
     org = org.str.split(" ", expand=True)
