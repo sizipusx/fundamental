@@ -27,7 +27,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 import seaborn as sns
-cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
+cmap = sns.diverging_palette(250, 5, as_cmap=True)
 
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
