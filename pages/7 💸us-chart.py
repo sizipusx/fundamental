@@ -160,30 +160,18 @@ def run(ticker, overview_df, fdr_df):
         # st.dataframe(cprice)
         # st.write(f"close_price: {close_price}")
         with st.expander("See Raw Data"):
-            try:
-                col1, col2, col3 = st.columns([30,30,30])
-                with col1:
-                    st.dataframe(v_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-                with col2:
-                    st.dataframe(y_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-                with col3:
-                    st.dataframe(div_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-            except ValueError :
-                st.subheader("financial statements")
-                st.dataframe(f_df)
-                col1, col2, col3 = st.columns([30,30,30])
-                with col1:
-                    st.subheader("Valuations")
-                    st.dataframe(v_df)
-                with col2:
-                    st.subheader("Expecting Yield")
-                    st.dataframe(y_df)
-                with col3:
-                    st.subheader("Dividends")
-                    st.dataframe(div_df)
+            st.subheader("financial statements")
+            st.dataframe(f_df)
+            col1, col2, col3 = st.columns([30,30,30])
+            with col1:
+                st.subheader("Valuations")
+                st.dataframe(v_df)
+            with col2:
+                st.subheader("Expecting Yield")
+                st.dataframe(y_df)
+            with col3:
+                st.subheader("Dividends")
+                st.dataframe(div_df)
          ### PERR, PBRR 같이 보기 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,30,30])
@@ -277,65 +265,35 @@ def run(ticker, overview_df, fdr_df):
         cash_df = f_data_list[2] 
         ratio_df = f_data_list[3]
         with st.expander("See Raw Data"):
-            try:
-                col1, col2, col3, col4 = st.columns([30,30,30,30])
-                with col1:
-                    st.dataframe(income_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-                with col2:
-                    st.dataframe(balance_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-                with col3:
-                    st.dataframe(cashflow_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-                with col4:
-                    st.dataframe(ratio_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-            except ValueError :
-                st.subheader("financial statements")
-                col1, col2, col3, col4 = st.columns([30,30,30, 30])
-                with col1:
-                    st.subheader("Income")
-                    st.dataframe(income_df)
-                with col2:
-                    st.subheader("Balance Sheet")
-                    st.dataframe(balance_df)
-                with col3:
-                    st.subheader("Cash Flow")
-                    st.dataframe(cashflow_df) 
-                with col4:
-                    st.subheader("Ratio")
-                    st.dataframe(ratio_df)    
+            st.subheader("financial statements")
+            col1, col2, col3, col4 = st.columns([30,30,30, 30])
+            with col1:
+                st.subheader("Income")
+                st.dataframe(income_df)
+            with col2:
+                st.subheader("Balance Sheet")
+                st.dataframe(balance_df)
+            with col3:
+                st.subheader("Cash Flow")
+                st.dataframe(cashflow_df) 
+            with col4:
+                st.subheader("Ratio")
+                st.dataframe(ratio_df)    
         with st.expander("See Raw Data2"):
-            try:
-                col1, col2, col3, col4 = st.columns([30,30,30,30])
-                with col1:
-                    st.dataframe(in_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                            .format(precision=2, na_rep='MISSING', thousands=","))
-                with col2:
-                    st.dataframe(ba_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-                with col3:
-                    st.dataframe(cash_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-                with col4:
-                    st.dataframe(ratio_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
-            except ValueError :
-                st.subheader("financial statements")
-                col1, col2, col3, col4 = st.columns([30,30,30, 30])
-                with col1:
-                    st.subheader("Income")
-                    st.dataframe(in_df)
-                with col2:
-                    st.subheader("Balance Sheet")
-                    st.dataframe(ba_df)
-                with col3:
-                    st.subheader("Cash Flow")
-                    st.dataframe(cash_df) 
-                with col4:
-                    st.subheader("Ratio")
-                    st.dataframe(ratio_df)    
+            st.subheader("financial statements")
+            col1, col2, col3, col4 = st.columns([30,30,30, 30])
+            with col1:
+                st.subheader("Income")
+                st.dataframe(in_df)
+            with col2:
+                st.subheader("Balance Sheet")
+                st.dataframe(ba_df)
+            with col3:
+                st.subheader("Cash Flow")
+                st.dataframe(cash_df) 
+            with col4:
+                st.subheader("Ratio")
+                st.dataframe(ratio_df)    
 
         com_name_df = tickers[tickers['Symbol'] == input_ticker ]
         # st.write(com_name_df)
@@ -634,14 +592,12 @@ def run(ticker, overview_df, fdr_df):
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
                         st.subheader('PER Band Raw Data') 
-                        st.dataframe(band_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                        st.dataframe(band_df)
                     with col2:
                         st.write("")
                     with col3:
                         st.subheader('PBR Band Raw Data') 
-                        st.dataframe(pbr_df.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
+                        st.dataframe(pbr_df)
             with st.container():
                 col1, col2, col3 = st.columns([30,2,30])
                 with col1:
