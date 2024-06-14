@@ -66,19 +66,43 @@ kbm_dict = pd.ExcelFile(kb_path)
 one_dict = pd.ExcelFile(one_path)
 #geojson file open
 geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigungu_json.geojson'
-################################### gsheet 로 변경: 2022-7-17 ###########################
+################################### gsheet 로 변경: 2022-7-17, 2024. 6. 14 변경###########################
 #주간 gsheet
 #w_gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
+import gspread
+from google.oauth2.service_account import Credentials
+from google.cloud import secretmanager
+import json
 
-scope = [
-    'https://spreadsheets.google.com/feeds',
-    'https://www.googleapis.com/auth/drive',
-    ]
+# Google Cloud 프로젝트 ID와 비밀 이름 설정
+PROJECT_ID = 'weekly-house-db'
+SECRET_ID = '116674291194095025360'
 
-# json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
-json_file_name = "files/weekly-house-db-ac0a43b61ddd.json"
+# Secret Manager 클라이언트 초기화
+client = secretmanager.SecretManagerServiceClient()
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+# 비밀 버전 접근
+secret_name = f"projects/{PROJECT_ID}/secrets/{SECRET_ID}/versions/latest"
+response = client.access_secret_version(name=secret_name)
+
+# 비밀 값 가져오기
+secret_payload = response.payload.data.decode('UTF-8')
+credentials_info = json.loads(secret_payload)
+
+# 인증 및 서비스 객체 생성
+credentials = Credentials.from_service_account_info(credentials_info)
+# client = gspread.authorize(credentials)
+
+# #=================================================
+# scope = [
+#     'https://spreadsheets.google.com/feeds',
+#     'https://www.googleapis.com/auth/drive',
+#     ]
+
+# # json_file_name = '/fundamental/files/weekly-house-db-ac0a43b61ddd.json'
+# json_file_name = "files/weekly-house-db-ac0a43b61ddd.json"
+
+# credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
 gc = gspread.authorize(credentials)
 
 one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
