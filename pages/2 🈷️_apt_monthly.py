@@ -76,7 +76,7 @@ import json
 
 # Google Cloud 프로젝트 ID와 비밀 이름 설정
 PROJECT_ID = 'weekly-house-db'
-SECRET_ID = '116674291194095025360'
+SECRET_ID = 'ac0a43b61dddf777eccfdb32b0ec2bb724f83a80'
 
 # Secret Manager 클라이언트 초기화
 client = secretmanager.SecretManagerServiceClient()
