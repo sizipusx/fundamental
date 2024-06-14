@@ -225,20 +225,10 @@ def run(stat_name, stat_ticker, fred_dict):
 
         #Raw 데이터 보기           
         with st.expander("See Raw Data"):
-            try:
-                if stat_ticker == '200Y003':
-                    total_df = total_df.set_index(keys=total_df['TIME'])
-                    total_df = total_df.drop(['TIME','index'], axis=1)
-                    st.dataframe(total_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-                else:
-                    st.dataframe(data_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-            except ValueError :
-                if stat_ticker == '200Y003':
-                    st.dataframe(total_df.loc[::-1])
-                else:
-                    st.dataframe(data_df.loc[::-1])
+            if stat_ticker == '200Y003':
+                st.dataframe(total_df.loc[::-1])
+            else:
+                st.dataframe(data_df.loc[::-1])
         #세부 항목 조정
         if stat_ticker == '151Y005' or stat_ticker == '104Y014':#예금/대출일 경우 조 단위로 변경
             data_df = data_df.astype(float)/1000
@@ -314,21 +304,11 @@ def run(stat_name, stat_ticker, fred_dict):
                 with st.container():
                     col1, col2, col3 = st.columns([30,2,30])
                     with col1:
-                        try:
-                            st.dataframe(inter_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                        .format(precision=2, na_rep='MISSING', thousands=","))
-                        except ValueError :
-                            st.dataframe(inter_df.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                        .format(precision=2, na_rep='MISSING', thousands=","))
+                        st.dataframe(inter_df)
                     with col2:
                         st.write("")
                     with col3: 
-                        try:
-                            st.dataframe(cdf.style.background_gradient(cmap, axis=0))
-                                                        
-                        except ValueError :
-                            st.dataframe(cdf.iloc[:4].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                        .format(precision=2, na_rep='MISSING', thousands=","))
+                        st.dataframe(cdf)
             ec.fred_spread_chart(cdf, inter_df)
             st.markdown("""---""")
             #10년물만 데이터가 %인 경우 
@@ -356,15 +336,8 @@ def run(stat_name, stat_ticker, fred_dict):
             df_m_yoy = df_m.pct_change(periods=12)*100
             #fred_df.index = fred_df.index.strftime('%Y%m%d')
             with st.expander("See Raw Data"):
-                try:
-                    st.dataframe(df_m.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-                    st.dataframe(df_d.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-                except ValueError :
-                    st.dataframe(df_m.loc[::-1].astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                                .format(precision=2, na_rep='MISSING', thousands=","))
-
+                st.dataframe(df_m.loc[::-1])
+                st.dataframe(df_d.loc[::-1])
 
 
 
