@@ -170,10 +170,10 @@ def run(ticker, com_name):
     with st.expander("See Raw Data"):
         try:
             st.dataframe(value_df.to_frame().T)
-            st.dataframe(fn_ann_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                        .format(precision=2, na_rep='MISSING', thousands=","))
-            st.dataframe(fn_qu_df.T.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                  .format(precision=2, na_rep='MISSING', thousands=","))
+            st.dataframe(fn_ann_df.T)#.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                      #  .format(precision=2, na_rep='MISSING', thousands=","))
+            st.dataframe(fn_qu_df.T)#.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                  #.format(precision=2, na_rep='MISSING', thousands=","))
         except ValueError :
             st.dataframe(value_df.to_frame().T)
             st.dataframe(fn_ann_df.T)
