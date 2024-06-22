@@ -36,3 +36,6 @@ google-cloud-secret-manager
 click==8
 folium>=0.11
 streamlit_folium==0.6.14
+pmdarima 
+prophet 
+tensorflow
