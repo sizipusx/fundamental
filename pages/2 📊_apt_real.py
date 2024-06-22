@@ -211,7 +211,7 @@ if __name__ == "__main__":
 
     #여기서부터는 선택
     my_choice = st.sidebar.radio(
-                    "Select Menu", ('월간 동향', '지수 같이보기','Index', '지역 같이보기'))
+                    "Select Menu", ('월간 동향', '지수 같이보기','Index', '지역 같이보기', 'Predict'))
     if my_choice == '월간 동향':
         ### Draw Bubble chart ##############
         with st.container():
@@ -442,7 +442,7 @@ if __name__ == "__main__":
             <br>
             """
             st.markdown(html_br, unsafe_allow_html=True)
-    else: #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
+    elif my_choice == "지역 같이보기": #KB는 자체적으로 볼때, 지역 같이 볼 때는 부동산원만 
         #지역과 기간 같이 보기
         period_ = mdf.index.strftime("%Y-%m").tolist()
         st.subheader("지역별 기간 상승률 분석")
@@ -565,7 +565,8 @@ if __name__ == "__main__":
             # html_br="""
             # <br>
             # """               
-    
+    else:
+        st.dataframe(mdf)
 html_br="""
 <br>
 """
