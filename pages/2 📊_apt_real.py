@@ -14,9 +14,10 @@ import drawAPT_update
 import seaborn as sns
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import plotly.io as pio
 
 cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
-
+pio.templates.default = "myID"
 #############html 영역####################
 html_header="""
 <head>
@@ -373,7 +374,7 @@ if __name__ == "__main__":
                                         hover_name=selected_dosi,
                                         text=selected_dosi
                                     )
-                            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2", xaxis_tickformat = '%Y')
+                            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y')
                             st.plotly_chart(fig)
                         except Exception as e:
                             st.write(e)
@@ -421,7 +422,7 @@ if __name__ == "__main__":
                                         hover_name=selected_dosi,
                                         text=selected_dosi
                                     )
-                            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2", xaxis_tickformat = '%Y')
+                            fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y')
                             st.plotly_chart(fig)
                         except Exception as e:
                             st.write(e)
