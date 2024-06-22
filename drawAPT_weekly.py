@@ -44,7 +44,7 @@ pio.templates["myID"] = go.layout.Template(
         )
     ]
 )
-pio.templates.default = "plotly_dark+myID"
+# pio.templates.default = "plotly_dark+myID"
 
 def make_dynamic_graph(s_df, js_df):
     
