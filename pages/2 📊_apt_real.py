@@ -637,9 +637,9 @@ if __name__ == "__main__":
         sarima_mape = (abs((test - sarima_forecast_values) / test).mean()) * 100
         #수치 표시
         col1, col2, col3 = st.columns(3) 
-        col1.metric(label="SARIMA MSE", value = str(round(sarima_mse)))
-        col2.metric(label="SARIMA MAE", value = str(round(sarima_mae)))
-        col3.metric(label="SARIMA MAPE", value = str(round(sarima_mape))+"%")
+        col1.metric(label="SARIMA MSE", value = str(round(sarima_mse,2)))
+        col2.metric(label="SARIMA MAE", value = str(round(sarima_mae,2)))
+        col3.metric(label="SARIMA MAPE", value = str(round(sarima_mape,2))+"%")
         # Plotly를 사용한 시각화
         trace_train = go.Scatter(x=train.index, y=train, mode='lines', name='Train', marker_color = marker_colors[0])
         trace_test = go.Scatter(x=test.index, y=test, mode='lines', name='Test', marker_color = marker_colors[2])
@@ -719,8 +719,8 @@ if __name__ == "__main__":
         p_mse = sum((actual - predicted) ** 2) / len(actual)
         #수치 표시
         col1, col2 = st.columns(2) 
-        col1.metric(label="Prophet MSE", value = str(round(p_mse)))
-        col2.metric(label="Prophet MAE", value = str(round(p_mae)))
+        col1.metric(label="Prophet MSE", value = str(round(p_mse,2)))
+        col2.metric(label="Prophet MAE", value = str(round(p_mae,2)))
 
         #LSTM
         import numpy as np
