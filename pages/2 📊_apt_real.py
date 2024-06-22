@@ -37,7 +37,12 @@ html_header="""
   border-style: inset;
   border-width: 1.5px;"></h1>
 """
-
+marker_colors = ['rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(160,103,173)', 'rgb(244,201,107)', 'rgb(153,204,0)', \
+                       'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,69,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
+                        'rgb(255,153,204)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
+                         'rgb(128,128,0)', 'rgb(128,0,128)', 'rgb(0,128,128)', 'rgb(192,192,192)', 'rgb(153,153,255)', \
+                             'rgb(255,255,0)', 'rgb(255,255,204)', 'rgb(102,0,102)', 'rgb(255,128,128)', 'rgb(0,102,204)',\
+                                 'rgb(255,102,0)', 'rgb(51,51,51)', 'rgb(51,153,102)', 'rgb(51,153,102', 'rgb(204,153,255)']
 st.set_page_config(page_title="월간 아파트 실거래가격 지수", page_icon="files/logo2.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
@@ -631,10 +636,10 @@ if __name__ == "__main__":
         sarima_mae = mean_absolute_error(test, sarima_forecast_values)
         sarima_mape = (abs((test - sarima_forecast_values) / test).mean()) * 100
         #수치 표시
-        col1, col2 = st.columns(3) 
+        col1, col2, col3 = st.columns(3) 
         col1.metric(label="SARIMA MSE", value = str(round(sarima_mse)))
         col2.metric(label="SARIMA MAE", value = str(round(sarima_mae)))
-        col1.metric(label="SARIMA MAPE", value = str(round(sarima_mape)+"%"))
+        col3.metric(label="SARIMA MAPE", value = str(round(sarima_mape)+"%"))
         # Plotly를 사용한 시각화
         trace_train = go.Scatter(x=train.index, y=train, mode='lines', name='Train', marker_color = marker_colors[0])
         trace_test = go.Scatter(x=test.index, y=test, mode='lines', name='Test', marker_color = marker_colors[2])
