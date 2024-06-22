@@ -218,7 +218,7 @@ def draw_index_change_with_bar(last_df, flag, last_week):
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_xaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(template="myID")
+    fig.update_layout(template="myID+plotly_dark")
     st.plotly_chart(fig)
 
 def draw_index_change_with_bubble(last_df, flag, last_week):
