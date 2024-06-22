@@ -661,6 +661,7 @@ if __name__ == "__main__":
 
         # Prophet에서 인식할 수 있도록 열 이름 변경
         data.rename(columns={'date': 'ds', selected_dosi: 'y'}, inplace=True)
+        st.dataframe(data)
 
         # Prophet 모델 생성 및 데이터 적합
         model = Prophet()
