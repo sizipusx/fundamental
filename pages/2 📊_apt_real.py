@@ -567,7 +567,190 @@ if __name__ == "__main__":
             # <br>
             # """               
     else:
-        st.dataframe(mdf)
+        st.subheader("실거래가지수 얘측")
+        column_list = mdf.columns.to_list()
+        city_series = pd.Series(column_list)
+        selected_dosi = st.sidebar.selectbox(
+                '광역시-도', column_list
+            )
+    
+        submit = st.sidebar.button('Predict Price Index')
+        from statsmodels.tsa.statespace.sarimax import SARIMAX
+        # Select the '전국' column for ARIMA/SARIMA forecasting
+        data =mdf[selected_dosi]
+
+        # Fit a SARIMA model (SARIMA is more general than ARIMA)
+        model = SARIMAX(data, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
+        results = model.fit()
+
+        # Forecast for the next 6 months
+        forecast = results.get_forecast(steps=6)
+        forecast_index = pd.date_range(start=data.index[-1] + pd.DateOffset(months=1), periods=6, freq='M')
+        forecast_values = forecast.predicted_mean
+        forecast_conf_int = forecast.conf_int()
+
+        # Prepare data for Plotly visualization
+        trace_actual = go.Scatter(x=data.index, y=data, mode='lines', name='Actual')
+        trace_forecast = go.Scatter(x=forecast_index, y=forecast_values, mode='lines', name='Forecast', line=dict(dash='dash'))
+        trace_upper = go.Scatter(x=forecast_index, y=forecast_conf_int.iloc[:, 1], mode='lines', fill=None, name='Upper Confidence Interval', line=dict(dash='dot'))
+        trace_lower = go.Scatter(x=forecast_index, y=forecast_conf_int.iloc[:, 0], mode='lines', fill='tonexty', name='Lower Confidence Interval', line=dict(dash='dot'))
+
+        # Calculate trend line
+        z = np.polyfit(data.index.astype(int), data.values, 1)
+        p = np.poly1d(z)
+        trendline = p(data.index.astype(int))
+
+        # Trace for trend line
+        trace_trend = go.Scatter(x=data.index, y=trendline, mode='lines', name='Trend Line', line=dict(color='red'))
+
+        # Combine the traces
+        data_plot = [trace_actual, trace_forecast, trace_upper, trace_lower, trace_trend]
+
+        # Define the layout
+        title_text = dict(text='<b>'+selected_dosi+'</b> APT Price Indices Forecast with <b>SARIMA</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+        layout = go.Layout(title=title_text, xaxis=dict(title='Date'), yaxis=dict(title='Index'), template="myID")
+        # Create the figure
+        fig = go.Figure(data=data_plot, layout=layout)
+        st.plotly_chart(fig, use_container_width=True)
+        #evaluation
+        from sklearn.metrics import mean_squared_error, mean_absolute_error
+        # 데이터 분할: 80%는 학습용, 20%는 테스트용
+        train_size = int(len(data) * 0.8)
+        train, test = data[:train_size], data[train_size:]
+
+        # 모델 학습
+        sarima_model = SARIMAX(train, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
+        sarima_model_fit = sarima_model.fit()
+
+        # 테스트 데이터에 대한 예측 수행
+        sarima_forecast = sarima_model_fit.get_forecast(steps=len(test))
+        sarima_forecast_values = sarima_forecast.predicted_mean
+
+        # 평가 메트릭 계산
+        sarima_mse = mean_squared_error(test, sarima_forecast_values)
+        sarima_mae = mean_absolute_error(test, sarima_forecast_values)
+        sarima_mape = (abs((test - sarima_forecast_values) / test).mean()) * 100
+        #수치 표시
+        col1, col2 = st.columns(3) 
+        col1.metric(label="SARIMA MSE", value = str(round(sarima_mse)))
+        col2.metric(label="SARIMA MAE", value = str(round(sarima_mae)))
+        col1.metric(label="SARIMA MAPE", value = str(round(sarima_mape)+"%"))
+        # Plotly를 사용한 시각화
+        trace_train = go.Scatter(x=train.index, y=train, mode='lines', name='Train', marker_color = marker_colors[0])
+        trace_test = go.Scatter(x=test.index, y=test, mode='lines', name='Test', marker_color = marker_colors[2])
+        trace_forecast = go.Scatter(x=test.index, y=sarima_forecast_values, mode='lines', name='Forecast', line=dict(color='red'))
+
+        data_plot = [trace_train, trace_test, trace_forecast]
+        title_text = dict(text='<b>'+selected_dosi+'</b> APT Price Indices Forecast <b>Evaluation with SARIMA</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+
+        layout = go.Layout(title=title_text, xaxis=dict(title='Date'), yaxis=dict(title='Index'),  template="myID")
+
+        fig = go.Figure(data=data_plot, layout=layout)
+        st.plotly_chart(fig, use_container_width=True)
+
+        #prophet
+        from prophet import Prophet
+        # 'Date'와 '전국' 열만 선택
+        data =mdf[selected_dosi]
+        data = data.reset_index()
+
+        # Prophet에서 인식할 수 있도록 열 이름 변경
+        data.rename(columns={'date': 'ds', selected_dosi: 'y'}, inplace=True)
+
+        # Prophet 모델 생성 및 데이터 적합
+        model = Prophet()
+        model.fit(data)
+
+        # 미래 6개월 데이터를 생성하여 예측
+        future = model.make_future_dataframe(periods=6, freq='M')
+        forecast = model.predict(future)
+
+        # Plotly 그래프 생성
+        # 그래프 레이아웃 설정
+        title_text = dict(text='<b>'+selected_dosi+'</b> APT Price Indices Forecast with <b>Prophet</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+        layout = go.Layout(title=title_text, xaxis=dict(title='Date'), yaxis=dict(title='House Price Real Index'),  template="myID")
+        # Create the figure
+        fig = go.Figure(layout=layout)
+
+        # 실제 데이터
+        fig.add_trace(go.Scatter(x=data['ds'], y=data['y'], mode='lines', name='Actual'))
+
+        # 예측 데이터
+        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Forecast'))
+
+        # 예측 범위 (불확실성)
+        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat_upper'], mode='lines', name='Upper Bound', line=dict(dash='dash')))
+        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat_lower'], mode='lines', name='Lower Bound', line=dict(dash='dash'),
+                                fill='tonexty', fillcolor='rgba(0, 100, 80, 0.2)'))
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig, use_container_width=True)
+
+        #LSTM
+        # 데이터 정규화
+        import numpy as np
+        from sklearn.preprocessing import MinMaxScaler
+        from tensorflow.keras.models import Sequential
+        from tensorflow.keras.layers import Dense, LSTM
+
+        data =mdf[selected_dosi]
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        scaled_data = scaler.fit_transform(data)
+
+        # 학습 데이터 준비
+        X_train, y_train = [], []
+        for i in range(12, len(scaled_data)):
+            X_train.append(scaled_data[i-12:i, 0])
+            y_train.append(scaled_data[i, 0])
+        X_train, y_train = np.array(X_train), np.array(y_train)
+        X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+
+        # LSTM 모델 구성
+        model = Sequential()
+        model.add(LSTM(units=50, return_sequences=True, input_shape=(X_train.shape[1], 1)))
+        model.add(LSTM(units=50))
+        model.add(Dense(1))
+
+        # 모델 컴파일
+        model.compile(optimizer='adam', loss='mean_squared_error')
+
+        # 모델 학습
+        model.fit(X_train, y_train, epochs=100, batch_size=32, verbose=1)
+
+        # 향후 6개월 예측
+        predictions = scaled_data[-12:]
+        X_test = [predictions]
+        X_test = np.array(X_test)
+        X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
+
+        forecast = []
+        for _ in range(6):
+            pred = model.predict(X_test[-1].reshape(1, X_test.shape[1], 1))
+            forecast.append(pred[0, 0])
+            next_input = np.append(X_test[-1, 1:], pred)
+            next_input = next_input.reshape(1, next_input.shape[0], 1)
+            X_test = np.vstack([X_test, next_input])
+
+        forecast = scaler.inverse_transform(np.array(forecast).reshape(-1, 1)).flatten()
+
+        # 시각화 (Plotly 사용)
+        actual = go.Scatter(x=data.index, y=data[selected_dosi], mode='lines', name='Actual')
+        forecast_dates = pd.date_range(start=data.index[-1], periods=7, freq='MS')[1:]
+        forecast_line = go.Scatter(x=forecast_dates, y=forecast, mode='lines', name='LSTM Forecast', line=dict(dash='dot'))
+        title_text = dict(text='<b>'+selected_dosi+'</b> APT Price Indices Forecast with <b>LSTM</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+        layout = go.Layout(
+            title=title_text,
+            xaxis=dict(title='Date'),
+            yaxis=dict(title='Price Index'),
+            showlegend=True,             
+            template="myID"
+        )
+
+        fig = go.Figure(data=[actual, forecast_line], layout=layout)
+        st.plotly_chart(fig, use_container_width=True)
+
+
+
+
 html_br="""
 <br>
 """
