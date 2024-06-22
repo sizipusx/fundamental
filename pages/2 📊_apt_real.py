@@ -639,7 +639,7 @@ if __name__ == "__main__":
         col1, col2, col3 = st.columns(3) 
         col1.metric(label="SARIMA MSE", value = str(round(sarima_mse)))
         col2.metric(label="SARIMA MAE", value = str(round(sarima_mae)))
-        col3.metric(label="SARIMA MAPE", value = str(round(sarima_mape)+"%"))
+        col3.metric(label="SARIMA MAPE", value = str(round(sarima_mape))+"%")
         # Plotly를 사용한 시각화
         trace_train = go.Scatter(x=train.index, y=train, mode='lines', name='Train', marker_color = marker_colors[0])
         trace_test = go.Scatter(x=test.index, y=test, mode='lines', name='Test', marker_color = marker_colors[2])
@@ -648,7 +648,7 @@ if __name__ == "__main__":
         data_plot = [trace_train, trace_test, trace_forecast]
         title_text = dict(text='<b>'+selected_dosi+'</b> APT Price Indices Forecast <b>Evaluation with SARIMA</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
-        layout = go.Layout(title=title_text, xaxis=dict(title='Date'), yaxis=dict(title='Index'),  template="myID")
+        layout = go.Layout(title=title_text, yaxis=dict(title='Index'),  template="myID")
 
         fig = go.Figure(data=data_plot, layout=layout)
         st.plotly_chart(fig, use_container_width=True)
@@ -672,42 +672,82 @@ if __name__ == "__main__":
 
         # Plotly 그래프 생성
         # 그래프 레이아웃 설정
+        # Plotly 그래프 생성
+        fig = make_subplots(rows=3, cols=1, subplot_titles=('Actual vs Forecast', 'Yearly Seasonality', 'Weekly Seasonality'), vertical_spacing=0.15)
         title_text = dict(text='<b>'+selected_dosi+'</b> APT Price Indices Forecast with <b>Prophet</b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
         layout = go.Layout(title=title_text, xaxis=dict(title='Date'), yaxis=dict(title='House Price Real Index'),  template="myID")
         # Create the figure
         fig = go.Figure(layout=layout)
 
         # 실제 데이터
-        fig.add_trace(go.Scatter(x=data['ds'], y=data['y'], mode='lines', name='Actual'))
+        fig.add_trace(go.Scatter(x=data['ds'], y=data['y'], mode='lines', name='Actual'), row=1, col=1)
 
         # 예측 데이터
-        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Forecast'))
+        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Forecast'), row=1, col=1)
 
         # 예측 범위 (불확실성)
-        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat_upper'], mode='lines', name='Upper Bound', line=dict(dash='dash')))
-        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat_lower'], mode='lines', name='Lower Bound', line=dict(dash='dash'),
-                                fill='tonexty', fillcolor='rgba(0, 100, 80, 0.2)'))
+        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat_upper'],
+                                mode='lines', name='Upper Bound', line=dict(dash='dash')), row=1, col=1)
+        fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat_lower'],
+                                mode='lines', name='Lower Bound', line=dict(dash='dash'),
+                                fill='tonexty', fillcolor='rgba(0, 100, 80, 0.2)'), row=1, col=1)
+
+        # 계절성 데이터 추출
+        yearly = model.plot_components(forecast)
+        yearly_data = yearly.get_axes()[0].lines[0].get_xydata()
+
+        weekly = model.plot_components(forecast)
+        weekly_data = weekly.get_axes()[1].lines[0].get_xydata()
+
+        # 연간 계절성
+        fig.add_trace(go.Scatter(x=yearly_data[:, 0], y=yearly_data[:, 1],
+                                mode='lines', name='Yearly Seasonality'), row=2, col=1)
+
+        # 주간 계절성
+        fig.add_trace(go.Scatter(x=weekly_data[:, 0], y=weekly_data[:, 1],
+                                mode='lines', name='Weekly Seasonality'), row=3, col=1)
+
         fig.update_layout(template="myID")
         st.plotly_chart(fig, use_container_width=True)
 
+        # 성능 평가
+        actual = data['y'].values
+        predicted = forecast['yhat'][:len(actual)].values
+
+        # MAE, MSE 계산
+        p_mae = sum(abs(actual - predicted)) / len(actual)
+        p_mse = sum((actual - predicted) ** 2) / len(actual)
+        #수치 표시
+        col1, col2 = st.columns(2) 
+        col1.metric(label="Prophet MSE", value = str(round(p_mse)))
+        col2.metric(label="Prophet MAE", value = str(round(p_mae)))
+
         #LSTM
-        # 데이터 정규화
         import numpy as np
         from sklearn.preprocessing import MinMaxScaler
         from tensorflow.keras.models import Sequential
         from tensorflow.keras.layers import Dense, LSTM
 
+        # 데이터 정규화
         data =mdf[selected_dosi]
         scaler = MinMaxScaler(feature_range=(0, 1))
         scaled_data = scaler.fit_transform(data)
 
         # 학습 데이터 준비
         X_train, y_train = [], []
-        for i in range(12, len(scaled_data)):
+        for i in range(12, len(scaled_data) - 6):
             X_train.append(scaled_data[i-12:i, 0])
             y_train.append(scaled_data[i, 0])
         X_train, y_train = np.array(X_train), np.array(y_train)
         X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+
+        # 테스트 데이터 준비
+        X_test, y_test = [], []
+        for i in range(len(scaled_data) - 12, len(scaled_data)):
+            X_test.append(scaled_data[i-12:i, 0])
+            y_test.append(scaled_data[i, 0])
+        X_test, y_test = np.array(X_test), np.array(y_test)
+        X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
 
         # LSTM 모델 구성
         model = Sequential()
@@ -719,7 +759,7 @@ if __name__ == "__main__":
         model.compile(optimizer='adam', loss='mean_squared_error')
 
         # 모델 학습
-        model.fit(X_train, y_train, epochs=100, batch_size=32, verbose=1)
+        model.fit(X_train, y_train, epochs=100, batch_size=32, verbose=0)
 
         # 향후 6개월 예측
         predictions = scaled_data[-12:]
@@ -753,6 +793,15 @@ if __name__ == "__main__":
         fig = go.Figure(data=[actual, forecast_line], layout=layout)
         st.plotly_chart(fig, use_container_width=True)
 
+        # 모델 성능 평가
+        l_mae = mean_absolute_error(y_test, predictions)
+        l_mse = mean_squared_error(y_test, predictions)
+        l_mape = np.mean(np.abs((y_test - predictions) / y_test)) * 100
+        #수치 표시
+        col1, col2, col3 = st.columns(3) 
+        col1.metric(label="SARIMA MSE", value = str(round(l_mse)))
+        col2.metric(label="SARIMA MAE", value = str(round(l_mae)))
+        col3.metric(label="SARIMA MAPE", value = str(round(l_mape))+"%")
 
 
 
