@@ -61,7 +61,7 @@ def basic_chart(selected_dosi, index_df, index_ch, flag):
                                     text= index_df[selected_dosi].round(decimals=1), textposition = 'top center', marker_color = marker_colors1[0]),
                                     secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}') 
-    fig.add_hline(y=index_ch[selected_dosi].mean(), line_width=2, line_dash="dot", line_color="blue",  label=dict(text="평균상승률: "+str(round(index_ch[selected_dosi].mean(),2)), textposition="end", yanchor="top"), secondary_y = True)
+    fig.add_hline(y=index_ch[selected_dosi].mean(), line_width=2, line_dash="dot", line_color="blue",  label=dict(text="평균상승률: "+str(round(index_ch[selected_dosi].mean(),2)), textposition="end", yanchor="top"))
     fig.update_yaxes(title_text="지수", showticklabels= True, showgrid = True, zeroline=True,  secondary_y = False)
     fig.update_yaxes(title_text="증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
     fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
