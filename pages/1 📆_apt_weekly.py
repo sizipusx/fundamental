@@ -26,8 +26,7 @@ import streamlit as st
 
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
-import seaborn as sns
-cmap = sns.diverging_palette(250, 5, as_cmap=True)
+
 
 # font_list = [font.name for font in font_manager.fontManager.ttflist]
 # st.write(font_list)
@@ -675,14 +674,7 @@ def draw_basic():
                 rank_df = rank_df.reset_index()
                 #add aggrid table
                 #response  = aggrid_interactive_table(df=rank_df)
-                st.dataframe(rank_df.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                    .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                    .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                    .set_table_styles(
-                            [{'selector': f'th.col_heading.level0.col{col_loc}',
-                            'props': [('background-color', '#67c5a4')]},
-                            ])\
-                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+                st.dataframe(rank_df)
             with col2:
                 st.write("")
             with col3:
@@ -710,14 +702,7 @@ def draw_basic():
                 rank_jdf = rank_jdf.reset_index()
                 #response  = aggrid_interactive_table(df=rank_jdf)
 
-                st.dataframe(rank_jdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                    .format(precision=2, na_rep='MISSING', thousands=" ", subset=slice_1)\
-                    .format(precision=0, na_rep='MISSING', thousands=" ", subset=slice_2)\
-                    .set_table_styles(
-                            [{'selector': f'th.col_heading.level0.col{col_loc}',
-                            'props': [('background-color', '#67c5a4')]},
-                            ])\
-                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)            
+                st.dataframe(rank_jdf)            
         html_br="""
         <br>
         """
@@ -743,15 +728,7 @@ def draw_basic():
                 slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
                 st.markdown("부동산원 235개 지역 _매매지수_ 변화율 기간별 순위")
                 rank_odf = rank_odf.reset_index()
-                st.dataframe(rank_odf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                    .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
-                    .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                    #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
-                    .set_table_styles(
-                            [{'selector': f'th.col_heading.level0.col{col_loc}',
-                            'props': [('background-color', '#67c5a4')]},
-                            ]) \
-                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)   
+                st.dataframe(rank_odf)   
             with col2:
                 st.write("")
             with col3:
@@ -771,15 +748,7 @@ def draw_basic():
                 slice_2 = ['1w', '2w', '3w', '1m', '1y' ]
                 st.markdown("부동산원 235개 지역 _전세지수_ 기간별 순위")
                 rank_ojdf = rank_ojdf.reset_index()
-                st.dataframe(rank_ojdf.style.background_gradient(cmap, axis=0, subset=slice_1)\
-                    .format(precision=2, na_rep='MISSING', thousands=",", subset=slice_1)\
-                    .format(precision=0, na_rep='MISSING', thousands=",", subset=slice_2)\
-                    #.set_properties(subset=[rank_odf.index], **{'width': '100px'})\
-                    .set_table_styles(
-                            [{'selector': f'th.col_heading.level0.col{col_loc}',
-                            'props': [('background-color', '#67c5a4')]},
-                            ]) \
-                    .bar(subset=slice_2, align='mid',color=['blue','red']), 800, 800)
+                st.dataframe(rank_ojdf)
                 
         html_br="""
         <br>
