@@ -641,8 +641,8 @@ if __name__ == "__main__":
         col2.metric(label="SARIMA MAE", value = str(round(sarima_mae,2)))
         col3.metric(label="SARIMA MAPE", value = str(round(sarima_mape,2))+"%")
         # Plotly를 사용한 시각화
-        trace_train = go.Scatter(x=train.index, y=train, mode='lines', name='Train', marker_color = marker_colors[0])
-        trace_test = go.Scatter(x=test.index, y=test, mode='lines', name='Test', marker_color = marker_colors[2])
+        trace_train = go.Scatter(x=train.index, y=train, mode='lines', name='Train')
+        trace_test = go.Scatter(x=test.index, y=test, mode='lines', name='Test')
         trace_forecast = go.Scatter(x=test.index, y=sarima_forecast_values, mode='lines', name='Forecast', line=dict(color='red'))
 
         data_plot = [trace_train, trace_test, trace_forecast]
