@@ -10,12 +10,10 @@ from plotly.subplots import make_subplots
 import streamlit as st
 import drawAPT_weekly 
 import drawAPT_update
-import seaborn as sns
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
-cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 #############html 영역####################
 html_header="""
