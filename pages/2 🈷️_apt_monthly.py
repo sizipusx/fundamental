@@ -10,8 +10,8 @@ from plotly.subplots import make_subplots
 import streamlit as st
 import drawAPT_weekly 
 import drawAPT_update
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+# import gspread
+# from oauth2client.service_account import ServiceAccountCredentials
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
 
@@ -67,28 +67,28 @@ geo_source = 'https://raw.githubusercontent.com/sizipusx/fundamental/main/sigung
 ################################### gsheet 로 변경: 2022-7-17, 2024. 6. 14 변경###########################
 #주간 gsheet
 #w_gsheet_url = r'https://raw.githubusercontent.com/sizipusx/fundamental/a55cf1853a1fc24ff338e7293a0d526fc0520e76/files/weekly-house-db-ac0a43b61ddd.json'
-import gspread
-from google.oauth2.service_account import Credentials
-from google.cloud import secretmanager
+# import gspread
+# from google.oauth2.service_account import Credentials
+# from google.cloud import secretmanager
 import json
 
-# Google Cloud 프로젝트 ID와 비밀 이름 설정
-PROJECT_ID = 'weekly-house-db'
-SECRET_ID = 'ac0a43b61dddf777eccfdb32b0ec2bb724f83a80'
+# # Google Cloud 프로젝트 ID와 비밀 이름 설정
+# PROJECT_ID = 'weekly-house-db'
+# SECRET_ID = 'ac0a43b61dddf777eccfdb32b0ec2bb724f83a80'
 
-# Secret Manager 클라이언트 초기화
-client = secretmanager.SecretManagerServiceClient()
+# # Secret Manager 클라이언트 초기화
+# client = secretmanager.SecretManagerServiceClient()
 
-# 비밀 버전 접근
-secret_name = f"projects/{PROJECT_ID}/secrets/{SECRET_ID}/versions/latest"
-response = client.access_secret_version(name=secret_name)
+# # 비밀 버전 접근
+# secret_name = f"projects/{PROJECT_ID}/secrets/{SECRET_ID}/versions/latest"
+# response = client.access_secret_version(name=secret_name)
 
-# 비밀 값 가져오기
-secret_payload = response.payload.data.decode('UTF-8')
-credentials_info = json.loads(secret_payload)
+# # 비밀 값 가져오기
+# secret_payload = response.payload.data.decode('UTF-8')
+# credentials_info = json.loads(secret_payload)
 
-# 인증 및 서비스 객체 생성
-credentials = Credentials.from_service_account_info(credentials_info)
+# # 인증 및 서비스 객체 생성
+# credentials = Credentials.from_service_account_info(credentials_info)
 # client = gspread.authorize(credentials)
 
 # #=================================================
@@ -101,14 +101,14 @@ credentials = Credentials.from_service_account_info(credentials_info)
 # json_file_name = "files/weekly-house-db-ac0a43b61ddd.json"
 
 # credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
-gc = gspread.authorize(credentials)
+# gc = gspread.authorize(credentials)
 
-one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
-kb_gsheet_url = r'https://docs.google.com/spreadsheets/d/168K8mcybxQfufMi39wnH5agmMrkK9C8ac57MajmOawI/edit?usp=sharing'
-basic_url = r'https://docs.google.com/spreadsheets/d/1s5sS6K7YpbwKJBofHKEl8WsbUDJ0acmrOuw6YN8YZhw/edit?usp=sharing'
+# one_gsheet_url = r'https://docs.google.com/spreadsheets/d/1_Sr5uA-rDyJnHgVu_pHMkmavuQC7VpuYpVmnBaNRX8M/edit?usp=sharing'
+# kb_gsheet_url = r'https://docs.google.com/spreadsheets/d/168K8mcybxQfufMi39wnH5agmMrkK9C8ac57MajmOawI/edit?usp=sharing'
+# basic_url = r'https://docs.google.com/spreadsheets/d/1s5sS6K7YpbwKJBofHKEl8WsbUDJ0acmrOuw6YN8YZhw/edit?usp=sharing'
 
-one_doc = gc.open_by_url(one_gsheet_url)
-kb_doc = gc.open_by_url(kb_gsheet_url)
+# one_doc = gc.open_by_url(one_gsheet_url)
+# kb_doc = gc.open_by_url(kb_gsheet_url)
 #인구, 세대수, 기본 소득
 bs_doc = gc.open_by_url(basic_url)
 #############################2022.9.30 sqlite3로 변경######################################
@@ -1087,60 +1087,60 @@ if __name__ == "__main__":
             ### 평균매매가격 증가 하락 지역 #########################################################################################
             #구글 시트에서 읽어 오기
             ## 구글 시트에서 읽어 오면 간단하지!!
-            omp= one_doc.worksheet('omp')
-            omp_values = omp.get_all_values()
-            omp_header, omp_rows = omp_values[1], omp_values[2:]
-            omp_df = pd.DataFrame(omp_rows, columns=omp_header)
-            ojp= one_doc.worksheet('ojp')
-            ojp_values = ojp.get_all_values()
-            ojp_header, ojp_rows = ojp_values[1], ojp_values[2:]
-            ojp_df = pd.DataFrame(ojp_rows, columns=ojp_header)
+            # omp= one_doc.worksheet('omp')
+            # omp_values = omp.get_all_values()
+            # omp_header, omp_rows = omp_values[1], omp_values[2:]
+            # omp_df = pd.DataFrame(omp_rows, columns=omp_header)
+            # ojp= one_doc.worksheet('ojp')
+            # ojp_values = ojp.get_all_values()
+            # ojp_header, ojp_rows = ojp_values[1], ojp_values[2:]
+            # ojp_df = pd.DataFrame(ojp_rows, columns=ojp_header)
 
-            #전세가율
-            ora= one_doc.worksheet('oratio')
-            ora_values = ora.get_all_values()
-            ora_header, ora_rows = ora_values[1], ora_values[2:]
-            rdf = pd.DataFrame(ora_rows, columns=ora_header)
-            #컬럼 변경
-            s1 = omp_df.columns
-            new_s1 = []
-            for num, gu_data in enumerate(s1):
-                check = num
-                if gu_data == '':
-                    new_s1.append(new_s1[check-1])
-                else:
-                    new_s1.append(s1[check])
-            #전세가율 컬럼
-            s2 = rdf.columns
-            new_s2 = []
-            for num, gu_data in enumerate(s2):
-                check = num
-                if gu_data.startswith('Un'):
-                    new_s2.append(new_s2[check-1])
-                else:
-                    new_s2.append(s2[check])
+            # #전세가율
+            # ora= one_doc.worksheet('oratio')
+            # ora_values = ora.get_all_values()
+            # ora_header, ora_rows = ora_values[1], ora_values[2:]
+            # rdf = pd.DataFrame(ora_rows, columns=ora_header)
+            # #컬럼 변경
+            # s1 = omp_df.columns
+            # new_s1 = []
+            # for num, gu_data in enumerate(s1):
+            #     check = num
+            #     if gu_data == '':
+            #         new_s1.append(new_s1[check-1])
+            #     else:
+            #         new_s1.append(s1[check])
+            # #전세가율 컬럼
+            # s2 = rdf.columns
+            # new_s2 = []
+            # for num, gu_data in enumerate(s2):
+            #     check = num
+            #     if gu_data.startswith('Un'):
+            #         new_s2.append(new_s2[check-1])
+            #     else:
+            #         new_s2.append(s2[check])
             
-            omp_df.columns =[new_s1, omp_df.iloc[0]]
-            omp_df = omp_df.iloc[1:]
-            omp_df = omp_df.set_index(omp_df.iloc[:,0])
-            omp_df = omp_df.iloc[:,1:]
-            ojp_df.columns =[new_s1, ojp_df.iloc[0]]
-            ojp_df = ojp_df.iloc[1:]
-            ojp_df = ojp_df.set_index(ojp_df.iloc[:,0])
-            ojp_df = ojp_df.iloc[:,1:]
-            rdf.columns =[new_s2, rdf.iloc[0]]
-            rdf = rdf.iloc[1:]
-            rdf = rdf.set_index(rdf.iloc[:,0])
-            rdf = rdf.iloc[:,1:]
-            # omp_df.index = pd.to_datetime(omp_df.index)
-            # ojp_df.index = pd.to_datetime(ojp_df.index)
-            #rdf.index = pd.to_datetime(rdf.index)
-            omp_df.index.name = 'date'
-            omp_df = omp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
-            ojp_df.index.name = 'date'
-            ojp_df = ojp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
-            rdf.index.name = 'date'
-            rdf = rdf.astype(str).apply(lambda x: x.replace("","0")).astype(float)
+            # omp_df.columns =[new_s1, omp_df.iloc[0]]
+            # omp_df = omp_df.iloc[1:]
+            # omp_df = omp_df.set_index(omp_df.iloc[:,0])
+            # omp_df = omp_df.iloc[:,1:]
+            # ojp_df.columns =[new_s1, ojp_df.iloc[0]]
+            # ojp_df = ojp_df.iloc[1:]
+            # ojp_df = ojp_df.set_index(ojp_df.iloc[:,0])
+            # ojp_df = ojp_df.iloc[:,1:]
+            # rdf.columns =[new_s2, rdf.iloc[0]]
+            # rdf = rdf.iloc[1:]
+            # rdf = rdf.set_index(rdf.iloc[:,0])
+            # rdf = rdf.iloc[:,1:]
+            # # omp_df.index = pd.to_datetime(omp_df.index)
+            # # ojp_df.index = pd.to_datetime(ojp_df.index)
+            # #rdf.index = pd.to_datetime(rdf.index)
+            # omp_df.index.name = 'date'
+            # omp_df = omp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+            # ojp_df.index.name = 'date'
+            # ojp_df = ojp_df.astype(str).apply(lambda x: x.replace("","0")).astype(int)
+            # rdf.index.name = 'date'
+            # rdf = rdf.astype(str).apply(lambda x: x.replace("","0")).astype(float)
             #기존 파일 시스템
             # omp_df = one_dict.parse("sell_price", header=1, index_col=0)
             # ojp_df = one_dict.parse("jeon_price", header=1, index_col=0)
@@ -1169,198 +1169,198 @@ if __name__ == "__main__":
             # omp.columns =[new_s1, omp_df.iloc[1]]
             # ojp.columns = [new_s1, ojp_df.iloc[1]]
             # rdf.columns =[new_s2, r_df.iloc[1]]
-            header_dict = pd.read_excel(header_path, sheet_name=None)
-            header = header_dict['one']
-            #필요 시트만 슬라이스
-            smdf = omp_df.xs('평균매매',axis=1, level=1)
-            sadf = omp_df.xs('평균단위매매', axis=1, level=1)
-            jmdf = ojp_df.xs('평균전세',axis=1, level=1)
-            jadf = ojp_df.xs('평균단위전세', axis=1, level=1)
-            m_df = rdf.xs('중위', axis=1, level=1) # 중위가격 전세가율
-            a_df = rdf.xs('평균', axis=1, level=1) # 평균가격 전세가율
-            smdf.columns = oneh.columns
-            sadf.columns = oneh.columns
-            jmdf.columns = oneh.columns
-            jadf.columns = oneh.columns
-            m_df.columns = oneh.columns
-            a_df.columns = oneh.columns
+            # header_dict = pd.read_excel(header_path, sheet_name=None)
+            # header = header_dict['one']
+            # #필요 시트만 슬라이스
+            # smdf = omp_df.xs('평균매매',axis=1, level=1)
+            # sadf = omp_df.xs('평균단위매매', axis=1, level=1)
+            # jmdf = ojp_df.xs('평균전세',axis=1, level=1)
+            # jadf = ojp_df.xs('평균단위전세', axis=1, level=1)
+            # m_df = rdf.xs('중위', axis=1, level=1) # 중위가격 전세가율
+            # a_df = rdf.xs('평균', axis=1, level=1) # 평균가격 전세가율
+            # smdf.columns = oneh.columns
+            # sadf.columns = oneh.columns
+            # jmdf.columns = oneh.columns
+            # jadf.columns = oneh.columns
+            # m_df.columns = oneh.columns
+            # a_df.columns = oneh.columns
 
-            sadf = (sadf.astype(float)*3.306)/10
-            smdf = smdf.astype(float)/10
-            jadf = (jadf.astype(float)*3.306)/10
-            jmdf = jmdf.astype(float)/10
+            # sadf = (sadf.astype(float)*3.306)/10
+            # smdf = smdf.astype(float)/10
+            # jadf = (jadf.astype(float)*3.306)/10
+            # jmdf = jmdf.astype(float)/10
 
-            sadf = sadf.astype(float).round(decimals=0) #평균매매가
-            smdf = smdf.astype(float).round(decimals=0) #
-            jadf = jadf.astype(float).round(decimals=0)
-            jmdf = jmdf.astype(float).round(decimals=0)
-            m_df = m_df.round(decimals=1)
-            a_df = a_df.round(decimals=1)
-            #평균 가격으로 필요 날짜만 slice
-            smdf.index = pd.to_datetime(smdf.index, format='%Y-%m-%d')
-            last_date = smdf.index[-1].strftime("%Y-%m")
-            slice_pr = smdf.loc[start_date:last_date]
-            s_pr = pd.DataFrame()
-            pr_de = pd.DataFrame()
-            pr_in = pd.DataFrame()
-            s_pr[start_date] = slice_pr.iloc[0].T
-            s_pr[last_date] = slice_pr.iloc[-1].T
-            condition_pr = s_pr.iloc[:,0] <= s_pr.iloc[:,-1]
-            pr_in = s_pr.loc[condition_pr]
-            condition_pr_de = s_pr.iloc[:,0] > s_pr.iloc[:,-1]
-            pr_de = s_pr.loc[condition_pr_de]
-            pr_de_list = pr_de.index.to_list()
-            pr_in_list = pr_in.index.to_list()
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    st.subheader("평균 매매가격 증가 지역")
-                    st.dataframe(pr_in)#.style.background_gradient(cmap, axis=0)\
-                                        #        .format(precision=0, na_rep='0', thousands=","), 350, 500)
-                with col2:
-                    st.write("")
-                with col3:
-                    st.subheader("평균 매매가격 감소 지역")
-                    st.dataframe(pr_de)#.style.background_gradient(cmap, axis=0)\
-                                        #        .format(precision=0, na_rep='0', thousands=","), 350, 500)
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
+            # sadf = sadf.astype(float).round(decimals=0) #평균매매가
+            # smdf = smdf.astype(float).round(decimals=0) #
+            # jadf = jadf.astype(float).round(decimals=0)
+            # jmdf = jmdf.astype(float).round(decimals=0)
+            # m_df = m_df.round(decimals=1)
+            # a_df = a_df.round(decimals=1)
+            # #평균 가격으로 필요 날짜만 slice
+            # smdf.index = pd.to_datetime(smdf.index, format='%Y-%m-%d')
+            # last_date = smdf.index[-1].strftime("%Y-%m")
+            # slice_pr = smdf.loc[start_date:last_date]
+            # s_pr = pd.DataFrame()
+            # pr_de = pd.DataFrame()
+            # pr_in = pd.DataFrame()
+            # s_pr[start_date] = slice_pr.iloc[0].T
+            # s_pr[last_date] = slice_pr.iloc[-1].T
+            # condition_pr = s_pr.iloc[:,0] <= s_pr.iloc[:,-1]
+            # pr_in = s_pr.loc[condition_pr]
+            # condition_pr_de = s_pr.iloc[:,0] > s_pr.iloc[:,-1]
+            # pr_de = s_pr.loc[condition_pr_de]
+            # pr_de_list = pr_de.index.to_list()
+            # pr_in_list = pr_in.index.to_list()
+            # with st.container():
+            #     col1, col2, col3 = st.columns([30,2,30])
+            #     with col1:
+            #         st.subheader("평균 매매가격 증가 지역")
+            #         st.dataframe(pr_in)#.style.background_gradient(cmap, axis=0)\
+            #                             #        .format(precision=0, na_rep='0', thousands=","), 350, 500)
+            #     with col2:
+            #         st.write("")
+            #     with col3:
+            #         st.subheader("평균 매매가격 감소 지역")
+            #         st.dataframe(pr_de)#.style.background_gradient(cmap, axis=0)\
+            #                             #        .format(precision=0, na_rep='0', thousands=","), 350, 500)
+            # html_br="""
+            # <br>
+            # """
+            # st.markdown(html_br, unsafe_allow_html=True)
             ### 평균 전세 가격 증가 하락 지역 #########################################################################################
-            jmdf.index = pd.to_datetime(jmdf.index, format='%Y-%m-%d')
-            last_date = jmdf.index[-1].strftime("%Y-%m")
-            slice_jpr = jmdf.loc[start_date:last_date]
-            s_jpr = pd.DataFrame()
-            jpr_de = pd.DataFrame()
-            jpr_in = pd.DataFrame()
-            s_jpr[start_date] = slice_jpr.iloc[0].T
-            s_jpr[last_date] = slice_jpr.iloc[-1].T
-            condition_jpr = s_jpr.iloc[:,0] <= s_jpr.iloc[:,-1]
-            jpr_in = s_jpr.loc[condition_jpr]
-            condition_jpr_de = s_jpr.iloc[:,0] > s_jpr.iloc[:,-1]
-            jpr_de = s_jpr.loc[condition_jpr_de]
-            jpr_de_list = jpr_de.index.to_list()
-            jpr_in_list = jpr_in.index.to_list()
-            with st.container():
-                col1, col2, col3 = st.columns([30,2,30])
-                with col1:
-                    st.subheader("평균 전세가격 증가 지역")
-                    st.dataframe(jpr_in)#.style.background_gradient(cmap, axis=0)\
-                                         #       .format(precision=0, na_rep='0', thousands=","), 350, 350)
-                with col2:
-                    st.write("")
-                with col3:
-                    st.subheader("평균 전세가격 감소 지역")
-                    st.dataframe(jpr_de)#.style.background_gradient(cmap, axis=0)\
-                                         #       .format(precision=0, na_rep='0', thousands=","), 350, 350)
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
-            ### 전세가율 증가 하락 지역 #########################################################################################
-            a_df.index = pd.to_datetime(a_df.index, format='%Y-%m-%d')
-            last_date = a_df.index[-1].strftime("%Y-%m")
-            slice_jr = a_df.loc[start_date:last_date]
-            s_jr = pd.DataFrame()
-            jr_de = pd.DataFrame()
-            jr_in = pd.DataFrame()
-            s_jr[start_date] = slice_jr.iloc[0].T
-            s_jr[last_date] = slice_jr.iloc[-1].T
-            condition_jr = s_jr.iloc[:,0] <= s_jr.iloc[:,-1]
-            jr_in = s_jr.loc[condition_jr]
-            condition_jr_de = s_jr.iloc[:,0] > s_jr.iloc[:,-1]
-            jr_de = s_jr.loc[condition_jr_de]
-            jr_in = jr_in.astype(float).round(decimals=1)
-            jr_de = jr_de.astype(float).round(decimals=1)
-            jr_de_list = jr_de.index.to_list()
-            jr_in_list = jr_in.index.to_list()
-            with st.container():
-                    col1, col2, col3 = st.columns([30,2,30])
-                    with col1:
-                        st.subheader("전세가율 증가 지역")
-                        st.dataframe(jr_in)#.style.background_gradient(cmap, axis=0)\
-                                            #    .format(precision=1, na_rep='0', thousands=","), 350, 350)
-                    with col2:
-                        st.write("")
-                    with col3:
-                        st.subheader("전세가율 감소 지역")
-                        st.dataframe(jr_de)#.style.background_gradient(cmap, axis=0)\
-                                            #    .format(precision=1, na_rep='0', thousands=","), 350, 350)
-            html_br="""
-            <br>
-            """
-            st.markdown(html_br, unsafe_allow_html=True)
-            ######## 하략 지역 데이터프레임 ####################################################################################
-            down_index_name = ['KB지수', 'one지수', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
-            de_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(iv_in_list), \
-                 ', '.join(iv_de_list), ', '.join(pr_de_list), ', '.join(jpr_in_list), ', '.join(jr_in_list)])
-            down_df = pd.DataFrame(de_citys, down_index_name)
-            with st.container():
-                    col1, col2, col3 = st.columns([30,2,30])
-                    with col1:
-                        st.subheader("하락 지표 나타나는 지역")
-                        st.table(down_df)
-                    with col2:
-                        st.write("")
-                    with col3:
-                        st.write("")
-                        #버블지수/전세파워 table 추가
-                        title = dict(text=f'<b> 하락 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
-                        fig = go.Figure(data=[go.Table(
-                                            columnorder = [1,2],
-                                            columnwidth = [80,400],
-                                            header=dict(values=['<b>항목</b>','<b>지역</b>'],
-                                                        fill_color='royalblue',
-                                                        align=['right','left'],
-                                                        font=dict(color='white', size=12),
-                                                        height=40),
-                                            cells=dict(values=[down_df.index, down_df.iloc[:,0]], 
-                                                        fill=dict(color=['black', 'gray']),
-                                                        align=['right','left'],
-                                                        font_size=12,
-                                                        height=30))
-                                        ])
-                        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2")
-                        st.plotly_chart(fig)
-            html_br="""
-            <br>
-            """
-             ######## 상승 지역 데이터프레임 ####################################################################################
-            up_index_name = ['KB지수', 'one지수', '투자자증가', '투자자감소', '평균매매가격증가', '평균전세가격감소', '전세가율감소']
-            in_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list),  ', '.join(iv_in_list), \
-                 ', '.join(iv_de_list), ', '.join(pr_in_list), ', '.join(jpr_de_list), ', '.join(jr_de_list)])
-            in_df = pd.DataFrame(in_citys, up_index_name)
-            with st.container():
-                    col1, col2, col3 = st.columns([30,2,30])
-                    with col1:
-                        st.subheader("상승 지표 나타나는 지역")
-                        st.table(in_df)
-                    with col2:
-                        st.write("")
-                    with col3:
-                        st.write("")
-                        #버블지수/전세파워 table 추가
-                        title = dict(text=f'<b> 상승 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
-                        fig = go.Figure(data=[go.Table(
-                                            columnorder = [1,2],
-                                            columnwidth = [80,400],
-                                            header=dict(values=['<b>항목</b>','<b>지역</b>'],
-                                                        fill_color='royalblue',
-                                                        align=['right','left'],
-                                                        font=dict(color='white', size=12),
-                                                        height=40),
-                                            cells=dict(values=[in_df.index, in_df.iloc[:,0]], 
-                                                        fill=dict(color=['black', 'gray']),
-                                                        align=['right','left'],
-                                                        font_size=12,
-                                                        height=30))
-                                        ])
-                        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2")
-                        st.plotly_chart(fig)
-            html_br="""
-            <br>
-            """
+            # jmdf.index = pd.to_datetime(jmdf.index, format='%Y-%m-%d')
+            # last_date = jmdf.index[-1].strftime("%Y-%m")
+            # slice_jpr = jmdf.loc[start_date:last_date]
+            # s_jpr = pd.DataFrame()
+            # jpr_de = pd.DataFrame()
+            # jpr_in = pd.DataFrame()
+            # s_jpr[start_date] = slice_jpr.iloc[0].T
+            # s_jpr[last_date] = slice_jpr.iloc[-1].T
+            # condition_jpr = s_jpr.iloc[:,0] <= s_jpr.iloc[:,-1]
+            # jpr_in = s_jpr.loc[condition_jpr]
+            # condition_jpr_de = s_jpr.iloc[:,0] > s_jpr.iloc[:,-1]
+            # jpr_de = s_jpr.loc[condition_jpr_de]
+            # jpr_de_list = jpr_de.index.to_list()
+            # jpr_in_list = jpr_in.index.to_list()
+            # with st.container():
+            #     col1, col2, col3 = st.columns([30,2,30])
+            #     with col1:
+            #         st.subheader("평균 전세가격 증가 지역")
+            #         st.dataframe(jpr_in)#.style.background_gradient(cmap, axis=0)\
+            #                              #       .format(precision=0, na_rep='0', thousands=","), 350, 350)
+            #     with col2:
+            #         st.write("")
+            #     with col3:
+            #         st.subheader("평균 전세가격 감소 지역")
+            #         st.dataframe(jpr_de)#.style.background_gradient(cmap, axis=0)\
+            #                              #       .format(precision=0, na_rep='0', thousands=","), 350, 350)
+            # html_br="""
+            # <br>
+            # """
+            # st.markdown(html_br, unsafe_allow_html=True)
+            # ### 전세가율 증가 하락 지역 #########################################################################################
+            # a_df.index = pd.to_datetime(a_df.index, format='%Y-%m-%d')
+            # last_date = a_df.index[-1].strftime("%Y-%m")
+            # slice_jr = a_df.loc[start_date:last_date]
+            # s_jr = pd.DataFrame()
+            # jr_de = pd.DataFrame()
+            # jr_in = pd.DataFrame()
+            # s_jr[start_date] = slice_jr.iloc[0].T
+            # s_jr[last_date] = slice_jr.iloc[-1].T
+            # condition_jr = s_jr.iloc[:,0] <= s_jr.iloc[:,-1]
+            # jr_in = s_jr.loc[condition_jr]
+            # condition_jr_de = s_jr.iloc[:,0] > s_jr.iloc[:,-1]
+            # jr_de = s_jr.loc[condition_jr_de]
+            # jr_in = jr_in.astype(float).round(decimals=1)
+            # jr_de = jr_de.astype(float).round(decimals=1)
+            # jr_de_list = jr_de.index.to_list()
+            # jr_in_list = jr_in.index.to_list()
+            # with st.container():
+            #         col1, col2, col3 = st.columns([30,2,30])
+            #         with col1:
+            #             st.subheader("전세가율 증가 지역")
+            #             st.dataframe(jr_in)#.style.background_gradient(cmap, axis=0)\
+            #                                 #    .format(precision=1, na_rep='0', thousands=","), 350, 350)
+            #         with col2:
+            #             st.write("")
+            #         with col3:
+            #             st.subheader("전세가율 감소 지역")
+            #             st.dataframe(jr_de)#.style.background_gradient(cmap, axis=0)\
+            #                                 #    .format(precision=1, na_rep='0', thousands=","), 350, 350)
+            # html_br="""
+            # <br>
+            # """
+            # st.markdown(html_br, unsafe_allow_html=True)
+            # ######## 하략 지역 데이터프레임 ####################################################################################
+            # down_index_name = ['KB지수', 'one지수', '투자자증가', '투자자감소', '평균매매가격감소', '평균전세가격증가', '전세가율증가']
+            # de_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list), ', '.join(iv_in_list), \
+            #      ', '.join(iv_de_list), ', '.join(pr_de_list), ', '.join(jpr_in_list), ', '.join(jr_in_list)])
+            # down_df = pd.DataFrame(de_citys, down_index_name)
+            # with st.container():
+            #         col1, col2, col3 = st.columns([30,2,30])
+            #         with col1:
+            #             st.subheader("하락 지표 나타나는 지역")
+            #             st.table(down_df)
+            #         with col2:
+            #             st.write("")
+            #         with col3:
+            #             st.write("")
+            #             #버블지수/전세파워 table 추가
+            #             title = dict(text=f'<b> 하락 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
+            #             fig = go.Figure(data=[go.Table(
+            #                                 columnorder = [1,2],
+            #                                 columnwidth = [80,400],
+            #                                 header=dict(values=['<b>항목</b>','<b>지역</b>'],
+            #                                             fill_color='royalblue',
+            #                                             align=['right','left'],
+            #                                             font=dict(color='white', size=12),
+            #                                             height=40),
+            #                                 cells=dict(values=[down_df.index, down_df.iloc[:,0]], 
+            #                                             fill=dict(color=['black', 'gray']),
+            #                                             align=['right','left'],
+            #                                             font_size=12,
+            #                                             height=30))
+            #                             ])
+            #             fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2")
+            #             st.plotly_chart(fig)
+            # html_br="""
+            # <br>
+            # """
+            #  ######## 상승 지역 데이터프레임 ####################################################################################
+            # up_index_name = ['KB지수', 'one지수', '투자자증가', '투자자감소', '평균매매가격증가', '평균전세가격감소', '전세가율감소']
+            # in_citys = np.array([', '.join(inter_kb_list), ', '.join(inter_one_list),  ', '.join(iv_in_list), \
+            #      ', '.join(iv_de_list), ', '.join(pr_in_list), ', '.join(jpr_de_list), ', '.join(jr_de_list)])
+            # in_df = pd.DataFrame(in_citys, up_index_name)
+            # with st.container():
+            #         col1, col2, col3 = st.columns([30,2,30])
+            #         with col1:
+            #             st.subheader("상승 지표 나타나는 지역")
+            #             st.table(in_df)
+            #         with col2:
+            #             st.write("")
+            #         with col3:
+            #             st.write("")
+            #             #버블지수/전세파워 table 추가
+            #             title = dict(text=f'<b> 상승 지표 나타나는 지역</b>', x=0.5, y = 0.9) 
+            #             fig = go.Figure(data=[go.Table(
+            #                                 columnorder = [1,2],
+            #                                 columnwidth = [80,400],
+            #                                 header=dict(values=['<b>항목</b>','<b>지역</b>'],
+            #                                             fill_color='royalblue',
+            #                                             align=['right','left'],
+            #                                             font=dict(color='white', size=12),
+            #                                             height=40),
+            #                                 cells=dict(values=[in_df.index, in_df.iloc[:,0]], 
+            #                                             fill=dict(color=['black', 'gray']),
+            #                                             align=['right','left'],
+            #                                             font_size=12,
+            #                                             height=30))
+            #                             ])
+            #             fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="ggplot2")
+            #             st.plotly_chart(fig)
+            # html_br="""
+            # <br>
+            # """
 ######## 여기까지###################################################################################
     elif my_choice == 'Price Index':
         city_list = ['전국', '수도권', '지방', '6대광역시', '5대광역시', '서울', '경기', '부산', '대구', '인천', '광주', '대전',
