@@ -14,7 +14,6 @@ import drawAPT_update
 from oauth2client.service_account import ServiceAccountCredentials
 import plotly.io as pio
 
-cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 pio.templates.default = "myID"
 #############html 영역####################
 html_header="""
