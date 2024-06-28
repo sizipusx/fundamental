@@ -11,7 +11,6 @@ from dateutil.relativedelta import relativedelta
 import streamlit as st
 import drawAPT_weekly 
 import drawAPT_update
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import plotly.io as pio
 
