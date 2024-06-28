@@ -110,7 +110,7 @@ import json
 # one_doc = gc.open_by_url(one_gsheet_url)
 # kb_doc = gc.open_by_url(kb_gsheet_url)
 #인구, 세대수, 기본 소득
-bs_doc = gc.open_by_url(basic_url)
+# bs_doc = gc.open_by_url(basic_url)
 #############################2022.9.30 sqlite3로 변경######################################
 one_db_path = "files/one_monthly.db"
 kb_db_path = "files/kb_monthly.db"
