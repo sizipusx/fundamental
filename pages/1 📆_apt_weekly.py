@@ -335,16 +335,46 @@ def run_price_index() :
     <br>
     """
     st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 매매 지수+ waterfall chart######################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            kigan_flag = 'KB'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, mdf, mdf_change, kigan_flag)
+        with col2:
+            st.write("")
+        with col3:
+            kigan_flag = '부동산원'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, omdf, omdf_change, kigan_flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 전세 지수+ waterfall chart######################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            kigan_flag = 'KB 주간 매매'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, jdf, jdf_change, kigan_flag)
+        with col2:
+            st.write("")
+        with col3:
+            kigan_flag = '부동산원 주간 매매'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, ojdf, ojdf_change, kigan_flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
     ### Block 플라워차트 추가 2021. 12. 26 #########################################################################################
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            flag = "KB"
+            flag = "KB 주간 전세"
             drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
         with col2:
             st.write("")
         with col3:
-            flag = "부동산원"
+            flag = "부동산원 주간 전세"
             drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_omdf, cum_ojdf, flag)
     html_br="""
     <br>

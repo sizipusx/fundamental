@@ -335,6 +335,67 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
 
+def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, kigan_flag):
+    if selected_dosi3 is not None:
+        selected_dosi2 = selected_dosi3
+    titles = dict(text= '<b>['+selected_dosi2 +']</b> '+kigan_flag+' 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
+    index_diff = index_change.diff().fillna(0)
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Bar(name = '지수증감', x = index_df.index, y = index_change[selected_dosi2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  index_df.index, y= index_df[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
+    fig.add_trace(go.Waterfall(x=index_diff.index, y=index_diff[selected_dosi2], name="아파트매매가격지수 변동", measure=["relative"] * len(index_diff),), secondary_y=True,
+)
+    fig.update_layout(hovermode="x unified")
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, waterfallgroupgap=0.2, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
+    fig.update_layout(template="myID")
+    fig.update_layout(
+            showlegend=True,
+            legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.2,
+            xanchor="left",
+            x=0
+        ),
+            xaxis=go.layout.XAxis(
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=6,
+                        label="6m",
+                        step="month",
+                        stepmode="backward"),
+                    dict(count=1,
+                        label="YTD",
+                        step="year",
+                        stepmode="todate"),
+                    dict(count=1,
+                        label="1y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=5,
+                        label="5y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(count=10,
+                        label="10y",
+                        step="year",
+                        stepmode="backward"),
+                    dict(step="all")
+                ])
+            ),
+            rangeslider=dict(
+                visible=False
+            ),
+            type="date",
+            range=[kor_time - relativedelta(years=5), kor_time]
+            )      
+        )
+    fig.update_layout(hovermode="x unified")
+    st.plotly_chart(fig)
+
 def draw_sentiment(selected_dosi, js_1, js_2, js_index):
     titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
 
