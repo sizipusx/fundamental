@@ -339,12 +339,12 @@ def run_price_index() :
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            kigan_flag = 'KB'
+            kigan_flag = 'KB 주간 매매'
             drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, mdf, mdf_change, kigan_flag)
         with col2:
             st.write("")
         with col3:
-            kigan_flag = '부동산원'
+            kigan_flag = '부동산원 주간 매매'
             drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, omdf, omdf_change, kigan_flag)
     html_br="""
     <br>
@@ -354,12 +354,12 @@ def run_price_index() :
     with st.container():
         col1, col2, col3 = st.columns([30,2,30])
         with col1:
-            kigan_flag = 'KB 주간 매매'
+            kigan_flag = 'KB 주간 전세'
             drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, jdf, jdf_change, kigan_flag)
         with col2:
             st.write("")
         with col3:
-            kigan_flag = '부동산원 주간 매매'
+            kigan_flag = '부동산원 주간 전세'
             drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, ojdf, ojdf_change, kigan_flag)
     html_br="""
     <br>
