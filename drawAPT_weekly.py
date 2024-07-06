@@ -20,7 +20,8 @@ utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
 kor_time= utcnow+ time_gap
 # 챠트 기본 설정 
-# marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473'] #'rgb(255,69,0)'
+# marker_colors = ['#34314c', '#47b8e0', '#ffc952', '#ff7473'] #'rgb(255,69,0)' 주황
+# rgb(27,38,81) 감청색,  rgb(205,32,40) red,  rgb(22,108,150) blue, rgb(255,0,255) pink, rgb(153,204,0) 초록
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,0,255)', 'rgb(153,204,0)', \
                        'rgb(153,51,102)', 'rgb(0,255,0)','rgb(255,69,0)', 'rgb(0,0,255)', 'rgb(255,204,0)', \
                         'rgb(255,153,204)', 'rgb(0,255,255)', 'rgb(128,0,0)', 'rgb(0,128,0)', 'rgb(0,0,128)', \
