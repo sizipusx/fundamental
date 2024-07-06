@@ -88,7 +88,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
                 )
         fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
         fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y.%m.%d')
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
         fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
         fig.update_layout(template="myID")
         fig.update_layout(hovermode="x unified")
@@ -121,7 +121,7 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template, xaxis_tickformat = '%Y-%m')
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
     with st.expander("버블지수/전세파워 설명"):
@@ -146,7 +146,7 @@ def draw_power_table(power_df):
                                     font_size=12,
                                     height=30))
                     ])
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="seaborn")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -871,7 +871,7 @@ def draw_senti_last(to_df, last_week):
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
     fig.add_vline(x=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="전세수급지수가 100을 초과할수록 '매수자가 많다'를, 100 미만일 경우 '매도자가 많다'를 의미 ", annotation_position="top left")
     fig.add_vline(x=40.0, line_width=1, line_dash="dot", line_color="red",  annotation_text="40 이상 매매지수 상승 가능성 높음", annotation_position="top left")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
