@@ -342,9 +342,9 @@ def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, 
     titles = dict(text= '<b>['+selected_dosi2 +']</b> '+kigan_flag+' 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     index_diff = index_change.diff().fillna(0)
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    colors = ['#c41851' if v < 0 else '#67ab71' for v in index_change.iloc[:,-1]] 
+    colors = ['#c41851' if v < 0 else '#67ab71' for v in index_change.loc[:,selected_dosi2]] 
     fig.add_trace(go.Bar(name = '지수증감', x = index_change.index, y = index_change[selected_dosi2].round(decimals=2), marker_color=  colors), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  index_df.index, y= index_df[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  index_df.index, y= index_df[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
     fig.add_trace(go.Waterfall(x=index_diff.index, y=index_diff[selected_dosi2], name="아파트매매가격지수 변동", measure=["relative"] * len(index_diff),), secondary_y=True,
 )
     fig.update_layout(hovermode="x unified")
