@@ -11,9 +11,9 @@ import datetime
 import FinanceDataReader as fdr
 import pandasdmx as pdmx
 import ecos_chart as ec
-import seaborn as sns
+# import seaborn as sns
 import cloudscraper
-cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
+# cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 
 utcnow= datetime.datetime.utcnow()
 time_gap= datetime.timedelta(hours=9)
