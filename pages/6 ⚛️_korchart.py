@@ -13,8 +13,8 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
-import seaborn as sns
-cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
+# import seaborn as sns
+# cmap = cmap=sns.diverging_palette(250, 5, as_cmap=True)
 import streamlit as st
 from pykrx import stock
 import FinanceDataReader as fdr
@@ -434,8 +434,8 @@ def run(ticker, com_name):
             pass
         with st.expander("See Raw Data"):
             try:
-                st.dataframe(invest_table.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
-                                    .format(precision=2, na_rep='MISSING', thousands=","))
+                st.dataframe(invest_table)#.astype(float).fillna(0).round(decimals=2).style.background_gradient(cmap, axis=0)\
+                                    #.format(precision=2, na_rep='MISSING', thousands=","))
             except ValueError :
                 st.dataframe(invest_table)
         drawkorchart.cash_flow(com_name, cf_an, cf_qu, invest_table)
