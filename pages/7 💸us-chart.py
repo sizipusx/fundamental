@@ -79,7 +79,7 @@ pio.templates["myID"] = go.layout.Template(
     ]
 )
 marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-template = 'ggplot2' 
+# template = 'ggplot2' 
 
 ## 특정 위치의 배경색 바꾸기
 @st.cache_resource(ttl=datetime.timedelta(weeks=52))
@@ -343,7 +343,7 @@ def run(ticker, overview_df, fdr_df):
         # colors 
         marker_colors = ['#34314c', '#47b8e0', '#ff7473', '#ffc952', '#3ac569']
         # marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,69,0)', 'rgb(237,234,255)']
-        template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
+        # template = 'ggplot2' #"plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"
         # Profit and Cost
         st.subheader('Profit, Cost, Growth')
         with st.container():
@@ -368,7 +368,7 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_yaxes(title_text='Income', range=[0, max(income_df.loc[:,y_data_bar1[0]])*2], secondary_y = False)
                 fig.update_yaxes(title_text='Margin', range=[-max(r_df.loc[:,y_data_line1[0]]), max(r_df.loc[:,y_data_line1[0]])* 1.2], ticksuffix="%", secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$")
-                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"))
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
             with col2:
@@ -395,7 +395,7 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_yaxes(title_text='Growth Rate', range=[0, max(income_df.loc[:,y_data_bar2[0]])*2], secondary_y = False)
                 fig.update_yaxes(title_text='Margin Rate', range=[-max(income_df.loc[:,y_data_line2[0]]), max(income_df.loc[:,y_data_line2[0]])* 1.2], secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%")
-                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"))
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
         
@@ -430,7 +430,7 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_yaxes(range=[-max(balance_df.loc[:,y_data_line3[0]]), max(balance_df.loc[:,y_data_line3[0]])* 1.2], secondary_y = True)
                 fig.update_yaxes(title_text="Liabilities Rate", showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%", secondary_y = True)
                 fig.update_yaxes(title_text= "Asset", showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
-                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"))
                 fig.update_layout(barmode='stack')
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
@@ -454,7 +454,7 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_traces(texttemplate='%{text:.3s}') 
                 fig.update_yaxes(title_text="Cash/Assets", showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = False)
                 fig.update_yaxes(title_text="intangible/Assets", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"))
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
         html_br="""
@@ -490,7 +490,7 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_yaxes(title_text='FCF', range=[-max(cashflow_df.loc[:,y_data_line5[0]]), max(cashflow_df.loc[:,y_data_line5[0]])* 1.2], secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
                 fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
-                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"))
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
 
@@ -518,7 +518,7 @@ def run(ticker, overview_df, fdr_df):
                 fig.update_yaxes(title_text='ROE', secondary_y = True)
                 fig.update_yaxes(showticklabels= True, showgrid = False, zeroline=True, tickprefix="$", secondary_y = False)
                 fig.update_yaxes(showticklabels= True, showgrid = True, zeroline=True, ticksuffix="%", secondary_y = True)
-                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+                fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"))
                 fig.update_layout(template="myID")
                 st.plotly_chart(fig)
         html_br="""
