@@ -348,6 +348,7 @@ def valuation_change(com_name, fr_df):
     y_data_line = ['ROE','ROE10']
     y_data_bar = ['expect_py', 'expect_ay']
     real_name = ['현재ROE기준_기대수익률', '10Y평균ROE기준_기대수익률']
+    st.dataframe(fr_df)
     for y_data, color, r_n in zip(y_data_bar, marker_colors, real_name) :
         fig.add_trace(go.Bar(name = r_n, x = fr_df.index, y = fr_df.loc[:,y_data], 
                             text= fr_df[y_data], textposition = 'inside', marker_color= color), secondary_y = False) 
