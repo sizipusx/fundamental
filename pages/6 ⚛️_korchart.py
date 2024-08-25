@@ -71,7 +71,7 @@ pio.templates["myID"] = go.layout.Template(
 @st.cache_resource(ttl=datetime.timedelta(days=1))
 def load_data():
     # 코스피, 코스닥, 코넥스 종목 리스트 가져오기
-    tickers = stock.get_market_ticker_list()
+    #tickers = stock.get_market_ticker_list()
     krx = fdr.StockListing('KRX')
     krx = krx[~krx['Name'].str.endswith(('우','A', 'B', '스팩', 'C', ')', '호', '풋', '콜', 'ETN'))]
     krx = krx[~(krx['Code'].str.len() != 6)]
@@ -88,7 +88,7 @@ def load_data():
     krx['Stocks'] = krx['Stocks'].apply(lambda int_num: '{:,}'.format(int_num))
     #krx.loc[:,"Close":"Low"].style.format(precision=2, na_rep='MISSING', thousands=",")
     #krx.loc[:,"Amount":"Stocks"].astype(float).fillna(0).round(decimals=2).style.format(precision=2, na_rep='MISSING', thousands=",")
-    return tickers, krx
+    return krx
 
 # 숫자로 모두 변환
 def convert_str_to_float(value):
@@ -463,7 +463,7 @@ def run(ticker, com_name):
         
 if __name__ == "__main__":
     data_load_state = st.text('Loading KRX Company List...')
-    tickers, krx = load_data()
+    krx = load_data()
     #basic_df['Close'] = str('{0:,}'.format(basic_df['Close']))+"원"
     #basic_df['Volumn'] = str('{0:,}'.format(basic_df['Volumn']))
     data_load_state.text("Done! (using st.cache)")
