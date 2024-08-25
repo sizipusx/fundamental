@@ -828,7 +828,19 @@ def get_html_fnguide(ticker,gb):
 
 def load_pykrx_data(ticker, now_date):
   #재무데이터 
-  fr_df = stock.get_market_fundamental("20000101", now_date, ticker, freq="y")
+  try:
+      response = requests.get("API_ENDPOINT")  # 여기에 실제 API 엔드포인트를 넣어주세요
+      response.raise_for_status()  # HTTP 에러가 발생하면 예외를 발생시킵니다.
+      print(response.text)  # 서버 응답을 출력하여 확인합니다.
+      fr_df = stock.get_market_fundamental("20000101", now_date, ticker, freq="y")
+      return fr_df
+  except requests.exceptions.JSONDecodeError as e:
+      print(f"JSON 디코딩 오류: {e}")
+      print("서버 응답 내용:", response.text)
+      return None
+  except requests.exceptions.RequestException as e:
+      print(f"요청 오류: {e}")
+      return None
   #가격 데이터 가져오기
   pr_df = stock.get_market_ohlcv("20000101", now_date, ticker, freq="y")
   #pr_df

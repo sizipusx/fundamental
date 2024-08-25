@@ -73,7 +73,13 @@ def load_data():
     # 코스피, 코스닥, 코넥스 종목 리스트 가져오기
     #tickers = stock.get_market_ticker_list()
     krx = fdr.StockListing('KRX')
+    diff = ['글로벌에스엠', '한국패러랠', '이지스밸류리츠', 'NH올원리츠', 'JTC', '맵스리얼티1', 'SK리츠', '엑세스바이오', '엘브이엠씨홀딩스', '에이리츠', '컬러레이', 'ESR켄달스퀘어리츠', '디앤디플랫폼리츠', 'SBI핀테크솔루션즈', '케이탑리츠', '크리스탈신소재', '코오롱티슈진', '로스웰', '모두투어리츠', '미투젠', '코람코더원리츠', '롯데리츠', '신한알파리츠', '네오이뮨텍', '프레스티지바이오파마', '골든센츄리', '미래에셋글로벌리츠', '이리츠코크렙', '제이알글로벌리츠', '신한서부티엔디리츠', 'NH프라임리츠', '미래에셋맵스리츠', '베트남개발1', '코람코에너지리츠', '윙입푸드', '마스턴프리미어리츠', '애머릿지', '오가닉티코스메틱', '한국ANKOR유전', '잉글우드랩', '바다로19호', '이스트아시아홀딩스', '씨케이에이치', '맥쿼리인프라', 'GRT', '헝셩그룹', '소마젠', '이지스레지던스리츠']
     krx = krx[~krx['Name'].str.endswith(('우','A', 'B', '스팩', 'C', ')', '호', '풋', '콜', 'ETN'))]
+    krx['종목구분'] = np.where(krx['Name'].str.contains('스팩|제[0-9]+호'), '스팩',
+                              np.where(krx['Code'].str[-1:] != '0', '우선주',
+                                       np.where(krx['Name'].str.endswith('리츠'), '리츠',
+                                                np.where(krx['Name'].isin(diff),  '기타',
+                                                '보통주'))))
     krx = krx[~(krx['Code'].str.len() != 6)]
     krx = krx[~(krx['Market'].str.endswith('X'))]
     krx['Close'] = krx['Close'].astype(int).apply(lambda int_num: '{:,}'.format(int_num))
