@@ -831,16 +831,13 @@ def load_pykrx_data(ticker, now_date):
   try:
       response = requests.get("API_ENDPOINT")  # 여기에 실제 API 엔드포인트를 넣어주세요
       response.raise_for_status()  # HTTP 에러가 발생하면 예외를 발생시킵니다.
-      print(response.text)  # 서버 응답을 출력하여 확인합니다.
+      st.write(response.text)  # 서버 응답을 출력하여 확인합니다.
       fr_df = stock.get_market_fundamental("20000101", now_date, ticker, freq="y")
-      return fr_df
   except requests.exceptions.JSONDecodeError as e:
-      print(f"JSON 디코딩 오류: {e}")
-      print("서버 응답 내용:", response.text)
-      return None
+      st.write(f"JSON 디코딩 오류: {e}")
+      st.write("서버 응답 내용:", response.text)
   except requests.exceptions.RequestException as e:
-      print(f"요청 오류: {e}")
-      return None
+      st.write(f"요청 오류: {e}")
   #가격 데이터 가져오기
   pr_df = stock.get_market_ohlcv("20000101", now_date, ticker, freq="y")
   #pr_df
@@ -854,5 +851,3 @@ def load_pykrx_data(ticker, now_date):
   fr_df['expect_py'] = round(((fr_df['p10bps']/fr_df['Close'])**(1/10)-1)*100,2)
   fr_df['expect_ay'] = round(((fr_df['a10bps']/fr_df['Close'])**(1/10)-1)*100,2)
   return fr_df
-  
-1
