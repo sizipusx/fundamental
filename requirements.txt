@@ -15,7 +15,7 @@ OpenDartReader==0.1.1
 pandasdmx==1.10.0
 cloudscraper==1.2.69
 plotly
-pykrx==1.0.42
+pykrx==1.0.48
 mapboxgl==0.10.2
 openpyxl==3.1.2
 xlrd==2.0.1
