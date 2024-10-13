@@ -261,7 +261,7 @@ def draw_index_change_with_bubble_slice(citys, last_df, flag):
     max_abs_value = np.max(np.abs(slice_df['매매증감']))
     title = dict(text='<b>'+flag+'지수 증감</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top') 
     fig = px.scatter(slice_df, x='매매증감', y='전세증감', color='매매증감', size=abs(slice_df['전세증감']*10), 
-                        text= slice_df.index, hover_name=slice_df.index, color_continuous_scale='Bluered', range_color=[-max_abs_value, max_abs_value])
+                        text= slice_df.index, hover_name=slice_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
