@@ -809,7 +809,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     fig.update_layout(annotations=annotations)
     fig.update_layout(
         showlegend=True,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        #legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         xaxis=go.layout.XAxis(
             rangeselector=dict(
                 buttons=list([
