@@ -439,8 +439,56 @@ def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
 
 
 def draw_basic():
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["⏰ 한주보기", "🌈통계보기","📈 심리지수", "🗺️ 지도", "🔣 Raw Data"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["모멘텀", "⏰ 한주보기", "🌈통계보기","📈 심리지수", "🗺️ 지도", "🔣 Raw Data"])
     with tab1:
+        ### Draw Bubble chart ##############
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = 'KB'
+                drawAPT_weekly.draw_momentum_with_bubble(momentum_df, flag, kb_last_week)
+
+            with col2:
+                st.write("")
+            with col3:
+                flag = '부동산원'
+                drawAPT_weekly.draw_momentum_with_bubble(momentum_odf, flag, one_last_week)
+                
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 통계 chart #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['KB','매매모멘텀']
+                drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['KB','전세모멘텀']
+                drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)        
+            html_br="""
+            <br>
+            """
+            st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 전세증감 bar chart #########################################################################################
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ['부동산원','매매모멘텀']
+                drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ['부동산원','전세모멘텀']
+                drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)        
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+    with tab2:
         ### Draw Bubble chart ##############
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -532,7 +580,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-    with tab2:
+    with tab3:
         # option = st.selectbox(
         #     '이전 통계 보기',
         #     ('1w', '2w', '3w', '1m', '1y'))
@@ -608,7 +656,7 @@ def draw_basic():
         """
         st.markdown(html_br, unsafe_allow_html=True)
     
-    with tab3:
+    with tab4:
         ### Draw 매수우위지수와 전세수급지수 #########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -641,7 +689,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-    with tab4:
+    with tab5:
         ### Block 0#########################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -673,7 +721,7 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-    with tab5:
+    with tab6:
         ### draw 매매지수 Table ######################################################################################
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
@@ -797,6 +845,43 @@ if __name__ == "__main__":
     basic_df = index_lists[4]
     # mdf, jdf, omdf, ojdf, basic_df = get_gsheet_index()
     #여기서 만들어 보자!!!
+    #=============KB 지수 모멘텀======================================
+    # Filter the data for the most recent 52 weeks (1 year of weekly data)
+    recent_year_mdata = mdf[mdf.index >= mdf.index.max() - pd.DateOffset(weeks=52)]
+    recent_year_jdata = jdf[jdf.index >= jdf.index.max() - pd.DateOffset(weeks=52)] 
+    # Recompute momentum based on the filtered data
+    momentum_m= recent_year_mdata.iloc[:, 1:].apply(
+        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
+    ).dropna()
+    momentum_j= recent_year_jdata.iloc[:, 1:].apply(
+        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
+    ).dropna()
+
+    momentum_combined = pd.DataFrame({
+        '매매모멘텀': momentum_m,
+        '전세모멘텀': momentum_j
+    })
+    # Sort momentum in descending order
+    momentum_df = momentum_combined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
+    momentum_df = momentum_df.round(decimals=2)
+    #=============부동산원 지수 모멘텀======================================
+    recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=52)]
+    recent_year_ojdata = ojdf[ojdf.index >= ojdf.index.max() - pd.DateOffset(weeks=52)]
+    # Recompute momentum based on the filtered data
+    momentum_om= recent_year_omdata.iloc[:, 1:].apply(
+        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
+    ).dropna()
+    momentum_oj= recent_year_ojdata.iloc[:, 1:].apply(
+        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
+    ).dropna()
+
+    momentum_one = pd.DataFrame({
+        '매매모멘텀': momentum_om,
+        '전세모멘텀': momentum_oj
+    })
+    # Sort momentum in descending order
+    momentum_odf = momentum_one.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
+    momentum_odf = momentum_odf.round(decimals=2)
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
@@ -820,7 +905,7 @@ if __name__ == "__main__":
     kb_last_df['2w'] = mdf_change.iloc[-2].T.to_frame()
     kb_last_df['3w'] = mdf_change.iloc[-3].T.to_frame()
     kb_last_df['1m'] = mdf_change.iloc[-4].T.to_frame()
-    kb_last_df['1y'] = mdf_change.iloc[-51].T.to_frame()
+    kb_last_df['1y'] = mdf_change.iloc[-52].T.to_frame()
     kb_last_df = kb_last_df.astype(float).fillna(0).round(decimals=2)
     #일주일 간 전세지수 상승률 순위
     kb_last_jdf  = pd.DataFrame()
@@ -828,7 +913,7 @@ if __name__ == "__main__":
     kb_last_jdf['2w'] = jdf_change.iloc[-2].T.to_frame()
     kb_last_jdf['3w'] = jdf_change.iloc[-3].T.to_frame()
     kb_last_jdf['1m'] = jdf_change.iloc[-4].T.to_frame()
-    kb_last_jdf['1y'] = jdf_change.iloc[-51].T.to_frame()
+    kb_last_jdf['1y'] = jdf_change.iloc[-52].T.to_frame()
     kb_last_jdf = kb_last_jdf.astype(float).fillna(0).round(decimals=2)
 
     #마지막달 dataframe에 지역 코드 넣어 합치기

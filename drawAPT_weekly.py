@@ -231,6 +231,42 @@ def draw_index_change_with_bar(last_df, flag, last_week):
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
+def draw_momentum_with_bar(last_df, flag, last_week):
+    last_df = last_df.sort_values(by=flag[1], ascending=False)
+    #상위 20과 하위 20만 slice
+    if flag[0].startswith("실거래가"):
+        kb_last_slice = last_df
+    else:    
+        kb_last_slice = last_df.iloc[[-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,\
+            14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]]
+    # Calculate the maximum absolute value of '매매증감' to center the color scale around 0
+    max_abs_value = np.max(np.abs(kb_last_slice.iloc[:, 0]))
+
+    # Create a custom color scale with blue for negative values, white for zero, and red for positive values
+    custom_color_scale = [
+        [0, "blue"],   # Dark blue for the most negative value
+        [0.5, "white"],  # White for zero
+        [1, "red"]     # Dark red for the most positive value
+    ]
+    title = dict(text='<b>'+last_week+ '기준 '+flag[0] +' '+flag[1]+'</b>',  x=0.5, y = 0.95, xanchor='center', yanchor= 'top') 
+    if flag[1] == '매매모멘텀':
+        fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,0], color=kb_last_slice.iloc[:,0], color_continuous_scale=custom_color_scale, \
+                    text=kb_last_slice.index, orientation='h', range_color=[-max_abs_value, max_abs_value])
+        fig.add_vline(x=round(last_df.loc[:,'매매모멘텀'].mean(),2), line_dash="dash", line_color="yellow", annotation_text=f"모멘텀 평균: {str(round(last_df.loc[:,'매매모멘텀'].mean(),2))}", annotation_position="bottom right")
+    else:
+        fig = px.bar(kb_last_slice, y= kb_last_slice.index, x=kb_last_slice.iloc[:,1], color=kb_last_slice.iloc[:,1], color_continuous_scale=custom_color_scale, \
+                    text=kb_last_slice.index, orientation='h', range_color=[-max_abs_value, max_abs_value])
+        fig.add_vline(x=round(last_df.loc[:,'전세모멘텀'].mean()), line_dash="dash", line_color="yellow", annotation_text=f"모멘텀 평균: {str(round(last_df.loc[:,'전세모멘텀'].mean(),2))}", annotation_position="bottom right")
+    
+    # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_traces(texttemplate='%{label}', textposition='outside')
+    fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
+    fig.update_xaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+
 def draw_index_change_with_bubble(last_df, flag, last_week):
     # Create a custom color scale with white at zero, blue for negative, and red for positive
     custom_color_scale = [
@@ -242,6 +278,25 @@ def draw_index_change_with_bubble(last_df, flag, last_week):
     max_abs_value = np.max(np.abs(last_df['매매증감']))
     title = dict(text='<b>'+last_week+ ' 기준 '+flag+' 증감</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     fig = px.scatter(last_df, x='매매증감', y='전세증감', color='매매증감', size=abs(last_df['전세증감']*10), 
+                        text= last_df.index, hover_name=last_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(hovermode="x unified")
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
+def draw_momentum_with_bubble(last_df, flag, last_week):
+    # Create a custom color scale with white at zero, blue for negative, and red for positive
+    custom_color_scale = [
+        [0, "blue"],   # Dark blue for the most negative value
+        [0.5, "white"],  # White for zero
+        [1, "red"]     # Dark red for the most positive value
+    ]
+    #매매/전세 증감률 Bubble Chart
+    max_abs_value = np.max(np.abs(last_df['매매모멘텀']))
+    title = dict(text='<b>'+last_week+ ' 기준 '+flag+' 1년 모멘텀</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+    fig = px.scatter(last_df, x='매매모멘텀', y='전세모멘텀', color='매매모멘텀', size=abs(last_df['전세모멘텀']*10), 
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
