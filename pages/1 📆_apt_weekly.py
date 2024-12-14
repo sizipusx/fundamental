@@ -437,17 +437,19 @@ def run_price_index() :
         """
         st.markdown(html_br, unsafe_allow_html=True)
     with tab2:
+        bs_kbm, os_kbm, as_kbm = calculate_all_momentum_scores(mdf[selected_dosi2])
+        bs_om, os_om, as_om = calculate_all_momentum_scores(omdf[selected_dosi2])
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 flag = "KB 주간 모멘텀"
-                fig = px.line(mdf, x=mdf.index, y=selected_dosi2)
+                fig = px.line(bs_kbm, x=bs_kbm.index, y=selected_dosi2)
                 st.plotly_chart(fig)
             with col2:
                 st.write("")
             with col3:
                 flag = "부동산원 주간 모멘텀"
-                fig = px.line(omdf, x=omdf.index, y=selected_dosi2)
+                fig = px.line(bs_om, x=bs_om.index, y=selected_dosi2)
                 st.plotly_chart(fig)
         html_br="""
         <br>
@@ -457,12 +459,14 @@ def run_price_index() :
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 flag = "KB 주간 모멘텀 스코어"
-                drawAPT_weekly.draw_(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
+                fig = px.line(os_kbm, x=os_kbm.index, y=selected_dosi2)
+                st.plotly_chart(fig)
             with col2:
                 st.write("")
             with col3:
                 flag = "부동산원 주간 모멘텀 스코어"
-                drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_omdf, cum_ojdf, flag)
+                fig = px.line(os_om, x=os_om.index, y=selected_dosi2)
+                st.plotly_chart(fig)
         html_br="""
         <br>
         """
@@ -471,12 +475,14 @@ def run_price_index() :
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 flag = "KB 주간 평균 모멘텀"
-                drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
+                fig = px.line(as_kbm, x=as_kbm.index, y=selected_dosi2)
+                st.plotly_chart(fig)
             with col2:
                 st.write("")
             with col3:
                 flag = "부동산원 주간 평균 모멘텀"
-                drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_omdf, cum_ojdf, flag)
+                fig = px.line(as_om, x=as_om.index, y=selected_dosi2)
+                st.plotly_chart(fig)
         html_br="""
         <br>
         """
