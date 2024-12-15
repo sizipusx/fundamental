@@ -134,9 +134,9 @@ def draw_momentum(selected_dosi2, bs_df, ms_df, am_df, flag):
     titles = dict(text= '<b>['+selected_dosi2 +']</b>' + flag+' 주간 모멘텀 변화', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    fig.add_trace(go.Scatter(mode='lines', name = '기본 모멘텀', x =  bs_df.index, y= bs_df[selected_dosi2], marker_color = marker_colors[0]), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name ='평균 모멘텀', x =  am_df.index, y= am_df[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='모멘텀 스코어', x =  ms_df.index, y= ms_df[selected_dosi2], marker_color = marker_colors[1]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name = '기본 모멘텀', x =  bs_df.index, y= bs_df, marker_color = marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name ='평균 모멘텀', x =  am_df.index, y= am_df, marker_color = marker_colors[2]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='모멘텀 스코어', x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
 
     fig.update_layout(hovermode="x unified")
     fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
