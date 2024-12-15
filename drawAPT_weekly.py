@@ -130,6 +130,24 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
             st.markdown("**아기곰 방식**: 버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)")
             st.markdown("**곰곰이 방식**: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)")
 
+def draw_momentum(selected_dosi2, bs_df, ms_df, am_df, flag):
+    #bubble index chart
+    titles = dict(text= '<b>['+selected_dosi2 +']</b>' + flag+' 주간 모멘텀 변화', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+    fig.add_trace(go.Scatter(mode='lines', name = '기본 모멘텀', x =  bs_df.index, y= bs_df[selected_dosi2], marker_color = marker_colors[0]), secondary_y = True)
+    fig.add_trace(go.Scatter(mode='lines', name ='평균 모멘텀', x =  am_df.index, y= am_df[selected_dosi2], marker_color = marker_colors[2]), secondary_y = False)
+    fig.add_trace(go.Scatter(mode='lines', name ='모멘텀 스코어', x =  ms_df.index, y= ms_df[selected_dosi2], marker_color = marker_colors[1]), secondary_y = True)
+
+    fig.update_layout(hovermode="x unified")
+    fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+    fig.update_yaxes(title_text='평균 모멘텀', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
+    fig.update_yaxes(title_text='모멘텀', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
+    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%y.%m.%d')
+    fig.update_layout(template="myID")
+    st.plotly_chart(fig)
+
 def draw_power_table(power_df):
     #버블지수/전세파워 table 추가
     title = dict(text='주요 시-구 월간 전세파워-버블지수 합산 순위', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
