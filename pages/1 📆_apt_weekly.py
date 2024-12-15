@@ -344,7 +344,7 @@ def run_price_index() :
         draw_list = ['전남', '목포','순천','여수','광양']
     elif selected_dosi == '경북':
         draw_list = ['경북','포항','구미', '경산', '안동','김천']
-    elif selected_dosi == '충북':
+    elif selected_dosi == '경남':
         draw_list = ['경남','창원', '양산','거제','진주', '김해','통영']
     elif selected_dosi == '제주도':
         draw_list = ['제주, 서귀포']
@@ -1195,7 +1195,7 @@ if __name__ == "__main__":
             small_list = ['전남', '목포','순천','여수','광양']
         elif selected_dosi == '경북':
             small_list = ['경북','포항','구미', '경산', '안동','김천']
-        elif selected_dosi == '충북':
+        elif selected_dosi == '경남':
             small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
         elif selected_dosi == '제주도':
             small_list = ['제주, 서귀포']
