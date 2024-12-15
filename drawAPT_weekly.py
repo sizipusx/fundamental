@@ -135,9 +135,9 @@ def draw_momentum(selected_dosi2, bs_df, ms_df, am_df, flag):
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
     if flag[1] == "기본 모멘텀":
-        fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  bs_df.index, y= bs_df, marker_color = marker_colors[0]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  bs_df.index, y= bs_df, marker_color = marker_colors[1]), secondary_y = True)
     else:
-        fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  ms_df.index, y= ms_df, marker_color = marker_colors[0]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
 
     fig.add_trace(go.Scatter(mode='lines', name ='평균 모멘텀', x =  am_df.index, y= am_df, marker_color = marker_colors[2]), secondary_y = False)
     # fig.add_trace(go.Scatter(mode='lines', name ='모멘텀 스코어', x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
