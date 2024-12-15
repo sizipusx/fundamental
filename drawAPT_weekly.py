@@ -131,7 +131,6 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
             st.markdown("**곰곰이 방식**: 버블지수 = 매매가비율(관심지역매매가/전국평균매매가) - 전세가비율(관심지역전세가/전국평균전세가)")
 
 def draw_momentum(selected_dosi2, bs_df, ms_df, am_df, flag):
-    #bubble index chart
     titles = dict(text= '<b>['+selected_dosi2 +']</b>' + flag+' 주간 모멘텀 변화', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
 
     fig = make_subplots(specs=[[{'secondary_y': True}]]) 
