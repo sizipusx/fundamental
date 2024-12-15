@@ -439,15 +439,17 @@ def run_price_index() :
     with tab2:
         bs_kbm, os_kbm, as_kbm = calculate_all_momentum_scores(mdf[selected_dosi2])
         bs_om, os_om, as_om = calculate_all_momentum_scores(omdf[selected_dosi2])
+        bs_kbj, os_kbj, as_kbj = calculate_all_momentum_scores(jdf[selected_dosi2])
+        bs_oj, os_oj, as_oj = calculate_all_momentum_scores(ojdf[selected_dosi2])
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ["KB 주간 모멘텀", "기본 모멘텀"]
+                flag = ["KB 매매지수", "기본 모멘텀"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
             with col2:
                 st.write("")
             with col3:
-                flag = ["부동산원 주간 모멘텀","기본 모멘텀"]
+                flag = ["부동산원 매매지수","기본 모멘텀"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
         html_br="""
         <br>
@@ -456,13 +458,41 @@ def run_price_index() :
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ["KB 주간 모멘텀", "모멘텀 스코어"]
+                flag = ["KB 매매지수", "모멘텀 스코어"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
             with col2:
                 st.write("")
             with col3:
-                flag = ["부동산원 주간 모멘텀", "모멘텀 스코어"]
+                flag = ["부동산원 매매지수", "모멘텀 스코어"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)    
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ["KB 전세지수", "기본 모멘텀"]
+                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbj, os_kbj, as_kbj, flag)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ["부동산원 전세지수","기본 모멘텀"]
+                drawAPT_weekly.draw_momentum(selected_dosi2, bs_oj, os_oj, as_oj, flag)
+        html_br="""
+        <br>
+        """
+        st.markdown(html_br, unsafe_allow_html=True)
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = ["KB 전세지수", "모멘텀 스코어"]
+                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbj, os_kbj, as_kbj, flag)
+            with col2:
+                st.write("")
+            with col3:
+                flag = ["부동산원 전세지수", "모멘텀 스코어"]
+                drawAPT_weekly.draw_momentum(selected_dosi2, bs_oj, os_oj, as_oj, flag)
         html_br="""
         <br>
         """
