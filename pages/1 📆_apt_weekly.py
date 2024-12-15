@@ -452,6 +452,20 @@ def run_price_index() :
         html_br="""
         <br>
         """
+        st.markdown(html_br, unsafe_allow_html=True)
+        with st.container():
+            col1, col2, col3 = st.columns([30,2,30])
+            with col1:
+                flag = "KB 주간 모멘텀"
+                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
+            with col2:
+                st.write("")
+            with col3:
+                flag = "부동산원 주간 모멘텀"
+                drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
+        html_br="""
+        <br>
+        """
         st.markdown(html_br, unsafe_allow_html=True)    
 
 def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
