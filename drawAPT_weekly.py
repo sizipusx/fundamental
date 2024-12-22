@@ -787,9 +787,9 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
         fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
         fig.update_layout(template="myID")
         fig.update_layout(hovermode="x unified")
+        st.plotly_chart(fig)
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
-    st.plotly_chart(fig)
 
 def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
 
