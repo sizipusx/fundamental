@@ -397,7 +397,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                 buttons=list([
                     dict(count=6, label="6m", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(count=2, label="2y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
@@ -405,7 +405,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
             ),
             rangeslider=dict(visible=False),
             type="date",
-            range=[utcnow - relativedelta(years=1), utcnow]
+            range=[utcnow - relativedelta(years=5), utcnow]
         ))
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -435,7 +435,7 @@ def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, 
                 buttons=list([
                     dict(count=6, label="6m", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(count=2, label="2y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
@@ -443,7 +443,7 @@ def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, 
             ),
             rangeslider=dict(visible=False),
             type="date",
-            range=[utcnow - relativedelta(years=1), utcnow]
+            range=[utcnow - relativedelta(years=5), utcnow]
         ))
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -600,7 +600,7 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
                 buttons=list([
                     dict(count=6, label="6m", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(count=2, label="2y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
@@ -608,7 +608,7 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
             ),
             rangeslider=dict(visible=False),
             type="date",
-            range=[utcnow - relativedelta(years=1), utcnow]
+            range=[utcnow - relativedelta(years=5), utcnow]
         ))
     fig.update_layout(hovermode="x unified")
     st.plotly_chart(fig)
@@ -652,7 +652,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
                 buttons=list([
                     dict(count=6, label="6m", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(count=2, label="2y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
@@ -660,7 +660,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
             ),
             rangeslider=dict(visible=False),
             type="date",
-            range=[utcnow - relativedelta(years=1), utcnow]
+            range=[utcnow - relativedelta(years=5), utcnow]
         ))
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
@@ -701,7 +701,7 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
                 buttons=list([
                     dict(count=6, label="6m", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(count=2, label="2y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
@@ -709,7 +709,7 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
             ),
             rangeslider=dict(visible=False),
             type="date",
-            range=[utcnow - relativedelta(years=1), utcnow]
+            range=[utcnow - relativedelta(years=5), utcnow]
         ))
     st.plotly_chart(fig)
 
@@ -748,7 +748,7 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
                 buttons=list([
                     dict(count=6, label="6m", step="month", stepmode="backward"),
                     dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(count=2, label="2y", step="year", stepmode="backward"),
                     dict(count=5, label="5y", step="year", stepmode="backward"),
                     dict(count=10, label="10y", step="year", stepmode="backward"),
                     dict(step="all")
@@ -756,7 +756,7 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
             ),
             rangeslider=dict(visible=False),
             type="date",
-            range=[utcnow - relativedelta(years=1), utcnow]
+            range=[utcnow - relativedelta(years=5), utcnow]
         ))
     st.plotly_chart(fig)
 

@@ -8,7 +8,6 @@ import drawAPT_weekly
 
 import numpy as np
 import pandas as pd
-from scipy import stats
 import sqlite3
 from pandas.io.formats import style
 
@@ -212,45 +211,6 @@ def count_plus_zero_minus_by_date(df):
 
   return result_df
 
-# Define the functions as provided
-def momentum_basic(ts):
-    if ts.isnull().sum() > 0:  # Check for NaN values in the time series
-        return np.nan  # Return NaN if data is incomplete for the window
-    momentum = (ts.iloc[-1] / ts.iloc[0] - 1) * 100
-    return momentum
-
-def momentum_score(ts):
-    x = np.arange(len(ts))
-    log_ts = np.log(ts)
-    slope, _, r_value, _, _ = stats.linregress(x, log_ts)
-    score = slope * (r_value ** 2) * 100
-    return score
-
-def average_momentum_score(ts):
-    if len(ts) < 52:  # Ensure there is at least one year of data
-        return np.nan
-
-    scores = []
-    for months_ago in range(1, 13):
-        weeks_ago = months_ago * 4
-        if len(ts) > weeks_ago:
-            current_value = ts.iloc[-1]
-            past_value = ts.iloc[-weeks_ago]
-            score = 1 if current_value > past_value else 0
-            scores.append(score)
-
-    average_score = np.mean(scores) if scores else np.nan
-    return average_score
-
-# Function to calculate all momentum scores using apply
-def calculate_all_momentum_scores(df):
-    # Apply functions column-wise with a rolling window of 52 weeks
-    basic_mom = df.rolling(window=52).apply(momentum_basic, raw=False)
-    mom_scores = df.rolling(window=52).apply(momentum_score, raw=False)
-    avg_scores = df.rolling(window=52).apply(average_momentum_score, raw=False)
-
-    return basic_mom, mom_scores, avg_scores
-
 
 @st.cache_data(ttl=datetime.timedelta(days=1))
 def load_senti_data():
@@ -343,160 +303,98 @@ def run_price_index() :
     elif selected_dosi == '전남':
         draw_list = ['전남', '목포','순천','여수','광양']
     elif selected_dosi == '경북':
-        draw_list = ['경북','포항','구미', '경산', '안동','김천']
-    elif selected_dosi == '경남':
+        draw_list = ['경북','경주', '영주', '문경', '포항','구미', '경산', '안동', '김천', '상주', '영천']
+    elif selected_dosi == '충북':
         draw_list = ['경남','창원', '양산','거제','진주', '김해','통영']
     elif selected_dosi == '제주도':
         draw_list = ['제주, 서귀포']
-    tab1, tab2, tab3 = st.tabs(["📈 지수", "🌈모멘텀", "🔣 Raw Data"])
-    with tab1:
-        ### Block 매매전세지수 같이 보기 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                drawAPT_weekly.run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
-            with col2:
-                st.write("")
-            with col3:
-                drawAPT_weekly.run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, selected_dosi3, city_series)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        ### Block 매매 전세 지수 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                drawAPT_weekly.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change)
-            with col2:
-                st.write("")
-            with col3:
-                drawAPT_weekly.run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_change)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        ### Block 매매 지수+ waterfall chart######################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                kigan_flag = 'KB 주간 매매'
-                drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, mdf, mdf_change, kigan_flag)
-            with col2:
-                st.write("")
-            with col3:
-                kigan_flag = '부동산원 주간 매매'
-                drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, omdf, omdf_change, kigan_flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        ### Block 전세 지수+ waterfall chart######################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                kigan_flag = 'KB 주간 전세'
-                drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, jdf, jdf_change, kigan_flag)
-            with col2:
-                st.write("")
-            with col3:
-                kigan_flag = '부동산원 주간 전세'
-                drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, ojdf, ojdf_change, kigan_flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        ### Block 플라워차트 추가 2021. 12. 26 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = "KB 주간"
-                drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = "부동산원 주간"
-                drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_omdf, cum_ojdf, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        ### Block 버블지수 추가 2022. 7. 10 #########################################################################################
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = "아기곰 방식 "
-                drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = "곰곰이 방식 "
-                drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df3, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-    with tab2:
-        bs_kbm, os_kbm, as_kbm = calculate_all_momentum_scores(mdf[selected_dosi2])
-        bs_om, os_om, as_om = calculate_all_momentum_scores(omdf[selected_dosi2])
-        bs_kbj, os_kbj, as_kbj = calculate_all_momentum_scores(jdf[selected_dosi2])
-        bs_oj, os_oj, as_oj = calculate_all_momentum_scores(ojdf[selected_dosi2])
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = ["KB 매매지수", "기본 모멘텀"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = ["부동산원 매매지수","기본 모멘텀"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = ["KB 매매지수", "모멘텀 스코어"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = ["부동산원 매매지수", "모멘텀 스코어"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)    
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = ["KB 전세지수", "기본 모멘텀"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbj, os_kbj, as_kbj, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = ["부동산원 전세지수","기본 모멘텀"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_oj, os_oj, as_oj, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)
-        with st.container():
-            col1, col2, col3 = st.columns([30,2,30])
-            with col1:
-                flag = ["KB 전세지수", "모멘텀 스코어"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbj, os_kbj, as_kbj, flag)
-            with col2:
-                st.write("")
-            with col3:
-                flag = ["부동산원 전세지수", "모멘텀 스코어"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_oj, os_oj, as_oj, flag)
-        html_br="""
-        <br>
-        """
-        st.markdown(html_br, unsafe_allow_html=True)    
+    
+    ### Block 매매전세지수 같이 보기 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            drawAPT_weekly.run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, selected_dosi3, city_series)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_weekly.run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, selected_dosi3, city_series)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 매매 전세 지수 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            drawAPT_weekly.run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_change)
+        with col2:
+            st.write("")
+        with col3:
+            drawAPT_weekly.run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_change)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 매매 지수+ waterfall chart######################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            kigan_flag = 'KB 주간 매매'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, mdf, mdf_change, kigan_flag)
+        with col2:
+            st.write("")
+        with col3:
+            kigan_flag = '부동산원 주간 매매'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, omdf, omdf_change, kigan_flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 전세 지수+ waterfall chart######################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            kigan_flag = 'KB 주간 전세'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, jdf, jdf_change, kigan_flag)
+        with col2:
+            st.write("")
+        with col3:
+            kigan_flag = '부동산원 주간 전세'
+            drawAPT_weekly.run_price_waterfall(selected_dosi2, selected_dosi3, ojdf, ojdf_change, kigan_flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+    ### Block 플라워차트 추가 2021. 12. 26 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = "KB 주간 전세"
+            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_mdf, cum_jdf, flag)
+        with col2:
+            st.write("")
+        with col3:
+            flag = "부동산원 주간 전세"
+            drawAPT_weekly.draw_flower(selected_dosi2, selected_dosi3, cum_omdf, cum_ojdf, flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
+     ### Block 버블지수 추가 2022. 7. 10 #########################################################################################
+    with st.container():
+        col1, col2, col3 = st.columns([30,2,30])
+        with col1:
+            flag = "아기곰 방식 "
+            drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df, flag)
+        with col2:
+            st.write("")
+        with col3:
+            flag = "곰곰이 방식 "
+            drawAPT_weekly.draw_power(selected_dosi2, m_power, bubble_df3, flag)
+    html_br="""
+    <br>
+    """
+    st.markdown(html_br, unsafe_allow_html=True)
 
 def run_sentimental_index(mdf, jdf, mdf_change, jdf_change):
     ### Block 매수우위지수#########################################################################################
@@ -1224,8 +1122,8 @@ if __name__ == "__main__":
         elif selected_dosi == '전남':
             small_list = ['전남', '목포','순천','여수','광양']
         elif selected_dosi == '경북':
-            small_list = ['경북','포항','구미', '경산', '안동','김천']
-        elif selected_dosi == '경남':
+            small_list = ['경북','경주', '영주', '문경', '포항','구미', '경산', '안동', '김천', '상주', '영천']
+        elif selected_dosi == '충북':
             small_list = ['경남','창원', '양산','거제','진주', '김해','통영']
         elif selected_dosi == '제주도':
             small_list = ['제주, 서귀포']
