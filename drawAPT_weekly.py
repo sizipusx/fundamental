@@ -106,25 +106,27 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
 def draw_power(selected_dosi2, m_power, bubble_df3, flag):
     #bubble index chart
     titles = dict(text= '<b>['+selected_dosi2 +']</b>'+  flag+ '주간 전세파워-버블지수', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    try:
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        
+        # fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
+        # fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
 
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    
-    # fig.add_trace(go.Bar(name = '매매지수증감', x = mdf.index, y = mdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[2]), secondary_y = True)
-    # fig.add_trace(go.Bar(name = '전세지수증감', x = jdf.index, y = jdf_change[selected_city2].round(decimals=2), marker_color=  marker_colors[1]), secondary_y = True)
+        
+        fig.add_trace(go.Scatter(mode='lines', name = '전세파워', x =  m_power.index, y= m_power[selected_dosi2], marker_color = marker_colors[0]), secondary_y = True)
+        # fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[1]), secondary_y = False)
+        fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df3.index, y= bubble_df3[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
 
-    
-    fig.add_trace(go.Scatter(mode='lines', name = '전세파워', x =  m_power.index, y= m_power[selected_dosi2], marker_color = marker_colors[0]), secondary_y = True)
-    # fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df2.index, y= bubble_df2[selected_city2], marker_color = marker_colors[1]), secondary_y = False)
-    fig.add_trace(go.Scatter(mode='lines', name ='버블지수2', x =  bubble_df3.index, y= bubble_df3[selected_dosi2], marker_color = marker_colors[3]), secondary_y = False)
-
-    fig.update_layout(hovermode="x unified")
-    fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
-    fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+        fig.update_layout(hovermode="x unified")
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    except KeyError as keys:
+        st.write(f" {keys} KB에는 없음")
     with st.expander("버블지수/전세파워 설명"):
             st.markdown("**전세파워**: 전체기간 (전세 누적 증감률 - 매매 누적 증감율)")
             st.markdown("**아기곰 방식**: 버블지수 =(관심지역매매가상승률-전국매매가상승률) - (관심지역전세가상승률-전국전세가상승률)")
@@ -132,24 +134,26 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
 
 def draw_momentum(selected_dosi2, bs_df, ms_df, am_df, flag):
     titles = dict(text= '<b>['+selected_dosi2 +']</b>' + flag[0]+' 주간 모멘텀 변화', x=0.5, y = 0.85, xanchor='center', yanchor= 'top') 
+    try:
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        if flag[1] == "기본 모멘텀":
+            fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  bs_df.index, y= bs_df, marker_color = marker_colors[1]), secondary_y = True)
+        else:
+            fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
 
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    if flag[1] == "기본 모멘텀":
-        fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  bs_df.index, y= bs_df, marker_color = marker_colors[1]), secondary_y = True)
-    else:
-        fig.add_trace(go.Scatter(mode='lines', name = flag[1], x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines', name ='평균 모멘텀', x =  am_df.index, y= am_df, marker_color = marker_colors[2]), secondary_y = False)
+        # fig.add_trace(go.Scatter(mode='lines', name ='모멘텀 스코어', x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
 
-    fig.add_trace(go.Scatter(mode='lines', name ='평균 모멘텀', x =  am_df.index, y= am_df, marker_color = marker_colors[2]), secondary_y = False)
-    # fig.add_trace(go.Scatter(mode='lines', name ='모멘텀 스코어', x =  ms_df.index, y= ms_df, marker_color = marker_colors[1]), secondary_y = True)
-
-    fig.update_layout(hovermode="x unified")
-    fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text=flag[1], showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='모멘텀', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%y.%m.%d')
-    fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+        fig.update_layout(hovermode="x unified")
+        fig.update_xaxes(showspikes=True, spikecolor="green", spikesnap="cursor", spikemode="across", spikethickness=0.5)
+        fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text=flag[1], showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='모멘텀', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%y.%m.%d')
+        fig.update_layout(template="myID")
+        st.plotly_chart(fig)
+    except KeyError as keys:
+        st.write(f" {keys} KB에는 없음")
 
 def draw_power_table(power_df):
     #버블지수/전세파워 table 추가
