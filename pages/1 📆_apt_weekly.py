@@ -434,9 +434,12 @@ def run_price_index() :
         """
         st.markdown(html_br, unsafe_allow_html=True)
     with tab2:
-        bs_kbm, os_kbm, as_kbm = calculate_all_momentum_scores(mdf[selected_dosi2])
+        try:
+            bs_kbm, os_kbm, as_kbm = calculate_all_momentum_scores(mdf[selected_dosi2])
+            bs_kbj, os_kbj, as_kbj = calculate_all_momentum_scores(jdf[selected_dosi2])
+        except KeyError as keys:
+            st.write(f" {keys} KB에는 없음")
         bs_om, os_om, as_om = calculate_all_momentum_scores(omdf[selected_dosi2])
-        bs_kbj, os_kbj, as_kbj = calculate_all_momentum_scores(jdf[selected_dosi2])
         bs_oj, os_oj, as_oj = calculate_all_momentum_scores(ojdf[selected_dosi2])
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
