@@ -449,9 +449,9 @@ def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, 
                 range=[utcnow - relativedelta(years=5), utcnow]
             ))
         fig.update_layout(hovermode="x unified")
+        st.plotly_chart(fig)
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
-    st.plotly_chart(fig)
 
 def draw_sentiment(selected_dosi, js_1, js_2, js_index):
     titles = dict(text= '<b>['+selected_dosi +']</b> 매수우위 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
