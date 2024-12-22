@@ -438,14 +438,16 @@ def run_price_index() :
             bs_kbm, os_kbm, as_kbm = calculate_all_momentum_scores(mdf[selected_dosi2])
             bs_kbj, os_kbj, as_kbj = calculate_all_momentum_scores(jdf[selected_dosi2])
         except KeyError as keys:
+            only_one = True
             st.write(f" {keys} KB에는 없음")
         bs_om, os_om, as_om = calculate_all_momentum_scores(omdf[selected_dosi2])
         bs_oj, os_oj, as_oj = calculate_all_momentum_scores(ojdf[selected_dosi2])
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ["KB 매매지수", "기본 모멘텀"]
-                drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
+                if only_one == False:
+                    flag = ["KB 매매지수", "기본 모멘텀"]
+                    drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
             with col2:
                 st.write("")
             with col3:
