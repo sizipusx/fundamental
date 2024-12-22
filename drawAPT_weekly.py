@@ -417,37 +417,40 @@ def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, 
         selected_dosi2 = selected_dosi3
     titles = dict(text= '<b>['+selected_dosi2 +']</b> '+kigan_flag+' 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
     index_diff = index_change.diff().fillna(0)
-    fig = make_subplots(specs=[[{'secondary_y': True}]]) 
-    colors = ['#c41851' if v < 0 else '#67ab71' for v in index_change.loc[:,selected_dosi2]] 
-    fig.add_trace(go.Bar(name = '지수증감', x = index_change.index, y = index_change[selected_dosi2].round(decimals=2), marker_color=  colors), secondary_y = True)
-    fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  index_df.index, y= index_df[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
-    fig.add_trace(go.Waterfall(x=index_diff.index, y=index_diff[selected_dosi2], name="지수변동", measure=["relative"] * len(index_diff),), secondary_y=True,
-)
-    fig.update_layout(hovermode="x unified")
-    fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
-    fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
-    fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, waterfallgroupgap=0.2, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
-    fig.update_layout(template="myID")
-    fig.update_layout(
-        showlegend=True,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        xaxis=go.layout.XAxis(
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=6, label="6m", step="month", stepmode="backward"),
-                    dict(count=1, label="YTD", step="year", stepmode="todate"),
-                    dict(count=2, label="2y", step="year", stepmode="backward"),
-                    dict(count=5, label="5y", step="year", stepmode="backward"),
-                    dict(count=10, label="10y", step="year", stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(visible=False),
-            type="date",
-            range=[utcnow - relativedelta(years=5), utcnow]
-        ))
-    fig.update_layout(hovermode="x unified")
+    try:
+        fig = make_subplots(specs=[[{'secondary_y': True}]]) 
+        colors = ['#c41851' if v < 0 else '#67ab71' for v in index_change.loc[:,selected_dosi2]] 
+        fig.add_trace(go.Bar(name = '지수증감', x = index_change.index, y = index_change[selected_dosi2].round(decimals=2), marker_color=  colors), secondary_y = True)
+        fig.add_trace(go.Scatter(mode='lines', name = '매매지수', x =  index_df.index, y= index_df[selected_dosi2], marker_color = marker_colors[1]), secondary_y = False)
+        fig.add_trace(go.Waterfall(x=index_diff.index, y=index_diff[selected_dosi2], name="지수변동", measure=["relative"] * len(index_diff),), secondary_y=True,
+    )
+        fig.update_layout(hovermode="x unified")
+        fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
+        fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
+        fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
+        fig.update_layout(title = titles, titlefont_size=15, waterfallgroupgap=0.2, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
+        fig.update_layout(template="myID")
+        fig.update_layout(
+            showlegend=True,
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            xaxis=go.layout.XAxis(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=6, label="6m", step="month", stepmode="backward"),
+                        dict(count=1, label="YTD", step="year", stepmode="todate"),
+                        dict(count=2, label="2y", step="year", stepmode="backward"),
+                        dict(count=5, label="5y", step="year", stepmode="backward"),
+                        dict(count=10, label="10y", step="year", stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(visible=False),
+                type="date",
+                range=[utcnow - relativedelta(years=5), utcnow]
+            ))
+        fig.update_layout(hovermode="x unified")
+    except KeyError as keys:
+        st.write(f" {keys} KB에는 없음")
     st.plotly_chart(fig)
 
 def draw_sentiment(selected_dosi, js_1, js_2, js_index):
@@ -767,48 +770,54 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
         select_city = selected_dosi3
     #매매/전세 증감률 flower Chart
     title = dict(text=f'<b> ['+ select_city+'] '+flag+  ' 지수 변화 누적 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
-    fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
-        mode='markers+lines',
-        hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
-        marker=dict(
-            size=abs(cum_jdf[select_city])*10,
-            #color=px.colors.qualitative.Set1[index],
-            color=cum_mdf[select_city], #set color equal to a variable
-            colorscale='bluered', # one of plotly colorscales
-            showscale=True
-        )
-    )) 
-    fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
-    fig.update_layout(template="myID")
-    fig.update_layout(hovermode="x unified")
+    try:
+        fig = go.Figure(data=go.Scatter(x=cum_mdf[select_city]*100, y = cum_jdf[select_city]*100,
+            mode='markers+lines',
+            hovertext=cum_mdf.index.strftime("%Y-%m-%d"),
+            marker=dict(
+                size=abs(cum_jdf[select_city])*10,
+                #color=px.colors.qualitative.Set1[index],
+                color=cum_mdf[select_city], #set color equal to a variable
+                colorscale='bluered', # one of plotly colorscales
+                showscale=True
+            )
+        )) 
+        fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+        fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
+        fig.update_layout(template="myID")
+        fig.update_layout(hovermode="x unified")
+    except KeyError as keys:
+        st.write(f" {keys} KB에는 없음")
     st.plotly_chart(fig)
 
 def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
 
     #매매/전세 증감률 flower Chart
     title = dict(text=f'<b>{flag} 지수 변화 누적 같이 보기 </b>', x=0.5, y = 0.85, xanchor='center', yanchor= 'top')
-    fig = go.Figure()
-    for index, value in enumerate(citys):
-        fig.add_trace(
-            go.Scatter(
-                x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
-                mode='markers+lines',
-                hovertext=cum_mdf.index.strftime("%Y.%m.%d"),
-                marker=dict(
-                    size=abs(cum_jdf[value])*10,
-                    color=px.colors.qualitative.Dark24[index]
-                    # color=cum_mdf[value], #set color equal to a variable
-                    # colorscale='bluered', # one of plotly colorscales
-                    # showscale=True
+    try:
+        fig = go.Figure()
+        for index, value in enumerate(citys):
+            fig.add_trace(
+                go.Scatter(
+                    x = cum_mdf[value]*100, y = cum_jdf[value]*100, name=value,
+                    mode='markers+lines',
+                    hovertext=cum_mdf.index.strftime("%Y.%m.%d"),
+                    marker=dict(
+                        size=abs(cum_jdf[value])*10,
+                        color=px.colors.qualitative.Dark24[index]
+                        # color=cum_mdf[value], #set color equal to a variable
+                        # colorscale='bluered', # one of plotly colorscales
+                        # showscale=True
+                    )
                 )
             )
-        )
-    fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
-    fig.update_layout(hovermode="x unified", template="myID")
+        fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+        fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
+        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
+        fig.update_layout(hovermode="x unified", template="myID")
+    except KeyError as keys:
+        st.write(f" {keys} KB에는 없음")
     st.plotly_chart(fig)
 
 def draw_change_table(change_df,flag):
