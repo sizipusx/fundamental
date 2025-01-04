@@ -286,9 +286,8 @@ def get_stockanalysis_com(ticker):
   for url in url_list:
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
-
-    element_tables = soup.select("table[class='w-full border-separate border-spacing-0 text-sm sm:text-base [&amp;_tbody]:sm:whitespace-nowrap [&amp;_thead]:whitespace-nowrap']") #income
-
+    # 테이블 선택자를 정확히 수정
+    element_tables = soup.select("table#main-table")  # 고유 ID 기반 선택자
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
     df = df.T
     df.columns = df.iloc[0]
