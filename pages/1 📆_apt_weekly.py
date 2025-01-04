@@ -961,6 +961,7 @@ if __name__ == "__main__":
     momentum_kb = momentum_kbcombined.round(decimals=2).dropna()
     # Sort momentum in descending order
     momentum_df = momentum_kbcombined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
+    momentum_df = momentum_df.dropna(how="all")
     st.dataframe(momentum_df)
     #=============부동산원 지수 모멘텀======================================
     recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=54)]
@@ -977,6 +978,7 @@ if __name__ == "__main__":
     })
     momentum_ocombined = momentum_ocombined.round(decimals=2).dropna()
     momentum_odf = momentum_ocombined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
+    momentum_odf = momentum_odf.dropna(how="all")
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
