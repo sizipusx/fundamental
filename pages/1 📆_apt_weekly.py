@@ -8,9 +8,9 @@ import drawAPT_weekly
 
 import numpy as np
 import pandas as pd
-from scipy import stats
+import statsmodels.api as sm
+# from scipy import stats
 import sqlite3
-from pandas.io.formats import style
 
 import streamlit as st
 import json
@@ -22,9 +22,6 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 from st_aggrid import AgGrid, GridOptionsBuilder
 from st_aggrid.shared import GridUpdateMode
-
-import streamlit as st
-
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 
@@ -213,18 +210,39 @@ def count_plus_zero_minus_by_date(df):
   return result_df
 
 # Define the functions as provided
-def momentum_basic(ts):
+def abs_momentum_score(ts):
     if ts.isnull().sum() > 0:  # Check for NaN values in the time series
         return np.nan  # Return NaN if data is incomplete for the window
     momentum = (ts.iloc[-1] / ts.iloc[0] - 1) * 100
     return momentum
 
-def momentum_score(ts):
-    x = np.arange(len(ts))
-    log_ts = np.log(ts)
-    slope, _, r_value, _, _ = stats.linregress(x, log_ts)
-    score = slope * (r_value ** 2) * 100
-    return score
+
+def rel_momentum_score(ts):
+    """
+    ts: Pandas Series 형태의 시계열 데이터 (예: 종가)
+
+    1) 일간 수익률(.pct_change) 계산 후,
+    2) (1 + 수익률)에 로그를 취하여 누적합,
+    3) x축(인덱스)을 0,1,2,...로 잡고 OLS 회귀를 수행,
+    4) 회귀계수(params)와 표준오차(bse)의 비율(= t-통계량)을 반환.
+    """
+    # 1. 일간 수익률 및 로그누적합
+    ret = ts.pct_change().iloc[1:]            # 첫 행은 NaN이 되므로 [1:]로 슬라이싱
+    ret_cum = np.log(1 + ret).cumsum()        # log(1+수익률)의 누적합
+
+    # 2. 회귀분석 준비: x는 0부터 시작하는 정수 배열, y는 ret_cum
+    x = np.arange(len(ret_cum))
+    y = ret_cum.values
+
+    # 3. OLS (상수항 없는 단순회귀: y ~ x)
+    #    ※ 만약 상수항을 포함하고 싶으면 sm.add_constant(x) 후 fit()에 넣으면 됩니다.
+    reg = sm.OLS(y, x).fit()
+
+    # 4. params(계수) / bse(표준오차) → t-통계량
+    #    params와 bse 모두 길이가 1(상수항을 넣지 않았을 때)이므로 float 변환
+    res = float(reg.params / reg.bse)
+
+    return res
 
 def average_momentum_score(ts):
     if len(ts) < 52:  # Ensure there is at least one year of data
@@ -243,8 +261,8 @@ def average_momentum_score(ts):
 # Function to calculate all momentum scores using apply
 def calculate_all_momentum_scores(df):
     # Apply functions column-wise with a rolling window of 52 weeks
-    basic_mom = df.rolling(window=52).apply(momentum_basic, raw=False)
-    mom_scores = df.rolling(window=52).apply(momentum_score, raw=False)
+    basic_mom = df.rolling(window=52).apply(abs_momentum_score, raw=False)
+    mom_scores = df.rolling(window=52).apply(rel_momentum_score, raw=False)
     avg_scores = df.rolling(window=52).apply(average_momentum_score, raw=False)
     return basic_mom, mom_scores, avg_scores
 
