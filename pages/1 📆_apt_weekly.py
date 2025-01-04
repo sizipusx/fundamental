@@ -266,6 +266,11 @@ def calculate_all_momentum_scores(df):
     avg_scores = df.rolling(window=52).apply(average_momentum_score, raw=False)
     return basic_mom, mom_scores, avg_scores
 
+def calculate_relative_momentum_scores(df):
+    # Apply functions column-wise with a rolling window of 52 weeks
+    mom_scores = df.rolling(window=52).apply(rel_momentum_score, raw=False)
+    return mom_scores
+
 @st.cache_data(ttl=datetime.timedelta(days=1))
 def load_senti_data():
     #2022.9.25 db에서 읽어오기
@@ -465,12 +470,12 @@ def run_price_index() :
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 if only_one == False:
-                    flag = ["KB 매매지수", "기본 모멘텀"]
+                    flag = ["KB 매매지수", "절대 모멘텀"]
                     drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
             with col2:
                 st.write("")
             with col3:
-                flag = ["부동산원 매매지수","기본 모멘텀"]
+                flag = ["부동산원 매매지수","절대 모멘텀"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
         html_br="""
         <br>
@@ -480,12 +485,12 @@ def run_price_index() :
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 if only_one == False:
-                    flag = ["KB 매매지수", "모멘텀 스코어"]
+                    flag = ["KB 매매지수", "상대 모멘텀"]
                     drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbm, os_kbm, as_kbm, flag)
             with col2:
                 st.write("")
             with col3:
-                flag = ["부동산원 매매지수", "모멘텀 스코어"]
+                flag = ["부동산원 매매지수", "상대 모멘텀"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_om, os_om, as_om, flag)
         html_br="""
         <br>
@@ -495,12 +500,12 @@ def run_price_index() :
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 if only_one == False:
-                    flag = ["KB 전세지수", "기본 모멘텀"]
+                    flag = ["KB 전세지수", "절대 모멘텀"]
                     drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbj, os_kbj, as_kbj, flag)
             with col2:
                 st.write("")
             with col3:
-                flag = ["부동산원 전세지수","기본 모멘텀"]
+                flag = ["부동산원 전세지수","절대 모멘텀"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_oj, os_oj, as_oj, flag)
         html_br="""
         <br>
@@ -510,12 +515,12 @@ def run_price_index() :
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
                 if only_one == False:
-                    flag = ["KB 전세지수", "모멘텀 스코어"]
+                    flag = ["KB 전세지수", "상대 모멘텀"]
                     drawAPT_weekly.draw_momentum(selected_dosi2, bs_kbj, os_kbj, as_kbj, flag)
             with col2:
                 st.write("")
             with col3:
-                flag = ["부동산원 전세지수", "모멘텀 스코어"]
+                flag = ["부동산원 전세지수", "상대 모멘텀"]
                 drawAPT_weekly.draw_momentum(selected_dosi2, bs_oj, os_oj, as_oj, flag)
         html_br="""
         <br>
@@ -547,12 +552,12 @@ def draw_basic():
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ['KB','매매모멘텀']
+                flag = ['KB','매매지수 상대 모멘텀 상하위지역']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
             with col2:
                 st.write("")
             with col3:
-                flag = ['부동산원','매매모멘텀']
+                flag = ['부동산원','매매재수 상대 모멘텀 상하위지역역']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)
                 
                         
@@ -564,12 +569,12 @@ def draw_basic():
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ['KB','전세모멘텀']
+                flag = ['KB','전세지수 상대 모멘텀 상하위지역']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
             with col2:
                 st.write("")
             with col3:
-                flag = ['부동산원','전세모멘텀']
+                flag = ['부동산원','전세지수 상대 모멘텀 상하위지역']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)        
         html_br="""
         <br>
@@ -934,41 +939,43 @@ if __name__ == "__main__":
     #여기서 만들어 보자!!!
     #=============KB 지수 모멘텀======================================
     # Filter the data for the most recent 52 weeks (1 year of weekly data)
-    recent_year_mdata = mdf[mdf.index >= mdf.index.max() - pd.DateOffset(weeks=52)]
-    recent_year_jdata = jdf[jdf.index >= jdf.index.max() - pd.DateOffset(weeks=52)] 
-    # Recompute momentum based on the filtered data
-    momentum_m= recent_year_mdata.iloc[:, 1:].apply(
-        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
-    ).dropna()
-    momentum_j= recent_year_jdata.iloc[:, 1:].apply(
-        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
-    ).dropna()
+    recent_year_mdata = mdf[mdf.index >= mdf.index.max() - pd.DateOffset(weeks=54)]
+    recent_year_jdata = jdf[jdf.index >= jdf.index.max() - pd.DateOffset(weeks=54)] 
+    # # Recompute momentum based on the filtered data
+    # momentum_m= recent_year_mdata.iloc[:, 1:].apply(
+    #     lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
+    # ).dropna()
+    # momentum_j= recent_year_jdata.iloc[:, 1:].apply(
+    #     lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
+    # ).dropna()
+    rel_mom_kbm = calculate_relative_momentum_scores(recent_year_mdata)
+    rel_mom_kbj = calculate_relative_momentum_scores(recent_year_jdata)
 
-    momentum_combined = pd.DataFrame({
-        '매매모멘텀': momentum_m,
-        '전세모멘텀': momentum_j
+    momentum_kbm = rel_mom_kbm.iloc[-1]
+    momentum_kbj = rel_mom_kbj.iloc[-1]
+
+    momentum_kbcombined = pd.DataFrame({
+        '매매모멘텀': momentum_kbm,
+        '전세모멘텀': momentum_kbj
     })
+    momentum_kb = momentum_kbcombined.round(decimals=2).dropna()
     # Sort momentum in descending order
-    momentum_df = momentum_combined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
-    momentum_df = momentum_df.round(decimals=2)
+    momentum_df = momentum_kbcombined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
     #=============부동산원 지수 모멘텀======================================
-    recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=52)]
-    recent_year_ojdata = ojdf[ojdf.index >= ojdf.index.max() - pd.DateOffset(weeks=52)]
-    # Recompute momentum based on the filtered data
-    momentum_om= recent_year_omdata.iloc[:, 1:].apply(
-        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
-    ).dropna()
-    momentum_oj= recent_year_ojdata.iloc[:, 1:].apply(
-        lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
-    ).dropna()
+    recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=54)]
+    recent_year_ojdata = ojdf[ojdf.index >= ojdf.index.max() - pd.DateOffset(weeks=54)]
+    rel_mom_om = calculate_relative_momentum_scores(recent_year_omdata)
+    rel_mom_oj = calculate_relative_momentum_scores(recent_year_ojdata)
 
-    momentum_one = pd.DataFrame({
+    momentum_om = rel_mom_om.iloc[-1]
+    momentum_oj = rel_mom_oj.iloc[-1]
+
+    momentum_ocombined = pd.DataFrame({
         '매매모멘텀': momentum_om,
         '전세모멘텀': momentum_oj
     })
-    # Sort momentum in descending order
-    momentum_odf = momentum_one.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
-    momentum_odf = momentum_odf.round(decimals=2)
+    momentum_ocombined = momentum_ocombined.round(decimals=2).dropna()
+    momentum_odf = momentum_ocombined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
     #============KB주간 증감률=========================================
     mdf_change = mdf.pct_change()*100
     mdf_change = mdf_change.iloc[1:]
