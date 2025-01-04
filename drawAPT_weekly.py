@@ -328,7 +328,8 @@ def draw_momentum_with_bubble(last_df, flag, last_week):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
-    st.plotly_chart(fig, key="momentum_bubble_chart")  # 고유 key 추가
+    # 각 호출에 고유한 key 추가
+    st.plotly_chart(fig, key=f"momentum_bubble_chart_{flag}_{last_week}")
 
 def draw_index_change_with_bubble_slice(citys, last_df, flag):
     custom_color_scale = [
