@@ -287,7 +287,7 @@ def get_stockanalysis_com(ticker):
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
 
-    element_tables = soup.select("table[class='w-full border-separate border-spacing-0 whitespace-nowrap']") #income
+    element_tables = soup.select("table[class='w-full border-separate border-spacing-0 text-sm sm:text-base [&amp;_tbody]:sm:whitespace-nowrap [&amp;_thead]:whitespace-nowrap']") #income
 
     df = pd.read_html(str(element_tables))[0] #'0번 테이블 뽑기
     df = df.T
