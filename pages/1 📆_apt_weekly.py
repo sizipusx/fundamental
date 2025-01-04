@@ -552,12 +552,12 @@ def draw_basic():
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ['KB','매매지수 상대 모멘텀 상하위지역']
+                flag = ['KB','매매모멘텀']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
             with col2:
                 st.write("")
             with col3:
-                flag = ['부동산원','매매재수 상대 모멘텀 상하위지역역']
+                flag = ['부동산원','전세모멘텀']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)
                 
                         
@@ -569,12 +569,12 @@ def draw_basic():
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                flag = ['KB','전세지수 상대 모멘텀 상하위지역']
+                flag = ['KB','매매모멘텀']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
             with col2:
                 st.write("")
             with col3:
-                flag = ['부동산원','전세지수 상대 모멘텀 상하위지역']
+                flag = ['부동산원','전세모멘텀']
                 drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)        
         html_br="""
         <br>
