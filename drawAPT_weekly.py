@@ -289,7 +289,7 @@ def draw_momentum_with_bar(last_df, flag, last_week):
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_xaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, key="momentum_bar_chart")  # 고유 key 추가
 
 
 def draw_index_change_with_bubble(last_df, flag, last_week):
@@ -320,7 +320,7 @@ def draw_momentum_with_bubble(last_df, flag, last_week):
     ]
     #매매/전세 증감률 Bubble Chart
     max_abs_value = np.max(np.abs(last_df['매매모멘텀']))
-    title = dict(text='<b>'+last_week+ ' 기준 '+flag+' 1년 모멘텀</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
+    title = dict(text='<b>'+last_week+ ' 기준 '+flag+' 상대 모멘텀</b>', x=0.5, y = 0.95, xanchor='center', yanchor= 'top')
     fig = px.scatter(last_df, x='매매모멘텀', y='전세모멘텀', color='매매모멘텀', size=abs(last_df['전세모멘텀']*10), 
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -328,7 +328,7 @@ def draw_momentum_with_bubble(last_df, flag, last_week):
     fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, key="momentum_bubble_chart")  # 고유 key 추가
 
 def draw_index_change_with_bubble_slice(citys, last_df, flag):
     custom_color_scale = [
