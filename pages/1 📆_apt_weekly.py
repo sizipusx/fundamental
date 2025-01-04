@@ -961,6 +961,7 @@ if __name__ == "__main__":
     momentum_kb = momentum_kbcombined.round(decimals=2).dropna()
     # Sort momentum in descending order
     momentum_df = momentum_kbcombined.sort_values(by='매매모멘텀',ascending=False, ignore_index=False)
+    st.dataframe(momentum_df)
     #=============부동산원 지수 모멘텀======================================
     recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=54)]
     recent_year_ojdata = ojdf[ojdf.index >= ojdf.index.max() - pd.DateOffset(weeks=54)]
