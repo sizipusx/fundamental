@@ -768,7 +768,7 @@ if __name__ == "__main__":
     # split_OV=OV[0]
     # ov_df = pd.json_normalize(split_OV)
     # overview_df = ov_df.T
-    yfin.pdr_override()
+    # yfin.pdr_override()
     ticker = yfin.Ticker(input_ticker)
     overview_df = pd.DataFrame.from_dict(ticker.info, orient='index')
     overview_df.columns = ['기본 정보']
