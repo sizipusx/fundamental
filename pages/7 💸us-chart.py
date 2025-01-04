@@ -54,7 +54,7 @@ html_header="""
   border-width: 1.5px;"></h1>
 """
 
-st.set_page_config(page_title="미국 상장 기업 정보 조회", page_icon="files/logo2.png", layout="wide")
+# st.set_page_config(page_title="미국 상장 기업 정보 조회", page_icon="files/logo2.png", layout="wide")
 st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=True)
 st.markdown(html_header, unsafe_allow_html=True)
 st.markdown(""" <style>
@@ -82,12 +82,12 @@ marker_colors = ['rgb(27,38,81)', 'rgb(205,32,40)', 'rgb(22,108,150)', 'rgb(255,
 # template = 'ggplot2' 
 
 ## 특정 위치의 배경색 바꾸기
-@st.cache_resource(ttl=datetime.timedelta(weeks=52))
+@st.cache_resource(ttl=datetime.timedelta(weeks=1))
 def draw_color_cell(x,color):
     color = f'background-color:{color}'
     return color
 # PER 값 변경    
-@st.cache_resource(ttl=datetime.timedelta(weeks=52))
+@st.cache_resource(ttl=datetime.timedelta(weeks=1))
 def change_per_value(x):
     if x >= 100 :
         x = 100
@@ -97,7 +97,7 @@ def change_per_value(x):
         pass
     return x
 
-@st.cache_resource(ttl=datetime.timedelta(weeks=52))
+@st.cache_data(ttl=datetime.timedelta(weeks=1))
 def load_data():
     # 나스닥거래소 상장종목 전체
     df_q= fdr.StockListing('NASDAQ')
