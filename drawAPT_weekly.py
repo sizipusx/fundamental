@@ -289,7 +289,7 @@ def draw_momentum_with_bar(last_df, flag, last_week):
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_xaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_layout(template="myID")
-    st.plotly_chart(fig, key="momentum_bar_chart")  # 고유 key 추가
+    st.plotly_chart(fig, key=f"momentum_bubble_chart_{flag}_{last_week}")
 
 
 def draw_index_change_with_bubble(last_df, flag, last_week):
