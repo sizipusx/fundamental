@@ -93,12 +93,12 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
         fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
         fig.update_layout(template="myID")
         fig.update_layout(hovermode="x unified")
-        fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
-              annotation_text="11.10대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
-        fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
-              annotation_text="1.3대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+        # fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
+        #       annotation_text="11.10대책", annotation_position="bottom left",
+        #       fillcolor="red", opacity=0.25, line_width=0)
+        # fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
+        #       annotation_text="1.3대책", annotation_position="bottom left",
+        #       fillcolor="red", opacity=0.25, line_width=0)
         st.plotly_chart(fig)
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
