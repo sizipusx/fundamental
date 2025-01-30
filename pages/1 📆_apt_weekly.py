@@ -529,7 +529,7 @@ def run_price_index() :
 
 
 def draw_basic():
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["모멘텀", "⏰ 한주보기", "🌈통계보기","📈 심리지수", "🗺️ 지도", "🔣 Raw Data"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["🚀모멘텀", "⏰한주보기", "🌈통계보기","📈심리지수", "🗺️지도", "🔣Raw Data"])
     with tab1:
         ### Draw Bubble chart ##############
         with st.container():
