@@ -216,7 +216,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
-    fig.update_layout(title = title, font=dict(size=15), font=dict(color="gray"))
+    fig.update_layout(title = title, font=dict(size=15, color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
