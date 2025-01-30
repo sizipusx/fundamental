@@ -1187,6 +1187,7 @@ if __name__ == "__main__":
         cols = st.columns(2)
         cols[0].write(f"KB last update date: {kb_last_week}")
         cols[1].write(f"부동산원 last update date: {one_last_week}")
+        st.dataframe(senti_index)
     # 폰트 리스트
     import numpy as np
     import os
