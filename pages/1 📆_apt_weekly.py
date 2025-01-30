@@ -817,8 +817,15 @@ def draw_basic():
         """
         st.markdown(html_br, unsafe_allow_html=True)
         with st.container():
+            from datetime import datetime
+            # 현재 날짜 가져오기
+            current_date = datetime.now()
+            # 현재 년도
+            current_year = current_date.year
+            # 이전 년도
+            previous_year = current_year - 1
             # 데이터프레임 `index_slice_df`를 기반으로 그래프 생성
-            senti_index_slice = senti_index.iloc[-52:]
+            senti_index_slice = senti_index[(senti_index['year'] == previous_year) | (senti_index['year'] == current_year)]
             drawAPT_weekly. plot_real_estate_trends(senti_index_slice, "매수우위지수와 전세수급지수 변화", "매수우위지수", "전세수급지수", 
                                                     x_threshold=40, y_threshold=100) # y축 기준선 변경
         html_br="""
