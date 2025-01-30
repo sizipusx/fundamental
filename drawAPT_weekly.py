@@ -1162,3 +1162,77 @@ def change_number_chart(updown_count, flag, flag2):
             range=[utcnow - relativedelta(years=1), utcnow]
         ))
     st.plotly_chart(fig)
+
+
+import plotly.express as px
+import pandas as pd
+
+def plot_real_estate_trends(df, title_text="매수우위지수 전세수급지수 변화", x_name = "매수우위지수", y_name="전세우위지수", x_threshold=40, y_threshold=100):
+    # X축, Y축 범위 설정
+    range_ox = [df[x_name].min(), df[x_name].max()]
+    range_oy = [df[y_name].min(), df[y_name].max()]
+
+    # size_max를 전세수급지수 최대값으로 설정
+    size_omax = df[y_name].max()
+
+    # 날짜 포맷 변경 (YYYY-MM-DD → YYYY.M.D)
+    df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y.%m.%d')
+
+    # 그래프 제목 설정
+    title = dict(
+        text=f'<b>{title_text}</b>',
+        x=0.5, y=1.0, xanchor='center', yanchor='top'
+    )
+
+    # px.scatter 플롯 생성 (원의 크기 줄이기)
+    fig = px.scatter(
+        df,
+        x=x_name,
+        y=y_name,
+        animation_frame="date",
+        animation_group="지역",
+        size=df[y_name] / 300,  # 원 크기 줄이기
+        color="지역",
+        hover_name="지역",
+        size_max=size_omax / 3,  # 전체 최대 크기 조정
+        range_x=range_ox,
+        range_y=range_oy,
+        text="지역"
+    )
+
+    # 텍스트 위치 조정
+    fig.update_traces(textposition='middle center')
+
+    # 기준선 추가 (사용자가 설정한 x_threshold, y_threshold)
+    fig.add_shape(
+        type="line",
+        x0=x_threshold, x1=x_threshold, y0=range_oy[0], y1=range_oy[1],
+        line=dict(color="red", width=1)
+    )
+    fig.add_shape(
+        type="line",
+        x0=range_ox[0], x1=range_ox[1], y0=y_threshold, y1=y_threshold,
+        line=dict(color="red", width=1)
+    )
+
+    # 범례를 표시하고 상단에 배치
+    fig.update_layout(
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+
+    # 기준선 스타일 업데이트
+    fig.update_yaxes(zeroline=True, zerolinecolor='LightPink')
+    fig.update_xaxes(zeroline=True, zerolinecolor='LightPink')
+
+    # 레이아웃 업데이트
+    fig.update_layout(title=title, titlefont_size=15)
+    fig.update_layout(template="myID")
+
+    return st.plotly_chart(fig, use_container_width=True)
