@@ -580,6 +580,21 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw gif  #########################################################################################
+        # with st.container():
+        #     col1, col2, col3 = st.columns([30,2,30])
+        #     with col1:
+        #         flag = ['KB','전세모멘텀']
+        #         drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
+        #     with col2:
+        #         st.write("")
+        #     with col3:
+        #         flag = ['부동산원','전세모멘텀']
+        #         drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)        
+        # html_br="""
+        # <br>
+        # """
+        # st.markdown(html_br, unsafe_allow_html=True)
     with tab2:
         ### Draw Bubble chart ##############
         with st.container():
