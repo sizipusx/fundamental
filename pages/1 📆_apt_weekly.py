@@ -298,16 +298,6 @@ def load_senti_data():
     js_su = senti_list[1].loc[:,senti_list[1].columns.str.contains('수요>공급')]
     js_go = senti_list[1].loc[:,senti_list[1].columns.str.contains('수요<공급')]
     citys = s_df.columns.map(lambda x: x.split(',')[0])
-    new_citys = []
-    for city in citys:
-        new_citys.append(re.sub('[^A-Za-z0-9가-힣]', '', city))
-    
-    s_df.columns = new_citys
-    s_maedo.colums = new_citys
-    s_maesu.colums = new_citys
-    js_df.columns = new_citys
-    js_su.columns = new_citys
-    js_go.columns = new_citys
     # 매핑 테이블 예시
     region_mapping = {
         "서울특별시": "서울",
@@ -328,9 +318,18 @@ def load_senti_data():
         "경상남도": "경남",
         "제주특별자치도": "제주"
     }
-    # 컬럼 이름 수정
-    s_df.columns = s_df.columns.map(lambda x: region_mapping.get(x, x))
-    js_df.columns = js_df.columns.map(lambda x: region_mapping.get(x, x))
+    new_citys = []
+    for city in citys:
+        new_citys.append(re.sub('[^A-Za-z0-9가-힣]', '', city))
+    # 리스트의 지역명을 줄임 지역명으로 변경
+    short_region_list = [region_mapping.get(region, region) for region in new_citys]
+    s_df.columns = short_region_list
+    s_maedo.colums = short_region_list
+    s_maesu.colums = short_region_list
+    js_df.columns = short_region_list
+    js_su.columns = short_region_list
+    js_go.columns = short_region_list
+
     #가장 최근 것만   d엡데이트
     # s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
     # js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
