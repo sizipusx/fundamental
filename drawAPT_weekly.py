@@ -59,7 +59,7 @@ def make_dynamic_graph(s_df, js_df):
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
     fig.add_vline(x=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="전세수급지수가 100을 초과할수록 '매수자가 많다'를, 100 미만일 경우 '매도자가 많다'를 의미 ", annotation_position="top left")
     fig.add_vline(x=40.0, line_width=1, line_dash="dot", line_color="red",  annotation_text="40 이상 매매지수 상승 가능성 높음", annotation_position="top left")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"), template=template)
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -89,7 +89,7 @@ def run_price_index_all(draw_list, mdf, jdf, mdf_change, jdf_change, gu_city, ci
                 )
         fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
         fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
+        fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
         fig.add_vline(x="2019-1-14", line_dash="dash", line_color="gray")
         fig.update_layout(template="myID")
         fig.update_layout(hovermode="x unified")
@@ -122,7 +122,7 @@ def draw_power(selected_dosi2, m_power, bubble_df3, flag):
         fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
         fig.update_yaxes(title_text='버블지수', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
         fig.update_yaxes(title_text='전세파워', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
+        fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
     except KeyError as keys:
@@ -149,7 +149,7 @@ def draw_momentum(selected_dosi2, bs_df, ms_df, am_df, flag):
         fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
         fig.update_yaxes(title_text=flag[1], showticklabels= True, showgrid = False, zeroline=True, zerolinecolor=marker_colors[3], secondary_y = False) #ticksuffix="%"
         fig.update_yaxes(title_text='모멘텀', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor=marker_colors[0], secondary_y = True) #tickprefix="$", 
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%y.%m.%d')
+        fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%y.%m.%d')
         fig.update_layout(template="myID")
         st.plotly_chart(fig)
     except KeyError as keys:
@@ -172,7 +172,7 @@ def draw_power_table(power_df):
                                     font_size=12,
                                     height=30))
                     ])
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -216,7 +216,7 @@ def draw_Choroplethmapbox(df, geo_data, flag, last_week):
     # fig.update_traces(hovertext=df['index'])
     fig.update_layout(mapbox_style="light", mapbox_accesstoken=token,
                     mapbox_zoom=8, mapbox_center = {"lat": 37.425, "lon": 126.993})
-    fig.update_layout(title = title, titlefont_size=15, font=dict(color="gray"))
+    fig.update_layout(title = title, font=dict(size=15), font=dict(color="gray"))
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
@@ -249,7 +249,7 @@ def draw_index_change_with_bar(last_df, flag, last_week):
         fig.add_vline(x=last_df.loc['전국','전세증감'], line_dash="dash", line_color="yellow", annotation_text=f"전국 증감률: {str(last_df.loc['전국','전세증감'])}", annotation_position="bottom right")
     
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_xaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -284,7 +284,7 @@ def draw_momentum_with_bar(last_df, flag, last_week):
         fig.add_vline(x=round(last_df.loc[:,'전세모멘텀'].mean()), line_dash="dash", line_color="yellow", annotation_text=f"모멘텀 평균: {str(round(last_df.loc[:,'전세모멘텀'].mean(),2))}", annotation_position="bottom right")
     
     # fig.add_shape(type="line", x0=last_df.index[0], y0=last_df.iloc[0,0], x1=last_df.index[-1], y1=last_df.iloc[0,0], line=dict(color="MediumPurple",width=2, dash="dot"))
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_traces(texttemplate='%{label}', textposition='outside')
     fig.update_layout(uniformtext_minsize=6, uniformtext_mode='show')
     fig.update_xaxes(title_text=flag[1], showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
@@ -306,7 +306,7 @@ def draw_index_change_with_bubble(last_df, flag, last_week):
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
@@ -345,7 +345,7 @@ def draw_index_change_with_bubble_slice(citys, last_df, flag):
                         text= slice_df.index, hover_name=slice_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
@@ -365,7 +365,7 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
         fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
         fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
         fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-        fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
+        fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
         fig.update_layout(template="myID")
         fig.add_vline(x="2022-1-10", line_dash="dash", line_color="gray")
         #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
@@ -433,7 +433,7 @@ def run_price_waterfall(selected_dosi2, selected_dosi3, index_df, index_change, 
         fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
         fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
         fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-        fig.update_layout(title = titles, titlefont_size=15, waterfallgroupgap=0.2, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
+        fig.update_layout(title = titles, font=dict(size=15), waterfallgroupgap=0.2, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m')
         fig.update_layout(template="myID")
         fig.update_layout(
             showlegend=True,
@@ -472,7 +472,7 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
     fig.add_hline(y=40.0, line_width=2, line_dash='dot', line_color="red", annotation_text="40 이상 매매지수 상승", annotation_position="bottom right", secondary_y=False)
     fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="MediumPurple", annotation_text="100>매수자많음", annotation_position="bottom right", secondary_y=False)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')
     fig.update_layout(template="myID")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
@@ -535,7 +535,7 @@ def draw_sentiment_change(selected_dosi, mdf_change, js_index):
     fig.add_hline(y=mdf_change[selected_dosi].mean(), line_width=2, line_dash="dash", line_color="blue",  annotation_text="평균상승률: "+str(round(mdf_change[selected_dosi].mean(),2)), annotation_position="bottom right", secondary_y = True)
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(title = titles, font=dict(size=15), xaxis_tickformat = '%Y-%m-%d')
     #fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
     fig.update_layout(
         showlegend=True,
@@ -573,7 +573,7 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
     fig.update_yaxes(showspikes=True)#, spikecolor="orange", spikethickness=0.5)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=False,  secondary_y = False) #ticksuffix="%"
     fig.update_yaxes(title_text='지수 증감', showticklabels= True, showgrid = False, zeroline=True, zerolinecolor='LightPink', secondary_y = True, ticksuffix="%") #tickprefix="$", 
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')
     fig.add_vline(x="2021-6-28", line_dash="dash", line_color="gray")
     fig.update_layout(template="myID")
     #fig.add_hline(y=last_df.iloc[0,1], line_dash="dash", line_color="red", annotation_text=f"전국 증감률: {round(last_df.iloc[0,1],2)}", \
@@ -647,7 +647,7 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
             )
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 변화", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
@@ -694,7 +694,7 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
             )
     fig.update_yaxes(title_text="매매지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="매매지수 증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
@@ -741,7 +741,7 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
             )
     fig.update_yaxes(title_text="전세지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="전세지수 증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
@@ -789,7 +789,7 @@ def draw_flower(select_city, selected_dosi3, cum_mdf, cum_jdf, flag):
         )) 
         fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
+        fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
         fig.update_layout(template="myID")
         fig.update_layout(hovermode="x unified")
         st.plotly_chart(fig)
@@ -819,7 +819,7 @@ def draw_flower_together(citys, cum_mdf, cum_jdf, flag):
             )
         fig.update_yaxes(title_text="전세지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
         fig.update_xaxes(title_text="매매지수 누적", zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-        fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
+        fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="left", x=0))
         fig.update_layout(hovermode="x unified", template="myID")
     except KeyError as keys:
         st.write(f" {keys} KB에는 없음")
@@ -840,7 +840,7 @@ def draw_change_table(change_df,flag):
                                     font_size=12,
                                     height=30))
                     ])
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -862,7 +862,7 @@ def draw_senti_last(to_df, last_week):
     fig.add_hline(y=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="bottom right")
     fig.add_vline(x=100.0, line_width=2, line_dash="solid", line_color="blue",  annotation_text="전세수급지수가 100을 초과할수록 '매수자가 많다'를, 100 미만일 경우 '매도자가 많다'를 의미 ", annotation_position="top left")
     fig.add_vline(x=40.0, line_width=1, line_dash="dot", line_color="red",  annotation_text="40 이상 매매지수 상승 가능성 높음", annotation_position="top left")
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"))
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"))
     fig.update_layout(template="myID")
     st.plotly_chart(fig)
 
@@ -886,7 +886,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True)
     fig.add_hline(y=100.0, line_width=1, line_dash="dot", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="top left")
     fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승 ", annotation_position="top left")
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')  
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')  
     fig.update_layout(template="myID")
     # Adding labels
     annotations = []
@@ -930,7 +930,7 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
     #fig.add_shape(type="line", x0=js_index.index[0], y0=100.0, x1=js_index.index[-1], y1=100.0, line=dict(color="MediumPurple",width=2, dash="dot"))
     fig.add_hline(y=100.0, line_width=2, line_dash='dash', line_color="MediumPurple", annotation_text="100을 초과할수록 '공급부족' 비중이 높음", annotation_position="top left", secondary_y=False)
     fig.update_yaxes(title_text='지수', showticklabels= True, showgrid = True, zeroline=True, zerolinecolor='LightPink', secondary_y = False) #ticksuffix="%"
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')
     fig.update_layout(template="myID")
     fig.add_vrect(x0="2017-08-07", x1="2017-08-14", 
               annotation_text="8.2 대책", annotation_position="top left",
@@ -992,7 +992,7 @@ def draw_jeon_sentiment_change(selected_dosi, jdf_change, js_index):
     fig.add_hline(y=jdf_change[selected_dosi].mean(), line_width=2, line_dash="dash", line_color="blue",  annotation_text="평균상승률: "+str(round(jdf_change[selected_dosi].mean(),2)), annotation_position="top left", secondary_y = True)
     fig.update_yaxes(title_text="전세수급지수", showticklabels= True, showgrid = True, zeroline=True, secondary_y = False)
     fig.update_yaxes(title_text="전세증감", showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, xaxis_tickformat = '%Y-%m-%d')
+    fig.update_layout(title = titles, font=dict(size=15), xaxis_tickformat = '%Y-%m-%d')
     #fig.update_layout(legend=dict( orientation="h", yanchor="bottom", y=1, xanchor="right",  x=0.95))
     fig.update_layout(
         showlegend=True,
@@ -1077,7 +1077,7 @@ def histogram_together(last_df, last_odf, flag):
     ))
 
     fig.update_layout(
-        title = title, titlefont_size=15, legend=dict(orientation="h"),
+        title = title, font=dict(size=15), legend=dict(orientation="h"),
         #title_text='주간 KB/부동산원 아파트 매매가격 상승률 빈도수 비교', # title of plot
         xaxis_title_text='증감률', # xaxis label
         yaxis_title_text='지역수', # yaxis label
@@ -1096,7 +1096,7 @@ def histogram_chart(last_odf, flag, flag2):
         bargap=0.1, # gap between bars of adjacent location coordinates
         bargroupgap=0.1 # gap between bars of the same location coordinates
     )
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="myID")
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"), template="myID")
     st.plotly_chart(fig)
 
 
@@ -1112,7 +1112,7 @@ def displot(last_df, last_odf, flag): #KDE
                             curve_type='kde', # override default 'kde'
                             rug_text=rug_text,
                             colors=colors)
-    fig.update_layout(title = title, titlefont_size=15, legend=dict(orientation="h"), template="myID")
+    fig.update_layout(title = title, font=dict(size=15), legend=dict(orientation="h"), template="myID")
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -1140,7 +1140,7 @@ def change_number_chart(updown_count, flag, flag2):
                         secondary_y = False)
     fig.update_traces(texttemplate='%{text:.3s}')
     fig.update_yaxes(title_text='지역분포',showticklabels= True, showgrid = False, zeroline=True, ticksuffix="%", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), barmode='stack')#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)'
+    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), barmode='stack')#, xaxis_tickformat = 'd')#  legend_title_text='( 단위 : $)'
     fig.update_layout(template="myID")
     # Adjust the legend and x-axis date range selector
     fig.update_layout(
