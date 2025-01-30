@@ -308,6 +308,29 @@ def load_senti_data():
     js_df.columns = new_citys
     js_su.columns = new_citys
     js_go.columns = new_citys
+    # 매핑 테이블 예시
+    region_mapping = {
+        "서울특별시": "서울",
+        "부산광역시": "부산",
+        "대구광역시": "대구",
+        "인천광역시": "인천",
+        "광주광역시": "광주",
+        "대전광역시": "대전",
+        "울산광역시": "울산",
+        "세종특별자치시": "세종",
+        "경기도": "경기",
+        "강원특별자치도": "강원",
+        "충청북도": "충북",
+        "충청남도": "충남",
+        "전북특별자치도": "전북",
+        "전라남도": "전남",
+        "경상북도": "경북",
+        "경상남도": "경남",
+        "제주특별자치도": "제주"
+    }
+    # 컬럼 이름 수정
+    s_df.columns = s_df.columns.map(lambda x: region_mapping.get(x, x))
+    js_df.columns = js_df.columns.map(lambda x: region_mapping.get(x, x))
     #가장 최근 것만   d엡데이트
     # s_df = kbs_df.xs(key='매수우위지수', axis=1, level=1)
     # js_df = kbjs_df.xs(key='전세수급지수', axis=1, level=1)
