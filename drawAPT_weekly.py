@@ -325,7 +325,7 @@ def draw_momentum_with_bubble(last_df, flag, last_week):
                         text= last_df.index, hover_name=last_df.index, color_continuous_scale=custom_color_scale, range_color=[-max_abs_value, max_abs_value])
     fig.update_yaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
     fig.update_xaxes(zeroline=True, zerolinecolor='LightPink', ticksuffix="%")
-    fig.update_layout(title=title, title_font=dict(size=15), legend=dict(orientation="h"))
+    fig.update_layout(title=title, title_font_size=15s, legend=dict(orientation="h"))
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     # 각 호출에 고유한 key 추가
