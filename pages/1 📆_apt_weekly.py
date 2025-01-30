@@ -819,7 +819,7 @@ def draw_basic():
         with st.container():
             # 데이터프레임 `index_slice_df`를 기반으로 그래프 생성
             senti_index_slice = senti_index.iloc[-52:]
-            drawAPT_weekly. plot_real_estate_trends(senti_index_slice, title_text="매수우위지수와 전세수급지수 변화", "매수우위지수", "전세수급지수", 
+            drawAPT_weekly. plot_real_estate_trends(senti_index_slice, "매수우위지수와 전세수급지수 변화", "매수우위지수", "전세수급지수", 
                                                     x_threshold=40, y_threshold=100) # y축 기준선 변경
         html_br="""
         <br>
