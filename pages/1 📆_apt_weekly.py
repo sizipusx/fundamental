@@ -624,9 +624,9 @@ def draw_basic():
         st.markdown(html_br, unsafe_allow_html=True)
         ### Draw 모멘텀 애니메이션션  #########################################################################################
         with st.container():
-            drawAPT_weekly.plot_real_estate_trends(filtered_df, title_text="매수우위지수 전세수급지수 변화", x_name = "매매모멘텀", y_name="전세모멘텀", x_threshold=0, y_threshold=0)
+            drawAPT_weekly.plot_real_estate_trends(filtered_df, title_text="KB 아파트가격지수 매매지수 상대모멘텀 변화", x_name = "매매모멘텀", y_name="전세모멘텀", x_threshold=0, y_threshold=0)
             html_br="""<br>"""
-            drawAPT_weekly.plot_real_estate_trends(filtered_odf, title_text="매수우위지수 전세수급지수 변화", x_name = "매매모멘텀", y_name="전세모멘텀", x_threshold=0, y_threshold=0)       
+            drawAPT_weekly.plot_real_estate_trends(filtered_odf, title_text="부동산원 아파트가격지수 매매지수 상대모멘텀 변화", x_name = "매매모멘텀", y_name="전세모멘텀", x_threshold=0, y_threshold=0)       
         html_br="""<br>"""
         st.markdown(html_br, unsafe_allow_html=True)
     with tab2:
