@@ -1236,4 +1236,4 @@ def plot_real_estate_trends(df, title_text="매수우위지수 전세수급지�
     fig.update_layout(title=title, font=dict(size=15))
     fig.update_layout(template="myID")
 
-    return st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, uses_container_width=True)
