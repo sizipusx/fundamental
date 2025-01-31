@@ -622,21 +622,13 @@ def draw_basic():
         <br>
         """
         st.markdown(html_br, unsafe_allow_html=True)
-        ### Draw gif  #########################################################################################
-        # with st.container():
-        #     col1, col2, col3 = st.columns([30,2,30])
-        #     with col1:
-        #         flag = ['KB','전세모멘텀']
-        #         drawAPT_weekly.draw_momentum_with_bar(momentum_df, flag, kb_last_week)
-        #     with col2:
-        #         st.write("")
-        #     with col3:
-        #         flag = ['부동산원','전세모멘텀']
-        #         drawAPT_weekly.draw_momentum_with_bar(momentum_odf, flag, one_last_week)        
-        # html_br="""
-        # <br>
-        # """
-        # st.markdown(html_br, unsafe_allow_html=True)
+        ### Draw 모멘텀 애니메이션션  #########################################################################################
+        with st.container():
+            drawAPT_weekly.plot_real_estate_trends(filtered_df, title_text="매수우위지수 전세수급지수 변화", x_name = "매매모멘텀", y_name="전세모멘텀", x_threshold=0, y_threshold=0)
+            html_br="""<br>"""
+            drawAPT_weekly.plot_real_estate_trends(filtered_odf, title_text="매수우위지수 전세수급지수 변화", x_name = "매매모멘텀", y_name="전세모멘텀", x_threshold=0, y_threshold=0)       
+        html_br="""<br>"""
+        st.markdown(html_br, unsafe_allow_html=True)
     with tab2:
         ### Draw Bubble chart ##############
         with st.container():
@@ -1012,8 +1004,8 @@ if __name__ == "__main__":
     #여기서 만들어 보자!!!
     #=============KB 지수 모멘텀======================================
     # Filter the data for the most recent 52 weeks (1 year of weekly data)
-    recent_year_mdata = mdf[mdf.index >= mdf.index.max() - pd.DateOffset(weeks=54)]
-    recent_year_jdata = jdf[jdf.index >= jdf.index.max() - pd.DateOffset(weeks=54)] 
+    recent_year_mdata = mdf[mdf.index >= mdf.index.max() - pd.DateOffset(weeks=105)]
+    recent_year_jdata = jdf[jdf.index >= jdf.index.max() - pd.DateOffset(weeks=105)] 
     # # Recompute momentum based on the filtered data
     # momentum_m= recent_year_mdata.iloc[:, 1:].apply(
     #     lambda x: (x.iloc[-1] - x.iloc[0]) / x.iloc[0] * 100 if x.iloc[0] != 0 else None, axis=0
@@ -1023,7 +1015,43 @@ if __name__ == "__main__":
     # ).dropna()
     rel_mom_kbm = calculate_relative_momentum_scores(recent_year_mdata)
     rel_mom_kbj = calculate_relative_momentum_scores(recent_year_jdata)
+    # 상대모멘텀 애니메이션 데이터프레임
+    rel_mom_kbm_52 = rel_mom_kbm.iloc[-52:]
+    rel_mom_kbj_52 = rel_mom_kbj.iloc[-52:]
+    rel_mom_kbm_52 = rel_mom_kbm_52.dropna(axis=1, how='all') #제주도 삭제
+    rel_mom_kbj_52 = rel_mom_kbj_52.dropna(axis=1, how='all')
+    rel_mom_kbm_52.bfill(inplace=True)
+    rel_mom_kbj_52.bfill(inplace=True)
+    # 두 데이터프레임을 stack()으로 병합
+    rel_mom_kbm_52_stacked = rel_mom_kbm_52.stack().reset_index()
+    rel_mom_kbj_52_stacked = rel_mom_kbj_52.stack().reset_index()
 
+    # 컬럼 이름 변경
+    rel_mom_kbm_52_stacked.columns = ['date', '지역', '매매모멘텀']
+    rel_mom_kbj_52_stacked.columns = ['date', '지역', '전세모멘텀']
+
+    # 두 데이터프레임을 병합 (on='date'와 '지역' 기준)
+    merged_df = pd.merge(
+        rel_mom_kbm_52_stacked,
+        rel_mom_kbj_52_stacked,
+        on=['date', '지역']
+    )
+
+    # 'year'와 'month' 컬럼 생성
+    merged_df['year'] = merged_df['date'].dt.year
+    merged_df['month'] = merged_df['date'].dt.month
+    # 지역 필터링
+    slice_region = ['서울', '인천', '세종', '대전', '광주', '대구', '울산', '부산',
+                    '강원', '경기', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+
+    # slice_region에 포함된 지역만 필터링
+    filtered_df = merged_df[merged_df['지역'].isin(slice_region)]
+    filtered_df.loc[:,'매매모멘텀'] = filtered_df['매매모멘텀'].round(2)
+    filtered_df.loc[:,'전세모멘텀'] = filtered_df['전세모멘텀'].round(2)
+    # date 컬럼을 "YY.MM.DD" 형식의 문자열로 변환
+    filtered_df['date'] = filtered_df['date'].dt.strftime('%y.%m.%d')
+
+    #상대모멘텀 마지막 데이터
     momentum_kbm = rel_mom_kbm.iloc[-1]
     momentum_kbj = rel_mom_kbj.iloc[-1]
 
@@ -1037,11 +1065,42 @@ if __name__ == "__main__":
     momentum_df = momentum_df.dropna(how="all")
     momentum_df = momentum_df.fillna(0)
     #=============부동산원 지수 모멘텀======================================
-    recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=54)]
-    recent_year_ojdata = ojdf[ojdf.index >= ojdf.index.max() - pd.DateOffset(weeks=54)]
+    recent_year_omdata = omdf[omdf.index >= omdf.index.max() - pd.DateOffset(weeks=105)]
+    recent_year_ojdata = ojdf[ojdf.index >= ojdf.index.max() - pd.DateOffset(weeks=105)]
     rel_mom_om = calculate_relative_momentum_scores(recent_year_omdata)
     rel_mom_oj = calculate_relative_momentum_scores(recent_year_ojdata)
+    # 상대모멘텀 애니메이션 데이터프레임
+    rel_mom_om_52 = rel_mom_om.iloc[-52:]
+    rel_mom_oj_52 = rel_mom_oj.iloc[-52:]
+    rel_mom_om_52 = rel_mom_om_52.dropna(axis=1, how='all') #제주도 삭제
+    rel_mom_oj_52 = rel_mom_oj_52.dropna(axis=1, how='all')
+    rel_mom_om_52.bfill(inplace=True)
+    rel_mom_oj_52.bfill(inplace=True)
+    # 두 데이터프레임을 stack()으로 병합
+    rel_mom_om_52_stacked = rel_mom_om_52.stack().reset_index()
+    rel_mom_oj_52_stacked = rel_mom_oj_52.stack().reset_index()
 
+    # 컬럼 이름 변경
+    rel_mom_om_52_stacked.columns = ['date', '지역', '매매모멘텀']
+    rel_mom_oj_52_stacked.columns = ['date', '지역', '전세모멘텀']
+
+    # 두 데이터프레임을 병합 (on='date'와 '지역' 기준)
+    merged_odf = pd.merge(
+        rel_mom_om_52_stacked,
+        rel_mom_oj_52_stacked,
+        on=['date', '지역']
+    )
+
+    # 'year'와 'month' 컬럼 생성
+    merged_odf['year'] = merged_odf['date'].dt.year
+    merged_odf['month'] = merged_odf['date'].dt.month
+    # slice_region에 포함된 지역만 필터링
+    filtered_odf = merged_odf[merged_odf['지역'].isin(slice_region)]
+    filtered_odf.loc[:,'매매모멘텀'] = filtered_odf['매매모멘텀'].round(2)
+    filtered_odf.loc[:,'전세모멘텀'] = filtered_odf['전세모멘텀'].round(2)
+    # date 컬럼을 "YY.MM.DD" 형식의 문자열로 변환
+    filtered_odf['date'] = filtered_odf['date'].dt.strftime('%y.%m.%d')
+    #마지막 데이터터
     momentum_om = rel_mom_om.iloc[-1]
     momentum_oj = rel_mom_oj.iloc[-1]
 
