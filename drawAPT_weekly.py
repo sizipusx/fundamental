@@ -1177,7 +1177,7 @@ def plot_real_estate_trends(df, title_text="매수우위지수 전세수급지�
     size_omax = df[y_name].max()
 
     # 날짜 포맷 변경 (YYYY-MM-DD → YYYY.M.D)
-    df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y.%m.%d')
+    #df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y.%m.%d')
 
     # 그래프 제목 설정
     title = dict(
