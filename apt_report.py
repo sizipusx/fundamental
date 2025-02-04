@@ -1,5 +1,6 @@
 import requests
 import datetime
+from dateutil.relativedelta import relativedelta
 
 def get_period_range():
     today = datetime.date.today()
@@ -25,12 +26,13 @@ def get_next_week_range():
     return next_monday.strftime('%Y-%m-%d'), next_friday.strftime('%Y-%m-%d')
 
 # ✅ APT 분양정보 조회 함수 (모집 공고일 기준)
-def get_apt_detail(start_date, end_date):
+def get_apt_detail(start_date, end_date, api_key):
+    BASE_URL = 'https://api.odcloud.kr/api/ApplyhomeInfoDetailSvc/v1'
     url = f"{BASE_URL}/getAPTLttotPblancDetail"
     params = {
         'page': 1,
         'perPage': 100,  # 한 번에 최대 100건 조회
-        'serviceKey': API_KEY,
+        'serviceKey': api_key,
         'cond[RCRIT_PBLANC_DE::GTE]': start_date,  # (>=)
         'cond[RCRIT_PBLANC_DE::LTE]': end_date     # 청약접수종료일(<=)
     }
@@ -47,8 +49,6 @@ def send_telegram_message(message, token, chat_id):
     }
     response = requests.post(url, params=params)
     return response.json()
-
-# 
 
 # ✅ 아파트 정보 메시지 생성 함수
 def create_message(apt_data, start_date):
@@ -87,12 +87,16 @@ def main():
     # 🔑 텔레그램 API 정보
     TELEGRAM_TOKEN = "8148018763:AAF2uPLpISDHHdaQxOe0pd6oaw5BEfIOEnA"
     TELEGRAM_CHAT_ID = "2142036312"
+    API_KEY = "5wQYWVUcrzNSB7thQwhuGdyBG5QgXNh5APk0a5RcbEWnSEJUJoQl2ymSHXbhFL9oJJV+D8Noi/s3FIZwA5joIQ=="
 
     # 📅 조회 기간 설정
     this_week_monday = get_monday_of_current_week()
+    # 📅 한달 전 날짜 가져오기
+    start_date, end_date = get_period_range()
+    print(f"📅 조회 기간: {start_date} ~ {end_date}")
 
     # 📊 청약 접수 데이터 조회
-    apt_data = get_apt_detail(start_date, end_date)
+    apt_data = get_apt_detail(start_date, end_date,  API_KEY)
 
     # 📩 메시지 생성
     message = create_message(apt_data,this_week_monday)
