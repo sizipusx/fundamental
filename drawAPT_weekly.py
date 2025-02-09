@@ -893,7 +893,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     annotations = []
     for label in city_lists:
         # labeling the right_side of the plot
-        annotations.append(dict(xref='paper', x=0.95, y=maesu_index[label][-1],
+        annotations.append(dict(xref='paper', x=0.90, y=maesu_index[label][-1],
                                     xanchor='left', yanchor='middle',
                                     text= label + ' {}'.format(maesu_index[label][-1]),
                                     font=dict(family='Arial',
