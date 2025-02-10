@@ -889,16 +889,24 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승 ", annotation_position="top left")
     fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')  
     fig.update_layout(template="myID")
-    # Adding labels
     annotations = []
+    # DataFrame의 x축 마지막 값 (모든 시리즈에 대해 동일한 x축 값이라 가정)
+    last_x = maesu_index.index[-1]
+
     for label in city_lists:
-        # labeling the right_side of the plot
-        annotations.append(dict(xref='paper', x=0.90, y=maesu_index[label][-1],
-                                    xanchor='left', yanchor='middle',
-                                    text= label + ' {}'.format(maesu_index[label][-1]),
-                                    font=dict(family='Arial',
-                                                size=12),
-                                    showarrow=False))
+        annotations.append(dict(
+            x=last_x,             # x축 마지막 값으로 설정
+            y=maesu_index[label].iloc[-1],  # 해당 시리즈의 마지막 y값
+            xref='x',             # x축 데이터 좌표 사용
+            yref='y',             # y축 데이터 좌표 사용
+            xanchor='left',       # 라벨 텍스트가 오른쪽으로 확장되도록 설정
+            yanchor='middle',
+            text=f'{label} {maesu_index[label].iloc[-1]}',
+            font=dict(family='Arial', size=12),
+            showarrow=False,
+            xshift=5             # 데이터와 약간의 간격을 두고 표시 (옵션)
+        ))
+
     fig.update_layout(annotations=annotations)
     fig.update_layout(
         showlegend=True,
