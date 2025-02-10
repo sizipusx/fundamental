@@ -868,50 +868,60 @@ def draw_senti_last(to_df, last_week):
     st.plotly_chart(fig)
 
 def draw_senti_together(maesu_index, city_lists, last_week):
-    #매수우위지수 같이 보기
+    # 매수우위지수 같이 보기
     flag = "KB 주간 시계열"
-    maesu_index.index = pd.to_datetime(maesu_index.index, format = '%Y-%m-%d')
-    titles = dict(text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>', x=0.5, y = 0.9, xanchor='center', yanchor= 'top')
+    maesu_index.index = pd.to_datetime(maesu_index.index, format='%Y-%m-%d')
+    titles = dict(
+        text=f'<b>{last_week}기준 {flag} 매수우위지수 같이 보기 </b>',
+        x=0.5, y=0.9,
+        xanchor='center', yanchor='top'
+    )
     fig = go.Figure()
 
+    # 각 도시별 라인 추가 (각 도시의 색상은 Set1 컬러 스케일에서 가져옴)
     for index, value in enumerate(city_lists):
         fig.add_trace(
             go.Scatter(
-                x=maesu_index.index, y=maesu_index.loc[:,value], mode='lines+markers', name=value, 
+                x=maesu_index.index,
+                y=maesu_index.loc[:, value],
+                mode='lines+markers',
+                name=value,
                 marker=dict(
-                   color=px.colors.qualitative.Set1[index], #set color equal to a variable
-                #    colorscale='bluered', # one of plotly colorscales
-                #    showscale=True
-                )   
-            ))
-    fig.update_yaxes(title_text="매수우위지수", showticklabels= True, showgrid = True, zeroline=True)
-    fig.add_hline(y=100.0, line_width=1, line_dash="dot", line_color="blue",  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음 ", annotation_position="top left")
-    fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red",  annotation_text="매수우위지수가 40을 초과할 때 가격 상승 ", annotation_position="top left")
-    fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y-%m-%d')  
-    fig.update_layout(template="myID")
-    annotations = []
-    # DataFrame의 x축 마지막 값 (모든 시리즈에 대해 동일한 x축 값이라 가정)
+                    color=px.colors.qualitative.Set1[index],
+                )
+            )
+        )
+
+    fig.update_yaxes(title_text="매수우위지수", showticklabels=True, showgrid=True, zeroline=True)
+    fig.add_hline(y=100.0, line_width=1, line_dash="dot", line_color="blue",
+                  annotation_text="매수우위지수가 100을 초과할수록 '공급부족' 비중이 높음", annotation_position="top left")
+    fig.add_hline(y=40.0, line_width=1, line_dash="dash", line_color="red", annotation_text="매수우위지수가 40을 초과할 때 가격 상승",
+        annotation_position="top left")
+    fig.update_layout(title=titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat='%Y-%m-%d', template="myID")
+    # 각 도시의 마지막 데이터 포인트 바로 위에 라벨 추가 (폰트 색상은 라인 색상과 동일하게)
     annotations = []
     last_x = maesu_index.index[-1]
-
-    for label in city_lists:
+    for index, label in enumerate(city_lists):
         last_y = maesu_index[label].iloc[-1]  # 각 시리즈의 마지막 y값
         annotations.append(dict(
             x=last_x,
             y=last_y,
             xref='x',        # x축 데이터 좌표 사용
             yref='y',        # y축 데이터 좌표 사용
-            xanchor='right', # 텍스트가 오른쪽 기준으로 고정되어 왼쪽으로 확장됨
+            xanchor='left', # 텍스트가 왼쪽 끝을 기준으로 하여 오른쪽으로 확장
             yanchor='bottom',# 텍스트의 아래쪽이 데이터 포인트에 맞게 함 (즉, 위쪽에 위치)
             text=f'{label} {last_y}',
-            font=dict(family='Arial', size=12, color='black'),
+            font=dict(
+                family='Arial',
+                size=12,
+                color=px.colors.qualitative.Set1[index]  # 각 도시의 라인 색상과 동일하게 지정
+            ),
             showarrow=False,
             yshift=10       # 데이터 포인트 위로 10픽셀 이동
         ))
     fig.update_layout(annotations=annotations)
     fig.update_layout(
         showlegend=True,
-        #legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         xaxis=go.layout.XAxis(
             rangeselector=dict(
                 buttons=list([
@@ -926,8 +936,10 @@ def draw_senti_together(maesu_index, city_lists, last_week):
             rangeslider=dict(visible=False),
             type="date",
             range=[utcnow - relativedelta(years=1), utcnow]
-        ))
-    st.plotly_chart(fig)    
+        )
+    )
+    st.plotly_chart(fig)
+
 
 def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
     titles = dict(text= '<b>['+selected_dosi +']</b> 전세수급 지수', x=0.5, y = 0.9, xanchor='center', yanchor= 'top') 
