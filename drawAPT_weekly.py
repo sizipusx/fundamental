@@ -917,7 +917,7 @@ def draw_senti_together(maesu_index, city_lists, last_week):
                 color=px.colors.qualitative.Set1[index]  # 각 도시의 라인 색상과 동일하게 지정
             ),
             showarrow=False,
-            yshift=10       # 데이터 포인트 위로 10픽셀 이동
+            # yshift=10       # 데이터 포인트 위로 10픽셀 이동
         ))
     fig.update_layout(annotations=annotations)
     fig.update_layout(
