@@ -891,22 +891,23 @@ def draw_senti_together(maesu_index, city_lists, last_week):
     fig.update_layout(template="myID")
     annotations = []
     # DataFrame의 x축 마지막 값 (모든 시리즈에 대해 동일한 x축 값이라 가정)
+    annotations = []
     last_x = maesu_index.index[-1]
 
     for label in city_lists:
+        last_y = maesu_index[label].iloc[-1]  # 각 시리즈의 마지막 y값
         annotations.append(dict(
-            x=last_x,             # x축 마지막 값으로 설정
-            y=maesu_index[label].iloc[-1],  # 해당 시리즈의 마지막 y값
-            xref='x',             # x축 데이터 좌표 사용
-            yref='y',             # y축 데이터 좌표 사용
-            xanchor='left',       # 라벨 텍스트가 오른쪽으로 확장되도록 설정
-            yanchor='middle',
-            text=f'{label} {maesu_index[label].iloc[-1]}',
-            font=dict(family='Arial', size=12),
+            x=last_x,
+            y=last_y,
+            xref='x',        # x축 데이터 좌표 사용
+            yref='y',        # y축 데이터 좌표 사용
+            xanchor='right', # 텍스트가 오른쪽 기준으로 고정되어 왼쪽으로 확장됨
+            yanchor='bottom',# 텍스트의 아래쪽이 데이터 포인트에 맞게 함 (즉, 위쪽에 위치)
+            text=f'{label} {last_y}',
+            font=dict(family='Arial', size=12, color='black'),
             showarrow=False,
-            xshift=5             # 데이터와 약간의 간격을 두고 표시 (옵션)
+            yshift=10       # 데이터 포인트 위로 10픽셀 이동
         ))
-
     fig.update_layout(annotations=annotations)
     fig.update_layout(
         showlegend=True,
