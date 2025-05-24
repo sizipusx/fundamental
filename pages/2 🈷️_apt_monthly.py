@@ -137,7 +137,7 @@ def read_source_excel():
     return kbm_dict
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache_data(ttl=datetime.timedelta(days=1))
 def get_basic_df():
     #2021-7-30 코드 추가
     # header 파일
