@@ -2,6 +2,7 @@ pip>=22.1.1
 pandas
 numpy
 streamlit
+statsmodels
 requests>=2.31
 beautifulsoup4>=4.11.1
 alpha-vantage==2.3.1
