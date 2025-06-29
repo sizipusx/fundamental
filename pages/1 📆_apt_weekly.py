@@ -742,8 +742,7 @@ def draw_basic():
             with col2:
                 st.write("")
             with col3:
-                drawAPT_weekly.change_number_chart(kbj_count, flag='KB', flag2='전세가격')
-                
+                drawAPT_weekly.change_number_chart(om_count, flag='부동산원', flag2='매매가격')
         html_br="""
         <br>
         """
@@ -751,7 +750,8 @@ def draw_basic():
         with st.container():
             col1, col2, col3 = st.columns([30,2,30])
             with col1:
-                drawAPT_weekly.change_number_chart(om_count, flag='부동산원', flag2='매매가격')
+                drawAPT_weekly.change_number_chart(kbj_count, flag='KB', flag2='전세가격')
+                
                 #drawAPT_weekly.make_dynamic_graph(s_df, js_df)
             with col2:
                 st.write("")
