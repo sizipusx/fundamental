@@ -57,7 +57,13 @@ def price_chart(input_ticker, company_name, price_df):
     # fig.update_traces(texttemplate='%{text:.3s}') 
     fig.update_yaxes(title_text='Volume',showticklabels= True, showgrid = False, zeroline=False, secondary_y = False)
     fig.update_yaxes(title_text='Close',showticklabels= True, showgrid = True, zeroline=True, tickprefix="$", secondary_y = True)
-    fig.update_layout(title = titles, titlefont_size=15, legend=dict(orientation="h"), template=template)
+    fig.update_layout(
+        title={
+            'text': titles,
+            'font': {'size': 15}
+        },
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )    
     fig.update_layout(hovermode="x unified")
     fig.update_layout(template="myID")
     fig.update_layout(
