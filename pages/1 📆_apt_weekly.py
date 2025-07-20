@@ -240,7 +240,7 @@ def rel_momentum_score(ts):
 
     # 4. params(계수) / bse(표준오차) → t-통계량
     #    params와 bse 모두 길이가 1(상수항을 넣지 않았을 때)이므로 float 변환
-    res = float(reg.params / reg.bse)
+    res = float(reg.params / reg.bse).item()
 
     return res
 
