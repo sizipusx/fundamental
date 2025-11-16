@@ -390,10 +390,14 @@ def run_price_index(selected_dosi2, selected_dosi3, mdf, jdf, mdf_change, jdf_ch
                 fillcolor="green", opacity=0.25, line_width=0)
         fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
                 annotation_text="11.10대책", annotation_position="bottom left",
-                fillcolor="red", opacity=0.25, line_width=0)
+                fillcolor="green", opacity=0.25, line_width=0)
         fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
                 annotation_text="1.3대책", annotation_position="bottom left",
-                fillcolor="red", opacity=0.25, line_width=0)
+                fillcolor="green", opacity=0.25, line_width=0)
+        fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
+              fillcolor="red", opacity=0.25, line_width=0)
+        
         fig.update_layout(
             showlegend=True,
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -494,9 +498,12 @@ def draw_sentiment(selected_dosi, js_1, js_2, js_index):
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
         showlegend=True,
@@ -598,9 +605,12 @@ def run_one_index(selected_dosi2, selected_dosi3, omdf, ojdf, omdf_change, ojdf_
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
         showlegend=True,
@@ -650,9 +660,12 @@ def run_one_index_all(draw_list, omdf, ojdf, omdf_change, ojdf_change, gu_city, 
     fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
         showlegend=True,
@@ -697,9 +710,12 @@ def run_one_index_together(draw_list, omdf, omdf_change, flag):
     fig.update_layout(title = titles, font=dict(size=15), legend=dict(orientation="h"), xaxis_tickformat = '%Y.%m.%d')
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(template="myID")
     fig.update_layout(hovermode="x unified")
@@ -746,9 +762,12 @@ def run_one_jindex_together(draw_list, omdf, omdf_change, flag):
     fig.update_layout(hovermode="x unified")
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10대책", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
         showlegend=True,
@@ -974,9 +993,12 @@ def draw_jeon_sentiment(selected_dosi, js_1, js_2, js_index):
               fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2022-11-07", x1="2022-11-14", 
               annotation_text="11.10 규제지역해제", annotation_position="bottom left",
-              fillcolor="red", opacity=0.25, line_width=0)
+              fillcolor="green", opacity=0.25, line_width=0)
     fig.add_vrect(x0="2023-01-02", x1="2023-01-09", 
               annotation_text="1.3대책", annotation_position="bottom left",
+              fillcolor="green", opacity=0.25, line_width=0)
+    fig.add_vrect(x0="2025-10-14", x1="2025-10-21", 
+              annotation_text="10.15대책", annotation_position="bottom left",
               fillcolor="red", opacity=0.25, line_width=0)
     fig.update_layout(
         showlegend=True,
